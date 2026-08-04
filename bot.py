@@ -13,8 +13,8 @@ dp = Dispatcher()
 
 @dp.message(Command("start"))
 async def cmd_start(message: types.Message):
-    # Render የሰጠዎትን የዌብሳይት ሊንክ ከታች በስተመጨረሻው ላይ /index.html ብለው ያስገቡ (ለምሳሌ: https://mala-bot.onrender.com/index.html)
-    web_app_url = "https://mala-bot.onrender.com/index.html" 
+    # አዲሱ የ GitHub Pages የዌብሳይት ሊንክ ተካቷል
+    web_app_url = "https://gashayeb-spec.github.io/mala-bot/index.html" 
     
     keyboard = InlineKeyboardMarkup(
         inline_keyboard=[
