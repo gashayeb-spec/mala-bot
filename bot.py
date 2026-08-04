@@ -4,7 +4,7 @@ from aiogram import Bot, Dispatcher, types
 from aiogram.filters import Command
 from aiogram.types import WebAppInfo, InlineKeyboardMarkup, InlineKeyboardButton
 
-# አዲሱ የቦትዎ ቶከን
+# የቦትዎ ቶከን
 TOKEN = "8543715567:AAFPG7v8h-YJchs6aCYZ_Tad_35-iELISLw"
 
 logging.basicConfig(level=logging.INFO)
@@ -13,7 +13,7 @@ dp = Dispatcher()
 
 @dp.message(Command("start"))
 async def cmd_start(message: types.Message):
-    # አዲሱ የ GitHub Pages ሊንክ በቦቱ ላይ ተካቷል
+    # አዲሱ የ GitHub Pages የዌብሳይት ሊንክ
     web_app_url = "https://gashayeb-spec.github.io/mala-bot/index.html" 
     
     keyboard = InlineKeyboardMarkup(
