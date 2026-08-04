@@ -13,8 +13,8 @@ dp = Dispatcher()
 
 @dp.message(Command("start"))
 async def cmd_start(message: types.Message):
-    # ትክክለኛው የ GitHub Pages የዌብሳይት ሊንክ (index.html ተወግዷል)
-    web_app_url = "https://gashayeb-spec.github.io/mala-bot/" 
+    # ትክክለኛው የ GitHub Pages የዌብሳይት ሊንክ (index.html ተካትቷል)
+    web_app_url = "https://gashayeb-spec.github.io/mala-bot/index.html" 
     
     keyboard = InlineKeyboardMarkup(
         inline_keyboard=[
