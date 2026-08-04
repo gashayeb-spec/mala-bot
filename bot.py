@@ -1,0 +1,42 @@
+import asyncio
+import logging
+from aiogram import Bot, Dispatcher, types
+from aiogram.filters import Command
+from aiogram.types import WebAppInfo, InlineKeyboardMarkup, InlineKeyboardButton
+
+TOKEN = "8975591959:AAH6C2cewHyPMskuGlWw6_cwxw_MRHtYl8c"
+
+logging.basicConfig(level=logging.INFO)
+bot = Bot(token=TOKEN)
+dp = Dispatcher()
+
+@dp.message(Command("start"))
+async def cmd_start(message: types.Message):
+    # Render የሰጠዎትን ሊንክ ከታች በስተመጨረሻው ላይ /index.html ብለው ያስገቡ (ለምሳሌ: https://mala-bot.onrender.com/index.html)
+    web_app_url = "https://mala-bot.onrender.com/index.html" 
+    
+    keyboard = InlineKeyboardMarkup(
+        inline_keyboard=[
+            [InlineKeyboardButton(text="🚀 Mala አፕ ክፈት", web_app=WebAppInfo(url=web_app_url))]
+        ]
+    )
+    
+    welcome_text = (
+        "💡 **ብዙ ሰዎች ቀለል ያለን መንገድ ይመርጣሉ**\n\n"
+        "ለስንት ጊዜም በTelegram ገጾች እየተፈተኑ ቆዩአችሁ? "
+        "ብዙ ምርጫ የሚሰርቅ ሰው ይሁኑ።\n\n"
+        "🚀 **Telegram Premium ያገኙና ይደስቱ:-**\n"
+        "✅ ፈጣን ዳውንሎድ\n"
+        "✅ ትልቅ ፋይሎችን መላክ\n"
+        "✅ የPremium ልዩ ባህሪያት\n"
+        "✅ የተሻለ እና ምቹ የTelegram ልምድ\n\n"
+        "📥 **Telegram Premiumን ዛሬውኑ ከ Mala ያገኙ!**"
+    )
+    
+    await message.answer(welcome_text, reply_markup=keyboard, parse_mode="Markdown")
+
+async def main():
+    await dp.start_polling(bot)
+
+if __name__ == "__main__":
+    asyncio.run(main())
