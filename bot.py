@@ -4,7 +4,8 @@ from aiogram import Bot, Dispatcher, types
 from aiogram.filters import Command
 from aiogram.types import WebAppInfo, InlineKeyboardMarkup, InlineKeyboardButton
 
-TOKEN = "8975591959:AAH6C2cewHyPMskuGlWw6_cwxw_MRHtYl8c"
+# አዲሱ የቦትዎ ቶከን
+TOKEN = "8543715567:AAFPG7v8h-YJchs6aCYZ_Tad_35-iELISLw"
 
 logging.basicConfig(level=logging.INFO)
 bot = Bot(token=TOKEN)
@@ -12,7 +13,7 @@ dp = Dispatcher()
 
 @dp.message(Command("start"))
 async def cmd_start(message: types.Message):
-    # Render የሰጠዎትን ሊንክ ከታች በስተመጨረሻው ላይ /index.html ብለው ያስገቡ (ለምሳሌ: https://mala-bot.onrender.com/index.html)
+    # Render የሰጠዎትን የዌብሳይት ሊንክ ከታች በስተመጨረሻው ላይ /index.html ብለው ያስገቡ (ለምሳሌ: https://mala-bot.onrender.com/index.html)
     web_app_url = "https://mala-bot.onrender.com/index.html" 
     
     keyboard = InlineKeyboardMarkup(
