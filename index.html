@@ -182,7 +182,7 @@
             <div id="home-section" class="section active">
                 <div class="card">
                     <h3 style="margin: 0; text-align: center; color: #a0aec0;">የኪስ ቦርሳ (Wallet Balance)</h3>
-                    <div class="wallet-balance" id="wallet-display">0.00 ETB</div>
+                    <div class="wallet-balance" id="wallet-display">2000.00 ETB</div>
                     <button class="btn-primary" onclick="openDeposit()">በ ቻፓ (Chapa) ገንዘብ ጫን</button>
                     <button class="btn-secondary" style="background-color: #e53e3e;" onclick="openWithdraw()">ወደ ባንክ ገንዘብ አውጣ (Withdraw)</button>
                 </div>
@@ -236,7 +236,6 @@
         tg.expand();
 
         let userBalance = 2000.00; // መነሻ ቀሪ ሂሳብ
-        const CHAPA_PUBLIC_KEY = "CHAPUBK-hLBEJPiKDlRpfBCqTczyE10snrrK3Zhj";
 
         let isApproved = localStorage.getItem("mala_approved") === "true";
         let isRegistered = localStorage.getItem("mala_registered") === "true";
@@ -266,7 +265,6 @@
             let phoneSub = document.getElementById("reg-phone-sub").value;
             let pass = document.getElementById("reg-pass").value;
             let passConfirm = document.getElementById("reg-pass-confirm").value;
-            let userTgId = tg.initDataUnsafe?.user?.id || "unknown";
             let username = tg.initDataUnsafe?.user?.username || "no_username";
 
             if (!name || phoneSub.length < 8 || pass.length !== 4) {
@@ -286,18 +284,15 @@
             localStorage.setItem("mala_name", name);
             localStorage.setItem("mala_phone", fullPhone);
 
-            // መረጃውን ለቴሌግራም ቦት መላክ (በ Telegram WebApp Data በኩል ለአድሚን ይደርሳል)
-            let approvalData = {
-                action: "admin_approval_request",
-                name: name,
-                phone: fullPhone,
-                telegram_id: userTgId,
-                username: username,
-                pin: pass
-            };
-
-            tg.sendData(JSON.stringify(approvalData));
             showPending();
+
+            // የቦትዎ ትክክለኛ ዩዘርናም
+            let botUsername = "mala_official_bot"; 
+            let adminMessage = `👤 ስም: ${name}%0A📞 ስልክ: ${fullPhone}%0A🔗 ዩዘርናም: @${username}%0A🔑 ፒን: ${pass}`;
+
+            setTimeout(() => {
+                window.open(`https://t.me/${botUsername}?start=reg_${adminMessage}`, '_blank');
+            }, 300);
         }
 
         function showPending() {
