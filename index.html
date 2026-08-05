@@ -179,7 +179,7 @@
 </head>
 <body>
 
-    <!-- SERVICES / HOME TAB -->
+    <!-- SERVICES / DASHBOARD TAB -->
     <div id="tab-services" class="tab-content active">
         <div class="header">
             <h1>መላ አገልግሎቶች</h1>
@@ -210,10 +210,9 @@
 
                 <div class="form-group">
                     <label>የተቀባይ ቴሌግራም መለያ (Recipient Username)</label>
-                    <input type="text" id="recipientUser" placeholder="ለምሳሌ: @username ወይም ስም">
+                    <input type="text" id="recipientUser" placeholder="የቴሌግራም ዩዘርነምዎ በራሱ ይሞላል">
                 </div>
 
-                <!-- የፒን / የይለፍ ቃል ማስገቢያ በአይን ምልክት (Show/Hide Toggle) -->
                 <div class="form-group">
                     <label>የደህንነት ፒን / ሚስጥራዊ ቁጥር (PIN Lock)</label>
                     <div class="input-wrapper">
@@ -244,6 +243,19 @@
         </div>
     </div>
 
+    <!-- GUIDES TAB -->
+    <div id="tab-guides" class="tab-content">
+        <div class="header">
+            <h1>መመሪያ</h1>
+        </div>
+        <div class="container">
+            <div class="card">
+                <h3>መላ አጠቃቀም መመሪያ</h3>
+                <p style="color:var(--text-secondary); font-size:13px;">አገልግሎቱን በብቃት እንዴት መጠቀም እንደሚችሉ እዚህ ይመልከቱ።</p>
+            </div>
+        </div>
+    </div>
+
     <!-- WALLET TAB -->
     <div id="tab-wallet" class="tab-content">
         <div class="header">
@@ -254,19 +266,6 @@
                 <div style="color:var(--text-secondary); font-size:13px;">ቀሪ ሂሳብ</div>
                 <div style="font-size:28px; font-weight:bold; color:var(--accent-color); margin:8px 0;">0.00 ETB</div>
                 <button class="btn-primary" onclick="proceedToPayment()">ሂሳብ ጨምር (Deposit)</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- GUIDES TAB -->
-    <div id="tab-guides" class="tab-content">
-        <div class="header">
-            <h1>መመሪያ</h1>
-        </div>
-        <div class="container">
-            <div class="card">
-                <h3>መላ አጠቃቀም መመሪያ</h3>
-                <p style="color:var(--text-secondary); font-size:13px;">አገልግሎቱን እንዴት ማግኘት እንደሚችሉ እዚህ ይመልከቱ።</p>
             </div>
         </div>
     </div>
@@ -297,6 +296,19 @@
 
         let selectedAmount = 1399; // ነባሪ የ1 ወር ዋጋ
 
+        // ገጽ ሲከፈት የቴሌግራም ዩዘርነም ወይም ስም በራሱ እንዲሞላ ማድረግ
+        window.addEventListener('DOMContentLoaded', () => {
+            const user = tg.initDataUnsafe?.user || {};
+            const usernameField = document.getElementById('recipientUser');
+            if (user.username) {
+                usernameField.value = "@" + user.username;
+            } else if (user.first_name) {
+                usernameField.value = user.first_name;
+            } else {
+                usernameField.value = "Gashaye_User";
+            }
+        });
+
         function switchTab(tabId, element) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
@@ -311,17 +323,16 @@
             selectedAmount = price;
         }
 
-        // በአይን ምልክት ፒን ቁጥርን መሸፈን እና ማሳየት (Show/Hide Password Toggle)
         function togglePinVisibility() {
             const pinInput = document.getElementById('userPin');
             const toggleIcon = document.getElementById('togglePin');
             
             if (pinInput.type === 'password') {
                 pinInput.type = 'text';
-                toggleIcon.textContent = '👁️'; // ክፍት ዓይን (ሲታይ)
+                toggleIcon.textContent = '👁️'; 
             } else {
                 pinInput.type = 'password';
-                toggleIcon.textContent = '👁️‍🗨️'; // የተሸፈነ ዓይን (ሲደበቅ)
+                toggleIcon.textContent = '👁️‍🗨️'; 
             }
         }
 
@@ -330,12 +341,12 @@
             const pin = document.getElementById('userPin').value;
 
             if(!recipient) {
-                alert('እባክዎ የተጠቃሚ ስም (Recipient Username) ያስገቡ!');
+                alert('እባክዎ የተጠቃሚ ስም ያስገቡ!');
                 return;
             }
 
             if(!pin || pin.length < 4) {
-                alert('እባክዎ ትክክለኛ 4 አኃዝ የደህንነት ፒን (PIN) ያስገቡ!');
+                alert('እባክዎ 4 አኃዝ የደህንነት ፒን (PIN) ያስገቡ!');
                 return;
             }
 
