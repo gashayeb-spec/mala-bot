@@ -4,10 +4,7 @@ from aiogram import Bot, Dispatcher, types, F
 from aiogram.filters import Command
 from aiogram.types import WebAppInfo, InlineKeyboardMarkup, InlineKeyboardButton
 
-# የቦትዎ ቶከን
 TOKEN = "8543715567:AAFPG7v8h-YJchs6aCYZ_Tad_35-iELISLw"
-
-# 🔑 የአድሚኑ (የእርስዎ) ትክክለኛ የቴሌግራም ቻት አይዲ
 ADMIN_CHAT_ID = 5351353727
 
 logging.basicConfig(level=logging.INFO)
@@ -16,7 +13,6 @@ dp = Dispatcher()
 
 @dp.message(Command("start"))
 async def cmd_start(message: types.Message):
-    # ተጠቃሚው ወደ ቦቱ ሲመጣ የሚከፈተው ሊንክ
     web_app_url = "https://gashayeb-spec.github.io/mala-bot/index.html" 
     
     keyboard = InlineKeyboardMarkup(
@@ -25,11 +21,9 @@ async def cmd_start(message: types.Message):
         ]
     )
     
-    # ተጠቃሚው ከሚኒ አፑ መረጃውን ልኮ ወደ ቦቱ ሲመጣ (በ Start link በኩል ሲገባ) የሚቀበለው ሎጂክ
     if message.text and len(message.text) > 7:
-        reg_data = message.text[7:] # reg_ ብሎ የሚጀምረውን ዳታ መቀበል
+        reg_data = message.text[7:]
         try:
-            # መረጃውን ለአድሚን (ለእርስዎ) መላክ
             admin_kb = InlineKeyboardMarkup(
                 inline_keyboard=[
                     [
@@ -70,17 +64,15 @@ async def cmd_start(message: types.Message):
     
     await message.answer(welcome_text, reply_markup=keyboard, parse_mode="Markdown")
 
-# አድሚኑ የሚጫናቸውን አዝራሮች (Approve, Reject, Block) ማስተናገጃ
 @dp.callback_query(F.data.startswith("app_"))
 async def process_admin_action(callback: types.CallbackQuery):
     data_parts = callback.data.split("_")
-    action_type = data_parts[1] # yes, no, block
+    action_type = data_parts[1]
     target_user_id = data_parts[2]
     
     if action_type == "yes":
         await callback.message.edit_text(callback.message.text + "\n\n✅ **ይህ አካውንት በአድሚን ጸድቋል (Approved)!**", parse_mode="Markdown")
         try:
-            # ለተጠቃሚው አፑን በራስ ሰር እንዲከፍት የዌብ አፕ ሊንኩን ጨምሮ መላክ
             web_app_url = "https://gashayeb-spec.github.io/mala-bot/index.html"
             user_kb = InlineKeyboardMarkup(
                 inline_keyboard=[
