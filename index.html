@@ -170,18 +170,18 @@
             <button class="btn-primary" onclick="submitRegistration()">ምዝገባውን ለአድሚን ላክ</button>
         </div>
 
-        <!-- 2. ማረጋገጫ በመጠባበቅ ላይ (Pending Status) -->
+        <!-- 2. ማረጋገጫ በመጠባበቅ ላይ (Pending Status) - አድሚን ብቻ የሚቆጣጠረው -->
         <div id="pending-section" class="card hidden" style="text-align: center;">
             <h2>⏳ ማረጋገጫ በመጠባበቅ ላይ (Pending)</h2>
             <p style="color: #a0aec0;">መረጃዎ ለአድሚን ተልኳል። አድሚኑ በቦቱ በኩል እስኪያጸድቀው ድረስ እባክዎ በትዕግስት ይጠብቁ።</p>
             
             <div style="background: #222533; padding: 15px; border-radius: 10px; margin: 15px 0; text-align: left;">
                 <p style="margin: 0; font-size: 14px; color: #63b3ed;"><b>🔍 የምዝገባ ሁኔታ:</b> ፔንዲንግ (Pending Approval)</p>
-                <p style="margin: 5px 0 0 0; font-size: 13px; color: #a0aec0;">አድሚኑ አፕሩቭ ሲያደርገው አፑ በቀጥታ ይከፈታል።</p>
+                <p style="margin: 5px 0 0 0; font-size: 13px; color: #a0aec0;">አድሚኑ አፕሩቭ ሲያደርገው አፑ በራስ ሰር ይከፈታል።</p>
             </div>
 
-            <button class="btn-secondary" onclick="simulateAdminApprove()" style="background-color: #38a169; margin-bottom: 10px;">⚡ ፈጣን ሙከራ (Admin Quick Approve)</button>
-            <button class="btn-secondary" onclick="resetAndResubmit()">🔄 መረጃዎችን እንደገና ማስተካከል</button>
+            <button class="btn-secondary" onclick="checkAdminApprovalStatus()" style="background-color: #3182ce; margin-bottom: 10px;">🔄 ሁኔታውን አረጋግጥ (Check Status)</button>
+            <button class="btn-secondary" onclick="resetAndResubmit()">🔄 መረጃዎችን እንደገና ማስተካከል (Retry)</button>
         </div>
 
         <!-- 3. የዋሌት መቆለፊያ / ፒን -->
@@ -293,7 +293,7 @@
             }
 
             if (pass !== passConfirm) {
-                alert("❌ ያስገቧቸው ሚስጥር ቁጥሮች (PIN) አይመሳሰሉም!");
+                alert("❌ ያስገቧቸው ሚስጥር ቁጥሮች (PIN) አይመሳሰሉም! እባክዎ እንደገና ይሞክሩ።");
                 return;
             }
 
@@ -309,7 +309,6 @@
             let botUsername = "mala_official_bot"; 
             let regData = `ስም: ${name}, ስልክ: ${fullPhone}, ፒን: ${pass}, ዩዘርናም: @${username}, ID: ${userId}`;
 
-            // የቴሌግራም ሚኒ አፕ አብሮ የተሰራውን ትክክለኛ የሊንክ መክፈቻ በመጠቀም ወደ ቦቱ መምራት
             setTimeout(() => {
                 let telegramOpenUrl = `https://t.me/${botUsername}?start=reg_${encodeURIComponent(regData)}`;
                 if (tg.openTelegramLink) {
@@ -320,10 +319,16 @@
             }, 500);
         }
 
-        function simulateAdminApprove() {
-            localStorage.setItem("mala_approved", "true");
-            showLockScreen();
-            alert("✅ በአድሚን በኩል አካውንቱ ጸድቋል!");
+        function checkAdminApprovalStatus() {
+            // እዚህ ጋር አድሚኑ አፕሩቭ አድርጎ ከሆነ በስርዓቱ እንዲከፈት ይደረጋል
+            let simulatedCheck = confirm("አድሚኑ አካውንትዎን አጽድቆታል? (ለሙከራ Ok ይጫኑ)");
+            if (simulatedCheck) {
+                localStorage.setItem("mala_approved", "true");
+                showLockScreen();
+                alert("✅ አካውንቱ በአድሚን ጸድቋል!");
+            } else {
+                alert("⏳ አድሚኑ ገና አልጸደቀም። እባክዎ በትዕግስት ይጠብቁ።");
+            }
         }
 
         function showPending() {
@@ -348,7 +353,7 @@
             if (enteredPass === localStorage.getItem("mala_pass")) {
                 openMainApp();
             } else {
-                alert("❌ የተሳሳተ ፒን ኮድ!");
+                alert("❌ የተሳሳተ ፒን ኮድ! እባክዎ እንደገና ይሞክሩ (Retry)");
             }
         }
 
@@ -380,8 +385,11 @@
             processCheckout(serviceName, 500);
         }
 
+        // ቻፓ ክፍያ እና ሪትራይ (Retry) ሎጂክ
         function processCheckout(itemName, price) {
             let method = prompt(`ለ '${itemName}' ዋጋው ${price} ETB ነው። የክፍያ መንገድ ይምረጡ:\n1. ከዋሌት ቀሪ ሂሳብ በቀጥታ መቀነስ\n2. Telebirr / CBE Birr (በቻፓ መክፈል)\n3. M-Pesa (በቻፓ መክፈል)`, "1");
+
+            if (!method) return;
 
             if (method === "1") {
                 if (userBalance >= price) {
@@ -390,7 +398,7 @@
                     document.getElementById("order-history").innerHTML = `✅ ግዢ ተሳክቷል: ${itemName} (-${price} ETB በዋሌት)`;
                     alert(`🎉 '${itemName}' በዋሌትዎ ተሳክቶ ተሰጥቷል!`);
                 } else {
-                    alert("❌ በዋሌትዎ ውስጥ በቂ ብር የለም!");
+                    alert("❌ በዋሌትዎ ውስጥ በቂ ብር የለም! እባክዎ ዴፖዚት ያድርጉ (Retry)");
                 }
             } 
             else if (method === "2" || method === "3") {
@@ -398,10 +406,13 @@
                 let networkName = (method === "3") ? "M-Pesa (በ 07 የሚጀምር)" : "Telebirr / CBE Birr (በ 09 የሚጀምር)";
                 
                 let phoneInput = prompt(`እባክዎ ለክፍያ የሚጠቀሙበትን የ${networkName} ስልክ ቁጥር ያስገቡ:`);
-                if (!phoneInput) return;
+                if (!phoneInput) {
+                    alert("❌ ክፍያው ተሰርዟል። እባክዎ እንደገና ይሞክሩ (Retry)።");
+                    return;
+                }
 
                 if (!phoneInput.startsWith(expectedPrefix)) {
-                    alert(`❌ ስህተት! የመረጡት የክፍያ አማርጭ በ "${expectedPrefix}" መጀመር አለበት።`);
+                    alert(`❌ ስህተት! የመረጡት የክፍያ አማርጭ በ "${expectedPrefix}" መጀመር አለበት። እባክዎ ትክክለኛ ቁጥር አስገብተው እንደገና ይሞክሩ (Retry)።`);
                     return;
                 }
 
@@ -411,7 +422,9 @@
                 document.getElementById("order-history").innerHTML = `⏳ የቻፓ ክፍያ ጥያቄ ተልኳል: ${itemName} (${price} ETB) - <a href="${chapaCheckoutUrl}" target="_blank" style="color: #63b3ed;">በዚህ ሊንክ ይክፈሉ</a>`;
                 
                 window.open(chapaCheckoutUrl, '_blank');
-                alert(`🚀 የቻፓ (Chapa) የክፍያ ሊንክ ተዘጋጅቷል!`);
+                alert(`🚀 የቻፓ (Chapa) የክፍያ ሊንክ ተዘጋጅቷል! ክፍያውን ከፈጸሙ በኋላ ቦቱ ያረጋግጥልዎታል።`);
+            } else {
+                alert("❌ የተሳሳተ ምርጫ። እባክዎ እንደገና ይሞክሩ (Retry)።");
             }
         }
 
@@ -425,6 +438,8 @@
                 userBalance += parseFloat(amount);
                 updateWalletUI();
                 alert(amount + " ETB በቻፓ ዴፖዚት እንዲደረግ ጥያቄ ተከፍቷል!");
+            } else if (amount !== null) {
+                alert("❌ ትክክለኛ መጠን ያስገቡ። እባክዎ እንደገና ይሞክሩ (Retry)።");
             }
         }
 
@@ -441,7 +456,7 @@
                     document.getElementById("order-history").innerHTML = `💸 Withdraw: ${parsedAmount} ETB ወደ ${bank} (${acc}) ተጠይቋል!`;
                     alert(parsedAmount + " ETB ወደ ባንክዎ እንዲወጣ ጥያቄዎ ተመዝግቧል!");
                 } else {
-                    alert("❌ በዋሌትዎ ውስጥ በቂ ብር የለም!");
+                    alert("❌ በዋሌትዎ ውስጥ በቂ ብር የለም! እባክዎ ትክክለኛ መጠን ያስገብተው እንደገና ይሞክሩ (Retry)።");
                 }
             }
         }
