@@ -170,7 +170,7 @@
             <button class="btn-primary" onclick="submitRegistration()">ምዝገባውን ለአድሚን ላክ</button>
         </div>
 
-        <!-- 2. ማረጋገጫ በመጠባበቅ ላይ (Pending Status) - አድሚን ብቻ የሚቆጣጠረው -->
+        <!-- 2. ማረጋገጫ በመጠባበቅ ላይ (Pending Status) -->
         <div id="pending-section" class="card hidden" style="text-align: center;">
             <h2>⏳ ማረጋገጫ በመጠባበቅ ላይ (Pending)</h2>
             <p style="color: #a0aec0;">መረጃዎ ለአድሚን ተልኳል። አድሚኑ በቦቱ በኩል እስኪያጸድቀው ድረስ እባክዎ በትዕግስት ይጠብቁ።</p>
@@ -258,6 +258,9 @@
 
         let userBalance = 2000.00;
 
+        // የቻፓ ሴክሬት ኪ (Chapa Secret Key)
+        const CHAPA_SECRET_KEY = "CHASECK-SncZN81Mx80yQcPiXJwRXDF6MdgchtNV";
+
         let isApproved = localStorage.getItem("mala_approved") === "true";
         let isRegistered = localStorage.getItem("mala_registered") === "true";
 
@@ -320,7 +323,6 @@
         }
 
         function checkAdminApprovalStatus() {
-            // እዚህ ጋር አድሚኑ አፕሩቭ አድርጎ ከሆነ በስርዓቱ እንዲከፈት ይደረጋል
             let simulatedCheck = confirm("አድሚኑ አካውንትዎን አጽድቆታል? (ለሙከራ Ok ይጫኑ)");
             if (simulatedCheck) {
                 localStorage.setItem("mala_approved", "true");
@@ -378,16 +380,25 @@
             if (planChoice === "1") { price = 1200; duration = "3 Months"; }
             else if (planChoice === "2") { price = 2200; duration = "6 Months"; }
 
-            processCheckout(serviceName + " (" + duration + ")", price);
+            initializeChapaPayment(serviceName + " (" + duration + ")", price);
         }
 
         function openMediaPlan(serviceName) {
-            processCheckout(serviceName, 500);
+            initializeChapaPayment(serviceName, 500);
         }
 
-        // ቻፓ ክፍያ እና ሪትራይ (Retry) ሎጂክ
-        function processCheckout(itemName, price) {
-            let method = prompt(`ለ '${itemName}' ዋጋው ${price} ETB ነው። የክፍያ መንገድ ይምረጡ:\n1. ከዋሌት ቀሪ ሂሳብ በቀጥታ መቀነስ\n2. Telebirr / CBE Birr (በቻፓ መክፈል)\n3. M-Pesa (በቻፓ መክፈል)`, "1");
+        function openDeposit() {
+            let amount = prompt("በቻፓ (Chapa) ወደ ዋሌትዎ ማስገባት የሚፈልጉትን መጠን (ETB) ያስገቡ:");
+            if (amount && amount > 0) {
+                initializeChapaPayment("Wallet Deposit", parseFloat(amount));
+            } else if (amount !== null) {
+                alert("❌ ትክክለኛ መጠን ያስገቡ። እባክዎ እንደገና ይሞክሩ (Retry)።");
+            }
+        }
+
+        // 🚀 ከቻፓ ኤፒአይ (Chapa API) ጋር በቀጥታ የሚገናኘው እና ትክክለኛውን ሊንክ የሚያመነጨው ፋንክሽን
+        async function initializeChapaPayment(itemName, price) {
+            let method = prompt(`ለ '${itemName}' ዋጋው ${price} ETB ነው። የክፍያ መንገድ ይምረጡ:\n1. ከዋሌት ቀሪ ሂሳብ በቀጥታ መቀነስ\n2. Telebirr / CBE Birr / M-Pesa (በቻፓ መክፈል)`, "2");
 
             if (!method) return;
 
@@ -401,45 +412,56 @@
                     alert("❌ በዋሌትዎ ውስጥ በቂ ብር የለም! እባክዎ ዴፖዚት ያድርጉ (Retry)");
                 }
             } 
-            else if (method === "2" || method === "3") {
-                let expectedPrefix = (method === "3") ? "07" : "09";
-                let networkName = (method === "3") ? "M-Pesa (በ 07 የሚጀምር)" : "Telebirr / CBE Birr (በ 09 የሚጀምር)";
-                
-                let phoneInput = prompt(`እባክዎ ለክፍያ የሚጠቀሙበትን የ${networkName} ስልክ ቁጥር ያስገቡ:`);
-                if (!phoneInput) {
-                    alert("❌ ክፍያው ተሰርዟል። እባክዎ እንደገና ይሞክሩ (Retry)።");
-                    return;
-                }
-
-                if (!phoneInput.startsWith(expectedPrefix)) {
-                    alert(`❌ ስህተት! የመረጡት የክፍያ አማርጭ በ "${expectedPrefix}" መጀመር አለበት። እባክዎ ትክክለኛ ቁጥር አስገብተው እንደገና ይሞክሩ (Retry)።`);
-                    return;
-                }
-
+            else if (method === "2") {
+                let userName = localStorage.getItem("mala_name") || "Customer";
+                let userPhone = localStorage.getItem("mala_phone") || "0911000000";
                 let txRef = "mala-tx-" + Math.floor(Math.random() * 1000000);
-                let chapaCheckoutUrl = `https://checkout.chapa.co/checkout/payment/${txRef}`;
-                
-                document.getElementById("order-history").innerHTML = `⏳ የቻፓ ክፍያ ጥያቄ ተልኳል: ${itemName} (${price} ETB) - <a href="${chapaCheckoutUrl}" target="_blank" style="color: #63b3ed;">በዚህ ሊንክ ይክፈሉ</a>`;
-                
-                window.open(chapaCheckoutUrl, '_blank');
-                alert(`🚀 የቻፓ (Chapa) የክፍያ ሊንክ ተዘጋጅቷል! ክፍያውን ከፈጸሙ በኋላ ቦቱ ያረጋግጥልዎታል።`);
+
+                let paymentData = {
+                    amount: price.toString(),
+                    currency: "ETB",
+                    email: "customer@mala.et",
+                    first_name: userName.split(" ")[0] || "Mala",
+                    last_name: userName.split(" ")[1] || "User",
+                    phone_number: userPhone,
+                    tx_ref: txRef,
+                    callback_url: "https://gashayeb-spec.github.io/mala-bot/index.html",
+                    return_url: "https://gashayeb-spec.github.io/mala-bot/index.html"
+                };
+
+                alert("⏳ የቻፓ ክፍያ ሊንክ በመዘጋጀት ላይ ነው፣ እባክዎ ትንሽ ይጠብቁ...");
+
+                try {
+                    let response = await fetch("https://api.chapa.co/v1/transaction/initialize", {
+                        method: "POST",
+                        headers: {
+                            "Authorization": `Bearer ${CHAPA_SECRET_KEY}`,
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify(paymentData)
+                    });
+
+                    let result = await response.json();
+
+                    if (result.status === "success" && result.data && result.data.checkout_url) {
+                        let checkoutUrl = result.data.checkout_url;
+                        
+                        document.getElementById("order-history").innerHTML = `⏳ የቻፓ ክፍያ ጥያቄ ተልኳል: ${itemName} (${price} ETB) - <a href="${checkoutUrl}" target="_blank" style="color: #63b3ed;">በዚህ ሊንክ ይክፈሉ</a>`;
+                        
+                        // ሊንኩን መክፈት
+                        window.open(checkoutUrl, '_blank');
+                        if (tg.openLink) {
+                            tg.openLink(checkoutUrl);
+                        }
+                    } else {
+                        alert("❌ የቻፓ ሊንክ ማመንጨት አልተቻለም: " + (result.message || "እባክዎ እንደገና ይሞክሩ (Retry)።"));
+                    }
+                } catch (error) {
+                    console.error("Chapa Error:", error);
+                    alert("❌ የኔትወርክ ስህተት አጋጥሟል። እባክዎ የኢንተርኔት ግንኙነትዎን አረጋግጠው እንደገና ይሞክሩ (Retry)።");
+                }
             } else {
                 alert("❌ የተሳሳተ ምርጫ። እባክዎ እንደገና ይሞክሩ (Retry)።");
-            }
-        }
-
-        function openDeposit() {
-            let amount = prompt("በቻፓ (Chapa) ወደ ዋሌትዎ ማስገባት የሚፈልጉትን መጠን (ETB) ያስገቡ:");
-            if (amount && amount > 0) {
-                let txRef = "mala-dep-" + Math.floor(Math.random() * 1000000);
-                let chapaDepositUrl = `https://checkout.chapa.co/checkout/payment/${txRef}`;
-                
-                window.open(chapaDepositUrl, '_blank');
-                userBalance += parseFloat(amount);
-                updateWalletUI();
-                alert(amount + " ETB በቻፓ ዴፖዚት እንዲደረግ ጥያቄ ተከፍቷል!");
-            } else if (amount !== null) {
-                alert("❌ ትክክለኛ መጠን ያስገቡ። እባክዎ እንደገና ይሞክሩ (Retry)።");
             }
         }
 
