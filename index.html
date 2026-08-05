@@ -3,497 +3,321 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mala Mini App - Admin & Wallet System</title>
+    <title>መላ Bot Mini App</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
+        :root {
+            --bg-color: #0d1117;
+            --card-bg: #161b22;
+            --text-primary: #ffffff;
+            --text-secondary: #8b949e;
+            --accent-color: #2f81f7;
+            --border-color: #30363d;
+            --success-color: #238636;
+            --pending-color: #d29922;
+        }
+
         body {
-            background-color: #0f1016;
-            color: #ffffff;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-primary);
             margin: 0;
+            padding: 0;
+            padding-bottom: 80px;
+        }
+
+        .header {
             padding: 16px;
-            padding-bottom: 90px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
-        .card {
-            background-color: #171923;
-            border-radius: 16px;
-            padding: 20px;
+
+        .header h1 {
+            font-size: 24px;
+            margin: 0;
+        }
+
+        .container {
+            padding: 0 16px;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .search-box {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 10px 14px;
+            display: flex;
+            align-items: center;
             margin-bottom: 16px;
-            border: 1px solid #2d3748;
         }
-        .input-field, .select-field {
+
+        .search-box input {
+            background: transparent;
+            border: none;
+            color: var(--text-primary);
+            font-size: 14px;
             width: 100%;
-            padding: 12px;
-            margin: 8px 0 16px 0;
-            background-color: #2d3748;
-            border: 1px solid #4a5568;
-            border-radius: 8px;
-            color: white;
-            font-size: 16px;
-            box-sizing: border-box;
+            outline: none;
+            margin-left: 8px;
         }
-        .phone-group {
+
+        .filters {
             display: flex;
             gap: 8px;
+            overflow-x: auto;
+            padding-bottom: 8px;
+            margin-bottom: 16px;
         }
-        .pin-container {
-            position: relative;
-        }
-        .toggle-pin {
-            position: absolute;
-            right: 12px;
-            top: 40px;
-            background: none;
-            border: none;
-            color: #a0aec0;
-            cursor: pointer;
-            font-size: 14px;
-        }
-        .btn-primary {
-            background-color: #3182ce;
-            color: white;
-            border: none;
-            width: 100%;
-            padding: 12px;
-            border-radius: 10px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            text-align: center;
-            margin-top: 5px;
-        }
-        .btn-secondary {
-            background-color: #4a5568;
-            color: white;
-            border: none;
-            width: 100%;
-            padding: 10px;
-            border-radius: 10px;
-            font-size: 14px;
-            cursor: pointer;
-            text-align: center;
-            margin-top: 8px;
-        }
-        .btn-success {
-            background-color: #38a169;
-            color: white;
-            border: none;
-            width: 100%;
-            padding: 12px;
-            border-radius: 10px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            text-align: center;
-            margin-top: 8px;
-        }
-        .wallet-balance {
-            font-size: 28px;
-            font-weight: bold;
-            color: #63b3ed;
-            text-align: center;
-            margin: 10px 0;
-        }
-        .info-box {
-            background-color: #222533;
-            border-left: 4px solid #3182ce;
-            padding: 12px;
-            margin-bottom: 15px;
-            border-radius: 0 8px 8px 0;
+
+        .filter-btn {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            padding: 6px 14px;
+            border-radius: 20px;
             font-size: 13px;
-            color: #cbd5e0;
+            white-space: nowrap;
+            cursor: pointer;
         }
-        .hidden { display: none; }
-        .nav-bar {
+
+        .filter-btn.active {
+            background: var(--accent-color);
+            color: white;
+            border-color: var(--accent-color);
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .badge {
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .badge.pending { background: rgba(210, 153, 34, 0.15); color: var(--pending-color); }
+        .badge.success { background: rgba(35, 134, 54, 0.15); color: var(--success-color); }
+
+        .bottom-nav {
             position: fixed;
             bottom: 0;
             left: 0;
-            width: 100%;
-            background-color: #12141c;
+            right: 0;
+            background: #090d12;
+            border-top: 1px solid var(--border-color);
             display: flex;
             justify-content: space-around;
-            padding: 12px 0;
-            border-top: 1px solid #2d3748;
-            z-index: 100;
+            padding: 10px 0;
+            z-index: 1000;
         }
+
         .nav-item {
-            text-align: center;
-            color: #a0aec0;
-            font-size: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 11px;
             cursor: pointer;
-            flex: 1;
         }
+
         .nav-item.active {
-            color: #63b3ed;
-            font-weight: bold;
+            color: var(--accent-color);
         }
-        .section { display: none; }
-        .section.active { display: block; }
+
+        .nav-item svg {
+            width: 22px;
+            height: 22px;
+            margin-bottom: 4px;
+            fill: currentColor;
+        }
+
+        .btn-primary {
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            width: 100%;
+            padding: 12px;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <!-- 1. የምዝገባ እና የደህንነት ፎርም -->
-        <div id="register-section" class="card">
-            <h2>👋 ወደ Mala ደህና መጡ</h2>
-            
-            <div class="info-box">
-                <b>📌 አጠቃቀም መመሪያ:</b>
-                <p style="margin: 5px 0 0 0;">1. ስምዎን እና ስልክ ቁጥርዎን በትክክል ያስገቡ።<br>2. የ 4 አሃዝ ሚስጥር ቁጥር (PIN) ይምረጡ።<br>3. "ምዝገባውን ለአድሚን ላክ" ሲጫኑ ጥያቄው በቀጥታ ወደ ቦቱ ይሄዳል።</p>
-            </div>
-
-            <label>ሙሉ ስም</label>
-            <input type="text" id="reg-name" class="input-field" placeholder="ስምዎን ያስገቡ">
-            
-            <label>ስልክ ቁጥር</label>
-            <div class="phone-group">
-                <select id="phone-prefix" class="select-field" style="width: 35%;">
-                    <option value="09">09 (Telebirr/CBE)</option>
-                    <option value="07">07 (M-Pesa)</option>
-                </select>
-                <input type="tel" id="reg-phone-sub" class="input-field" maxlength="8" placeholder="xxxxxxxx" style="width: 65%;">
-            </div>
-
-            <div class="pin-container">
-                <label>የዋሌት መክፈቻ ሚስጥር ቁጥር (4-Digit Pin)</label>
-                <input type="password" id="reg-pass" class="input-field" maxlength="4" placeholder="****">
-                <button type="button" class="toggle-pin" onclick="togglePinVisibility('reg-pass', this)">ማሳያ</button>
-            </div>
-
-            <div class="pin-container">
-                <label>ሚስጥር ቁጥሩን ደግመው ያስገቡ (Confirm PIN)</label>
-                <input type="password" id="reg-pass-confirm" class="input-field" maxlength="4" placeholder="****">
-                <button type="button" class="toggle-pin" onclick="togglePinVisibility('reg-pass-confirm', this)">ማሳያ</button>
-            </div>
-            
-            <button class="btn-primary" onclick="submitRegistration()">ምዝገባውን ለአድሚን ላክ</button>
+    <!-- ORDERS TAB -->
+    <div id="tab-orders" class="tab-content active">
+        <div class="header">
+            <h1>Orders</h1>
         </div>
-
-        <!-- 2. ማረጋገጫ በመጠባበቅ ላይ (Pending Status) -->
-        <div id="pending-section" class="card hidden" style="text-align: center;">
-            <h2>⏳ ማረጋገጫ በመጠባበቅ ላይ (Pending)</h2>
-            <p style="color: #a0aec0;">መረጃዎ ለአድሚን ተልኳል። አድሚኑ በቦቱ በኩል እስኪያጸድቀው ድረስ እባክዎ በትዕግስት ይጠብቁ።</p>
+        <div class="container">
+            <div class="search-box">
+                <span style="color:var(--text-secondary)">🔍</span>
+                <input type="text" placeholder="Search orders...">
+            </div>
             
-            <div style="background: #222533; padding: 15px; border-radius: 10px; margin: 15px 0; text-align: left;">
-                <p style="margin: 0; font-size: 14px; color: #63b3ed;"><b>🔍 የምዝገባ ሁኔታ:</b> ፔንዲንግ (Pending Approval)</p>
-                <p style="margin: 5px 0 0 0; font-size: 13px; color: #a0aec0;">አድሚኑ አፕሩቭ ሲያደርገው አፑ በራስ ሰር ይከፈታል።</p>
+            <div class="filters">
+                <button class="filter-btn active">All 11</button>
+                <button class="filter-btn">Pending 8</button>
+                <button class="filter-btn">Processing 0</button>
+                <button class="filter-btn">In Progress 0</button>
+                <button class="filter-btn">Completed 0</button>
             </div>
 
-            <button class="btn-secondary" onclick="checkAdminApprovalStatus()" style="background-color: #3182ce; margin-bottom: 10px;">🔄 ሁኔታውን አረጋግጥ (Check Status)</button>
-            <button class="btn-secondary" onclick="resetAndResubmit()">🔄 መረጃዎችን እንደገና ማስተካከል (Retry)</button>
+            <div class="card">
+                <div class="card-header">
+                    <div>
+                        <strong style="font-size:16px;">3a4e876d30</strong>
+                        <div style="font-size:12px; color:var(--text-secondary);">Telegram Premium Gift</div>
+                    </div>
+                    <span class="badge pending">Pending</span>
+                </div>
+                <hr style="border:0; border-top:1px solid var(--border-color); margin:12px 0;">
+                <div style="display:flex; justify-content:space-between; font-size:13px; color:var(--text-secondary);">
+                    <div>Package<br><strong style="color:var(--text-primary); font-size:15px;">3 Months</strong></div>
+                    <div>Recipient<br><strong style="color:var(--text-primary); font-size:15px;">Koket_X</strong></div>
+                </div>
+                <div style="margin-top:12px;">
+                    Amount<br>
+                    <div style="background:var(--bg-color); display:inline-block; padding:4px 10px; border-radius:8px; font-weight:600; margin-top:4px;">3599.00 ETB</div>
+                </div>
+                <div style="margin-top:12px; font-size:11px; color:var(--text-secondary);">15h ago</div>
+            </div>
         </div>
+    </div>
 
-        <!-- 3. የዋሌት መቆለፊያ / ፒን -->
-        <div id="lock-section" class="card hidden" style="text-align: center;">
-            <h2>🔒 ዋሌትዎ ተቆልፏል</h2>
-            <p style="color: #a0aec0;">ለመክፈት የፊት መታወቂያ (Face ID) ይጠቀሙ ወይም ፒን ያስገቡ።</p>
-            <button class="btn-primary" onclick="simulateFaceID()" style="background-color: #2b6cb0; margin-bottom: 15px;">👤 በ Face ID / አሻራ ክፈት</button>
-            
-            <label style="text-align: left; display: block;">የ 4 አሃዝ ፒን ኮድ ያስገቡ</label>
-            <input type="password" id="unlock-pass" class="input-field" maxlength="4" placeholder="****">
-            <button class="btn-primary" onclick="unlockWallet()">ክፈት (Unlock)</button>
+    <!-- SERVICES TAB -->
+    <div id="tab-services" class="tab-content">
+        <div class="header">
+            <h1>Services</h1>
         </div>
-
-        <!-- 4. ዋናው አፕ (Main App Dashboard) -->
-        <div id="main-app-container" class="hidden">
-            
-            <div id="home-section" class="section active">
-                <div class="card">
-                    <h3 style="margin: 0; text-align: center; color: #a0aec0;">የኪስ ቦርሳ (Wallet Balance)</h3>
-                    <div class="wallet-balance" id="wallet-display">2000.00 ETB</div>
-                    <button class="btn-primary" onclick="openDeposit()">በ ቻፓ (Chapa) ገንዘብ ጫን</button>
-                    <button class="btn-secondary" style="background-color: #e53e3e;" onclick="openWithdraw()">ወደ ባንክ ገንዘብ አውጣ (Withdraw)</button>
-                </div>
-
-                <div class="card">
-                    <h3>🌐 ዲጂታል አገልግሎቶች (Get Started)</h3>
-                    <p style="color: #a0aec0; font-size: 13px;">የሚፈልጉትን አገልግሎት ይምረጡ፦</p>
-                    
-                    <div style="margin-top: 15px; padding: 12px; background: #222533; border-radius: 10px;">
-                        <h4 style="margin: 0 0 8px 0; color: #63b3ed;">🚀 Telegram Premium</h4>
-                        <button class="btn-success" onclick="openServicePlan('Telegram Premium')">Get Started →</button>
-                    </div>
-
-                    <div style="margin-top: 15px; padding: 12px; background: #222533; border-radius: 10px;">
-                        <h4 style="margin: 0 0 8px 0; color: #63b3ed;">🎵 Media Consumption Plan</h4>
-                        <button class="btn-success" onclick="openMediaPlan('Media Plan')">Get Started →</button>
-                    </div>
-                </div>
+        <div class="container">
+            <div class="card">
+                <h3>Social Media</h3>
+                <p style="color:var(--text-secondary); font-size:13px;">Grow followers, likes, and views</p>
+                <button class="btn-primary" onclick="initPayment(500)">Get started →</button>
             </div>
-
-            <div id="orders-section" class="section">
-                <div class="card">
-                    <h2>📋 ትዕዛዞቼ እና ታሪክ (Orders & Chapa History)</h2>
-                    <p style="color: #a0aec0;" id="order-history">እስካሁን የተፈጸመ ግዢ ወይም የቻፓ ክፍያ የለም።</p>
-                </div>
+            <div class="card">
+                <h3>TikTok Coins</h3>
+                <p style="color:var(--text-secondary); font-size:13px;">Top up creator balances</p>
+                <button class="btn-primary" onclick="initPayment(1000)">Get started →</button>
             </div>
+            <div class="card">
+                <h3>Telegram Premium</h3>
+                <p style="color:var(--text-secondary); font-size:13px;">Upgrade to premium</p>
+                <button class="btn-primary" onclick="initPayment(3599)">Get started →</button>
+            </div>
+        </div>
+    </div>
 
-            <div id="support-section" class="section">
-                <div class="card">
-                    <h2>🛠️ የደንበኛ ድጋፍ (Support)</h2>
-                    <p style="color: #a0aec0; font-size: 14px;">ችግር ካለብዎት ወይም ማስተካከል ከፈለጉ በቀጥታ ያነጋግሩን።</p>
-                    
-                    <div style="background: #222533; padding: 15px; border-radius: 10px; margin: 15px 0;">
-                        <p style="margin: 0 0 8px 0; color: #63b3ed;"><b>📞 የድጋፍ ስልክ መስመር:</b></p>
-                        <a href="tel:0916039015" style="color: #38a169; font-size: 18px; font-weight: bold; text-decoration: none;">0916039015</a>
-                    </div>
+    <!-- GUIDES TAB -->
+    <div id="tab-guides" class="tab-content">
+        <div class="header">
+            <h1>How To Guides</h1>
+        </div>
+        <div class="container">
+            <div class="card">
+                <h3>Tekamee Your Shortcut to Social Media Growth</h3>
+                <p style="color:var(--text-secondary); font-size:13px;">Tekamee is a powerful bot designed to help you boost engagement across platforms easily.</p>
+                <button class="btn-primary" style="background:#238636;">Read Guide</button>
+            </div>
+        </div>
+    </div>
 
-                    <button class="btn-primary" style="background-color: #d69e2e; margin-bottom: 10px;" onclick="contactSupport()">አድሚን አነጋግር</button>
-                    <button class="btn-secondary" onclick="resetAndResubmit()">መረጃዎችን እንደገና ማስተካከል</button>
+    <!-- WALLET TAB -->
+    <div id="tab-wallet" class="tab-content">
+        <div class="header">
+            <h1>Wallet</h1>
+        </div>
+        <div class="container" style="text-align:center;">
+            <div class="card">
+                <div style="color:var(--text-secondary); font-size:13px;">Balance</div>
+                <div style="font-size:28px; font-weight:bold; color:var(--accent-color); margin:8px 0;">0.00 ETB</div>
+                <div style="display:flex; gap:10px; margin-top:16px;">
+                    <button class="btn-primary" onclick="initPayment(500)">Deposit</button>
+                    <button class="btn-primary" style="background:var(--card-bg); border:1px solid var(--border-color);">Withdraw</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="nav-bar hidden" id="bottom-nav">
-        <div class="nav-item active" onclick="switchTab('home-section')"><div>👤</div>መግቢያ</div>
-        <div class="nav-item" onclick="switchTab('orders-section')"><div>📋</div>ትዕዛዞች</div>
-        <div class="nav-item" onclick="switchTab('support-section')"><div>🛠️</div>ድጋፍ</div>
-    </div>
+    <!-- BOTTOM NAVIGATION -->
+    <nav class="bottom-nav">
+        <div class="nav-item" onclick="switchTab('services', this)">
+            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/></svg>
+            መገለጫ
+        </div>
+        <div class="nav-item active" onclick="switchTab('orders', this)">
+            <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+            ትዕዛዞች
+        </div>
+        <div class="nav-item" onclick="switchTab('services', this)">
+            <svg viewBox="0 0 24 24"><path d="M12 2l-5.5 9h11z"/><circle cx="17.5" cy="17.5" r="4.5"/><path d="M3 13.5h8v8H3z"/></svg>
+            ዳሽቦርድ
+        </div>
+        <div class="nav-item" onclick="switchTab('guides', this)">
+            <svg viewBox="0 0 24 24"><path d="M18 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 4h5v8l-2.5-1.5L6 12V4z"/></svg>
+            መመሪያ
+        </div>
+        <div class="nav-item" onclick="switchTab('wallet', this)">
+            <svg viewBox="0 0 24 24"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
+            ዎሌት
+        </div>
+    </nav>
 
     <script>
-        let tg = window.Telegram.WebApp;
+        const tg = window.Telegram.WebApp;
         tg.expand();
 
-        let userBalance = 2000.00;
-
-        // የቻፓ ሴክሬት ኪ (Chapa Secret Key)
-        const CHAPA_SECRET_KEY = "CHASECK-SncZN81Mx80yQcPiXJwRXDF6MdgchtNV";
-
-        let isApproved = localStorage.getItem("mala_approved") === "true";
-        let isRegistered = localStorage.getItem("mala_registered") === "true";
-
-        if (isApproved) {
-            showLockScreen();
-        } else if (isRegistered) {
-            showPending();
-        }
-
-        function togglePinVisibility(fieldId, btn) {
-            let field = document.getElementById(fieldId);
-            if (field.type === "password") {
-                field.type = "text";
-                btn.innerText = "ደብቅ";
-            } else {
-                field.type = "password";
-                btn.innerText = "ማሳያ";
-            }
-        }
-
-        function submitRegistration() {
-            let name = document.getElementById("reg-name").value;
-            let prefix = document.getElementById("phone-prefix").value;
-            let phoneSub = document.getElementById("reg-phone-sub").value;
-            let pass = document.getElementById("reg-pass").value;
-            let passConfirm = document.getElementById("reg-pass-confirm").value;
-            let username = tg.initDataUnsafe?.user?.username || "no_username";
-            let userId = tg.initDataUnsafe?.user?.id || "unknown_id";
-
-            if (!name || phoneSub.length < 8 || pass.length !== 4) {
-                alert("እባክዎ ስምዎን፣ ትክክለኛውን የስልክ ቁጥር እና 4 አሃዝ ፒን ኮድ በትክክል ይሙሉ!");
-                return;
-            }
-
-            if (pass !== passConfirm) {
-                alert("❌ ያስገቧቸው ሚስጥር ቁጥሮች (PIN) አይመሳሰሉም! እባክዎ እንደገና ይሞክሩ።");
-                return;
-            }
-
-            let fullPhone = prefix + phoneSub;
-
-            localStorage.setItem("mala_registered", "true");
-            localStorage.setItem("mala_pass", pass);
-            localStorage.setItem("mala_name", name);
-            localStorage.setItem("mala_phone", fullPhone);
-
-            showPending();
-
-            let botUsername = "mala_official_bot"; 
-            let regData = `ስም: ${name}, ስልክ: ${fullPhone}, ፒን: ${pass}, ዩዘርናም: @${username}, ID: ${userId}`;
-
-            setTimeout(() => {
-                let telegramOpenUrl = `https://t.me/${botUsername}?start=reg_${encodeURIComponent(regData)}`;
-                if (tg.openTelegramLink) {
-                    tg.openTelegramLink(telegramOpenUrl);
-                } else {
-                    window.open(telegramOpenUrl, '_blank');
-                }
-            }, 500);
-        }
-
-        function checkAdminApprovalStatus() {
-            let simulatedCheck = confirm("አድሚኑ አካውንትዎን አጽድቆታል? (ለሙከራ Ok ይጫኑ)");
-            if (simulatedCheck) {
-                localStorage.setItem("mala_approved", "true");
-                showLockScreen();
-                alert("✅ አካውንቱ በአድሚን ጸድቋል!");
-            } else {
-                alert("⏳ አድሚኑ ገና አልጸደቀም። እባክዎ በትዕግስት ይጠብቁ።");
-            }
-        }
-
-        function showPending() {
-            document.getElementById("register-section").classList.add("hidden");
-            document.getElementById("pending-section").classList.remove("hidden");
-        }
-
-        function showLockScreen() {
-            document.getElementById("register-section").classList.add("hidden");
-            document.getElementById("pending-section").classList.add("hidden");
-            document.getElementById("lock-section").classList.remove("hidden");
-        }
-
-        function simulateFaceID() {
-            try { tg.HapticFeedback.notificationOccurred('success'); } catch(e){}
-            alert("✅ የፊት መታወቂያ (Face ID) ተረጋግጧል!");
-            openMainApp();
-        }
-
-        function unlockWallet() {
-            let enteredPass = document.getElementById("unlock-pass").value;
-            if (enteredPass === localStorage.getItem("mala_pass")) {
-                openMainApp();
-            } else {
-                alert("❌ የተሳሳተ ፒን ኮድ! እባክዎ እንደገና ይሞክሩ (Retry)");
-            }
-        }
-
-        function openMainApp() {
-            document.getElementById("lock-section").classList.add("hidden");
-            document.getElementById("main-app-container").classList.remove("hidden");
-            document.getElementById("bottom-nav").classList.remove("hidden");
-            updateWalletUI();
-        }
-
-        function switchTab(sectionId) {
-            document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
-            document.getElementById(sectionId).classList.add('active');
-            try { tg.HapticFeedback.impactOccurred('light'); } catch(e){}
-        }
-
-        function openServicePlan(serviceName) {
-            let planChoice = prompt("የጊዜ ገደብ ይምረጡ:\n1. የ 3 ወር\n2. የ 6 ወር\n3. የአንድ ዓመት (1 Year)", "3");
-            let price = 3599;
-            let duration = "1 Year";
+        function switchTab(tabId, element) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
             
-            if (planChoice === "1") { price = 1200; duration = "3 Months"; }
-            else if (planChoice === "2") { price = 2200; duration = "6 Months"; }
-
-            initializeChapaPayment(serviceName + " (" + duration + ")", price);
+            document.getElementById('tab-' + tabId).classList.add('active');
+            element.classList.add('active');
         }
 
-        function openMediaPlan(serviceName) {
-            initializeChapaPayment(serviceName, 500);
-        }
-
-        function openDeposit() {
-            let amount = prompt("በቻፓ (Chapa) ወደ ዋሌትዎ ማስገባት የሚፈልጉትን መጠን (ETB) ያስገቡ:");
-            if (amount && amount > 0) {
-                initializeChapaPayment("Wallet Deposit", parseFloat(amount));
-            } else if (amount !== null) {
-                alert("❌ ትክክለኛ መጠን ያስገቡ። እባክዎ እንደገና ይሞክሩ (Retry)።");
-            }
-        }
-
-        // 🚀 ከቻፓ ኤፒአይ (Chapa API) ጋር በቀጥታ የሚገናኘው እና ትክክለኛውን ሊንክ የሚያመነጨው ፋንክሽን
-        async function initializeChapaPayment(itemName, price) {
-            let method = prompt(`ለ '${itemName}' ዋጋው ${price} ETB ነው። የክፍያ መንገድ ይምረጡ:\n1. ከዋሌት ቀሪ ሂሳብ በቀጥታ መቀነስ\n2. Telebirr / CBE Birr / M-Pesa (በቻፓ መክፈል)`, "2");
-
-            if (!method) return;
-
-            if (method === "1") {
-                if (userBalance >= price) {
-                    userBalance -= price;
-                    updateWalletUI();
-                    document.getElementById("order-history").innerHTML = `✅ ግዢ ተሳክቷል: ${itemName} (-${price} ETB በዋሌት)`;
-                    alert(`🎉 '${itemName}' በዋሌትዎ ተሳክቶ ተሰጥቷል!`);
+        async function initPayment(amount) {
+            try {
+                let response = await fetch('/api/pay', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ amount: amount })
+                });
+                let data = await response.json();
+                if(data.data && data.data.checkout_url) {
+                    window.location.href = data.data.checkout_url;
                 } else {
-                    alert("❌ በዋሌትዎ ውስጥ በቂ ብር የለም! እባክዎ ዴፖዚት ያድርጉ (Retry)");
+                    alert('የክፍያ ሊንክ ማመንጨት አልተቻለም።');
                 }
-            } 
-            else if (method === "2") {
-                let userName = localStorage.getItem("mala_name") || "Customer";
-                let userPhone = localStorage.getItem("mala_phone") || "0911000000";
-                let txRef = "mala-tx-" + Math.floor(Math.random() * 1000000);
-
-                let paymentData = {
-                    amount: price.toString(),
-                    currency: "ETB",
-                    email: "customer@mala.et",
-                    first_name: userName.split(" ")[0] || "Mala",
-                    last_name: userName.split(" ")[1] || "User",
-                    phone_number: userPhone,
-                    tx_ref: txRef,
-                    callback_url: "https://gashayeb-spec.github.io/mala-bot/index.html",
-                    return_url: "https://gashayeb-spec.github.io/mala-bot/index.html"
-                };
-
-                alert("⏳ የቻፓ ክፍያ ሊንክ በመዘጋጀት ላይ ነው፣ እባክዎ ትንሽ ይጠብቁ...");
-
-                try {
-                    let response = await fetch("https://api.chapa.co/v1/transaction/initialize", {
-                        method: "POST",
-                        headers: {
-                            "Authorization": `Bearer ${CHAPA_SECRET_KEY}`,
-                            "Content-Type": "application/json"
-                        },
-                        body: JSON.stringify(paymentData)
-                    });
-
-                    let result = await response.json();
-
-                    if (result.status === "success" && result.data && result.data.checkout_url) {
-                        let checkoutUrl = result.data.checkout_url;
-                        
-                        document.getElementById("order-history").innerHTML = `⏳ የቻፓ ክፍያ ጥያቄ ተልኳል: ${itemName} (${price} ETB) - <a href="${checkoutUrl}" target="_blank" style="color: #63b3ed;">በዚህ ሊንክ ይክፈሉ</a>`;
-                        
-                        // ሊንኩን መክፈት
-                        window.open(checkoutUrl, '_blank');
-                        if (tg.openLink) {
-                            tg.openLink(checkoutUrl);
-                        }
-                    } else {
-                        alert("❌ የቻፓ ሊንክ ማመንጨት አልተቻለም: " + (result.message || "እባክዎ እንደገና ይሞክሩ (Retry)።"));
-                    }
-                } catch (error) {
-                    console.error("Chapa Error:", error);
-                    alert("❌ የኔትወርክ ስህተት አጋጥሟል። እባክዎ የኢንተርኔት ግንኙነትዎን አረጋግጠው እንደገና ይሞክሩ (Retry)።");
-                }
-            } else {
-                alert("❌ የተሳሳተ ምርጫ። እባክዎ እንደገና ይሞክሩ (Retry)።");
+            } catch (error) {
+                console.error('Error:', error);
+                alert('ስህተት ተፈጥሯል እባክዎ እንደገና ይሞክሩ።');
             }
-        }
-
-        function openWithdraw() {
-            let bank = prompt("የባንክዎን ስም ያስገቡ (ለምሳሌ፦ CBE, Dashen):");
-            let acc = prompt("የባንክ አካውንት ቁጥርዎን ያስገቡ:");
-            let amount = prompt("ማውጣት የሚፈልጉትን መጠን (ETB) ያስገቡ:");
-            
-            if (bank && acc && amount) {
-                let parsedAmount = parseFloat(amount);
-                if (userBalance >= parsedAmount) {
-                    userBalance -= parsedAmount;
-                    updateWalletUI();
-                    document.getElementById("order-history").innerHTML = `💸 Withdraw: ${parsedAmount} ETB ወደ ${bank} (${acc}) ተጠይቋል!`;
-                    alert(parsedAmount + " ETB ወደ ባንክዎ እንዲወጣ ጥያቄዎ ተመዝግቧል!");
-                } else {
-                    alert("❌ በዋሌትዎ ውስጥ በቂ ብር የለም! እባክዎ ትክክለኛ መጠን ያስገብተው እንደገና ይሞክሩ (Retry)።");
-                }
-            }
-        }
-
-        function updateWalletUI() {
-            document.getElementById('wallet-display').innerText = userBalance.toFixed(2) + " ETB";
-        }
-
-        function contactSupport() {
-            alert("የደንበኛ ድጋፍ ስልክ ቁጥር: 0916039015\nበዚህ ቁጥር ወይም በቴሌግራም አድሚን በኩል ማነጋገር ይችላሉ።");
-        }
-
-        function resetAndResubmit() {
-            localStorage.clear();
-            location.reload();
         }
     </script>
 </body>
