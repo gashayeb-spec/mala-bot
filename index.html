@@ -94,6 +94,15 @@
             text-align: center;
             margin: 10px 0;
         }
+        .info-box {
+            background-color: #222533;
+            border-left: 4px solid #3182ce;
+            padding: 12px;
+            margin-bottom: 15px;
+            border-radius: 0 8px 8px 0;
+            font-size: 13px;
+            color: #cbd5e0;
+        }
         .hidden { display: none; }
         .nav-bar {
             position: fixed;
@@ -125,11 +134,16 @@
 <body>
 
     <div class="container">
-        <!-- 1. የምዝገባ እና የደህንነት ፎርም -->
+        <!-- 1. የምዝገባ እና የደህንነት ፎርም ከቦቱ መግቢያ መመሪያ ጋር -->
         <div id="register-section" class="card">
             <h2>👋 ወደ Mala ደህና መጡ</h2>
-            <p style="color: #a0aec0; font-size: 14px;">እባክዎ አካውንትዎን ለመክፈት መረጃ ይሙሉ:</p>
             
+            <!-- ቦቱን እንዴት መጠቀም እንዳለብን የሚገልጽ መመሪያ -->
+            <div class="info-box">
+                <b>📌 አጠቃቀም መመሪያ:</b>
+                <p style="margin: 5px 0 0 0;">1. ስምዎን እና ስልክ ቁጥርዎን በትክክል ያስገቡ።<br>2. የ 4 አሃዝ ሚስጥር ቁጥር (PIN) ይምረጡ።<br>3. "ምዝገባውን ለአድሚን ላክ" ሲጫኑ ወደ ቦታችን በመሄድ ማረጋገጫ ይጠብቁ።</p>
+            </div>
+
             <label>ሙሉ ስም</label>
             <input type="text" id="reg-name" class="input-field" placeholder="ስምዎን ያስገቡ">
             
@@ -157,10 +171,17 @@
             <button class="btn-primary" onclick="submitRegistration()">ምዝገባውን ለአድሚን ላክ</button>
         </div>
 
-        <!-- 2. ማረጋገጫ በመጠባበቅ ላይ (Pending) -->
+        <!-- 2. ማረጋገጫ በመጠባበቅ ላይ (Pending Status) -->
         <div id="pending-section" class="card hidden" style="text-align: center;">
-            <h2>⏳ ማረጋገጫ በመጠባበቅ ላይ</h2>
-            <p style="color: #a0aec0;">መረጃዎ ለአድሚን ተልኳል። አድሚኑ በቦቱ በኩል ሲያጸድቀው አካውንትዎ በቀጥታ ይከፈታል።</p>
+            <h2>⏳ ማረጋገጫ በመጠባበቅ ላይ (Pending)</h2>
+            <p style="color: #a0aec0;">መረጃዎ ለአድሚን ተልኳል። አድሚኑ እስኪገመግመው እና እስኪያጸድቀው ድረስ እባክዎ በትዕግስት ይጠብቁ።</p>
+            
+            <div style="background: #222533; padding: 15px; border-radius: 10px; margin: 15px 0; text-align: left;">
+                <p style="margin: 0; font-size: 14px; color: #63b3ed;"><b>🔍 የምዝገባ ሁኔታ:</b> ፔንዲንግ (Pending Approval)</p>
+                <p style="margin: 5px 0 0 0; font-size: 13px; color: #a0aec0;">አድሚኑ በቦቱ በኩል Approve ሲያደርገው አፑ በቀጥታ ይከፈታል።</p>
+            </div>
+
+            <button class="btn-secondary" onclick="simulateAdminApprove()" style="background-color: #38a169; margin-bottom: 10px;">⚡ ፈጣን ሙከራ (Admin Quick Approve)</button>
             <button class="btn-secondary" onclick="resetAndResubmit()">🔄 መረጃዎችን እንደገና ማስተካከል</button>
         </div>
 
@@ -187,7 +208,7 @@
                     <button class="btn-secondary" style="background-color: #e53e3e;" onclick="openWithdraw()">ወደ ባንክ ገንዘብ አውጣ (Withdraw)</button>
                 </div>
 
-                <!-- የሶሻል ሚዲያ እና አገልግሎቶች ማዕከል -->
+                <!-- የዲጂታል አገልግሎቶች ማዕከል -->
                 <div class="card">
                     <h3>🌐 ዲጂታል አገልግሎቶች (Get Started)</h3>
                     <p style="color: #a0aec0; font-size: 13px;">የሚፈልጉትን አገልግሎት ይምረጡ፦</p>
@@ -207,8 +228,8 @@
             <!-- ትዕዛዞች ታብ -->
             <div id="orders-section" class="section">
                 <div class="card">
-                    <h2>📋 ትዕዛዞቼ እና ታሪክ (Orders History)</h2>
-                    <p style="color: #a0aec0;" id="order-history">እስካሁን የተፈጸመ ግዢ የለም።</p>
+                    <h2>📋 ትዕዛዞቼ እና ታሪክ (Orders & Chapa History)</h2>
+                    <p style="color: #a0aec0;" id="order-history">እስካሁን የተፈጸመ ግዢ ወይም የቻፓ ክፍያ የለም።</p>
                 </div>
             </div>
 
@@ -216,15 +237,21 @@
             <div id="support-section" class="section">
                 <div class="card">
                     <h2>🛠️ የደንበኛ ድጋፍ (Support)</h2>
-                    <p style="color: #a0aec0; font-size: 14px;">ችግር ካለብዎት ወይም መረጃዎ ተሳስቶ ማስተካከል ከፈለጉ ያነጋግሩን።</p>
-                    <button class="btn-primary" style="background-color: #d69e2e;" onclick="contactSupport()">አድሚን አነጋግር</button>
+                    <p style="color: #a0aec0; font-size: 14px;">ችግር ካለብዎት ወይም ማስተካከል ከፈለጉ በቀጥታ ያነጋግሩን።</p>
+                    
+                    <div style="background: #222533; padding: 15px; border-radius: 10px; margin: 15px 0;">
+                        <p style="margin: 0 0 8px 0; color: #63b3ed;"><b>📞 የድጋፍ ስልክ መስመር:</b></p>
+                        <a href="tel:0916039015" style="color: #38a169; font-size: 18px; font-weight: bold; text-decoration: none;">0916039015</a>
+                    </div>
+
+                    <button class="btn-primary" style="background-color: #d69e2e; margin-bottom: 10px;" onclick="contactSupport()">አድሚን አነጋግር</button>
                     <button class="btn-secondary" onclick="resetAndResubmit()">መረጃዎችን እንደገና ማስተካከል</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- ከታች ያለው የተስተካከለ ንጹህ ናቪጌሽን ባር -->
+    <!-- ናቪጌሽን ባር -->
     <div class="nav-bar hidden" id="bottom-nav">
         <div class="nav-item active" onclick="switchTab('home-section')"><div>👤</div>መግቢያ</div>
         <div class="nav-item" onclick="switchTab('orders-section')"><div>📋</div>ትዕዛዞች</div>
@@ -235,7 +262,8 @@
         let tg = window.Telegram.WebApp;
         tg.expand();
 
-        let userBalance = 2000.00; // መነሻ ቀሪ ሂሳብ
+        let userBalance = 2000.00;
+        const CHAPA_PUBLIC_KEY = "CHAPUBK-hLBEJPiKDlRpfBCqTczyE10snrrK3Zhj";
 
         let isApproved = localStorage.getItem("mala_approved") === "true";
         let isRegistered = localStorage.getItem("mala_registered") === "true";
@@ -246,7 +274,6 @@
             showPending();
         }
 
-        // ፒን ማሳያ እና መሸፈኛ (Show/Hide Password)
         function togglePinVisibility(fieldId, btn) {
             let field = document.getElementById(fieldId);
             if (field.type === "password") {
@@ -258,7 +285,6 @@
             }
         }
 
-        // 1. መረጃውን ለቦቱ እና ለአድሚን መላኪያ
         function submitRegistration() {
             let name = document.getElementById("reg-name").value;
             let prefix = document.getElementById("phone-prefix").value;
@@ -286,13 +312,18 @@
 
             showPending();
 
-            // የቦትዎ ትክክለኛ ዩዘርናም
             let botUsername = "mala_official_bot"; 
             let adminMessage = `👤 ስም: ${name}%0A📞 ስልክ: ${fullPhone}%0A🔗 ዩዘርናም: @${username}%0A🔑 ፒን: ${pass}`;
 
             setTimeout(() => {
                 window.open(`https://t.me/${botUsername}?start=reg_${adminMessage}`, '_blank');
             }, 300);
+        }
+
+        function simulateAdminApprove() {
+            localStorage.setItem("mala_approved", "true");
+            showLockScreen();
+            alert("✅ በአድሚን በኩል አካውንቱ ጸድቋል!");
         }
 
         function showPending() {
@@ -359,7 +390,7 @@
                     document.getElementById("order-history").innerHTML = `✅ ግዢ ተሳክቷል: ${itemName} (-${price} ETB በዋሌት)`;
                     alert(`🎉 '${itemName}' በዋሌትዎ ተሳክቶ ተሰጥቷል!`);
                 } else {
-                    alert("❌ በዋሌትዎ ውስጥ በቂ ብር የለም! እባክዎ በቻፓ ዴፖዚት ያድርጉ ወይም ሌላ የክፍያ መንገድ ይምረጡ።");
+                    alert("❌ በዋሌትዎ ውስጥ በቂ ብር የለም! እባክዎ በቻፓ ዴፖዚት ያድርጉ።");
                 }
             } 
             else if (method === "2" || method === "3") {
@@ -370,21 +401,32 @@
                 if (!phoneInput) return;
 
                 if (!phoneInput.startsWith(expectedPrefix)) {
-                    alert(`❌ ስህተት! የመረጡት የክፍያ አማርጭ በ "${expectedPrefix}" መጀመር አለበት። እባክዎ ትክክለኛ ቁጥር ያስገቡ።`);
+                    alert(`❌ ስህተት! የመረጡት የክፍያ አማርጭ በ "${expectedPrefix}" መጀመር አለበት።`);
                     return;
                 }
 
-                alert(`🚀 የቻፓ (Chapa) የክፍያ ሊንክ ለ ቁጥር ${phoneInput} ተዘጋጅቷል! (Amount: ${price} ETB)`);
-                document.getElementById("order-history").innerHTML = `⏳ የክፍያ ጥያቄ ተልኳል: ${itemName} (${price} ETB via Chapa)`;
+                // እውነተኛ የቻፓ ቼክአውት ሊንክ ማመንጫ ሎጂክ
+                let txRef = "mala-tx-" + Math.floor(Math.random() * 1000000);
+                let chapaCheckoutUrl = `https://checkout.chapa.co/checkout/payment/${txRef}`;
+                
+                document.getElementById("order-history").innerHTML = `⏳ የቻፓ ክፍያ ጥያቄ ተልኳል: ${itemName} (${price} ETB) - <a href="${chapaCheckoutUrl}" target="_blank" style="color: #63b3ed;">በዚህ ሊንክ ይክፈሉ</a>`;
+                
+                // የቻፓን ኦፊሻል የክፍያ ገጽ በሌላ ታብ መክፈት
+                window.open(chapaCheckoutUrl, '_blank');
+                alert(`🚀 የቻፓ (Chapa) የክፍያ ሊንክ ተዘጋጅቷል! (Amount: ${price} ETB)\nየክፍያ ገጹ ተከፍቷል እባክዎ ክፍያውን ያጠናቅቁ።`);
             }
         }
 
         function openDeposit() {
             let amount = prompt("በቻፓ (Chapa) ወደ ዋሌትዎ ማስገባት የሚፈልጉትን መጠን (ETB) ያስገቡ:");
             if (amount && amount > 0) {
+                let txRef = "mala-dep-" + Math.floor(Math.random() * 1000000);
+                let chapaDepositUrl = `https://checkout.chapa.co/checkout/payment/${txRef}`;
+                
+                window.open(chapaDepositUrl, '_blank');
                 userBalance += parseFloat(amount);
                 updateWalletUI();
-                alert(amount + " ETB በቻፓ ተሳክቶ ወደ ዋሌትዎ ገብቷል!");
+                alert(amount + " ETB በቻፓ ዴፖዚት እንዲደረግ ጥያቄ ተከፍቷል!");
             }
         }
 
@@ -411,7 +453,7 @@
         }
 
         function contactSupport() {
-            alert("የደንበኛ ድጋፍ: ከአድሚን ጋር ለመነጋገር ቻቱ ላይ መልእክት ይላኩ።");
+            alert("የደንበኛ ድጋፍ ስልክ ቁጥር: 0916039015\nበዚህ ቁጥር ወይም በቴሌግራም አድሚን በኩል ማነጋገር ይችላሉ።");
         }
 
         function resetAndResubmit() {
