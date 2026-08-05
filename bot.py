@@ -8,7 +8,6 @@ from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 import httpx
 
-# የእርስዎ ትክክለኛ ቶክኖች እና መረጃዎች
 TOKEN = "8543715567:AAFPG7v8h-YJchs6aCYZ_Tad_35-iELISLw"
 ADMIN_CHAT_ID = 5351353727
 CHASECK_SECRET_KEY = "CHASECK-SncZN81Mx80yQcPiXJwRXDF6MdgchtNV"
@@ -50,48 +49,59 @@ async def cmd_start(message: types.Message):
 
 @app.post("/api/pay")
 async def create_chapa_payment(request: Request):
-    data = await request.json()
-    amount = data.get("amount", 1399)
-    first_name = data.get("first_name", "Gashaye")
-    last_name = data.get("last_name", "Bejigu")
-    recipient = data.get("recipient", "Koket_X")
-    
-    tx_ref = f"mala-tx-{int(asyncio.get_event_loop().time())}"
-
-    payload = {
-        "amount": str(amount),
-        "currency": "ETB",
-        "email": f"user_{tx_ref}@mala.et",
-        "first_name": first_name,
-        "last_name": last_name,
-        "phone_number": "0916039015",
-        "tx_ref": tx_ref,
-        "callback_url": WEB_APP_URL,
-        "return_url": WEB_APP_URL,
-        "customization": {
-            "title": "መላ ፕሪሚየም አገልግሎት",
-            "description": f"Recipient: {recipient}"
-        }
-    }
-
-    headers = {
-        "Authorization": f"Bearer {CHASECK_SECRET_KEY}",
-        "Content-Type": "application/json"
-    }
-
-    async with httpx.AsyncClient() as client:
-        response = await client.post("https://api.chapa.co/v1/transaction/initialize", json=payload, headers=headers)
-        result = response.json()
+    try:
+        data = await request.json()
+        amount = data.get("amount", 1399)
+        first_name = data.get("first_name", "Gashaye")
+        last_name = data.get("last_name", "Bejigu")
+        recipient = data.get("recipient", "Koket_X")
         
-        try:
-            await bot.send_message(
-                ADMIN_CHAT_ID, 
-                f"🔔 አዲስ የክፍያ ሙከራ!\n\n💰 ዋጋ: {amount} ETB\n👤 ተጠቃሚ: {first_name}\n🎯 ሪሲፒንት: {recipient}\nref: {tx_ref}"
-            )
-        except Exception as e:
-            logging.error(f"Admin notification error: {e}")
+        tx_ref = f"mala-tx-{int(asyncio.get_event_loop().time())}"
+
+        payload = {
+            "amount": str(amount),
+            "currency": "ETB",
+            "email": f"user_{tx_ref}@mala.et",
+            "first_name": first_name,
+            "last_name": last_name,
+            "phone_number": "0916039015",
+            "tx_ref": tx_ref,
+            "callback_url": WEB_APP_URL,
+            "return_url": WEB_APP_URL,
+            "customization": {
+                "title": "መላ ፕሪሚየም አገልግሎት",
+                "description": f"Recipient: {recipient}"
+            }
+        }
+
+        headers = {
+            "Authorization": f"Bearer {CHASECK_SECRET_KEY}",
+            "Content-Type": "application/json"
+        }
+
+        async with httpx.AsyncClient() as client:
+            response = await client.post("https://api.chapa.co/v1/transaction/initialize", json=payload, headers=headers)
+            result = response.json()
             
-        return result
+            # ቻፓ የመለሰውን ምላሽ በኮንሶል ሎግ ላይ ማሳየት (ስህተት ካለ ለማወቅ ይረዳል)
+            logging.info(f"Chapa Response: {result}")
+
+            if response.status_code != 200 or result.get("status") != "success":
+                return {"status": "failed", "message": result.get("message", "Chapa initialization failed"), "raw": result}
+
+            try:
+                await bot.send_message(
+                    ADMIN_CHAT_ID, 
+                    f"🔔 አዲስ የክፍያ ሙከራ!\n\n💰 ዋጋ: {amount} ETB\n👤 ተጠቃሚ: {first_name}\n🎯 ሪሲፒንት: {recipient}\nref: {tx_ref}"
+                )
+            except Exception as e:
+                logging.error(f"Admin notification error: {e}")
+                
+            return result
+
+    except Exception as e:
+        logging.error(f"Payment API Error: {str(e)}")
+        return {"status": "error", "message": str(e)}
 
 async def main():
     import uvicorn
