@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>መላ ፕሪሚየም ግዢ</title>
+    <title>Telegram Premium ግዢ</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         :root {
@@ -14,7 +14,6 @@
             --accent-color: #2f81f7;
             --border-color: #30363d;
             --success-color: #238636;
-            --error-color: #f85149;
         }
 
         body {
@@ -23,7 +22,6 @@
             color: var(--text-primary);
             margin: 0;
             padding: 16px;
-            padding-bottom: 40px;
         }
 
         .container {
@@ -44,9 +42,6 @@
             margin-top: 0;
             margin-bottom: 15px;
             color: var(--text-primary);
-            display: flex;
-            align-items: center;
-            gap: 8px;
         }
 
         .package-grid {
@@ -142,7 +137,6 @@
             font-size: 15px;
             cursor: pointer;
             margin-top: 10px;
-            transition: background 0.2s;
         }
 
         .btn-primary:hover {
@@ -157,7 +151,7 @@
             <h2>💎 Telegram Premium ግዢ</h2>
             <p style="color:var(--text-secondary); font-size:13px; margin-top:0;">የሚፈልጉትን የቆይታ ጊዜ ፓኬጅ ይምረጡ</p>
             
-            <!-- የቆይታ ጊዜ ፓኬጆች ምርጫ -->
+            <!-- የፓኬጅ ምርጫዎች -->
             <div class="package-grid">
                 <div class="package-card selected" onclick="selectPackage(this, '1 ወር', 1399)">
                     <h4>1 ወር</h4>
@@ -183,11 +177,11 @@
                 <input type="text" id="recipientUser" placeholder="@username">
             </div>
 
-            <!-- ስልክ ቁጥር (Ethio Telecom / Safaricom) -->
+            <!-- ስልክ ቁጥር (09 ወይም 07) -->
             <div class="form-group">
-                <label>ስልክ ቁጥር (09 ወይም 07 የሚጀምር)</label>
+                <label>ስልክ ቁጥር (Ethio Telecom / Safaricom)</label>
                 <input type="tel" id="phoneNumber" placeholder="09xxxxxxxx ወይም 07xxxxxxxx" maxlength="10">
-                <div class="hint">የኢትዮ ቴሌኮም (09) ወይም ሰፋሪኮም (07) ቁጥር ብቻ ያስገቡ</div>
+                <div class="hint">በ 09 ወይም በ 07 የሚጀምር 10 አኃዝ ቁጥር ያስገቡ</div>
             </div>
 
             <!-- ፒን ኮድ -->
@@ -199,8 +193,8 @@
                 </div>
             </div>
 
-            <!-- ማረጋገጫ እና ክፍያ ፈጽም ቁልፍ -->
-            <button class="btn-primary" onclick="confirmAndPay()">ማረጋገጫ (Confirm) እና ክፈል →</button>
+            <!-- ማረጋገጫ እና ክፍያ ቁልፍ -->
+            <button class="btn-primary" onclick="confirmAndPay()">ኮንፊርም (Confirm) እና ክፈል →</button>
         </div>
     </div>
 
@@ -224,7 +218,6 @@
             }
         });
 
-        // ፓኬጅ ሲመረጥ ዋጋውንና ስሙን መያዝ
         function selectPackage(element, packageName, price) {
             document.querySelectorAll('.package-card').forEach(el => el.classList.remove('selected'));
             element.classList.add('selected');
@@ -232,7 +225,6 @@
             selectedAmount = price;
         }
 
-        // የፒን ቁጥር ማሳያ/መደበቂያ
         function togglePinVisibility() {
             const pinInput = document.getElementById('userPin');
             const toggleIcon = document.getElementById('togglePin');
@@ -246,7 +238,6 @@
             }
         }
 
-        // ማረጋገጥ እና ወደ ክፍያ ማስተላለፍ
         async function confirmAndPay() {
             const recipient = document.getElementById('recipientUser').value.trim();
             const phone = document.getElementById('phoneNumber').value.trim();
@@ -257,10 +248,10 @@
                 return;
             }
 
-            // የስልክ ቁጥር ማረጋገጫ (09 ወይም 07 መጀመሩን እና 10 አኃዝ መሆኑን ማረጋገጥ)
+            // ስልክ ቁጥር ማረጋገጫ (09 ወይም 07 መጀመሩን ማረጋገጥ)
             const phoneRegex = /^(09|07)\d{8}$/;
             if (!phoneRegex.test(phone)) {
-                alert('ስልክ ቁጥሩ ትክክለ አይደለም! በ 09 ወይም በ 07 የሚጀምር 10 አኃዝ ቁጥር ብቻ ያስገቡ (ለምሳሌ: 0912345678 ወይም 0712345678)።');
+                alert('ስልክ ቁጥሩ ትክክለ አይደለም! በ 09 ወይም በ 07 የሚጀምር 10 አኃዝ ቁጥር ብቻ ያስገቡ (ለምሳሌ: 0912345678)።');
                 return;
             }
 
@@ -271,7 +262,7 @@
 
             const user = tg.initDataUnsafe?.user || {};
             
-            // የተጠቃሚውን መረጃ ማረጋገጫ (Confirm) መጠየቅ
+            // የኮንፊርም ማረጋገጫ መስኮት
             const isConfirmed = confirm(`እባክዎ መረጃዎን ያረጋግጡ:\n\n📦 ፓኬጅ: Telegram Premium (${selectedPackageName})\n💰 ዋጋ: ${selectedAmount} ETB\n👤 ተቀባይ: ${recipient}\n📞 ስልክ: ${phone}\n\nግዢውን ለመፈጸም OK ይጫኑ።`);
             
             if (!isConfirmed) return;
