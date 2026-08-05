@@ -80,15 +80,31 @@ async def process_admin_action(callback: types.CallbackQuery):
     if action_type == "yes":
         await callback.message.edit_text(callback.message.text + "\n\n✅ **ይህ አካውንት በአድሚን ጸድቋል (Approved)!**", parse_mode="Markdown")
         try:
-            await bot.send_message(chat_id=target_user_id, text="🎉 አካውንትዎ በአድሚን ጸድቋል! አሁን ሚኒ አፑን በመክፈት መጠቀም ይችላሉ።")
-        except:
-            pass
+            # ለተጠቃሚው አፑን በራስ ሰር እንዲከፍት የዌብ አፕ ሊንኩን ጨምሮ መላክ
+            web_app_url = "https://gashayeb-spec.github.io/mala-bot/index.html"
+            user_kb = InlineKeyboardMarkup(
+                inline_keyboard=[
+                    [InlineKeyboardButton(text="🚀 አሁን አፑን ክፈት", web_app=WebAppInfo(url=web_app_url))]
+                ]
+            )
+            await bot.send_message(
+                chat_id=target_user_id, 
+                text="🎉 **እንኳን ደስ አለዎት!** አካውንትዎ በአድሚን ጸድቋል። አሁን አፑን በመክፈት መጠቀም ይችላሉ።", 
+                reply_markup=user_kb,
+                parse_mode="Markdown"
+            )
+        except Exception as e:
+            logging.error(f"Error notifying user: {e}")
+            
         await callback.answer("አካውንቱ ጸድቋል!")
         
     elif action_type == "no":
         await callback.message.edit_text(callback.message.text + "\n\n❌ **ይህ ምዝገባ ውድቅ ተደርጓል (Rejected)!**", parse_mode="Markdown")
         try:
-            await bot.send_message(chat_id=target_user_id, text="❌ የምዝገባ ጥያቄዎ ውድቅ ተደርጓል። እባክዎ ትክክለኛ መረጃ እንደገና ይሞክሩ።")
+            await bot.send_message(
+                chat_id=target_user_id, 
+                text="❌ **የምዝገባ ጥያቄዎ ውድቅ ተደርጓል።** እባክዎ ትክክለኛ መረጃ በመሙላት እንደገና ይሞክሩ (Retry)."
+            )
         except:
             pass
         await callback.answer("ምዝገባው ውድቅ ተደርጓል!")
@@ -96,7 +112,7 @@ async def process_admin_action(callback: types.CallbackQuery):
     elif action_type == "block":
         await callback.message.edit_text(callback.message.text + "\n\n🚫 **ይህ ተጠቃሚ ታግዷል (Blocked)!**", parse_mode="Markdown")
         try:
-            await bot.send_message(chat_id=target_user_id, text="🚫 አካውንትዎ ታግዷል።")
+            await bot.send_message(chat_id=target_user_id, text="🚫 አካውንትዎ በአድሚን ታግዷል።")
         except:
             pass
         await callback.answer("ተጠቃሚው ታግዷል!")
@@ -106,3 +122,4 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+ in
