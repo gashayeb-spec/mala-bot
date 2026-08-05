@@ -83,7 +83,6 @@ async def create_chapa_payment(request: Request):
             response = await client.post("https://api.chapa.co/v1/transaction/initialize", json=payload, headers=headers)
             result = response.json()
             
-            # ቻፓ የመለሰውን ምላሽ በኮንሶል ሎግ ላይ ማሳየት (ስህተት ካለ ለማወቅ ይረዳል)
             logging.info(f"Chapa Response: {result}")
 
             if response.status_code != 200 or result.get("status") != "success":
