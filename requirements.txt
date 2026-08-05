@@ -2,4 +2,3 @@ aiogram
 fastapi
 uvicorn
 httpx
-pydantic
