@@ -14,7 +14,6 @@
             --accent-color: #2f81f7;
             --border-color: #30363d;
             --success-color: #238636;
-            --pending-color: #d29922;
         }
 
         body {
@@ -34,8 +33,17 @@
         }
 
         .header h1 {
-            font-size: 24px;
+            font-size: 20px;
             margin: 0;
+        }
+
+        .back-btn {
+            background: none;
+            border: none;
+            color: var(--accent-color);
+            font-size: 14px;
+            cursor: pointer;
+            display: none;
         }
 
         .container {
@@ -179,15 +187,16 @@
 </head>
 <body>
 
-    <!-- SERVICES / DASHBOARD TAB -->
+    <!-- 1. ዳሽቦርድ -->
     <div id="tab-services" class="tab-content active">
         <div class="header">
-            <h1>መላ አገልግሎቶች</h1>
+            <button class="back-btn" id="backBtn" onclick="goBackToHome()">← ተመለስ</button>
+            <h1 id="headerTitle">መላ አገልግሎቶች (ግዢ)</h1>
         </div>
         <div class="container">
             <div class="card">
-                <h3>Telegram Premium</h3>
-                <p style="color:var(--text-secondary); font-size:13px;">የቴሌግራም ፕሪሚየም ፓኬጅ ይምረጡ</p>
+                <h3>Telegram Premium ግዢ</h3>
+                <p style="color:var(--text-secondary); font-size:13px;">የሚፈልጉትን የቆይታ ጊዜ ፓኬጅ ይምረጡ</p>
                 
                 <div class="package-grid">
                     <div class="package-card selected" onclick="selectPackage(this, 1, 1399)">
@@ -209,68 +218,79 @@
                 </div>
 
                 <div class="form-group">
-                    <label>የተቀባይ ቴሌግራም መለያ (Recipient Username)</label>
-                    <input type="text" id="recipientUser" placeholder="የቴሌግራም ዩዘርነምዎ በራሱ ይሞላል">
+                    <label>የተቀባይ ቴሌግራም ዩዘርነም</label>
+                    <input type="text" id="recipientUser" placeholder="ዩዘርነምዎ በራሱ ይሞላል">
                 </div>
 
                 <div class="form-group">
-                    <label>የደህንነት ፒን / ሚስጥራዊ ቁጥር (PIN Lock)</label>
+                    <label>የደህንነት ፒን (PIN Lock)</label>
                     <div class="input-wrapper">
                         <input type="password" id="userPin" placeholder="4 አኃዝ ፒን ያስገቡ" maxlength="4">
                         <span class="eye-icon" id="togglePin" onclick="togglePinVisibility()">👁️‍🗨️</span>
                     </div>
                 </div>
 
-                <button class="btn-primary" onclick="proceedToPayment()">በቻፓ ክፈል →</button>
+                <button class="btn-primary" onclick="proceedToPayment()">ግዢውን በቻፓ ፍጸም →</button>
             </div>
         </div>
     </div>
 
-    <!-- ORDERS TAB -->
+    <!-- 2. ትዕዛዞች -->
     <div id="tab-orders" class="tab-content">
         <div class="header">
-            <h1>ትዕዛዞች</h1>
+            <h1>የእርስዎ ትዕዛዞች</h1>
         </div>
         <div class="container">
             <div class="card">
                 <div style="display:flex; justify-content:space-between; align-items:center;">
-                    <strong>3a4e876d30</strong>
-                    <span style="background:rgba(210,153,34,0.15); color:#d29922; padding:4px 10px; border-radius:20px; font-size:11px;">Pending</span>
+                    <strong>ማጣቀሻ: #mala-tx-01</strong>
+                    <span style="background:rgba(35,134,54,0.15); color:var(--success-color); padding:4px 10px; border-radius:20px; font-size:11px;">ተጠናቋል</span>
                 </div>
-                <p style="font-size:13px; color:var(--text-secondary); margin:8px 0;">Telegram Premium Gift (3 Months)</p>
-                <div style="font-size:14px; font-weight:bold;">3599.00 ETB</div>
+                <p style="font-size:13px; color:var(--text-secondary); margin:8px 0;">Telegram Premium (1 Month)</p>
+                <div style="font-size:14px; font-weight:bold;">1,399.00 ETB</div>
             </div>
         </div>
     </div>
 
-    <!-- GUIDES TAB -->
+    <!-- 3. መመሪያ -->
     <div id="tab-guides" class="tab-content">
         <div class="header">
-            <h1>መመሪያ</h1>
+            <h1>አጠቃቀም መመሪያ</h1>
         </div>
         <div class="container">
             <div class="card">
-                <h3>መላ አጠቃቀም መመሪያ</h3>
-                <p style="color:var(--text-secondary); font-size:13px;">አገልግሎቱን በብቃት እንዴት መጠቀም እንደሚችሉ እዚህ ይመልከቱ።</p>
+                <h3>እንዴት አገልግሎቱን ማግኘት ይቻላል?</h3>
+                <p style="color:var(--text-secondary); font-size:13px; line-height: 1.5;">
+                    1. ከዳሽቦርድ ውስጥ የሚፈልጉትን ፓኬጅ ይምረጡ።<br>
+                    2. የቴሌግራም ዩዘርነምዎ በራሱ ይሞላል።<br>
+                    3. የደህንነት ፒን ቁጥር ያስገቡ።<br>
+                    4. በቻፓ በመክፈል አገልግሎቱን ያግኙ።
+                </p>
             </div>
         </div>
     </div>
 
-    <!-- WALLET TAB -->
+    <!-- 4. ዎሌት -->
     <div id="tab-wallet" class="tab-content">
         <div class="header">
-            <h1>ዎሌት</h1>
+            <h1>የዎሌት ማስተዳደሪያ (Deposit)</h1>
         </div>
         <div class="container" style="text-align:center;">
             <div class="card">
-                <div style="color:var(--text-secondary); font-size:13px;">ቀሪ ሂሳብ</div>
+                <div style="color:var(--text-secondary); font-size:13px;">አሁን ያለዎት ቀሪ ሂሳብ</div>
                 <div style="font-size:28px; font-weight:bold; color:var(--accent-color); margin:8px 0;">0.00 ETB</div>
-                <button class="btn-primary" onclick="proceedToPayment()">ሂሳብ ጨምር (Deposit)</button>
+                
+                <div class="form-group" style="text-align:left; margin-top:15px;">
+                    <label>የሚጨምሩት ገንዘብ መጠን (ETB)</label>
+                    <input type="number" id="depositAmount" placeholder="ብር ያስገቡ">
+                </div>
+
+                <button class="btn-primary" onclick="processDeposit()">ሂሳብ ጨምር (Deposit)</button>
             </div>
         </div>
     </div>
 
-    <!-- BOTTOM NAVIGATION -->
+    <!-- ታችኛውን አሰሳ -->
     <nav class="bottom-nav">
         <div class="nav-item active" onclick="switchTab('services', this)">
             <svg viewBox="0 0 24 24"><path d="M12 2l-5.5 9h11z"/><circle cx="17.5" cy="17.5" r="4.5"/><path d="M3 13.5h8v8H3z"/></svg>
@@ -294,9 +314,8 @@
         const tg = window.Telegram.WebApp;
         tg.expand();
 
-        let selectedAmount = 1399; // ነባሪ የ1 ወር ዋጋ
+        let selectedAmount = 1399;
 
-        // ገጽ ሲከፈት የቴሌግራም ዩዘርነም ወይም ስም በራሱ እንዲሞላ ማድረግ
         window.addEventListener('DOMContentLoaded', () => {
             const user = tg.initDataUnsafe?.user || {};
             const usernameField = document.getElementById('recipientUser');
@@ -305,7 +324,7 @@
             } else if (user.first_name) {
                 usernameField.value = user.first_name;
             } else {
-                usernameField.value = "Gashaye_User";
+                usernameField.value = "User_Mala";
             }
         });
 
@@ -314,7 +333,20 @@
             document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
             
             document.getElementById('tab-' + tabId).classList.add('active');
-            element.classList.add('active');
+            if(element) element.classList.add('active');
+
+            const backBtn = document.getElementById('backBtn');
+            if(tabId === 'services') {
+                backBtn.style.display = 'none';
+                document.getElementById('headerTitle').textContent = 'መላ አገልግሎቶች (ግዢ)';
+            } else {
+                backBtn.style.display = 'block';
+            }
+        }
+
+        function goBackToHome() {
+            const navItems = document.querySelectorAll('.nav-item');
+            switchTab('services', navItems[0]);
         }
 
         function selectPackage(element, months, price) {
@@ -351,19 +383,16 @@
             }
 
             const user = tg.initDataUnsafe?.user || {};
-            const telegramId = user.id || 12345678;
-            const firstName = user.first_name || "Gashaye";
-            const lastName = user.last_name || "Bejigu";
-
+            
             try {
                 let response = await fetch('/api/pay', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         amount: selectedAmount,
-                        telegram_id: telegramId,
-                        first_name: firstName,
-                        last_name: lastName,
+                        telegram_id: user.id || 12345678,
+                        first_name: user.first_name || "Gashaye",
+                        last_name: user.last_name || "Bejigu",
                         recipient: recipient,
                         pin: pin
                     })
@@ -378,6 +407,16 @@
                 console.error('Error:', error);
                 alert('ስህተት ተፈጥሯል እባክዎ እንደገና ይሞክሩ።');
             }
+        }
+
+        async function processDeposit() {
+            const depositVal = document.getElementById('depositAmount').value;
+            if(!depositVal || depositVal <= 0) {
+                alert('እባክዎ ትክክለኛ የብር መጠን ያስገቡ!');
+                return;
+            }
+            selectedAmount = parseFloat(depositVal);
+            proceedToPayment();
         }
     </script>
 </body>
