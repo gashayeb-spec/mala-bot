@@ -1,7 +1,7 @@
 import asyncio
 import logging
 import os
-from aiogram import Bot, Dispatcher, types, F
+from aiogram import Bot, Dispatcher, types
 from aiogram.filters import Command
 from aiogram.types import WebAppInfo, InlineKeyboardMarkup, InlineKeyboardButton
 from fastapi import FastAPI, Request
@@ -38,13 +38,11 @@ async def cmd_start(message: types.Message):
     
     welcome_text = (
         "💡 **ብልህ ሰዎች ቀለል ያለውን መንገድ ይመርጣሉ**\n\n"
-        "ለምን አሁንም በTelegram ገጾች እየተፈተኑ ቆዩአችሁ?\n"
         "ብልህ ምርጫ የሚያደርግ ሰው ይሁኑ።\n\n"
         "🚀 **Telegram Premium ያግኙና ይደስቱ:-**\n"
         "✅ ፈጣን ዳውንሎድ\n"
         "✅ ትልቅ ፋይሎችን መላክ\n"
-        "✅ የPremium ልዩ ባህሪያት\n"
-        "✅ የተሻለ እና ምቹ የTelegram ተሞክሮ\n\n"
+        "✅ የPremium ልዩ ባህሪያት\n\n"
         "📥 **Telegram Premiumን ዛሬውኑ ከ መላ ያግኙ!**"
     )
     
@@ -53,24 +51,27 @@ async def cmd_start(message: types.Message):
 @app.post("/api/pay")
 async def create_chapa_payment(request: Request):
     data = await request.json()
-    amount = data.get("amount")
-    email = data.get("email", "customer@mala.et")
+    amount = data.get("amount", 1399)
     first_name = data.get("first_name", "Gashaye")
     last_name = data.get("last_name", "Bejigu")
-    phone_number = data.get("phone_number", "0916039015")
+    recipient = data.get("recipient", "Koket_X")
     
     tx_ref = f"mala-tx-{int(asyncio.get_event_loop().time())}"
 
     payload = {
         "amount": str(amount),
         "currency": "ETB",
-        "email": email,
+        "email": f"user_{tx_ref}@mala.et",
         "first_name": first_name,
         "last_name": last_name,
-        "phone_number": phone_number,
+        "phone_number": "0916039015",
         "tx_ref": tx_ref,
         "callback_url": WEB_APP_URL,
-        "return_url": WEB_APP_URL
+        "return_url": WEB_APP_URL,
+        "customization": {
+            "title": "መላ ፕሪሚየም አገልግሎት",
+            "description": f"Recipient: {recipient}"
+        }
     }
 
     headers = {
@@ -81,6 +82,15 @@ async def create_chapa_payment(request: Request):
     async with httpx.AsyncClient() as client:
         response = await client.post("https://api.chapa.co/v1/transaction/initialize", json=payload, headers=headers)
         result = response.json()
+        
+        try:
+            await bot.send_message(
+                ADMIN_CHAT_ID, 
+                f"🔔 አዲስ የክፍያ ሙከራ!\n\n💰 ዋጋ: {amount} ETB\n👤 ተጠቃሚ: {first_name}\n🎯 ሪሲፒንት: {recipient}\nref: {tx_ref}"
+            )
+        except Exception as e:
+            logging.error(f"Admin notification error: {e}")
+            
         return result
 
 async def main():
