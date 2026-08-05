@@ -134,14 +134,13 @@
 <body>
 
     <div class="container">
-        <!-- 1. የምዝገባ እና የደህንነት ፎርም ከቦቱ መግቢያ መመሪያ ጋር -->
+        <!-- 1. የምዝገባ እና የደህንነት ፎርም -->
         <div id="register-section" class="card">
             <h2>👋 ወደ Mala ደህና መጡ</h2>
             
-            <!-- ቦቱን እንዴት መጠቀም እንዳለብን የሚገልጽ መመሪያ -->
             <div class="info-box">
                 <b>📌 አጠቃቀም መመሪያ:</b>
-                <p style="margin: 5px 0 0 0;">1. ስምዎን እና ስልክ ቁጥርዎን በትክክል ያስገቡ።<br>2. የ 4 አሃዝ ሚስጥር ቁጥር (PIN) ይምረጡ።<br>3. "ምዝገባውን ለአድሚን ላክ" ሲጫኑ ወደ ቦታችን በመሄድ ማረጋገጫ ይጠብቁ።</p>
+                <p style="margin: 5px 0 0 0;">1. ስምዎን እና ስልክ ቁጥርዎን በትክክል ያስገቡ።<br>2. የ 4 አሃዝ ሚስጥር ቁጥር (PIN) ይምረጡ።<br>3. "ምዝገባውን ለአድሚን ላክ" ሲጫኑ ጥያቄው በቀጥታ ወደ ቦቱ ይሄዳል።</p>
             </div>
 
             <label>ሙሉ ስም</label>
@@ -174,18 +173,18 @@
         <!-- 2. ማረጋገጫ በመጠባበቅ ላይ (Pending Status) -->
         <div id="pending-section" class="card hidden" style="text-align: center;">
             <h2>⏳ ማረጋገጫ በመጠባበቅ ላይ (Pending)</h2>
-            <p style="color: #a0aec0;">መረጃዎ ለአድሚን ተልኳል። አድሚኑ እስኪገመግመው እና እስኪያጸድቀው ድረስ እባክዎ በትዕግስት ይጠብቁ።</p>
+            <p style="color: #a0aec0;">መረጃዎ ለአድሚን ተልኳል። አድሚኑ በቦቱ በኩል እስኪያጸድቀው ድረስ እባክዎ በትዕግስት ይጠብቁ።</p>
             
             <div style="background: #222533; padding: 15px; border-radius: 10px; margin: 15px 0; text-align: left;">
                 <p style="margin: 0; font-size: 14px; color: #63b3ed;"><b>🔍 የምዝገባ ሁኔታ:</b> ፔንዲንግ (Pending Approval)</p>
-                <p style="margin: 5px 0 0 0; font-size: 13px; color: #a0aec0;">አድሚኑ በቦቱ በኩል Approve ሲያደርገው አፑ በቀጥታ ይከፈታል።</p>
+                <p style="margin: 5px 0 0 0; font-size: 13px; color: #a0aec0;">አድሚኑ አፕሩቭ ሲያደርገው አፑ በቀጥታ ይከፈታል።</p>
             </div>
 
             <button class="btn-secondary" onclick="simulateAdminApprove()" style="background-color: #38a169; margin-bottom: 10px;">⚡ ፈጣን ሙከራ (Admin Quick Approve)</button>
             <button class="btn-secondary" onclick="resetAndResubmit()">🔄 መረጃዎችን እንደገና ማስተካከል</button>
         </div>
 
-        <!-- 3. የዋሌት መቆለፊያ / Face ID ወይም ፒን -->
+        <!-- 3. የዋሌት መቆለፊያ / ፒን -->
         <div id="lock-section" class="card hidden" style="text-align: center;">
             <h2>🔒 ዋሌትዎ ተቆልፏል</h2>
             <p style="color: #a0aec0;">ለመክፈት የፊት መታወቂያ (Face ID) ይጠቀሙ ወይም ፒን ያስገቡ።</p>
@@ -199,7 +198,6 @@
         <!-- 4. ዋናው አፕ (Main App Dashboard) -->
         <div id="main-app-container" class="hidden">
             
-            <!-- መግቢያ / ሆም ታብ -->
             <div id="home-section" class="section active">
                 <div class="card">
                     <h3 style="margin: 0; text-align: center; color: #a0aec0;">የኪስ ቦርሳ (Wallet Balance)</h3>
@@ -208,7 +206,6 @@
                     <button class="btn-secondary" style="background-color: #e53e3e;" onclick="openWithdraw()">ወደ ባንክ ገንዘብ አውጣ (Withdraw)</button>
                 </div>
 
-                <!-- የዲጂታል አገልግሎቶች ማዕከል -->
                 <div class="card">
                     <h3>🌐 ዲጂታል አገልግሎቶች (Get Started)</h3>
                     <p style="color: #a0aec0; font-size: 13px;">የሚፈልጉትን አገልግሎት ይምረጡ፦</p>
@@ -225,7 +222,6 @@
                 </div>
             </div>
 
-            <!-- ትዕዛዞች ታብ -->
             <div id="orders-section" class="section">
                 <div class="card">
                     <h2>📋 ትዕዛዞቼ እና ታሪክ (Orders & Chapa History)</h2>
@@ -233,7 +229,6 @@
                 </div>
             </div>
 
-            <!-- ሰፖርት ታብ -->
             <div id="support-section" class="section">
                 <div class="card">
                     <h2>🛠️ የደንበኛ ድጋፍ (Support)</h2>
@@ -251,7 +246,6 @@
         </div>
     </div>
 
-    <!-- ናቪጌሽን ባር -->
     <div class="nav-bar hidden" id="bottom-nav">
         <div class="nav-item active" onclick="switchTab('home-section')"><div>👤</div>መግቢያ</div>
         <div class="nav-item" onclick="switchTab('orders-section')"><div>📋</div>ትዕዛዞች</div>
@@ -263,7 +257,6 @@
         tg.expand();
 
         let userBalance = 2000.00;
-        const CHAPA_PUBLIC_KEY = "CHAPUBK-hLBEJPiKDlRpfBCqTczyE10snrrK3Zhj";
 
         let isApproved = localStorage.getItem("mala_approved") === "true";
         let isRegistered = localStorage.getItem("mala_registered") === "true";
@@ -292,6 +285,7 @@
             let pass = document.getElementById("reg-pass").value;
             let passConfirm = document.getElementById("reg-pass-confirm").value;
             let username = tg.initDataUnsafe?.user?.username || "no_username";
+            let userId = tg.initDataUnsafe?.user?.id || "unknown_id";
 
             if (!name || phoneSub.length < 8 || pass.length !== 4) {
                 alert("እባክዎ ስምዎን፣ ትክክለኛውን የስልክ ቁጥር እና 4 አሃዝ ፒን ኮድ በትክክል ይሙሉ!");
@@ -299,7 +293,7 @@
             }
 
             if (pass !== passConfirm) {
-                alert("❌ ያስገቧቸው ሚስጥር ቁጥሮች (PIN) አይመሳሰሉም! እባክዎ እንደገና ይፈትሹ።");
+                alert("❌ ያስገቧቸው ሚስጥር ቁጥሮች (PIN) አይመሳሰሉም!");
                 return;
             }
 
@@ -313,11 +307,17 @@
             showPending();
 
             let botUsername = "mala_official_bot"; 
-            let adminMessage = `👤 ስም: ${name}%0A📞 ስልክ: ${fullPhone}%0A🔗 ዩዘርናም: @${username}%0A🔑 ፒን: ${pass}`;
+            let regData = `ስም: ${name}, ስልክ: ${fullPhone}, ፒን: ${pass}, ዩዘርናም: @${username}, ID: ${userId}`;
 
+            // የቴሌግራም ሚኒ አፕ አብሮ የተሰራውን ትክክለኛ የሊንክ መክፈቻ በመጠቀም ወደ ቦቱ መምራት
             setTimeout(() => {
-                window.open(`https://t.me/${botUsername}?start=reg_${adminMessage}`, '_blank');
-            }, 300);
+                let telegramOpenUrl = `https://t.me/${botUsername}?start=reg_${encodeURIComponent(regData)}`;
+                if (tg.openTelegramLink) {
+                    tg.openTelegramLink(telegramOpenUrl);
+                } else {
+                    window.open(telegramOpenUrl, '_blank');
+                }
+            }, 500);
         }
 
         function simulateAdminApprove() {
@@ -390,7 +390,7 @@
                     document.getElementById("order-history").innerHTML = `✅ ግዢ ተሳክቷል: ${itemName} (-${price} ETB በዋሌት)`;
                     alert(`🎉 '${itemName}' በዋሌትዎ ተሳክቶ ተሰጥቷል!`);
                 } else {
-                    alert("❌ በዋሌትዎ ውስጥ በቂ ብር የለም! እባክዎ በቻፓ ዴፖዚት ያድርጉ።");
+                    alert("❌ በዋሌትዎ ውስጥ በቂ ብር የለም!");
                 }
             } 
             else if (method === "2" || method === "3") {
@@ -405,15 +405,13 @@
                     return;
                 }
 
-                // እውነተኛ የቻፓ ቼክአውት ሊንክ ማመንጫ ሎጂክ
                 let txRef = "mala-tx-" + Math.floor(Math.random() * 1000000);
                 let chapaCheckoutUrl = `https://checkout.chapa.co/checkout/payment/${txRef}`;
                 
                 document.getElementById("order-history").innerHTML = `⏳ የቻፓ ክፍያ ጥያቄ ተልኳል: ${itemName} (${price} ETB) - <a href="${chapaCheckoutUrl}" target="_blank" style="color: #63b3ed;">በዚህ ሊንክ ይክፈሉ</a>`;
                 
-                // የቻፓን ኦፊሻል የክፍያ ገጽ በሌላ ታብ መክፈት
                 window.open(chapaCheckoutUrl, '_blank');
-                alert(`🚀 የቻፓ (Chapa) የክፍያ ሊንክ ተዘጋጅቷል! (Amount: ${price} ETB)\nየክፍያ ገጹ ተከፍቷል እባክዎ ክፍያውን ያጠናቅቁ።`);
+                alert(`🚀 የቻፓ (Chapa) የክፍያ ሊንክ ተዘጋጅቷል!`);
             }
         }
 
