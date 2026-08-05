@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mala Mini App - Advanced Wallet & Chapa Payment</title>
+    <title>Mala Mini App - Admin & Wallet System</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         body {
@@ -86,14 +86,14 @@
             background-color: #12141c;
             display: flex;
             justify-content: space-around;
-            padding: 10px 0;
+            padding: 12px 0;
             border-top: 1px solid #2d3748;
             z-index: 100;
         }
         .nav-item {
             text-align: center;
             color: #a0aec0;
-            font-size: 11px;
+            font-size: 12px;
             cursor: pointer;
             flex: 1;
         }
@@ -111,7 +111,7 @@
         <!-- 1. የምዝገባ እና የደህንነት ፎርም -->
         <div id="register-section" class="card">
             <h2>👋 ወደ Mala ደህና መጡ</h2>
-            <p style="color: #a0aec0; font-size: 14px;">እባክዎ አካውንትዎን ይመዝግቡ:</p>
+            <p style="color: #a0aec0; font-size: 14px;">እባክዎ አካውንትዎን ለመክፈት መረጃ ይሙሉ:</p>
             
             <label>ሙሉ ስም</label>
             <input type="text" id="reg-name" class="input-field" placeholder="ስምዎን ያስገቡ">
@@ -122,13 +122,13 @@
             <label>የዋሌት መክፈቻ ሚስጥር ቁጥር (4-Digit Pin)</label>
             <input type="password" id="reg-pass" class="input-field" maxlength="4" placeholder="****">
             
-            <button class="btn-primary" onclick="submitRegistration()">ምዝገባውን ላክ (Register)</button>
+            <button class="btn-primary" onclick="submitRegistration()">ምዝገባውን ለአድሚን ላክ</button>
         </div>
 
-        <!-- 2. ማረጋገጫ በመጠባበቅ ላይ -->
+        <!-- 2. ማረጋገጫ በመጠባበቅ ላይ (Pending) -->
         <div id="pending-section" class="card hidden" style="text-align: center;">
             <h2>⏳ ማረጋገጫ በመጠባበቅ ላይ</h2>
-            <p style="color: #a0aec0;">መረጃዎ ለአድሚኖች ተልኳል። ሲጸድቅ ሙሉ መብት ያገኛሉ።</p>
+            <p style="color: #a0aec0;">መረጃዎ ለአድሚን በቀጥታ ተልኳል። አድሚኑ ሲያጸድቀው አካውንትዎ ይከፈታል።</p>
             <button class="btn-secondary" onclick="resetAndResubmit()">🔄 መረጃዎችን እንደገና ማስተካከል</button>
         </div>
 
@@ -192,7 +192,7 @@
         </div>
     </div>
 
-    <!-- ከታች ያለው ናቪጌሽን ባር -->
+    <!-- ከታች ያለው የተስተካከለ ንጹህ ናቪጌሽን ባር -->
     <div class="nav-bar hidden" id="bottom-nav">
         <div class="nav-item active" onclick="switchTab('home-section')"><div>👤</div>መግቢያ</div>
         <div class="nav-item" onclick="switchTab('orders-section')"><div>📋</div>ትዕዛዞች</div>
@@ -206,6 +206,10 @@
         let userBalance = 2000.00; // መነሻ ቀሪ ሂሳብ
         const CHAPA_PUBLIC_KEY = "CHAPUBK-hLBEJPiKDlRpfBCqTczyE10snrrK3Zhj";
 
+        // የቦት ማስፈንጠሪያዎች (ማስታወሻ፡ የራስዎን የቦት ቶከን እና የአድሚን ቻት አይዲ እዚህ ያስገቡ)
+        const BOT_TOKEN = "YOUR_BOT_TOKEN_HERE";
+        const ADMIN_CHAT_ID = "YOUR_ADMIN_CHAT_ID_HERE";
+
         let isApproved = localStorage.getItem("mala_approved") === "true";
         let isRegistered = localStorage.getItem("mala_registered") === "true";
 
@@ -215,10 +219,13 @@
             showPending();
         }
 
+        // 1. መረጃውን በቀጥታ ለአድሚን ቴሌግራም የሚልክ ኮድ
         function submitRegistration() {
             let name = document.getElementById("reg-name").value;
             let phone = document.getElementById("reg-phone").value;
             let pass = document.getElementById("reg-pass").value;
+            let userTgId = tg.initDataUnsafe?.user?.id || "unknown";
+            let username = tg.initDataUnsafe?.user?.username || "no_username";
 
             if (!name || !phone || pass.length !== 4) {
                 alert("እባክዎ ስም፣ ስልክ እና ትክክለኛ 4 አሃዝ ፒን ኮድ ይሙሉ!");
@@ -227,15 +234,26 @@
 
             localStorage.setItem("mala_registered", "true");
             localStorage.setItem("mala_pass", pass);
-            
-            let data = {
-                action: "register",
-                name: name,
-                phone: phone,
-                telegram_id: tg.initDataUnsafe?.user?.id || "unknown"
-            };
+            localStorage.setItem("mala_name", name);
+            localStorage.setItem("mala_phone", phone);
 
-            tg.sendData(JSON.stringify(data));
+            // መረጃውን ወደ አድሚን ቴሌግራም ቦት መላክ
+            let message = `🚨 **አዲስ የተጠቃሚ ምዝገባ ጥያቄ!**\n\n👤 ስም: ${name}\n📞 ስልክ: ${phone}\n🆔 ቴሌግራም ID: ${userTgId}\n🔗 ዩዘርናም: @${username}\n🔑 ፒን: ${pass}\n\nአካውንቱን ለማጽደቅ (Approve) ያረጋግጡ።`;
+
+            if (BOT_TOKEN !== "YOUR_BOT_TOKEN_HERE" && ADMIN_CHAT_ID !== "YOUR_ADMIN_CHAT_ID_HERE") {
+                let url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${ADMIN_CHAT_ID}&text=${encodeURIComponent(message)}&parse_mode=Markdown`;
+                fetch(url).catch(err => console.log("Telegram API Error:", err));
+            } else {
+                // የቴሌግራም ዌብ አፕ ዳታ መላኪያ ምትክ
+                tg.sendData(JSON.stringify({
+                    action: "admin_approval_request",
+                    name: name,
+                    phone: phone,
+                    telegram_id: userTgId,
+                    pin: pass
+                }));
+            }
+
             showPending();
         }
 
@@ -278,7 +296,6 @@
             try { tg.HapticFeedback.impactOccurred('light'); } catch(e){}
         }
 
-        // 1. የቴሌግራም ፕሪሚየም ዕቅዶች እና የክፍያ አማራጮች ምርጫ
         function openServicePlan(serviceName) {
             let planChoice = prompt("የጊዜ ገደብ ይምረጡ:\n1. የ 3 ወር\n2. የ 6 ወር\n3. የአንድ ዓመት (1 Year)", "3");
             let price = 3599;
@@ -294,12 +311,10 @@
             processCheckout(serviceName, 500);
         }
 
-        // 2. የክፍያ ማቀናበሪያ (Wallet, CBE Birr, Telebirr, M-Pesa with Prefix Validation & Chapa)
         function processCheckout(itemName, price) {
             let method = prompt(`ለ '${itemName}' ዋጋው ${price} ETB ነው። የክፍያ መንገድ ይምረጡ:\n1. ከዋሌት ቀሪ ሂሳብ በቀጥታ መቀነስ\n2. Telebirr / CBE Birr (በቻፓ መክፈል)\n3. M-Pesa (በቻፓ መክፈል)`, "1");
 
             if (method === "1") {
-                // ከዋሌት ላይ በቀጥታ መቁረጥ
                 if (userBalance >= price) {
                     userBalance -= price;
                     updateWalletUI();
@@ -310,7 +325,6 @@
                 }
             } 
             else if (method === "2" || method === "3") {
-                // በስልክ ቅጥያ (Prefix) ማረጋገጫ ያለው የክፍያ ሂደት
                 let expectedPrefix = (method === "3") ? "07" : "09";
                 let networkName = (method === "3") ? "M-Pesa (በ 07 የሚጀምር)" : "Telebirr / CBE Birr (በ 09 የሚጀምር)";
                 
@@ -322,13 +336,11 @@
                     return;
                 }
 
-                // በቻፓ በኩል የክፍያ ጥያቄ ማቀናበር
-                alert(`🚀 የቻፓ (Chapa) የክፍያ ሊንክ ለ ቁጥር ${phoneInput} ተዘጋጅቷል! (Amount: ${price} ETB - PublicKey: ${CHAPA_PUBLIC_KEY.substring(0,10)}...)`);
+                alert(`🚀 የቻፓ (Chapa) የክፍያ ሊንክ ለ ቁጥር ${phoneInput} ተዘጋጅቷል! (Amount: ${price} ETB)`);
                 document.getElementById("order-history").innerHTML = `⏳ የክፍያ ጥያቄ ተልኳል: ${itemName} (${price} ETB via Chapa)`;
             }
         }
 
-        // 3. በቻፓ ዴፖዚት ማድረግ
         function openDeposit() {
             let amount = prompt("በቻፓ (Chapa) ወደ ዋሌትዎ ማስገባት የሚፈልጉትን መጠን (ETB) ያስገቡ:");
             if (amount && amount > 0) {
@@ -338,7 +350,6 @@
             }
         }
 
-        // 4. ወደ ባንክ ገንዘብ ማውጣት (Withdraw)
         function openWithdraw() {
             let bank = prompt("የባንክዎን ስም ያስገቡ (ለምሳሌ፦ CBE, Dashen):");
             let acc = prompt("የባንክ አካውንት ቁጥርዎን ያስገቡ:");
