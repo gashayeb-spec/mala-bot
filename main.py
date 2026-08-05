@@ -31,18 +31,17 @@ app.add_middleware(
 async def cmd_start(message: types.Message):
     keyboard = InlineKeyboardMarkup(
         inline_keyboard=[
-            [InlineKeyboardButton(text="🚀 መላ አፕ ክፈት", web_app=WebAppInfo(url=WEB_APP_URL))]
+            [InlineKeyboardButton(text="🚀 የቴሌግራም ፕሪሚየም ግዢ", web_app=WebAppInfo(url=WEB_APP_URL))]
         ]
     )
     
     welcome_text = (
         "💡 **ብልህ ሰዎች ቀለል ያለውን መንገድ ይመርጣሉ**\n\n"
-        "ብልህ ምርጫ የሚያደርግ ሰው ይሁኑ።\n\n"
         "🚀 **Telegram Premium ያግኙና ይደስቱ:-**\n"
         "✅ ፈጣን ዳውንሎድ\n"
         "✅ ትልቅ ፋይሎችን መላክ\n"
         "✅ የPremium ልዩ ባህሪያት\n\n"
-        "📥 **Telegram Premiumን ዛሬውኑ ከ መላ ያግኙ!**"
+        "📥 **ከዚህ በታች ያለውን አፕ በመክፈት ዛሬውኑ ያግኙ!**"
     )
     
     await message.answer(welcome_text, reply_markup=keyboard, parse_mode="Markdown")
@@ -54,9 +53,11 @@ async def create_chapa_payment(request: Request):
         amount = data.get("amount", 1399)
         first_name = data.get("first_name", "Gashaye")
         last_name = data.get("last_name", "Bejigu")
-        recipient = data.get("recipient", "Koket_X")
+        recipient = data.get("recipient", "@username")
+        phone_number = data.get("phone_number", "0916039015")
+        package_name = data.get("package", "1 ወር")
         
-        tx_ref = f"mala-tx-{int(asyncio.get_event_loop().time())}"
+        tx_ref = f"mala-tg-{int(asyncio.get_event_loop().time())}"
 
         payload = {
             "amount": str(amount),
@@ -64,13 +65,13 @@ async def create_chapa_payment(request: Request):
             "email": f"user_{tx_ref}@mala.et",
             "first_name": first_name,
             "last_name": last_name,
-            "phone_number": "0916039015",
+            "phone_number": phone_number,
             "tx_ref": tx_ref,
             "callback_url": WEB_APP_URL,
             "return_url": WEB_APP_URL,
             "customization": {
-                "title": "መላ ፕሪሚየም አገልግሎት",
-                "description": f"Recipient: {recipient}"
+                "title": "Telegram Premium",
+                "description": f"Package: {package_name} | Recipient: {recipient}"
             }
         }
 
@@ -91,7 +92,7 @@ async def create_chapa_payment(request: Request):
             try:
                 await bot.send_message(
                     ADMIN_CHAT_ID, 
-                    f"🔔 አዲስ የክፍያ ሙከራ!\n\n💰 ዋጋ: {amount} ETB\n👤 ተጠቃሚ: {first_name}\n🎯 ሪሲፒንት: {recipient}\nref: {tx_ref}"
+                    f"🔔 አዲስ የቴሌግራም ፕሪሚየም ግዢ ሙከራ!\n\n📦 ፓኬጅ: {package_name}\n💰 ዋጋ: {amount} ETB\n👤 ተቀባይ: {recipient}\n📞 ስልክ: {phone_number}\nref: {tx_ref}"
                 )
             except Exception as e:
                 logging.error(f"Admin notification error: {e}")
