@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Telegram Premium ግዢ</title>
+    <title>የዋሌት ምዝገባ እና ቴሌግራም ፕሪሚየም</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         :root {
@@ -55,7 +55,7 @@
             background: var(--bg-color);
             border: 1px solid var(--border-color);
             border-radius: 12px;
-            padding: 14px;
+            padding: 12px;
             text-align: center;
             cursor: pointer;
             transition: 0.2s;
@@ -67,13 +67,13 @@
         }
 
         .package-card h4 {
-            margin: 0 0 6px 0;
-            font-size: 15px;
+            margin: 0 0 4px 0;
+            font-size: 14px;
         }
 
         .package-card p {
             margin: 0;
-            font-size: 14px;
+            font-size: 13px;
             color: var(--accent-color);
             font-weight: bold;
         }
@@ -116,7 +116,7 @@
             right: 12px;
             cursor: pointer;
             color: var(--text-secondary);
-            font-size: 18px;
+            font-size: 16px;
             user-select: none;
         }
 
@@ -124,6 +124,16 @@
             font-size: 11px;
             color: var(--text-secondary);
             margin-top: 4px;
+        }
+
+        .bank-box {
+            background: rgba(35, 134, 54, 0.1);
+            border: 1px solid var(--success-color);
+            border-radius: 10px;
+            padding: 12px;
+            margin-bottom: 15px;
+            font-size: 12px;
+            color: #3fb950;
         }
 
         .btn-primary {
@@ -148,10 +158,55 @@
 
     <div class="container">
         <div class="card">
-            <h2>💎 Telegram Premium ግዢ</h2>
-            <p style="color:var(--text-secondary); font-size:13px; margin-top:0;">የሚፈልጉትን የቆይታ ጊዜ ፓኬጅ ይምረጡ</p>
+            <h2>🏦 የዋሌት ምዝገባ እና ቴሌግራም ፕሪሚየም</h2>
             
-            <!-- የፓኬጅ ምርጫዎች -->
+            <div class="bank-box">
+                <b>ኦፊሴላዊ የባንክ ሂሳብ መረጃ:</b><br>
+                • ባንክ: CBE / ብሔራዊ ባንክ<br>
+                • ሂሳብ ቁጥር: <b>100070780201</b><br>
+                • ባለቤት: <b>ጋሻዬ በጅጉ ሄሪጎ</b>
+            </div>
+
+            <!-- 1. ሙሉ ስም -->
+            <div class="form-group">
+                <label>ሙሉ ስምዎ (ከባንክ አካውንት ጋር የሚመሳሰል)</label>
+                <input type="text" id="fullName" placeholder="ለምሳሌ፦ ጋሻዬ በጅጉ">
+            </div>
+
+            <!-- 2. ስልክ ቁጥር -->
+            <div class="form-group">
+                <label>ስልክ ቁጥር (Ethio Telecom / Safaricom)</label>
+                <input type="tel" id="phoneNumber" placeholder="09xxxxxxxx ወይም 07xxxxxxxx" maxlength="10">
+                <div class="hint">በ 09 ወይም በ 07 የሚጀምር 10 አኃዝ ቁጥር ያስገቡ</div>
+            </div>
+
+            <!-- 3. የባንክ አድራሻ ቁጥር -->
+            <div class="form-group">
+                <label>የባንክ አካውንት ቁጥርዎ</label>
+                <input type="text" id="bankAddress" placeholder="የባንክ ቁጥርዎ">
+            </div>
+
+            <!-- 4. ፒን ኮድ (Pin Creation) -->
+            <div class="form-group">
+                <label>የደህንነት ፒን ይፍጠሩ (4 አኃዝ)</label>
+                <div class="input-wrapper">
+                    <input type="password" id="userPin" placeholder="****" maxlength="4">
+                    <span class="eye-icon" onclick="toggleVisibility('userPin', this)">👁️‍🗨️</span>
+                </div>
+            </div>
+
+            <!-- 5. ፒን ኮድ ማረጋገጫ (Re-enter Pin) -->
+            <div class="form-group">
+                <label>ፒን ኮዱን እንደገና ይጻፉ (Confirm PIN)</label>
+                <div class="input-wrapper">
+                    <input type="password" id="confirmPin" placeholder="****" maxlength="4">
+                    <span class="eye-icon" onclick="toggleVisibility('confirmPin', this)">👁️‍🗨️</span>
+                </div>
+            </div>
+
+            <hr style="border: 0; border-top: 1px solid var(--border-color); margin: 20px 0;">
+
+            <h2>💎 የቴሌግራም ፕሪሚየም ፓኬጅ ይምረጡ</h2>
             <div class="package-grid">
                 <div class="package-card selected" onclick="selectPackage(this, '1 ወር', 1399)">
                     <h4>1 ወር</h4>
@@ -171,30 +226,12 @@
                 </div>
             </div>
 
-            <!-- ዩዘርነም -->
             <div class="form-group">
                 <label>የተቀባይ ቴሌግራም ዩዘርነም</label>
                 <input type="text" id="recipientUser" placeholder="@username">
             </div>
 
-            <!-- ስልክ ቁጥር (09 ወይም 07) -->
-            <div class="form-group">
-                <label>ስልክ ቁጥር (Ethio Telecom / Safaricom)</label>
-                <input type="tel" id="phoneNumber" placeholder="09xxxxxxxx ወይም 07xxxxxxxx" maxlength="10">
-                <div class="hint">በ 09 ወይም በ 07 የሚጀምር 10 አኃዝ ቁጥር ያስገቡ</div>
-            </div>
-
-            <!-- ፒን ኮድ -->
-            <div class="form-group">
-                <label>የደህንነት ፒን (PIN Lock - 4 አኃዝ)</label>
-                <div class="input-wrapper">
-                    <input type="password" id="userPin" placeholder="****" maxlength="4">
-                    <span class="eye-icon" id="togglePin" onclick="togglePinVisibility()">👁️‍🗨️</span>
-                </div>
-            </div>
-
-            <!-- ማረጋገጫ እና ክፍያ ቁልፍ -->
-            <button class="btn-primary" onclick="confirmAndPay()">ኮንፊርም (Confirm) እና ክፈል →</button>
+            <button class="btn-primary" onclick="registerAndPay()">ዎሌት መዝግብ እና ክፈል →</button>
         </div>
     </div>
 
@@ -205,16 +242,19 @@
         let selectedPackageName = "1 ወር";
         let selectedAmount = 1399;
 
-        // የቴሌግራም ዩዘርነም በራሱ እንዲሞላ ማድረግ
         window.addEventListener('DOMContentLoaded', () => {
             const user = tg.initDataUnsafe?.user || {};
             const usernameField = document.getElementById('recipientUser');
+            const nameField = document.getElementById('fullName');
+            
             if (user.username) {
                 usernameField.value = "@" + user.username;
-            } else if (user.first_name) {
-                usernameField.value = user.first_name;
             } else {
                 usernameField.value = "@User_Mala";
+            }
+
+            if (user.first_name) {
+                nameField.value = user.first_name + (user.last_name ? " " + user.last_name : "");
             }
         });
 
@@ -225,33 +265,38 @@
             selectedAmount = price;
         }
 
-        function togglePinVisibility() {
-            const pinInput = document.getElementById('userPin');
-            const toggleIcon = document.getElementById('togglePin');
-            
-            if (pinInput.type === 'password') {
-                pinInput.type = 'text';
-                toggleIcon.textContent = '👁️'; 
+        function toggleVisibility(fieldId, iconEl) {
+            const inputField = document.getElementById(fieldId);
+            if (inputField.type === 'password') {
+                inputField.type = 'text';
+                iconEl.textContent = '👁️';
             } else {
-                pinInput.type = 'password';
-                toggleIcon.textContent = '👁️‍🗨️'; 
+                inputField.type = 'password';
+                iconEl.textContent = '👁️‍🗨️';
             }
         }
 
-        async function confirmAndPay() {
-            const recipient = document.getElementById('recipientUser').value.trim();
+        async function registerAndPay() {
+            const fullName = document.getElementById('fullName').value.trim();
             const phone = document.getElementById('phoneNumber').value.trim();
+            const bankAddress = document.getElementById('bankAddress').value.trim();
             const pin = document.getElementById('userPin').value.trim();
+            const confirmPin = document.getElementById('confirmPin').value.trim();
+            const recipient = document.getElementById('recipientUser').value.trim();
 
-            if (!recipient) {
-                alert('እባክዎ የተጠቃሚ ስም (Username) ያስገቡ!');
+            if (!fullName) {
+                alert('እባክዎ ሙሉ ስምዎን ያስገቡ!');
                 return;
             }
 
-            // ስልክ ቁጥር ማረጋገጫ (09 ወይም 07 መጀመሩን ማረጋገጥ)
             const phoneRegex = /^(09|07)\d{8}$/;
             if (!phoneRegex.test(phone)) {
-                alert('ስልክ ቁጥሩ ትክክለ አይደለም! በ 09 ወይም በ 07 የሚጀምር 10 አኃዝ ቁጥር ብቻ ያስገቡ (ለምሳሌ: 0912345678)።');
+                alert('ስልክ ቁጥሩ ትክክለ አይደለም! በ 09 ወይም በ 07 የሚጀምር 10 አኃዝ ቁጥር ብቻ ያስገቡ።');
+                return;
+            }
+
+            if (!bankAddress) {
+                alert('እባክዎ የባንክ አካውንት ቁጥርዎን ያስገቡ!');
                 return;
             }
 
@@ -260,26 +305,44 @@
                 return;
             }
 
+            if (pin !== confirmPin) {
+                alert('ያስገቧቸው ሁለቱ ፒን ቁጥሮች እርስ በእርስ አልተመሳሰሉም! እባክዎ እንደገና ያረጋግጡ።');
+                return;
+            }
+
+            if (!recipient) {
+                alert('እባክዎ የተቀባይ ቴሌግራም ዩዘርነም ያስገቡ!');
+                return;
+            }
+
             const user = tg.initDataUnsafe?.user || {};
-            
-            // የኮንፊርም ማረጋገጫ መስኮት
-            const isConfirmed = confirm(`እባክዎ መረጃዎን ያረጋግጡ:\n\n📦 ፓኬጅ: Telegram Premium (${selectedPackageName})\n💰 ዋጋ: ${selectedAmount} ETB\n👤 ተቀባይ: ${recipient}\n📞 ስልክ: ${phone}\n\nግዢውን ለመፈጸም OK ይጫኑ።`);
-            
+
+            const isConfirmed = confirm(
+                `እባክዎ መረጃዎን ያረጋግጡ:\n\n` +
+                `👤 ስም: ${fullName}\n` +
+                `📞 ስልክ: ${phone}\n` +
+                `🏦 ባንክ አድራሻ: ${bankAddress}\n` +
+                `📦 ፓኬጅ: Telegram Premium (${selectedPackageName})\n` +
+                `💰 ዋጋ: ${selectedAmount} ETB\n` +
+                `👤 ተቀባይ: ${recipient}\n\n` +
+                `ለማረጋገጥ OK ይጫኑ።`
+            );
+
             if (!isConfirmed) return;
 
             try {
-                let response = await fetch('/api/pay', {
+                let response = await fetch('/api/register-and-pay', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
+                        full_name: fullName,
+                        phone_number: phone,
+                        bank_address: bankAddress,
+                        pin: pin,
                         amount: selectedAmount,
                         telegram_id: user.id || 12345678,
-                        first_name: user.first_name || "Gashaye",
-                        last_name: user.last_name || "Bejigu",
                         recipient: recipient,
-                        phone_number: phone,
-                        package: selectedPackageName,
-                        pin: pin
+                        package: selectedPackageName
                     })
                 });
                 let data = await response.json();
@@ -287,7 +350,7 @@
                 if(data.data && data.data.checkout_url) {
                     window.location.href = data.data.checkout_url;
                 } else {
-                    alert('የክፍያ ሊንክ ማመንጨት አልተቻለም። እባክዎ እንደገና ይሞክሩ።');
+                    alert(data.message || 'የክፍያ ሊንክ ማመንጨት አልተቻለም። እባክዎ እንደገና ይሞክሩ።');
                 }
             } catch (error) {
                 console.error('Error:', error);
