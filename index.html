@@ -50,51 +50,6 @@
             display: block;
         }
 
-        .search-box {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 10px 14px;
-            display: flex;
-            align-items: center;
-            margin-bottom: 16px;
-        }
-
-        .search-box input {
-            background: transparent;
-            border: none;
-            color: var(--text-primary);
-            font-size: 14px;
-            width: 100%;
-            outline: none;
-            margin-left: 8px;
-        }
-
-        .filters {
-            display: flex;
-            gap: 8px;
-            overflow-x: auto;
-            padding-bottom: 8px;
-            margin-bottom: 16px;
-        }
-
-        .filter-btn {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            color: var(--text-secondary);
-            padding: 6px 14px;
-            border-radius: 20px;
-            font-size: 13px;
-            white-space: nowrap;
-            cursor: pointer;
-        }
-
-        .filter-btn.active {
-            background: var(--accent-color);
-            color: white;
-            border-color: var(--accent-color);
-        }
-
         .card {
             background: var(--card-bg);
             border: 1px solid var(--border-color);
@@ -103,22 +58,89 @@
             margin-bottom: 16px;
         }
 
-        .card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        .package-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin: 12px 0;
+        }
+
+        .package-card {
+            background: var(--bg-color);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .package-card.selected {
+            border-color: var(--accent-color);
+            background: rgba(47, 129, 247, 0.1);
+        }
+
+        .package-card h4 {
+            margin: 0 0 6px 0;
+            font-size: 14px;
+        }
+
+        .package-card p {
+            margin: 0;
+            font-size: 13px;
+            color: var(--accent-color);
+            font-weight: bold;
+        }
+
+        .form-group {
             margin-bottom: 12px;
         }
 
-        .badge {
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 11px;
-            font-weight: 600;
+        .form-group label {
+            display: block;
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
         }
 
-        .badge.pending { background: rgba(210, 153, 34, 0.15); color: var(--pending-color); }
-        .badge.success { background: rgba(35, 134, 54, 0.15); color: var(--success-color); }
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .form-group input {
+            width: 100%;
+            background: var(--bg-color);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 10px 40px 10px 10px;
+            color: var(--text-primary);
+            font-size: 14px;
+            box-sizing: border-box;
+            outline: none;
+        }
+
+        .eye-icon {
+            position: absolute;
+            right: 12px;
+            cursor: pointer;
+            color: var(--text-secondary);
+            font-size: 18px;
+            user-select: none;
+        }
+
+        .btn-primary {
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            width: 100%;
+            padding: 12px;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 10px;
+        }
 
         .bottom-nav {
             position: fixed;
@@ -153,97 +175,71 @@
             margin-bottom: 4px;
             fill: currentColor;
         }
-
-        .btn-primary {
-            background: var(--accent-color);
-            color: white;
-            border: none;
-            width: 100%;
-            padding: 12px;
-            border-radius: 12px;
-            font-weight: 600;
-            cursor: pointer;
-            margin-top: 10px;
-        }
     </style>
 </head>
 <body>
 
-    <!-- ORDERS TAB -->
-    <div id="tab-orders" class="tab-content active">
+    <!-- SERVICES / HOME TAB -->
+    <div id="tab-services" class="tab-content active">
         <div class="header">
-            <h1>Orders</h1>
+            <h1>መላ አገልግሎቶች</h1>
         </div>
         <div class="container">
-            <div class="search-box">
-                <span style="color:var(--text-secondary)">🔍</span>
-                <input type="text" placeholder="Search orders...">
-            </div>
-            
-            <div class="filters">
-                <button class="filter-btn active">All 11</button>
-                <button class="filter-btn">Pending 8</button>
-                <button class="filter-btn">Processing 0</button>
-                <button class="filter-btn">In Progress 0</button>
-                <button class="filter-btn">Completed 0</button>
-            </div>
-
-            <div class="card">
-                <div class="card-header">
-                    <div>
-                        <strong style="font-size:16px;">3a4e876d30</strong>
-                        <div style="font-size:12px; color:var(--text-secondary);">Telegram Premium Gift</div>
-                    </div>
-                    <span class="badge pending">Pending</span>
-                </div>
-                <hr style="border:0; border-top:1px solid var(--border-color); margin:12px 0;">
-                <div style="display:flex; justify-content:space-between; font-size:13px; color:var(--text-secondary);">
-                    <div>Package<br><strong style="color:var(--text-primary); font-size:15px;">3 Months</strong></div>
-                    <div>Recipient<br><strong style="color:var(--text-primary); font-size:15px;">Koket_X</strong></div>
-                </div>
-                <div style="margin-top:12px;">
-                    Amount<br>
-                    <div style="background:var(--bg-color); display:inline-block; padding:4px 10px; border-radius:8px; font-weight:600; margin-top:4px;">3599.00 ETB</div>
-                </div>
-                <div style="margin-top:12px; font-size:11px; color:var(--text-secondary);">15h ago</div>
-            </div>
-        </div>
-    </div>
-
-    <!-- SERVICES TAB -->
-    <div id="tab-services" class="tab-content">
-        <div class="header">
-            <h1>Services</h1>
-        </div>
-        <div class="container">
-            <div class="card">
-                <h3>Social Media</h3>
-                <p style="color:var(--text-secondary); font-size:13px;">Grow followers, likes, and views</p>
-                <button class="btn-primary" onclick="initPayment(500)">Get started →</button>
-            </div>
-            <div class="card">
-                <h3>TikTok Coins</h3>
-                <p style="color:var(--text-secondary); font-size:13px;">Top up creator balances</p>
-                <button class="btn-primary" onclick="initPayment(1000)">Get started →</button>
-            </div>
             <div class="card">
                 <h3>Telegram Premium</h3>
-                <p style="color:var(--text-secondary); font-size:13px;">Upgrade to premium</p>
-                <button class="btn-primary" onclick="initPayment(3599)">Get started →</button>
+                <p style="color:var(--text-secondary); font-size:13px;">የቴሌግራም ፕሪሚየም ፓኬጅ ይምረጡ</p>
+                
+                <div class="package-grid">
+                    <div class="package-card selected" onclick="selectPackage(this, 1, 1399)">
+                        <h4>1 ወር</h4>
+                        <p>1,399 ETB</p>
+                    </div>
+                    <div class="package-card" onclick="selectPackage(this, 3, 3599)">
+                        <h4>3 ወር</h4>
+                        <p>3,599 ETB</p>
+                    </div>
+                    <div class="package-card" onclick="selectPackage(this, 6, 5899)">
+                        <h4>6 ወር</h4>
+                        <p>5,899 ETB</p>
+                    </div>
+                    <div class="package-card" onclick="selectPackage(this, 12, 8900)">
+                        <h4>1 ዓመት</h4>
+                        <p>8,900 ETB</p>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>የተቀባይ ቴሌግራም መለያ (Recipient Username)</label>
+                    <input type="text" id="recipientUser" placeholder="ለምሳሌ: @username ወይም ስም">
+                </div>
+
+                <!-- የፒን / የይለፍ ቃል ማስገቢያ በአይን ምልክት (Show/Hide Toggle) -->
+                <div class="form-group">
+                    <label>የደህንነት ፒን / ሚስጥራዊ ቁጥር (PIN Lock)</label>
+                    <div class="input-wrapper">
+                        <input type="password" id="userPin" placeholder="4 አኃዝ ፒን ያስገቡ" maxlength="4">
+                        <span class="eye-icon" id="togglePin" onclick="togglePinVisibility()">👁️‍🗨️</span>
+                    </div>
+                </div>
+
+                <button class="btn-primary" onclick="proceedToPayment()">በቻፓ ክፈል →</button>
             </div>
         </div>
     </div>
 
-    <!-- GUIDES TAB -->
-    <div id="tab-guides" class="tab-content">
+    <!-- ORDERS TAB -->
+    <div id="tab-orders" class="tab-content">
         <div class="header">
-            <h1>How To Guides</h1>
+            <h1>ትዕዛዞች</h1>
         </div>
         <div class="container">
             <div class="card">
-                <h3>Tekamee Your Shortcut to Social Media Growth</h3>
-                <p style="color:var(--text-secondary); font-size:13px;">Tekamee is a powerful bot designed to help you boost engagement across platforms easily.</p>
-                <button class="btn-primary" style="background:#238636;">Read Guide</button>
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <strong>3a4e876d30</strong>
+                    <span style="background:rgba(210,153,34,0.15); color:#d29922; padding:4px 10px; border-radius:20px; font-size:11px;">Pending</span>
+                </div>
+                <p style="font-size:13px; color:var(--text-secondary); margin:8px 0;">Telegram Premium Gift (3 Months)</p>
+                <div style="font-size:14px; font-weight:bold;">3599.00 ETB</div>
             </div>
         </div>
     </div>
@@ -251,33 +247,39 @@
     <!-- WALLET TAB -->
     <div id="tab-wallet" class="tab-content">
         <div class="header">
-            <h1>Wallet</h1>
+            <h1>ዎሌት</h1>
         </div>
         <div class="container" style="text-align:center;">
             <div class="card">
-                <div style="color:var(--text-secondary); font-size:13px;">Balance</div>
+                <div style="color:var(--text-secondary); font-size:13px;">ቀሪ ሂሳብ</div>
                 <div style="font-size:28px; font-weight:bold; color:var(--accent-color); margin:8px 0;">0.00 ETB</div>
-                <div style="display:flex; gap:10px; margin-top:16px;">
-                    <button class="btn-primary" onclick="initPayment(500)">Deposit</button>
-                    <button class="btn-primary" style="background:var(--card-bg); border:1px solid var(--border-color);">Withdraw</button>
-                </div>
+                <button class="btn-primary" onclick="proceedToPayment()">ሂሳብ ጨምር (Deposit)</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- GUIDES TAB -->
+    <div id="tab-guides" class="tab-content">
+        <div class="header">
+            <h1>መመሪያ</h1>
+        </div>
+        <div class="container">
+            <div class="card">
+                <h3>መላ አጠቃቀም መመሪያ</h3>
+                <p style="color:var(--text-secondary); font-size:13px;">አገልግሎቱን እንዴት ማግኘት እንደሚችሉ እዚህ ይመልከቱ።</p>
             </div>
         </div>
     </div>
 
     <!-- BOTTOM NAVIGATION -->
     <nav class="bottom-nav">
-        <div class="nav-item" onclick="switchTab('services', this)">
-            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/></svg>
-            መገለጫ
-        </div>
-        <div class="nav-item active" onclick="switchTab('orders', this)">
-            <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
-            ትዕዛዞች
-        </div>
-        <div class="nav-item" onclick="switchTab('services', this)">
+        <div class="nav-item active" onclick="switchTab('services', this)">
             <svg viewBox="0 0 24 24"><path d="M12 2l-5.5 9h11z"/><circle cx="17.5" cy="17.5" r="4.5"/><path d="M3 13.5h8v8H3z"/></svg>
             ዳሽቦርድ
+        </div>
+        <div class="nav-item" onclick="switchTab('orders', this)">
+            <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+            ትዕዛዞች
         </div>
         <div class="nav-item" onclick="switchTab('guides', this)">
             <svg viewBox="0 0 24 24"><path d="M18 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 4h5v8l-2.5-1.5L6 12V4z"/></svg>
@@ -293,6 +295,8 @@
         const tg = window.Telegram.WebApp;
         tg.expand();
 
+        let selectedAmount = 1399; // ነባሪ የ1 ወር ዋጋ
+
         function switchTab(tabId, element) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
@@ -301,12 +305,57 @@
             element.classList.add('active');
         }
 
-        async function initPayment(amount) {
+        function selectPackage(element, months, price) {
+            document.querySelectorAll('.package-card').forEach(el => el.classList.remove('selected'));
+            element.classList.add('selected');
+            selectedAmount = price;
+        }
+
+        // በአይን ምልክት ፒን ቁጥርን መሸፈን እና ማሳየት (Show/Hide Password Toggle)
+        function togglePinVisibility() {
+            const pinInput = document.getElementById('userPin');
+            const toggleIcon = document.getElementById('togglePin');
+            
+            if (pinInput.type === 'password') {
+                pinInput.type = 'text';
+                toggleIcon.textContent = '👁️'; // ክፍት ዓይን (ሲታይ)
+            } else {
+                pinInput.type = 'password';
+                toggleIcon.textContent = '👁️‍🗨️'; // የተሸፈነ ዓይን (ሲደበቅ)
+            }
+        }
+
+        async function proceedToPayment() {
+            const recipient = document.getElementById('recipientUser').value;
+            const pin = document.getElementById('userPin').value;
+
+            if(!recipient) {
+                alert('እባክዎ የተጠቃሚ ስም (Recipient Username) ያስገቡ!');
+                return;
+            }
+
+            if(!pin || pin.length < 4) {
+                alert('እባክዎ ትክክለኛ 4 አኃዝ የደህንነት ፒን (PIN) ያስገቡ!');
+                return;
+            }
+
+            const user = tg.initDataUnsafe?.user || {};
+            const telegramId = user.id || 12345678;
+            const firstName = user.first_name || "Gashaye";
+            const lastName = user.last_name || "Bejigu";
+
             try {
                 let response = await fetch('/api/pay', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ amount: amount })
+                    body: JSON.stringify({
+                        amount: selectedAmount,
+                        telegram_id: telegramId,
+                        first_name: firstName,
+                        last_name: lastName,
+                        recipient: recipient,
+                        pin: pin
+                    })
                 });
                 let data = await response.json();
                 if(data.data && data.data.checkout_url) {
