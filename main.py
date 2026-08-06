@@ -1,89 +1,79 @@
-from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel
-import json
 import os
+import json
+from fastapi import FastAPI, Request, HTTPException
+from pydantic import BaseModel
+import requests
 
 app = FastAPI()
 
-DATA_FILE = "gashaye_data.json"
+# ሚስጥራዊ ቁልፎች ከባካኤንድ Environment Variables ይነበባሉ
+TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN", "YOUR_BOT_TOKEN")
+ADMIN_TELEGRAM_ID = os.getenv("ADMIN_TELEGRAM_ID", "YOUR_ADMIN_ID")
+CHAPA_SECRET_KEY = os.getenv("CHAPA_SECRET_KEY", "YOUR_CHAPA_SECRET_KEY")
+CHAPA_PUBLIC_KEY = os.getenv("CHAPA_PUBLIC_KEY", "YOUR_CHAPA_PUBLIC_KEY")
 
-# መረጃዎችን ከፋይል የመጫኛ እና የማስቀመጫ ሎጂክ
-def load_data():
+DATA_FILE = "koketi_equb_data.json"
+
+def load_db():
     if os.path.exists(DATA_FILE):
         with open(DATA_FILE, "r", encoding="utf-8") as f:
             return json.load(f)
-    return {"wallets": {}, "bookings": {}}
+    return {"members": {}}
 
-def save_data(data):
+def save_db(db):
     with open(DATA_FILE, "w", encoding="utf-8") as f:
-        json.dump(data, f, ensure_ascii=False, indent=4)
+        json.dump(db, f, ensure_ascii=False, indent=4)
 
-class WalletCreate(BaseModel):
-    user_id: str
-    name: str
+class EqubRegistration(BaseModel):
+    full_name: str
     phone: str
+    cheque_no: str
+    cycle_amount: float
+    paid_amount: float
+    remaining_due: float
+    guarantor_name: str
+    guarantor_cheque: str
+    collateral: str
+    current_week: int
 
-class BookingRequest(BaseModel):
-    user_id: str
-    ticket_number: int
-    week: int
-    pay_method: str
-    amount: float
-
-@app.post("/api/create-wallet")
-def create_wallet(data: WalletCreate):
-    db = load_data()
-    if data.user_id in db["wallets"]:
-        return {"status": "success", "message": "ዋሌት ቀደም ሲል አለ"}
+@app.post("/api/register-equb")
+def register_equb(data: EqubRegistration):
+    db = load_db()
+    member_id = data.phone
     
-    db["wallets"][data.user_id] = {
-        "name": data.name,
+    db["members"][member_id] = {
+        "full_name": data.full_name,
         "phone": data.phone,
-        "balance": 0.0,
-        "transactions": []
+        "cheque_no": data.cheque_no,
+        "cycle_amount": data.cycle_amount,
+        "paid_amount": data.paid_amount,
+        "remaining_due": data.remaining_due,
+        "guarantor_name": data.guarantor_name,
+        "guarantor_cheque": data.guarantor_cheque,
+        "collateral": data.collateral,
+        "current_week": data.current_week,
+        "status": "Pending Approval"
     }
-    save_data(db)
-    return {"status": "success", "message": "ዋሌት በተሳካ ሁኔታ ተከፍቷል"}
+    save_db(db)
+    
+    # ለአድሚን በቴሌግራም ማሳወቂያ መላክ
+    msg = (
+        f"🚨 **አዲስ የዕቁብ ምዝገባ እና ክፍያ!**\n\n"
+        f"👤 ስም: {data.full_name}\n"
+        f"📞 ስልክ: {data.phone}\n"
+        f"💰 የዕቁብ መጠን: {data.cycle_amount} ብር\n"
+        f"💵 የከፈለው: {data.paid_amount} ብር\n"
+        f"📅 ሳምንት: {data.current_week}\n"
+        f"🤝 ዋስ: {data.guarantor_name} ({data.collateral})"
+    )
+    url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage"
+    requests.post(url, json={"chat_id": ADMIN_TELEGRAM_ID, "text": msg, "parse_mode": "Markdown"})
+    
+    return {"status": "success", "message": "ምዝገባው በተሳካ ሁኔታ ተልኳል!"}
 
-@app.post("/api/fund-wallet")
-def fund_wallet(user_id: str, amount: float):
-    db = load_data()
-    if user_id not in db["wallets"]:
-        raise HTTPException(status_code=404,_detail="ዋሌት አልተገኘም")
-    
-    db["wallets"][user_id]["balance"] += amount
-    db["wallets"][user_id]["transactions"].append(f"ገንዘብ ገብቷል: +{amount} ብር")
-    save_data(db)
-    return {"status": "success", "new_balance": db["wallets"][user_id]["balance"]}
-
-@app.get("/api/get-bookings")
-def get_bookings():
-    db = load_data()
-    return {"bookings": db["bookings"], "wallets": db["wallets"]}
-
-@app.post("/api/save-booking")
-def save_booking(req: BookingRequest):
-    db = load_data()
-    user_id = req.user_id
-    
-    if user_id not in db["wallets"]:
-        raise HTTPException(status_code=400, detail="እባክዎ መጀመሪያ ዋሌት ይክፈቱ")
-    
-    # ከዋሌት ሂሳብ የመቀነስ ወይም ቀጥታ የማረጋገጥ ሎጂክ
-    wallet = db["wallets"][user_id]
-    if req.pay_method == "wallet":
-        if wallet["balance"] < req.amount:
-            return {"status": "error", "message": "በዋሌትዎ ውስጥ በቂ ገንዘብ የለም!"}
-        wallet["balance"] -= req.amount
-        wallet["transactions"].append(f"ለእቁብ ድርሻ {req.ticket_number} (ሳምንት {req.week}) ክፍያ ተፈጽሟል: -{req.amount} ብር")
-    
-    db["bookings"][str(req.ticket_number)] = {
-        "user_id": user_id,
-        "name": wallet["name"],
-        "phone": wallet["phone"],
-        "week": req.week,
-        "pay": req.pay_method,
-        "status": "approved" if req.pay_method == "wallet" else "pending"
-    }
-    save_data(db)
-    return {"status": "success", "message": "ምዝገባው ተሳክቷል"}
+@app.get("/api/get-member/{phone}")
+def get_member(phone: str):
+    db = load_db()
+    if phone in db["members"]:
+        return {"status": "found", "data": db["members"][phone]}
+    raise HTTPException(status_code=404, detail="አባል አልተገኘም")
