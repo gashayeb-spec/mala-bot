@@ -1,327 +1,181 @@
 <!DOCTYPE html>
 <html lang="am">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ጋሻዬ ሀዋሳ - ሚስጥራዊ የእቁብ መመዝገቢያ ደብተር</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', Arial, sans-serif;
-            background-color: #f4f6f9;
-            margin: 0;
-            padding: 10px;
-            text-align: center;
-        }
-        header {
-            background-color: #2c3e50;
-            color: white;
-            padding: 15px;
-            border-radius: 10px;
-            margin-bottom: 15px;
-        }
-        h1 { margin: 0; font-size: 22px; }
-        .controls {
-            margin: 15px 0;
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            align-items: center;
-        }
-        select, input {
-            padding: 10px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-            font-size: 14px;
-        }
-        .grid-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-            gap: 8px;
-            max-width: 100%;
-            margin: 0 auto;
-        }
-        .ticket {
-            background-color: #2ecc71;
-            color: white;
-            padding: 12px 5px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: bold;
-            font-size: 13px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-        }
-        .ticket.booked {
-            background-color: #e74c3c;
-        }
-        .ticket-details {
-            font-size: 10px;
-            display: block;
-            margin-top: 3px;
-            font-weight: normal;
-            background: rgba(0,0,0,0.15);
-            border-radius: 3px;
-            padding: 1px;
-        }
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background-color: rgba(0,0,0,0.5);
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
-        .modal-content {
-            background-color: white;
-            padding: 20px;
-            border-radius: 10px;
-            width: 85%;
-            max-width: 320px;
-            text-align: left;
-        }
-        .modal-content input {
-            width: 100%;
-            margin: 5px 0 15px 0;
-            box-sizing: border-box;
-        }
-        .modal-btns {
-            display: flex;
-            justify-content: flex-end;
-            gap: 10px;
-        }
-        .btn {
-            padding: 8px 15px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-        .btn-submit { background-color: #2ecc71; color: white; }
-        .btn-cancel { background-color: #95a5a6; color: white; }
-        .btn-danger { background-color: #c0392b; color: white; width: 100%; margin-top: 10px; }
-        
-        /* መቆለፊያ ስክሪን */
-        #lockScreen {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background-color: #2c3e50;
-            color: white;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 2000;
-        }
-        /* የፒን መግቢያ እና የዓይን ሳጥን */
-        .pin-container {
-            position: relative;
-            width: 220px;
-            margin-bottom: 15px;
-        }
-        .pin-container input {
-            width: 100%;
-            padding-right: 40px;
-            text-align: center;
-            font-size: 18px;
-            box-sizing: border-box;
-        }
-        .eye-icon {
-            position: absolute;
-            right: 10px;
-            top: 50%;
-            transform: translateY(-50%);
-            cursor: pointer;
-            font-size: 18px;
-            user-select: none;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KOKETI KURT & LOUNGE - የዕቁብ እና ዋስትና መቆጣጠሪያ</title>
+<style>
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background-color: #0b1f36; display: flex; justify-content: center; padding: 20px; margin: 0; }
+    .form-container { background-color: #ffffff; width: 100%; max-width: 450px; padding: 25px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
+    .header { text-align: center; margin-bottom: 25px; border-bottom: 3px double #0b2545; padding-bottom: 12px; }
+    .header h2 { margin: 0; font-size: 22px; color: #0b2545; font-weight: 800; }
+    .header .subtitle { margin: 5px 0 0 0; font-size: 15px; color: #d93025; font-weight: bold; }
+    
+    .section-title { background-color: #f0f4f8; color: #0b2545; padding: 8px; font-weight: bold; font-size: 14px; margin: 20px 0 10px 0; border-left: 4px solid #0b2545; border-radius: 0 4px 4px 0; }
+    
+    .form-group { margin-bottom: 15px; }
+    label { display: block; font-weight: 700; font-size: 13.5px; color: #111; margin-bottom: 6px; }
+    input[type="text"], input[type="number"], select { width: 100%; padding: 11px; border: 1px solid #d1d5db; border-radius: 4px; box-sizing: border-box; font-size: 15px; }
+    
+    .bank-info-box {
+        background: #f8f9fa;
+        border: 1px dashed #0b2545;
+        padding: 12px;
+        border-radius: 6px;
+        font-size: 12.5px;
+        margin-bottom: 15px;
+        color: #0b2545;
+        line-height: 1.6;
+    }
+
+    .row-group { display: flex; gap: 10px; }
+    .row-group .form-group { flex: 1; }
+
+    .checkbox-group { display: flex; align-items: center; gap: 10px; background-color: #f8f9fa; padding: 12px; border-radius: 4px; border: 1px dashed #0b2545; margin-top: 15px; }
+    .checkbox-group input { width: 20px; height: 20px; }
+    .checkbox-group label { margin: 0; font-size: 13px; color: #0b2545; }
+    
+    .submit-btn { width: 100%; padding: 14px; background-color: #0b2545; color: white; border: none; border-radius: 4px; font-weight: bold; font-size: 16px; cursor: pointer; margin-top: 15px; }
+    .submit-btn:hover { background-color: #133863; }
+</style>
 </head>
 <body>
 
-    <!-- መቆለፊያ ስክሪን -->
-    <div id="lockScreen">
-        <h2 id="lockTitle">መተግበሪያው ተቆልፏል</h2>
-        <p id="lockSub">እባክዎ ሚስጥራዊ የፒን ቁጥርዎን ያስገቡ</p>
-        <div class="pin-container">
-            <input type="password" id="pinInput" placeholder="የፒን ቁጥር ያስገቡ">
-            <!-- የዓይን ምልክት ማሳያ ቁልፍ -->
-            <span class="eye-icon" id="toggleEye" onclick="togglePINVisibility()">👁️‍🗨️</span>
-        </div>
-        <button class="btn btn-submit" style="width:220px; padding:12px;" onclick="checkPIN()">ደብተሩን ክፈት</button>
+<div class="form-container">
+    <div class="header">
+        <h2>KOKETI KURT & LOUNGE</h2>
+        <div class="subtitle">ዲጂታል የዕቁብና ዋስትና መቆጣጠሪያ</div>
+    </div>
+    
+    <div class="bank-info-box">
+        <b>የባንክ አካውንቶች (ስም: ጋሻዬ በእጅጉ ሄርጎ)፦</b><br>
+        • ቴሌብር: <b>0916039015</b><br>
+        • ንግድ ባንክ: <b>100070780201</b><br>
+        • አቢሲኒያ: <b>54071628</b><br>
+        • ንብ ባንክ: <b>7000106022734</b><br>
+        • ዳሽን ባንክ: <b>5121355332011</b>
     </div>
 
-    <!-- ዋናው የአፕሊኬሽን ክፍል -->
-    <div id="mainApp" style="display:none;">
-        <header>
-            <h1>ጋሻዬ ሀዋሳ - የእቁብ መመዝገቢያ ደብተር</h1>
-            <button class="btn btn-cancel" style="font-size:11px; margin-top:5px; padding:4px 8px;" onclick="lockAppNow()">አፑን ቆልፍ</button>
-        </header>
+    <form id="equbForm">
+        <!-- 1. የዕቁብተኛው መረጃ -->
+        <div class="section-title">፩. የዕቁብተኛው መረጃ (Member Info)</div>
+        <div class="form-group">
+            <label>ሙሉ ስም (Full Name)</label>
+            <input type="text" id="fullName" placeholder="የእቁብተኛውን ስም ያስገቡ" required>
+        </div>
+        <div class="form-group">
+            <label>ስልክ ቁጥር (Phone Number)</label>
+            <input type="text" id="phone" placeholder="0912345678" required>
+        </div>
+        <div class="form-group">
+            <label>የእቁብተኛው የቼክ ቁጥር (Member Cheque No.)</label>
+            <input type="text" id="chequeNo" placeholder="ካለው የቼክ ቁጥር ያስገቡ">
+        </div>
 
-        <div class="controls">
-            <label><b>የእቁብ ቁጥር መጠን፦</b></label>
-            <select id="rangeSelect" onchange="generateTickets()">
-                <option value="100">100 ቁጥሮች</option>
-                <option value="1000">1,000 ቁጥሮች</option>
-                <option value="5000">5,000 ቁጥሮች</option>
-                <option value="10000">10,000 ቁጥሮች</option>
+        <!-- 2. የዕቁብ የገንዘብ ሂሳብ መቆጣጠሪያ -->
+        <div class="section-title">፪. የዕቁብ የገንዘብ ሁኔታ እና ዙር</div>
+        <div class="form-group">
+            <label>የዕቁብ ዙር መጠን (Equb Cycle Amount)</label>
+            <select id="cycleAmount" required>
+                <option value="">-- የብር መጠን ይምረጡ --</option>
+                <option value="10000">10,000 ብር</option>
+                <option value="20000">20,000 ብር</option>
+                <option value="50000">50,000 ብር</option>
+                <option value="100000">100,000 ብር</option>
+            </select>
+        </div>
+        <div class="row-group">
+            <div class="form-group">
+                <label>እስካሁን የጣለው (Paid Amount)</label>
+                <input type="number" id="paidAmount" placeholder="በብር" required>
+            </div>
+            <div class="form-group">
+                <label>ቀሪ እዳ (Remaining Due)</label>
+                <input type="number" id="remainingDue" placeholder="በብር" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label>የአሁን የዕቁብ ሳምንት / ዙር (Current Week)</label>
+            <select id="currentWeek" required>
+                <!-- ከ 1 እስከ 110 ሳምንታት በራስ-ሰር የሚሞላ -->
             </select>
         </div>
 
-        <div class="grid-container" id="ticketGrid"></div>
-    </div>
-
-    <!-- መመዝገቢያ እና ማጥፊያ ፎርም -->
-    <div class="modal" id="bookingModal">
-        <div class="modal-content">
-            <h3 id="modalTitle" style="margin-top:0; font-size:16px;">ሰው ለመመዝገብ</h3>
-            
-            <label>የአባሉ ሙሉ ስም፦</label>
-            <input type="text" id="userName" placeholder="ስም ያስገቡ">
-            
-            <label>ስልክ ቁጥር፦</label>
-            <input type="tel" id="userPhone" placeholder="09........">
-            
-            <label>የክፍያ ሁኔታ፦</label>
-            <select id="payStatus" style="width:100%; margin:5px 0 15px 0; padding:10px; border-radius:5px;">
-                <option value="ቴሌብር">በቴሌብር ከፍሏል</option>
-                <option value="ንግድ ባንክ">በንግድ ባንክ ከፍሏል</option>
-                <option value="ካሽ">በካሽ ከፍሏል</option>
-                <option value="ያልከፈለ">አልከፈለም</option>
-            </select>
-            
-            <div class="modal-btns">
-                <button class="btn btn-cancel" onclick="closeModal()">ተውት</button>
-                <button class="btn btn-submit" onclick="submitBooking()">መዝግብ</button>
+        <!-- 3. የዋስትና መረጃ -->
+        <div class="section-title">፫. የዋስትና እና የዋስ መረጃ (Guarantor & Collateral)</div>
+        <div class="form-group">
+            <label>የዋስ ሙሉ ስም (Guarantor Name)</label>
+            <input type="text" id="guarantorName" placeholder="የዋስ ሙሉ ስም ያስገቡ">
+        </div>
+        <div class="row-group">
+            <div class="form-group">
+                <label>የዋስ የቼክ ቁጥር</label>
+                <input type="text" id="guarantorCheque" placeholder="የዋስ ቼክ ቁጥር">
             </div>
-            
-            <div id="deleteSection" style="display:none;">
-                <hr style="margin:15px 0 10px 0;">
-                <button class="btn btn-danger" onclick="deleteBooking()">በሙሉ አጥፋ (Erase)</button>
+            <div class="form-group">
+                <label>በዋስትና የሚያዘው ንብረት</label>
+                <input type="text" id="collateral" placeholder="ለምሳሌ፡ መኪና፣ ቤት ወዘተ">
             </div>
         </div>
-    </div>
 
-    <script>
-        let currentSelectedTicket = null;
-        let bookedTickets = JSON.parse(localStorage.getItem('gashayeBookings')) || {};
-        let savedPIN = localStorage.getItem('gashayeAppPIN');
+        <div class="form-group checkbox-group">
+            <input type="checkbox" id="sms_notify" checked>
+            <label for="sms_notify"><strong>ሳምንታዊ አላርት እና ኤስኤምኤስ ይላክ፦</strong> ምዝገባው ሲያልቅ እና ሳምንታዊ ክፍያ ሲደርስ ማስታወሻ ይላክ።</label>
+        </div>
 
-        window.onload = function() {
-            if (!savedPIN) {
-                document.getElementById('lockTitle').innerText = "አዲስ የፒን ቁጥር ያዘጋጁ";
-                document.getElementById('lockSub').innerText = "ደብተሩን ለመቆለፍ አዲስ ሚስጥራዊ ቁጥር ይፍጠሩ";
-            }
+        <button type="button" class="submit-btn" onclick="submitEqubData()">ክፍያ ፈጽመው መረጃውን መዝግብ</button>
+    </form>
+</div>
+
+<script>
+    // ሳምንታትን ከ 1 እስከ 110 በራስ-ሰር መሙላት
+    window.onload = function() {
+        const weekSelect = document.getElementById('currentWeek');
+        for(let i = 1; i <= 110; i++) {
+            let opt = document.createElement('option');
+            opt.value = i;
+            opt.innerText = `ሳምንት ${i} (ከ 110)`;
+            weekSelect.appendChild(opt);
+        }
+    };
+
+    async function submitEqubData() {
+        const data = {
+            full_name: document.getElementById('fullName').value,
+            phone: document.getElementById('phone').value,
+            cheque_no: document.getElementById('chequeNo').value,
+            cycle_amount: parseFloat(document.getElementById('cycleAmount').value) || 0,
+            paid_amount: parseFloat(document.getElementById('paidAmount').value) || 0,
+            remaining_due: parseFloat(document.getElementById('remainingDue').value) || 0,
+            guarantor_name: document.getElementById('guarantorName').value,
+            guarantor_cheque: document.getElementById('guarantorCheque').value,
+            collateral: document.getElementById('collateral').value,
+            current_week: parseInt(document.getElementById('currentWeek').value)
         };
 
-        // የዓይን ምልክቷ ስትነካ ቁጥሩን ማሳያ እና መደበቂያ ተግባር
-        function togglePINVisibility() {
-            const pinInput = document.getElementById('pinInput');
-            const eyeIcon = document.getElementById('toggleEye');
-            if (pinInput.type === 'password') {
-                pinInput.type = 'text';
-                eyeIcon.innerText = '👁️';
+        if(!data.full_name || !data.phone) {
+            alert('እባክዎ ስም እና ስልክ ቁጥር ያስገቡ!');
+            return;
+        }
+
+        try {
+            const response = await fetch('/api/register-equb', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+            const result = await response.json();
+            if(result.status === 'success') {
+                alert('የእቁብ መረጃዎ እና የክፍያ ጥያቄዎ በተሳካ ሁኔታ ተመዝግቦ ለአድሚን ተልኳል!');
+                document.getElementById('equbForm').reset();
             } else {
-                pinInput.type = 'password';
-                eyeIcon.innerText = '👁️‍🗨️';
+                alert('ስህተት ተፈጥሯል፣ እባክዎ እንደገና ይሞክሩ።');
             }
+        } catch(e) {
+            alert('የኔትወርክ ስህተት አጋጥሟል!');
         }
+    }
+</script>
 
-        function checkPIN() {
-            const input = document.getElementById('pinInput').value;
-            if (!input) {
-                alert('እባክዎ ቁጥር ያስገቡ!');
-                return;
-            }
-            if (!savedPIN) {
-                localStorage.setItem('gashayeAppPIN', input);
-                savedPIN = input;
-                alert('የመቆለፊያ ፒን ቁጥርዎ በተሳካ ሁኔታ ተፈጥሯል!');
-                enterApp();
-            } else if (input === savedPIN) {
-                enterApp();
-            } else {
-                alert('የተሳሳተ የፒን ቁጥር ነው! እንደገና ይሞክሩ።');
-            }
-            document.getElementById('pinInput').value = '';
-            document.getElementById('pinInput').type = 'password';
-            document.getElementById('toggleEye').innerText = '👁️‍🗨️';
-        }
-
-        function enterApp() {
-            document.getElementById('lockScreen').style.display = 'none';
-            document.getElementById('mainApp').style.display = 'block';
-            generateTickets();
-        }
-
-        function lockAppNow() {
-            document.getElementById('lockScreen').style.display = 'flex';
-            document.getElementById('mainApp').style.display = 'none';
-        }
-
-        function generateTickets() {
-            const grid = document.getElementById('ticketGrid');
-            const range = document.getElementById('rangeSelect').value;
-            grid.innerHTML = '';
-            for (let i = 1; i <= range; i++) {
-                const ticket = document.createElement('div');
-                ticket.className = 'ticket';
-                ticket.id = 'ticket-' + i;
-                if (bookedTickets[i]) {
-                    ticket.classList.add('booked');
-                    ticket.innerHTML = `${bookedTickets[i].name}<br>${bookedTickets[i].phone} <span class="ticket-details">ቁጥር፡ ${i} [${bookedTickets[i].pay}]</span>`;
-                } else {
-                    ticket.innerHTML = `ቁጥር ${i} <span class="ticket-details">ክፍት ነው</span>`;
-                }
-                ticket.onclick = () => openModal(i);
-                grid.appendChild(ticket);
-            }
-        }
-
-        function openModal(ticketNumber) {
-            currentSelectedTicket = ticketNumber;
-            const existingData = bookedTickets[ticketNumber];
-            if (existingData) {
-                document.getElementById('modalTitle').innerText = `እቁብ ቁጥር ${ticketNumber} (የተመዘገበ መረጃ)`;
-                document.getElementById('userName').value = existingData.name;
-                document.getElementById('userPhone').value = existingData.phone;
-                document.getElementById('payStatus').value = existingData.pay;
-                document.getElementById('deleteSection').style.display = 'block';
-            } else {
-                document.getElementById('modalTitle').innerText = `እቁብ ቁጥር ${ticketNumber} ላይ ሰው መዝግብ`;
-                document.getElementById('userName').value = '';
-                document.getElementById('userPhone').value = '';
-                document.getElementById('payStatus').value = 'ቴሌብር';
-                document.getElementById('deleteSection').style.display = 'none';
-            }
-            document.getElementById('bookingModal').style.display = 'flex';
-        }
-
-        function closeModal() {
-            document.getElementById('bookingModal').style.display = 'none';
-        }
-
-        function submitBooking() {
-            const name = document.getElementById('userName').value.trim();
-            const phone = document.getElementById('userPhone').value.trim();
-            const pay = document.getElementById('payStatus').value;
-            if (!name || !phone) {
-                alert('እባክዎ ስም እና ስልክ ቁጥር ያስገቡ!');
-                return;
-            }
-            bookedTickets[currentSelectedTicket] = { name: name, phone: phone, pay: pay };
-            localStorage.setItem('gashayeBookings', JSON.stringify(bookedTickets));
-            generateTickets();
-            closeModal();
-        }
-
-        function deleteBooking() {
-            if (confirm(`ቁጥር ${currentSelectedTicket} ላይ ያለውን የእቁብ መረጃ ማጥፋት ይፈልጋሉ?`)) {
-                delete bookedTickets[currentSelectedTicket];
-                localStorage.setItem('gashayeBookings', JSON.stringify(bookedTickets));
-                generateTickets();
-                closeModal();
-            }
-        }
-    </script>
 </body>
 </html>
