@@ -80,7 +80,7 @@ background-color: white;
 padding: 20px;
 border-radius: 10px;
 width: 90%;
-max-width: 340px;
+max-width: 360px;
 text-align: left;
 max-height: 90vh;
 overflow-y: auto;
@@ -89,6 +89,16 @@ overflow-y: auto;
 width: 100%;
 margin: 5px 0 12px 0;
 box-sizing: border-box;
+}
+.bank-info-box {
+background: #f8f9fa;
+border: 1px dashed #2980b9;
+padding: 10px;
+border-radius: 5px;
+font-size: 12px;
+margin-bottom: 12px;
+color: #2c3e50;
+line-height: 1.5;
 }
 .modal-btns {
 display: flex;
@@ -158,12 +168,11 @@ user-select: none;
 <button class="btn btn-cancel" style="font-size:11px; margin-top:5px; padding:4px 8px;" onclick="lockAppNow()">አፑን ቆልፍ</button>
 </header>
 <div class="controls">
-<label><b>የእቁብ ቁጥር መጠን፦</b></label>
+<label><b>የእቁብ ድርሻ ብዛት፦</b></label>
 <select id="rangeSelect" onchange="generateTickets()">
-<option value="100">100 ቁጥሮች</option>
-<option value="1000">1,000 ቁጥሮች</option>
-<option value="5000">5,000 ቁጥሮች</option>
-<option value="10000">10,000 ቁጥሮች</option>
+<option value="50">50 ድርሻዎች</option>
+<option value="100">100 ድርሻዎች</option>
+<option value="200" selected>200 ድርሻዎች</option>
 </select>
 </div>
 <div class="grid-container" id="ticketGrid"></div>
@@ -172,6 +181,15 @@ user-select: none;
 <div class="modal" id="bookingModal">
 <div class="modal-content">
 <h3 id="modalTitle" style="margin-top:0; font-size:16px;">ሰው ለመመዝገብ</h3>
+
+<div class="bank-info-box">
+<b>የክፍያ አካውንቶች (ስም: ጋሻዬ በእጅጉ ሄርጎ)፦</b><br>
+• ቴሌብር: <b>0916039015</b><br>
+• ንግድ ባንክ (CBE): <b>100070780201</b><br>
+• አቢሲኒያ ባንክ: <b>54071628</b><br>
+• ንብ ባንክ: <b>7000106022734</b><br>
+• ዳሽን ባንክ: <b>5121355332011</b>
+</div>
 
 <label>የአባሉ ሙሉ ስም፦</label>
 <input type="text" id="userName" placeholder="ስም ያስገቡ">
@@ -182,17 +200,20 @@ user-select: none;
 <label>እቁቡ የሚቆይበት ሳምንት (ከ 1 እስከ 110)፦</label>
 <select id="weekSelect" style="width:100%; margin:5px 0 12px 0; padding:10px; border-radius:5px;"></select>
 
-<label>የክፍያ ሁኔታ፦</label>
+<label>የክፍያ ሁኔታ እና ባንክ፦</label>
 <select id="payStatus" style="width:100%; margin:5px 0 15px 0; padding:10px; border-radius:5px;">
-<option value="ቴሌብር ከፍሏል">በቴሌብር ከፍሏል</option>
-<option value="ንግድ ባንክ ከፍሏል">በንግድ ባንክ ከፍሏል</option>
-<option value="ካሽ ከፍሏል">በካሽ ከፍሏል</option>
+<option value="በቴሌብር ከፍሏል">በቴሌብር (0916039015)</option>
+<option value="በንግድ ባንክ ከፍሏል">በንግድ ባንክ (100070780201)</option>
+<option value="በአቢሲኒያ ባንክ ከፍሏል">በአቢሲኒያ ባንክ (54071628)</option>
+<option value="በንብ ባንክ ከፍሏል">በንብ ባንክ (7000106022734)</option>
+<option value="በዳሽን ባንክ ከፍሏል">በዳሽን ባንክ (5121355332011)</option>
+<option value="በካሽ ከፍሏል">በካሽ (Cash)</option>
 <option value="ያልከፈለ">አልከፈለም</option>
 </select>
 
 <div class="modal-btns">
 <button class="btn btn-cancel" onclick="closeModal()">ተውት</button>
-<button class="btn btn-submit" onclick="submitBooking()">መዝግብ (Approval ይጠብቃል)</button>
+<button class="btn btn-submit" onclick="submitBooking()">ክፍያ ፈጽሞ መዝግብ</button>
 </div>
 
 <div id="deleteSection" style="display:none;">
@@ -295,13 +316,13 @@ function generateTickets() {
         if (bData) {
             if (bData.status === 'approved') {
                 ticket.classList.add('booked');
-                ticket.innerHTML = `${bData.name}<br>${bData.phone} <span class="ticket-details">ቁጥር ${i} [ሳምንት ${bData.week}]</span>`;
+                ticket.innerHTML = `${bData.name}<br>${bData.phone} <span class="ticket-details">ድርሻ ${i} [ሳምንት ${bData.week}]</span>`;
             } else {
                 ticket.classList.add('pending');
-                ticket.innerHTML = `${bData.name}<br>Approval እየጠበቀ... <span class="ticket-details">ሳምንት ${bData.week}</span>`;
+                ticket.innerHTML = `${bData.name}<br>ክፍያ በመረጋገጥ ላይ... <span class="ticket-details">ሳምንት ${bData.week}</span>`;
             }
         } else {
-            ticket.innerHTML = `ቁጥር ${i} <span class="ticket-details">ክፍት ነው</span>`;
+            ticket.innerHTML = `ድርሻ ${i} <span class="ticket-details">ክፍት ነው</span>`;
         }
         ticket.onclick = () => openModal(i);
         grid.appendChild(ticket);
@@ -312,18 +333,18 @@ function openModal(ticketNumber) {
     currentSelectedTicket = ticketNumber;
     const existingData = bookedTickets[ticketNumber];
     if (existingData) {
-        document.getElementById('modalTitle').innerText = `እቁብ ቁጥር ${ticketNumber} (የተመዘገበ መረጃ)`;
+        document.getElementById('modalTitle').innerText = `የእቁብ ድርሻ ${ticketNumber} (የተመዘገበ መረጃ)`;
         document.getElementById('userName').value = existingData.name;
         document.getElementById('userPhone').value = existingData.phone;
         document.getElementById('weekSelect').value = existingData.week || 1;
         document.getElementById('payStatus').value = existingData.pay;
         document.getElementById('deleteSection').style.display = 'block';
     } else {
-        document.getElementById('modalTitle').innerText = `እቁብ ቁጥር ${ticketNumber} ላይ ሰው መዝግብ`;
+        document.getElementById('modalTitle').innerText = `የእቁብ ድርሻ ${ticketNumber} ላይ መመዝገቢያ`;
         document.getElementById('userName').value = '';
         document.getElementById('userPhone').value = '';
         document.getElementById('weekSelect').value = '1';
-        document.getElementById('payStatus').value = 'ቴሌብር ከፍሏል';
+        document.getElementById('payStatus').value = 'በቴሌብር ከፍሏል';
         document.getElementById('deleteSection').style.display = 'none';
     }
     document.getElementById('bookingModal').style.display = 'flex';
@@ -340,7 +361,7 @@ async function submitBooking() {
     const pay = document.getElementById('payStatus').value;
 
     if (!name || !phone) {
-        alert('እባክዎ ስም እና ስልክ ቁጥር ያስገቡ!');
+        alert('እባክዎ ሙሉ ስም እና ስልክ ቁጥር ያስገቡ!');
         return;
     }
 
@@ -358,7 +379,7 @@ async function submitBooking() {
         });
         const result = await response.json();
         if(result.status === 'success') {
-            alert('ምዝገባው ተልኳል! አድሚኑ እስኪፈቅድ (Approve እስኪያደርግ) በፔንዲንግ ይታያል።');
+            alert('ክፍያዎ እና ምዝገባዎ በትክክል ተልኳል! አድሚኑ ያረጋግጠዋል።');
             bookedTickets[currentSelectedTicket] = { name: name, phone: phone, week: week, pay: pay, status: 'pending' };
             localStorage.setItem('gashayeBookings', JSON.stringify(bookedTickets));
             generateTickets();
@@ -372,7 +393,7 @@ async function submitBooking() {
 }
 
 async function deleteBooking() {
-    if (confirm(`ቁጥር ${currentSelectedTicket} ላይ ያለውን የእቁብ መረጃ ማጥፋት ይፈልጋሉ?`)) {
+    if (confirm(`ድርሻ ${currentSelectedTicket} ላይ ያለውን የእቁብ መረጃ ማጥፋት ይፈልጋሉ?`)) {
         try {
             await fetch('/api/delete-booking', {
                 method: 'POST',
