@@ -1,79 +1,58 @@
-import os
-import json
-from fastapi import FastAPI, Request, HTTPException
-from pydantic import BaseModel
 import requests
+from fastapi import FastAPI, Form, File, UploadFile, HTTPException
+from fastapi.responses import HTMLResponse
 
 app = FastAPI()
 
-# ሚስጥራዊ ቁልፎች ከባካኤንድ Environment Variables ይነበባሉ
-TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN", "YOUR_BOT_TOKEN")
-ADMIN_TELEGRAM_ID = os.getenv("ADMIN_TELEGRAM_ID", "YOUR_ADMIN_ID")
-CHAPA_SECRET_KEY = os.getenv("CHAPA_SECRET_KEY", "YOUR_CHAPA_SECRET_KEY")
-CHAPA_PUBLIC_KEY = os.getenv("CHAPA_PUBLIC_KEY", "YOUR_CHAPA_PUBLIC_KEY")
-
-DATA_FILE = "koketi_equb_data.json"
-
-def load_db():
-    if os.path.exists(DATA_FILE):
-        with open(DATA_FILE, "r", encoding="utf-8") as f:
-            return json.load(f)
-    return {"members": {}}
-
-def save_db(db):
-    with open(DATA_FILE, "w", encoding="utf-8") as f:
-        json.dump(db, f, ensure_ascii=False, indent=4)
-
-class EqubRegistration(BaseModel):
-    full_name: str
-    phone: str
-    cheque_no: str
-    cycle_amount: float
-    paid_amount: float
-    remaining_due: float
-    guarantor_name: str
-    guarantor_cheque: str
-    collateral: str
-    current_week: int
+# የቴሌግራም ቦት መረጃዎ (እዚህጋ የባለቤቱን ቶክን እና የአድሚን ቻት 🆔 ያስገቡ)
+TELEGRAM_BOT_TOKEN = "YOUR_BOT_TOKEN"
+ADMIN_CHAT_ID = "YOUR_ADMIN_USER_ID"
 
 @app.post("/api/register-equb")
-def register_equb(data: EqubRegistration):
-    db = load_db()
-    member_id = data.phone
-    
-    db["members"][member_id] = {
-        "full_name": data.full_name,
-        "phone": data.phone,
-        "cheque_no": data.cheque_no,
-        "cycle_amount": data.cycle_amount,
-        "paid_amount": data.paid_amount,
-        "remaining_due": data.remaining_due,
-        "guarantor_name": data.guarantor_name,
-        "guarantor_cheque": data.guarantor_cheque,
-        "collateral": data.collateral,
-        "current_week": data.current_week,
-        "status": "Pending Approval"
-    }
-    save_db(db)
-    
-    # ለአድሚን በቴሌግራም ማሳወቂያ መላክ
-    msg = (
-        f"🚨 **አዲስ የዕቁብ ምዝገባ እና ክፍያ!**\n\n"
-        f"👤 ስም: {data.full_name}\n"
-        f"📞 ስልክ: {data.phone}\n"
-        f"💰 የዕቁብ መጠን: {data.cycle_amount} ብር\n"
-        f"💵 የከፈለው: {data.paid_amount} ብር\n"
-        f"📅 ሳምንት: {data.current_week}\n"
-        f"🤝 ዋስ: {data.guarantor_name} ({data.collateral})"
-    )
-    url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage"
-    requests.post(url, json={"chat_id": ADMIN_TELEGRAM_ID, "text": msg, "parse_mode": "Markdown"})
-    
-    return {"status": "success", "message": "ምዝገባው በተሳካ ሁኔታ ተልኳል!"}
+async def register_equb(
+    full_name: str = Form(...),
+    address: str = Form(...),
+    phone: str = Form(...),
+    cheque_no: str = Form(None),
+    cycle_amount: float = Form(...),
+    paid_amount: float = Form(...),
+    remaining_due: float = Form(...),
+    current_week: int = Form(...),
+    guarantor_name: str = Form(None),
+    guarantor_cheque: str = Form(None),
+    collateral: str = Form(None),
+    screenshot: UploadFile = File(...)
+):
+    try:
+        # 1. የተጠቃሚውን መረጃ ለቴሌግራም አድሚን በጽሁፍ ማዘጋጀት
+        caption = (
+            f"🔔 **አዲስ የዕቁብ ምዝገባ እና ክፍያ!**\n\n"
+            f"👤 **ስም:** {full_name}\n"
+            f"📍 **አድራሻ:** {address}\n"
+            f"📞 **ስልክ:** {phone}\n"
+            f"🎫 **የቼክ ቁጥር:** {cheque_no or 'የለውም'}\n"
+            f"💰 **የዙር መጠን:** {cycle_amount} ብር\n"
+            f"💵 **የከፈለው:** {paid_amount} ብር\n"
+            f"📉 **ቀሪ እዳ:** {remaining_due} ብር\n"
+            f"📅 **ሳምንት:** {current_week} (ከ 5000)\n"
+            f"🤝 **የዋስ ስም:** {guarantor_name or 'የለውም'}\n"
+            f"📋 **የዋስ ቼክ:** {guarantor_cheque or 'የለውም'}\n"
+            f"🚗 **ንብረት ዋስትና:** {collateral or 'የለውም'}"
+        )
 
-@app.get("/api/get-member/{phone}")
-def get_member(phone: str):
-    db = load_db()
-    if phone in db["members"]:
-        return {"status": "found", "data": db["members"][phone]}
-    raise HTTPException(status_code=404, detail="አባል አልተገኘም")
+        # 2. ስክሪንሾቱን እና መረጃውን በቀጥታ ወደ ቴሌግራም ቦት መላክ
+        file_bytes = await screenshot.read()
+        telegram_url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendPhoto"
+        
+        files = {'photo': (screenshot.filename, file_bytes, screenshot.content_type)}
+        data = {'chat_id': ADMIN_CHAT_ID, 'caption': caption, 'parse_mode': 'Markdown'}
+
+        response = requests.post(telegram_url, data=data, files=files)
+        
+        if response.status_code == 200:
+            return {"status": "success", "message": "Successfully sent to Telegram"}
+        else:
+            raise HTTPException(status_code=400, detail="Telegram API error")
+
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
