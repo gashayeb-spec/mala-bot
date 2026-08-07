@@ -1,58 +1,62 @@
 import requests
-from fastapi import FastAPI, Form, File, UploadFile, HTTPException
-from fastapi.responses import HTMLResponse
+from flask import Flask, request, jsonify, send_from_directory
+import os
 
-app = FastAPI()
+app = Flask(__name__)
 
-# የቴሌግራም ቦት መረጃዎ (እዚህጋ የባለቤቱን ቶክን እና የአድሚን ቻት 🆔 ያስገቡ)
-TELEGRAM_BOT_TOKEN = "YOUR_BOT_TOKEN"
-ADMIN_CHAT_ID = "YOUR_ADMIN_USER_ID"
+# የቴሌግራም እና የቻፓ መረጃዎችዎ
+TELEGRAM_BOT_TOKEN = "8543715567:AAFPG7v8h-YJchs6aCYZ_Tad_35-iELISLw"
+ADMIN_CHAT_ID = "5351353727"
+CHAPA_SECRET_KEY = "CHASECK-SncZN81Mx80yQcPiXJwRXDF6MdgchtNV"
 
-@app.post("/api/register-equb")
-async def register_equb(
-    full_name: str = Form(...),
-    address: str = Form(...),
-    phone: str = Form(...),
-    cheque_no: str = Form(None),
-    cycle_amount: float = Form(...),
-    paid_amount: float = Form(...),
-    remaining_due: float = Form(...),
-    current_week: int = Form(...),
-    guarantor_name: str = Form(None),
-    guarantor_cheque: str = Form(None),
-    collateral: str = Form(None),
-    screenshot: UploadFile = File(...)
-):
+@app.route('/')
+def serve_index():
+    return send_from_directory('.', 'index.html')
+
+@app.route('/api/register-equb', methods=['POST'])
+def register_equb():
     try:
-        # 1. የተጠቃሚውን መረጃ ለቴሌግራም አድሚን በጽሁፍ ማዘጋጀት
+        data = request.form
+        screenshot = request.files.get('screenshot')
+        
+        # ወደ ቴሌግራም የሚላከው መልእክት
         caption = (
-            f"🔔 **አዲስ የዕቁብ ምዝገባ እና ክፍያ!**\n\n"
-            f"👤 **ስም:** {full_name}\n"
-            f"📍 **አድራሻ:** {address}\n"
-            f"📞 **ስልክ:** {phone}\n"
-            f"🎫 **የቼክ ቁጥር:** {cheque_no or 'የለውም'}\n"
-            f"💰 **የዙር መጠን:** {cycle_amount} ብር\n"
-            f"💵 **የከፈለው:** {paid_amount} ብር\n"
-            f"📉 **ቀሪ እዳ:** {remaining_due} ብር\n"
-            f"📅 **ሳምንት:** {current_week} (ከ 5000)\n"
-            f"🤝 **የዋስ ስም:** {guarantor_name or 'የለውም'}\n"
-            f"📋 **የዋስ ቼክ:** {guarantor_cheque or 'የለውም'}\n"
-            f"🚗 **ንብረት ዋስትና:** {collateral or 'የለውም'}"
+            f"🔔 *አዲስ የዕቁብ ምዝገባ!*\n\n"
+            f"👤 *ስም:* {data.get('full_name')}\n"
+            f"📍 *አድራሻ:* {data.get('address')}\n"
+            f"📞 *ስልክ:* {data.get('phone')}\n"
+            f"🎫 *የቼክ ቁጥር:* {data.get('cheque_no') or 'የለም'}\n"
+            f"💰 *የዙር መጠን:* {data.get('cycle_amount')} ብር\n"
+            f"💵 *የከፈለው:* {data.get('paid_amount')} ብር\n"
+            f"📉 *ቀሪ እዳ:* {data.get('remaining_due')} ብር\n"
+            f"📅 *ሳምንት:* {data.get('current_week')} (ከ 5000)\n"
+            f"🤝 *የዋስ ስም:* {data.get('guarantor_name') or 'የለም'}\n"
+            f"📋 *የዋስ ቼክ:* {data.get('guarantor_cheque') or 'የለም'}\n"
+            f"🚗 *ንብረት ዋስትና:* {data.get('collateral') or 'የለም'}"
         )
-
-        # 2. ስክሪንሾቱን እና መረጃውን በቀጥታ ወደ ቴሌግራም ቦት መላክ
-        file_bytes = await screenshot.read()
+        
         telegram_url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendPhoto"
         
-        files = {'photo': (screenshot.filename, file_bytes, screenshot.content_type)}
-        data = {'chat_id': ADMIN_CHAT_ID, 'caption': caption, 'parse_mode': 'Markdown'}
-
-        response = requests.post(telegram_url, data=data, files=files)
+        files = {}
+        if screenshot:
+            files['photo'] = (screenshot.filename, screenshot.read(), screenshot.content_type)
+            
+        payload = {
+            'chat_id': ADMIN_CHAT_ID, 
+            'caption': caption, 
+            'parse_mode': 'Markdown'
+        }
+        
+        response = requests.post(telegram_url, data=payload, files=files)
         
         if response.status_code == 200:
-            return {"status": "success", "message": "Successfully sent to Telegram"}
+            return jsonify({"status": "success"})
         else:
-            raise HTTPException(status_code=400, detail="Telegram API error")
-
+            return jsonify({"status": "error", "message": "Failed to send to Telegram"}), 500
+            
     except Exception as e:
-        return {"status": "error", "message": str(e)}
+        return jsonify({"status": "error", "message": str(e)}), 500
+
+if __name__ == '__main__':
+    port = int(os.environ.get("PORT", 8080))
+    app.run(host='0.0.0.0', port=port)
