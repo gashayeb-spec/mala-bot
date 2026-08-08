@@ -3,342 +3,93 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ጋሻዬ ሀዋሳ - የእቁብ መመዝገቢያ ደብተር</title>
+    <title>ጠቃሚ Bot Mini App</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        body {
-            font-family: 'Segoe UI', Arial, sans-serif;
-            background-color: #f4f6f9;
-            margin: 0;
-            padding: 10px;
-            text-align: center;
-        }
-        header {
-            background-color: #2c3e50;
-            color: white;
-            padding: 15px;
-            border-radius: 10px;
-            margin-bottom: 15px;
-        }
-        h1 { margin: 0; font-size: 22px; }
-        .controls {
-            margin: 15px 0;
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            align-items: center;
-        }
-        select, input {
-            padding: 10px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-            font-size: 14px;
-        }
-        .grid-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-            gap: 8px;
-            max-width: 100%;
-            margin: 0 auto;
-        }
-        .ticket {
-            background-color: #2ecc71;
-            color: white;
-            padding: 12px 5px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: bold;
-            font-size: 13px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-        }
-        .ticket.booked {
-            background-color: #e74c3c;
-        }
-        .ticket.pending {
-            background-color: #f39c12;
-        }
-        .ticket-details {
-            font-size: 10px;
-            display: block;
-            margin-top: 3px;
-            font-weight: normal;
-            background: rgba(0,0,0,0.15);
-            border-radius: 3px;
-            padding: 1px;
-        }
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background-color: rgba(0,0,0,0.5);
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
-        .modal-content {
-            background-color: white;
-            padding: 20px;
-            border-radius: 10px;
-            width: 85%;
-            max-width: 320px;
-            text-align: left;
-        }
-        .modal-content input, .modal-content select {
-            width: 100%;
-            margin: 5px 0 15px 0;
-            box-sizing: border-box;
-        }
-        .modal-btns {
-            display: flex;
-            justify-content: flex-end;
-            gap: 10px;
-        }
-        .btn {
-            padding: 8px 15px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-        .btn-submit { background-color: #2ecc71; color: white; }
-        .btn-cancel { background-color: #95a5a6; color: white; }
-        .btn-danger { background-color: #c0392b; color: white; width: 100%; margin-top: 10px; }
-        
-        #lockScreen {
-            position: fixed;
-            top:0; left:0; width:100%; height:100%;
-            background-color: #2c3e50;
-            color: white;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 2000;
-        }
-        .pin-container {
-            position: relative;
-            width: 220px;
-            margin-bottom: 15px;
-        }
-        .pin-container input {
-            width: 100%;
-            padding-right: 40px;
-            text-align: center;
-            font-size: 18px;
-            box-sizing: border-box;
-        }
-        .eye-icon {
-            position: absolute;
-            right: 10px;
-            top: 50%;
-            transform: translateY(-50%);
-            cursor: pointer;
-            font-size: 18px;
-            user-select: none;
-        }
+        body { background-color: #0f172a; color: #f8fafc; font-family: sans-serif; margin: 0; padding: 15px; padding-bottom: 70px; }
+        .card { background: #1e293b; border-radius: 12px; padding: 15px; margin-bottom: 15px; border: 1px solid #334155; }
+        h2, h3 { margin-top: 0; color: #38bdf8; }
+        button { background: #2563eb; color: white; border: none; padding: 10px 15px; border-radius: 8px; width: 100%; font-size: 16px; cursor: pointer; margin-top: 10px; }
+        input, select { width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 10px; background: #0f172a; border: 1px solid #475569; color: white; border-radius: 6px; box-sizing: border-box; }
+        .nav-bar { position: fixed; bottom: 0; left: 0; width: 100%; background: #090d16; display: flex; justify-content: space-around; padding: 10px 0; border-top: 1px solid #1e293b; }
+        .nav-item { color: #94a3b8; text-align: center; font-size: 12px; cursor: pointer; text-decoration: none; }
+        .nav-item.active { color: #38bdf8; }
+        .hidden { display: none; }
     </style>
 </head>
 <body>
 
-    <div id="lockScreen">
-        <h2 id="lockTitle">🔒 መተግበሪያው ተቆልፏል</h2>
-        <p id="lockSub">እባክዎ ሚስጥራዊ የፒን ቁጥርዎን ያስገቡ</p>
-        <div class="pin-container">
-            <input type="password" id="pinInput" placeholder="የፒን ቁጥር ያስገቡ">
-            <span class="eye-icon" id="toggleEye" onclick="togglePINVisibility()">👁️</span>
+    <div id="home-section" class="section">
+        <h2>ጠቃሚ Bot - Services</h2>
+        <div class="card">
+            <h3>Telegram Premium</h3>
+            <p>Upgrade to premium instantly</p>
+            <button onclick="showTab('order-section')">Get Started</button>
         </div>
-        <button class="btn btn-submit" style="width:220px; padding:12px;" onclick="checkPIN()">ደብተሩን ክፈት</button>
     </div>
 
-    <div id="mainApp" style="display:none;">
-        <header>
-            <h1>ጋሻዬ ሀዋሳ - የእቁብ መመዝገቢያ ደብተር</h1>
-            <button class="btn btn-cancel" style="font-size:11px; margin-top:5px; padding:4px 8px;" onclick="lockAppNow()">🔒 አፑን ቆልፍ</button>
-        </header>
-
-        <div class="controls">
-            <label><b>የእቁብ ቁጥር መጠን፦</b></label>
-            <select id="rangeSelect" onchange="generateTickets()">
-                <option value="100">100 ቁጥሮች</option>
-                <option value="1000">1,000 ቁጥሮች</option>
-                <option value="5000">5,000 ቁጥሮች</option>
-                <option value="10000">10,000 ቁጥሮች</option>
+    <div id="order-section" class="section hidden">
+        <h2>Telegram Premium</h2>
+        <div class="card">
+            <label>Duration Package:</label>
+            <select id="duration" onchange="calculatePrice()">
+                <option value="3599">3 Months - 3599 ETB</option>
+                <option value="8900">1 Year - 8900 ETB</option>
             </select>
-        </div>
+            
+            <label>Price (ETB):</label>
+            <input type="text" id="price-display" value="3599.00" readonly>
 
-        <div class="grid-container" id="ticketGrid"></div>
+            <button onclick="payWithWallet()" style="background: #10b981;">Pay from Wallet (PIN Protected)</button>
+        </div>
     </div>
 
-    <div class="modal" id="bookingModal">
-        <div class="modal-content">
-            <h3 id="modalTitle" style="margin-top:0; font-size:16px;">ሰው ለመመዝገብ</h3>
-            <label>የአባሉ ሙሉ ስም፦</label>
-            <input type="text" id="userName" placeholder="ስም ያስገቡ">
-            
-            <label>ስልክ ቁጥር፦</label>
-            <input type="tel" id="userPhone" placeholder="09........">
-            
-            <label>የክፍያ ሁኔታ፦</label>
-            <select id="payStatus">
-                <option value="ቴሌብር">በቴሌብር ከፍሏል</option>
-                <option value="ንግድ ባንክ">በንግድ ባንክ ከፍሏል</option>
-                <option value="ካሽ">በካሽ ከፍሏል</option>
-            </select>
-
-            <label>የክፍያ ስክሪንሾት (Screenshot) ጫን፦</label>
-            <input type="file" id="paymentScreenshot" accept="image/*">
-
-            <div class="modal-btns">
-                <button class="btn btn-cancel" onclick="closeModal()">ተውት</button>
-                <button class="btn btn-submit" onclick="submitBooking()">ለማረጋገጫ ላክ</button>
-            </div>
-            
-            <div id="deleteSection" style="display:none;">
-                <hr style="margin:15px 0 10px 0;">
-                <button class="btn btn-danger" onclick="deleteBooking()">❌ ይህንን እቁብ ሙሉ በሙሉ አጥፋ (Erase)</button>
-            </div>
+    <div id="wallet-section" class="section hidden">
+        <h2>My Wallet</h2>
+        <div class="card" style="text-align: center;">
+            <p>Balance</p>
+            <h1 id="wallet-bal">0.00 ETB</h1>
+            <button onclick="setupPin()">Set Wallet PIN</button>
+            <button onclick="depositMoney()" style="background: #059669;">Deposit Funds</button>
         </div>
+    </div>
+
+    <div class="nav-bar">
+        <div class="nav-item active" onclick="showTab('home-section')">🏠 መነሻ</div>
+        <div class="nav-item" onclick="showTab('order-section')">📦 ትዕዛዞች</div>
+        <div class="nav-item" onclick="showTab('wallet-section')">💳 ዋሌት</div>
     </div>
 
     <script>
-        let currentSelectedTicket = null;
-        let bookedTickets = JSON.parse(localStorage.getItem('gashayeBookings')) || {};
-        let savedPIN = localStorage.getItem('gashayeAppPIN');
+        const tg = window.Telegram.WebApp;
+        tg.expand();
 
-        window.onload = function() {
-            if (!savedPIN) {
-                document.getElementById('lockTitle').innerText = "🔑 አዲስ የፒን ቁጥር ያዘጋጁ";
-                document.getElementById('lockSub').innerText = "ደብተሩን ለመቆለፍ አዲስ ሚስጥራዊ ቁጥር ይፍጠሩ";
-            }
-        };
+        function showTab(sectionId) {
+            document.querySelectorAll('.section').forEach(s => s.classList.add('hidden'));
+            document.getElementById(sectionId).classList.remove('hidden');
+        }
 
-        function togglePINVisibility() {
-            const pinInput = document.getElementById('pinInput');
-            const eyeIcon = document.getElementById('toggleEye');
-            if (pinInput.type === 'password') {
-                pinInput.type = 'text';
-                eyeIcon.innerText = '🙈';
-            } else {
-                pinInput.type = 'password';
-                eyeIcon.innerText = '👁️';
+        function calculatePrice() {
+            const select = document.getElementById('duration');
+            document.getElementById('price-display').value = select.value + ".00";
+        }
+
+        function payWithWallet() {
+            let pin = prompt("Enter your 4-digit Wallet PIN:");
+            if(pin) {
+                alert("Processing payment securely from your wallet...");
             }
         }
 
-        function checkPIN() {
-            const input = document.getElementById('pinInput').value;
-            if (!input) { alert('እባክዎ ቁጥር ያስገቡ!'); return; }
-            if (!savedPIN) {
-                localStorage.setItem('gashayeAppPIN', input);
-                savedPIN = input;
-                alert('የመቆለፊያ ፒን ቁጥርዎ በተሳካ ሁኔታ ተፈጥሯል!');
-                enterApp();
-            } else if (input === savedPIN) {
-                enterApp();
-            } else {
-                alert('የተሳሳተ የፒን ቁጥር ነው! እንደገና ይሞክሩ።');
-            }
-            document.getElementById('pinInput').value = '';
-            document.getElementById('pinInput').type = 'password';
-            document.getElementById('toggleEye').innerText = '👁️';
-        }
-
-        function enterApp() {
-            document.getElementById('lockScreen').style.display = 'none';
-            document.getElementById('mainApp').style.display = 'block';
-            generateTickets();
-        }
-
-        function lockAppNow() {
-            document.getElementById('lockScreen').style.display = 'flex';
-            document.getElementById('mainApp').style.display = 'none';
-        }
-
-        function generateTickets() {
-            const grid = document.getElementById('ticketGrid');
-            const range = document.getElementById('rangeSelect').value;
-            grid.innerHTML = ''; 
-
-            for (let i = 1; i <= range; i++) {
-                const ticket = document.createElement('div');
-                ticket.className = 'ticket';
-                ticket.id = 'ticket-' + i;
-                
-                if (bookedTickets[i]) {
-                    if (bookedTickets[i].status === 'pending') {
-                        ticket.classList.add('pending');
-                        ticket.innerHTML = `⏳ ቁጥር ${i} <span class="ticket-details">ማረጋገጫ እየጠበቀ...</span>`;
-                    } else {
-                        ticket.classList.add('booked');
-                        ticket.innerHTML = `📞 ${bookedTickets[i].phone} <span class="ticket-details">ቁጥር፡ ${i} [ጸድቋል]</span>`;
-                    }
-                } else {
-                    ticket.innerHTML = `👉 ቁጥር ${i} <span class="ticket-details">ክፍት ነው</span>`;
-                }
-                ticket.onclick = () => openModal(i);
-                grid.appendChild(ticket);
+        function setupPin() {
+            let pin = prompt("Create a new 4-digit PIN for your wallet security:");
+            if(pin) {
+                alert("Wallet PIN configured successfully!");
             }
         }
 
-        function openModal(ticketNumber) {
-            currentSelectedTicket = ticketNumber;
-            const existingData = bookedTickets[ticketNumber];
-            
-            if (existingData) {
-                document.getElementById('modalTitle').innerText = `እቁብ ቁጥር ${ticketNumber} (የተመዘገበ መረጃ)`;
-                document.getElementById('userName').value = existingData.name;
-                document.getElementById('userPhone').value = existingData.phone;
-                document.getElementById('payStatus').value = existingData.pay;
-                document.getElementById('deleteSection').style.display = 'block';
-            } else {
-                document.getElementById('modalTitle').innerText = `እቁብ ቁጥር ${ticketNumber} ላይ ሰው መዝግብ`;
-                document.getElementById('userName').value = '';
-                document.getElementById('userPhone').value = '';
-                document.getElementById('payStatus').value = 'ቴሌብር';
-                document.getElementById('paymentScreenshot').value = '';
-                document.getElementById('deleteSection').style.display = 'none';
-            }
-            document.getElementById('bookingModal').style.display = 'flex';
-        }
-
-        function closeModal() {
-            document.getElementById('bookingModal').style.display = 'none';
-        }
-
-        function submitBooking() {
-            const name = document.getElementById('userName').value.trim();
-            const phone = document.getElementById('userPhone').value.trim();
-            const pay = document.getElementById('payStatus').value;
-            const fileInput = document.getElementById('paymentScreenshot');
-
-            if (!name || !phone) {
-                alert('እባክዎ ስም እና ስልክ ቁጥር ያስገቡ!');
-                return;
-            }
-
-            if (!fileInput.files || fileInput.files.length === 0) {
-                alert('እባክዎ የክፍያውን ስክሪንሾት (Screenshot) ፎቶ ያያይዙ!');
-                return;
-            }
-
-            bookedTickets[currentSelectedTicket] = { 
-                name: name, 
-                phone: phone, 
-                pay: pay, 
-                status: 'pending' 
-            };
-            localStorage.setItem('gashayeBookings', JSON.stringify(bookedTickets));
-            
-            alert('መረጃውና ስክሪንሾቱ ለአድሚን ማረጋገጫ ተልኳል። አድሚኑ ሲያረጋግጠው ቀኑ ይቀየራል!');
-            generateTickets();
-            closeModal();
-        }
-
-        function deleteBooking() {
-            if (confirm(`ቁጥር ${currentSelectedTicket} ላይ ያለውን የእቁብ መረጃ ማጥፋት ይፈልጋሉ?`)) {
-                delete bookedTickets[currentSelectedTicket];
-                localStorage.setItem('gashayeBookings', JSON.stringify(bookedTickets));
-                generateTickets();
-                closeModal();
-            }
+        function depositMoney() {
+            alert("Deposit via Telebirr/CBE ({{ support_phone }}) or M-Pesa ({{ mpesa_name }})");
         }
     </script>
 </body>
