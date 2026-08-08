@@ -1,65 +1,44 @@
+import asyncio
 import logging
-import requests
-from aiogram import Bot, Dispatcher, types
-from aiogram.filters import Command
-from aiogram.types import WebAppInfo, InlineKeyboardMarkup, InlineKeyboardButton
+import sys
+from aiogram import Bot, Dispatcher, html
+from aiogram.client.default import DefaultBotProperties
+from aiogram.enums import ParseMode
+from aiogram.filters import CommandStart
+from aiogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton, WebAppInfo
 
-# የተሰጡዎት ቋሚ መረጃዎች
-TOKEN = "8543715567:AAFPG7v8h-YJchs6aCYZ_Tad_35-iELISLw"
-ADMIN_ID = 5351353727
-CHAPA_SECRET_KEY = "CHASECK-SncZN81Mx80yQcPiXJwRXDF6MdgchtNV"
+# አዲሱ የቦት ቶኪን
+TOKEN = "8543715567:AAG56vVGC2LDpIOED-euwwF72f-245TG27U"
 
-logging.basicConfig(level=logging.INFO)
-bot = Bot(token=TOKEN)
 dp = Dispatcher()
 
-@dp.message(Command("start"))
-async def cmd_start(message: types.Message):
-    user = message.from_user
-    full_name = user.full_name
-    username = f"@{user.username}" if user.username else "No Username"
+@dp.message(CommandStart())
+async def command_start_handler(message: Message) -> None:
+    # ዌብ አድራሻውን (Render ላይ Static Site ከፈጠሩ በኋላ የሚሰጥዎትን ሊንክ ከታች ባለው ቦታ ያስገቡ)
+    web_app_url = "https://mela-bot-site.onrender.com"
     
-    logging.info(f"User started bot: {full_name} ({username}), ID: {user.id}")
-
-    welcome_text = (
-        f"👋 ሰላም {full_name} እንቋንቋ ደህና መጡ!\n\n"
-        "📱 ፕሪሚየም አገልግሎቶችን ለማግኘት ከዚህ በታች ያለውን ቁልፍ ይጫኑ:\n"
-        "• ቴሌግራም ፕሪሚየም\n"
-        "• ማህበራዊ ሚዲያ አገልግሎቶች\n"
-        "• ቲክቶክ ኮይንስ\n"
-        "• እና ሌሎችም!"
-    )
-    
-    # የሚኒ አፕ (Mini App) መክፈቻ ቁልፍ (የእርስዎን የሆስቲንግ ሊንክ እዚህ ያስገቡ)
     keyboard = InlineKeyboardMarkup(
         inline_keyboard=[
-            [InlineKeyboardButton(text="🚀 መላ ቦት ማኑዌል ክፈት", web_app=WebAppInfo(url="https://your-domain.com/index.html"))]
+            [
+                InlineKeyboardButton(
+                    text="💳 ክፍያ ለመፈጸም (Mini App)", 
+                    web_app=WebAppInfo(url=web_app_url)
+                )
+            ]
         ]
     )
     
-    await message.answer(welcome_text, reply_markup=keyboard)
+    await message.answer(
+        f"ሰላም {html.bold(message.from_user.full_name)}! ወደ መላ ቦት በደህና መጡ።\nየቴሌግራም ፕሪሚየም ጥቅል ለመግዛት ከታች ያለውን ሊንክ ይጫኑ።",
+        reply_markup=keyboard
+    )
 
-# የቻፓ ክፍያ ማቀናጃ ፌንክሽን
-def initialize_chapa_payment(amount, email, first_name, last_name, phone, tx_ref):
-    url = "https://api.chapa.co/v1/transaction/initialize"
-    headers = {
-        "Authorization": f"Bearer {CHAPA_SECRET_KEY}",
-        "Content-Type": "application/json"
-    }
-    payload = {
-        "amount": str(amount),
-        "currency": "ETB",
-        "email": email,
-        "first_name": first_name,
-        "last_name": last_name,
-        "phone_number": phone,
-        "tx_ref": tx_ref,
-        "callback_url": "https://your-domain.com/api/chapa-webhook",
-        "return_url": "https://t.me/your_bot_username"
-    }
-    response = requests.post(url, json=payload, headers=headers)
-    return response.json()
+async def main() -> None:
+    bot = Bot(token=TOKEN, default=DefaultBotProperties(parse_mode=ParseMode.HTML))
+    # የድሮ Conflict ስህተት እንዳይፈጠር ከማስጀመርዎ በፊት ዌብሁክ ወይም አሮጌ ፖሊንግ ካለ ይጸዳል
+    await bot.delete_webhook(drop_pending_updates=True)
+    await dp.start_polling(bot)
 
 if __name__ == "__main__":
-    import asyncio
-    asyncio.run(dp.start_polling(bot))
+    logging.basicConfig(level=logging.INFO, stream=sys.stdout)
+    asyncio.run(main())
