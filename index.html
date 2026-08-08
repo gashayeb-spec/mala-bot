@@ -3,94 +3,68 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ጠቃሚ Bot Mini App</title>
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <title>መላ ቦት - Tekamee</title>
     <style>
-        body { background-color: #0f172a; color: #f8fafc; font-family: sans-serif; margin: 0; padding: 15px; padding-bottom: 70px; }
-        .card { background: #1e293b; border-radius: 12px; padding: 15px; margin-bottom: 15px; border: 1px solid #334155; }
-        h2, h3 { margin-top: 0; color: #38bdf8; }
-        button { background: #2563eb; color: white; border: none; padding: 10px 15px; border-radius: 8px; width: 100%; font-size: 16px; cursor: pointer; margin-top: 10px; }
-        input, select { width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 10px; background: #0f172a; border: 1px solid #475569; color: white; border-radius: 6px; box-sizing: border-box; }
-        .nav-bar { position: fixed; bottom: 0; left: 0; width: 100%; background: #090d16; display: flex; justify-content: space-around; padding: 10px 0; border-top: 1px solid #1e293b; }
-        .nav-item { color: #94a3b8; text-align: center; font-size: 12px; cursor: pointer; text-decoration: none; }
-        .nav-item.active { color: #38bdf8; }
-        .hidden { display: none; }
+        body {
+            background-color: #1e1b18;
+            color: #ffffff;
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            margin: 0;
+        }
+        .container {
+            max-width: 400px;
+            margin: auto;
+            background: #2c2521;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+        h2 { text-align: center; color: #d4af37; }
+        .card {
+            background: #3b322c;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+        }
+        .btn {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 12px;
+            width: 100%;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
 
-    <div id="home-section" class="section">
-        <h2>ጠቃሚ Bot - Services</h2>
-        <div class="card">
-            <h3>Telegram Premium</h3>
-            <p>Upgrade to premium instantly</p>
-            <button onclick="showTab('order-section')">Get Started</button>
-        </div>
+<div class="container">
+    <h2>መላ ቦት (Telegram Premium)</h2>
+    <div class="card">
+        <p><b>ጥቅል:</b> 3 ወር (3 Months)</p>
+        <p><b>መቀበያ:</b> ለራሴ (For yourself)</p>
+        <p><b>ዩዘርኔም:</b> @Koket_X</p>
+        <h3>ጠቅላላ ዋጋ: ETB 3599.00</h3>
     </div>
 
-    <div id="order-section" class="section hidden">
-        <h2>Telegram Premium</h2>
-        <div class="card">
-            <label>Duration Package:</label>
-            <select id="duration" onchange="calculatePrice()">
-                <option value="3599">3 Months - 3599 ETB</option>
-                <option value="8900">1 Year - 8900 ETB</option>
-            </select>
-            
-            <label>Price (ETB):</label>
-            <input type="text" id="price-display" value="3599.00" readonly>
-
-            <button onclick="payWithWallet()" style="background: #10b981;">Pay from Wallet (PIN Protected)</button>
-        </div>
+    <div class="card">
+        <h3>የክፍያ አማራጮች</h3>
+        <label><input type="radio" name="payment" checked> ቴሌቢር (Telebirr)</label><br><br>
+        <label><input type="radio" name="payment"> የኪስ ቦርሳ (Wallet)</label><br><br>
+        <label><input type="radio" name="payment"> ሲቢኢ ቢር (CBE Birr)</label>
     </div>
 
-    <div id="wallet-section" class="section hidden">
-        <h2>My Wallet</h2>
-        <div class="card" style="text-align: center;">
-            <p>Balance</p>
-            <h1 id="wallet-bal">0.00 ETB</h1>
-            <button onclick="setupPin()">Set Wallet PIN</button>
-            <button onclick="depositMoney()" style="background: #059669;">Deposit Funds</button>
-        </div>
-    </div>
+    <button class="btn" onclick="payNow()">ክፍያ ፈጽም ETB 3599.00</button>
+</div>
 
-    <div class="nav-bar">
-        <div class="nav-item active" onclick="showTab('home-section')">🏠 መነሻ</div>
-        <div class="nav-item" onclick="showTab('order-section')">📦 ትዕዛዞች</div>
-        <div class="nav-item" onclick="showTab('wallet-section')">💳 ዋሌት</div>
-    </div>
+<script>
+    function payNow() {
+        alert("የክፍያ ጥያቄዎ ወደ ቻፓ እና ቴሌቢር ተልኳል!");
+    }
+</script>
 
-    <script>
-        const tg = window.Telegram.WebApp;
-        tg.expand();
-
-        function showTab(sectionId) {
-            document.querySelectorAll('.section').forEach(s => s.classList.add('hidden'));
-            document.getElementById(sectionId).classList.remove('hidden');
-        }
-
-        function calculatePrice() {
-            const select = document.getElementById('duration');
-            document.getElementById('price-display').value = select.value + ".00";
-        }
-
-        function payWithWallet() {
-            let pin = prompt("Enter your 4-digit Wallet PIN:");
-            if(pin) {
-                alert("Processing payment securely from your wallet...");
-            }
-        }
-
-        function setupPin() {
-            let pin = prompt("Create a new 4-digit PIN for your wallet security:");
-            if(pin) {
-                alert("Wallet PIN configured successfully!");
-            }
-        }
-
-        function depositMoney() {
-            alert("Deposit via Telebirr/CBE ({{ support_phone }}) or M-Pesa ({{ mpesa_name }})");
-        }
-    </script>
 </body>
 </html>
