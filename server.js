@@ -8,8 +8,8 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-// እጅግ በጣም አስፈላጊ: ስታቲክ ፋይሎች (HTML, CSS) ያሉበትን ፎልደር ማሳየት
-app.use(express.static(__dirname));
+// ኤችቲኤምኤል ፋይሎች የሚገኙበትን public ፎልደር ማሳየት
+app.use(express.static(path.join(__dirname, 'public')));
 
 const BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN || "8543715567:AAG56vVGC2LDpIOED-euwwF72f-245TG27U";
 const CHASECK = process.env.CHAPA_SECRET_KEY || "CHASECK-SncZN81Mx80yQcPiXJwRXDF6MdgchtNV";
@@ -31,9 +31,9 @@ bot.start((ctx) => {
 
 bot.launch();
 
-// ቀጥታ ወደ index.html እንዲያመራ ማድረግ
+// ዌብሳይቱ ሲከፈት ከ public ፎልደር ውስጥ index.html ን መጫን
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'index.html'));
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
 app.post('/verify-payment', async (req, res) => {
