@@ -7,7 +7,9 @@ const { Telegraf } = require('telegraf');
 const app = express();
 app.use(express.json());
 app.use(cors());
-app.use(express.static(path.join(__dirname)));
+
+// እጅግ በጣም አስፈላጊ: ስታቲክ ፋይሎች (HTML, CSS) ያሉበትን ፎልደር ማሳየት
+app.use(express.static(__dirname));
 
 const BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN || "8543715567:AAG56vVGC2LDpIOED-euwwF72f-245TG27U";
 const CHASECK = process.env.CHAPA_SECRET_KEY || "CHASECK-SncZN81Mx80yQcPiXJwRXDF6MdgchtNV";
@@ -21,13 +23,18 @@ bot.start((ctx) => {
     ctx.reply(`ሰላም ${firstName} 👋 ወደ መላ ቦት እንኳን ደህና መጡ!\n\nየእርስዎ ቴሌግራም አይዲ: ${userId}\n\nአገልግሎቶቹን ለመጠቀም ከታች ያለውን ቁልፍ ይጫኑ፡`, {
         reply_markup: {
             inline_keyboard: [
-                [{ text: "🚀 መላ መተግበሪያን ክፈት", web_app: { url: "https://your-render-app-url.onrender.com" } }]
+                [{ text: "🚀 መላ መተግበሪያን ክፈት", web_app: { url: "https://mala-bot.onrender.com" } }]
             ]
         }
     });
 });
 
 bot.launch();
+
+// ቀጥታ ወደ index.html እንዲያመራ ማድረግ
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'index.html'));
+});
 
 app.post('/verify-payment', async (req, res) => {
     const { tx_ref } = req.body;
