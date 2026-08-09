@@ -6,7 +6,8 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-const CHASECK = "CHASECK-SncZN81Mx80yQcPiXJwRXDF6MdgchtNV";
+// ከ Render Environment Variables የሚወስደው (ካልተገኘ በናሙና የተሰጠውን ይጠቀማል)
+const CHASECK = process.env.CHAPA_SECRET_KEY || "CHASECK-SncZN81Mx80yQcPiXJwRXDF6MdgchtNV";
 
 app.post('/verify-payment', async (req, res) => {
     const { tx_ref } = req.body;
