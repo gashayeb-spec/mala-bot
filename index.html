@@ -4,129 +4,52 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>መላ ቦት - Telegram Mini App</title>
-    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Telegram Web App SDK -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        body {
-            background-color: #0f1016;
-            color: #ffffff;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-        }
+        body { background-color: #0f1016; color: #ffffff; font-family: sans-serif; }
     </style>
 </head>
 <body class="min-h-screen pb-20 flex flex-col justify-between">
-
-    <!-- Header / Top Bar -->
     <header class="p-4 flex items-center justify-between border-b border-gray-800">
         <div class="flex items-center space-x-2">
-            <span class="text-xl font-bold bg-gradient-to-r from-purple-400 to-indigo-500 bg-clip-text text-transparent">መላ ቦት</span>
+            <span class="text-xl font-bold text-purple-400">መላ ቦት</span>
             <span class="text-xs bg-gray-800 text-gray-300 px-2 py-0.5 rounded-full">mini app</span>
         </div>
-        <div id="user-profile" class="flex items-center space-x-2 text-sm text-gray-400">
-            <!-- ቴሌግራም ዩዘርኔም በ JavaScript ይሞላል -->
+        <div id="user-profile" class="text-sm text-gray-400">
             <span id="username-display">Loading...</span>
         </div>
     </header>
 
-    <!-- Main Content Area -->
     <main class="p-4 space-y-4 max-w-md mx-auto w-full">
-        <div class="text-left mb-2">
-            <h1 class="text-xl font-bold">እንኳን ደህና መጡ! 🚀</h1>
-            <p class="text-xs text-gray-400">የሚፈልጉትን አገልግሎት ከታች ይምረጡ</p>
-        </div>
-
-        <!-- Service Cards -->
-        <div onclick="selectService('Telegram Premium')" class="bg-[#1a1b26] border border-gray-800 p-4 rounded-2xl cursor-pointer hover:border-purple-500 transition flex items-center justify-between">
+        <h1 class="text-xl font-bold">እንኳን ደህና መጡ! 🚀</h1>
+        
+        <div onclick="selectService('Telegram Stars')" class="bg-[#1a1b26] border border-gray-800 p-4 rounded-2xl cursor-pointer hover:border-purple-500 flex items-center justify-between">
             <div class="flex items-center space-x-3">
-                <div class="w-12 h-12 bg-gradient-to-tr from-blue-500 to-indigo-400 rounded-xl flex items-center justify-center text-2xl font-bold">✈️</div>
-                <div>
-                    <h2 class="font-bold text-sm">Telegram Premium</h2>
-                    <p class="text-xs text-gray-400">Upgrade to premium instantly</p>
-                </div>
-            </div>
-            <span class="text-gray-400">→</span>
-        </div>
-
-        <div onclick="selectService('Telegram Stars')" class="bg-[#1a1b26] border border-gray-800 p-4 rounded-2xl cursor-pointer hover:border-purple-500 transition flex items-center justify-between">
-            <div class="flex items-center space-x-3">
-                <div class="w-12 h-12 bg-gradient-to-tr from-yellow-500 to-orange-400 rounded-xl flex items-center justify-center text-2xl">⭐</div>
+                <span class="text-2xl">⭐</span>
                 <div>
                     <h2 class="font-bold text-sm">Telegram Stars</h2>
                     <p class="text-xs text-gray-400">Send stars to any account</p>
                 </div>
             </div>
-            <span class="text-gray-400">→</span>
-        </div>
-
-        <div onclick="selectService('TikTok Coins')" class="bg-[#1a1b26] border border-gray-800 p-4 rounded-2xl cursor-pointer hover:border-purple-500 transition flex items-center justify-between">
-            <div class="flex items-center space-x-3">
-                <div class="w-12 h-12 bg-gradient-to-tr from-pink-500 to-purple-600 rounded-xl flex items-center justify-center text-2xl">🎵</div>
-                <div>
-                    <h2 class="font-bold text-sm">TikTok Coins</h2>
-                    <p class="text-xs text-gray-400">Top up creator balances</p>
-                </div>
-            </div>
-            <span class="text-gray-400">→</span>
-        </div>
-
-        <div onclick="selectService('Social Media')" class="bg-[#1a1b26] border border-gray-800 p-4 rounded-2xl cursor-pointer hover:border-purple-500 transition flex items-center justify-between">
-            <div class="flex items-center space-x-3">
-                <div class="w-12 h-12 bg-gradient-to-tr from-purple-500 to-blue-600 rounded-xl flex items-center justify-center text-2xl">📈</div>
-                <div>
-                    <h2 class="font-bold text-sm">Social Media</h2>
-                    <p class="text-xs text-gray-400">Grow followers, likes, and views</p>
-                </div>
-            </div>
-            <span class="text-gray-400">→</span>
+            <span>→</span>
         </div>
     </main>
 
-    <!-- Bottom Navigation Bar -->
-    <nav class="fixed bottom-0 left-0 right-0 bg-[#12131c] border-t border-gray-800 py-2 px-4 flex justify-between items-center text-xs text-gray-400">
-        <a href="#" class="flex flex-col items-center text-purple-400">
-            <span>👤</span>
-            <span>መግቢያ</span>
-        </a>
-        <a href="#" class="flex flex-col items-center hover:text-white">
-            <span>📋</span>
-            <span>ትዕዛዞች</span>
-        </a>
-        <a href="#" class="flex flex-col items-center hover:text-white">
-            <span>🎛️</span>
-            <span>ዳሽቦርድ</span>
-        </a>
-        <a href="#" class="flex flex-col items-center hover:text-white">
-            <span>📖</span>
-            <span>መመሪያ</span>
-        </a>
-        <a href="#" class="flex flex-col items-center hover:text-white">
-            <span>👛</span>
-            <span>ዋሌት</span>
-        </a>
-    </nav>
-
-    <!-- JavaScript logic to fetch Telegram User Data -->
     <script>
-        // የቴሌግራም ዌብ አፕ ዳታ ማንበብ
         const tg = window.Telegram.WebApp;
-        tg.expand(); // አፕሊኬሽኑን ሙሉ ስክሪን ማድረግ
-
+        tg.expand();
         const user = tg.initDataUnsafe?.user;
-        const usernameDisplay = document.getElementById('username-display');
-
         if (user) {
-            // ተጠቃሚው ሲገባ የራሱን ዩዘርኔም ወይም ስም በራስ-ሰር ማሳየት
-            usernameDisplay.textContent = user.username ? `@${user.username}` : user.first_name;
+            document.getElementById('username-display').textContent = user.username ? `@${user.username}` : user.first_name;
         } else {
-            // ከቴሌግራም ውጭ በብራውዘር ሲከፈት የሚታይ የሙከራ ስም
-            usernameDisplay.textContent = "@Guest_User";
+            document.getElementById('username-display').textContent = "@Guest_User";
         }
 
         function selectService(serviceName) {
-            alert(serviceName + " ተመርጧል! ወደሚቀጥለው የጥቅል ምርጫ ገጽ እንሸጋገራለን።");
-            // እዚህ ጋር ወደ ተመረጠው አገልግሎት ፓኬጅ መምረጫ ገጽ የሚወስድ ኮድ ይጨመራል
+            if (serviceName === 'Telegram Stars') {
+                window.location.href = 'packages.html';
+            }
         }
     </script>
 </body>
