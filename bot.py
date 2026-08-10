@@ -1,48 +1,42 @@
 import os
-import asyncio
-from aiogram import Bot, Dispatcher, types, F
-from aiogram.filters import Command
-from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton, WebAppInfo
+from flask import Flask, render_template, request, jsonify
+import requests
 from dotenv import load_dotenv
 
-# .env ፋይል ውስጥ ያሉትን መረጃዎች እንጭናለን
 load_dotenv()
 
-TOKEN = os.getenv("BOT_TOKEN")
+app = Flask(__name__, template_folder='.')
 
-# ቦቱን እና ዲሲፓቸርን እናስጀምራለን
-bot = Bot(token=TOKEN)
-dp = Dispatcher()
+CHAPA_SECRET_KEY = os.getenv("CHAPA_SECRET_KEY")
 
-# /start ሲባል የሚሰጠው ምላሽ
-@dp.message(Command("start"))
-async def start_handler(message: types.Message):
-    # ሚኒ አፕ የሚከፈትበት የዌብሳይት ሊንክ (በኋላ ወደ ሬንደር ስትጭን ትቀይረዋለህ)
-    # ለምሳሌ: "https://mela-bot.onrender.com"
-    web_app_url = "https://your-webapp-link.com" 
+@app.route('/')
+def home():
+    return render_template('index.html')
 
-    # የመቀበያ መልእክት
-    text = (
-        f"ሰላም {message.from_user.full_name}! 👋\n\n"
-        "እንኳን ወደ <b>Mela-bot</b> በደህና መጡ! 🚀\n\n"
-        "እዚህ የሶሻል ሚዲያ አገልግሎቶችን (Telegram Premium, TikTok Coins, Stars) "
-        "በቀላሉ ማዘዝ ይችላሉ። ከታች ያለውን በተን በመጫን ወደ አፕሊኬሽኑ ይግቡ።"
-    )
+@app.route('/pay', methods=['POST'])
+def pay():
+    data = request.json
+    amount = data.get('amount')
+    email = data.get('email', 'user@mela.com')
+    
+    headers = {
+        "Authorization": f"Bearer {CHAPA_SECRET_KEY}",
+        "Content-Type": "application/json"
+    }
+    
+    payload = {
+        "amount": str(amount),
+        "currency": "ETB",
+        "email": email,
+        "first_name": "Mela",
+        "last_name": "User",
+        "tx_ref": "mela-tx-" + os.urandom(4).hex(),
+        "callback_url": "https://yourdomain.com/callback",
+        "return_url": "https://t.me/your_bot_username"
+    }
+    
+    response = requests.post("https://api.chapa.co/v1/transaction/initialize", json=payload, headers=headers)
+    return jsonify(response.json())
 
-    # አፕሊኬሽኑን የሚከፍት በተን
-    keyboard = InlineKeyboardMarkup(inline_keyboard=[
-        [InlineKeyboardButton(
-            text="🚀 Mela-bot ን ይክፈቱ", 
-            web_app=WebAppInfo(url=web_app_url)
-        )]
-    ])
-
-    await message.answer(text, reply_markup=keyboard, parse_mode="HTML")
-
-# ቦቱን ማስጀመሪያ
-async def main():
-    print("Mela-bot እየሰራ ነው...")
-    await dp.start_polling(bot)
-
-if __name__ == "__main__":
-    asyncio.run(main())
+if __name__ == '__main__':
+    app.run(debug=True, port=5000)
