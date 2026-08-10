@@ -1,4 +1,15 @@
 import os
+import subprocess
+import sys
+
+# ፓኬጆቹ በሰርቨሩ ላይ መኖራቸውን በራሱ ቼክ አድርጎ እንዲጭን የሚያደርግ ክፍል
+required_packages = ['flask', 'requests', 'python-dotenv', 'gunicorn']
+for package in required_packages:
+    try:
+        __import__(package)
+    except ImportError:
+        subprocess.check_call([sys.executable, "-m", "pip", "install", package])
+
 from flask import Flask, render_template, request, jsonify
 import requests
 from dotenv import load_dotenv
