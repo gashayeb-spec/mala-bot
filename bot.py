@@ -1,42 +1,28 @@
 import os
-from flask import Flask, render_template, request, jsonify
-import requests
+import asyncio
+from aiogram import Bot, Dispatcher, types
+from aiogram.filters import Command
+from aiogram.types import WebAppInfo, InlineKeyboardMarkup, InlineKeyboardButton
 from dotenv import load_dotenv
 
 load_dotenv()
 
-app = Flask(__name__, template_folder='.')
+BOT_TOKEN = os.getenv("BOT_TOKEN")
+# Render ላይ የሰጡትን የሰርቨር ሊንክ እዚህ ያስገቡ (ለምሳሌ፡ https://mela-bot.onrender.com)
+WEB_APP_URL = "https://mela-bot.onrender.com" 
 
-CHAPA_SECRET_KEY = os.getenv("CHAPA_SECRET_KEY")
+bot = Bot(token=BOT_TOKEN)
+dp = Dispatcher()
 
-@app.route('/')
-def home():
-    return render_template('index.html')
+@dp.message(Command("start"))
+struct async def start_cmd(message: types.Message):
+    kb = InlineKeyboardMarkup(inline_keyboard=[
+        [InlineKeyboardButton(text="🚀 መተግበሪያውን ክፈት (Open Mela)", web_app=WebAppInfo(url=WEB_APP_URL))]
+    ])
+    await message.answer("ሰላም! ማላን ለመጠቀም ከታች ያለውን ቁልፍ ይጫኑ፦", reply_markup=kb)
 
-@app.route('/pay', methods=['POST'])
-def pay():
-    data = request.json
-    amount = data.get('amount')
-    email = data.get('email', 'user@mela.com')
-    
-    headers = {
-        "Authorization": f"Bearer {CHAPA_SECRET_KEY}",
-        "Content-Type": "application/json"
-    }
-    
-    payload = {
-        "amount": str(amount),
-        "currency": "ETB",
-        "email": email,
-        "first_name": "Mela",
-        "last_name": "User",
-        "tx_ref": "mela-tx-" + os.urandom(4).hex(),
-        "callback_url": "https://yourdomain.com/callback",
-        "return_url": "https://t.me/your_bot_username"
-    }
-    
-    response = requests.post("https://api.chapa.co/v1/transaction/initialize", json=payload, headers=headers)
-    return jsonify(response.json())
+async def main():
+    await dp.start_polling(bot)
 
-if __name__ == '__main__':
-    app.run(debug=True, port=5000)
+if __name__ == "__main__":
+    asyncio.run(main())
