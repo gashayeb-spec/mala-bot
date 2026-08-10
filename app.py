@@ -13,8 +13,7 @@ load_dotenv()
 # ኮንፊግሬሽን
 BOT_TOKEN = os.getenv("BOT_TOKEN")
 CHAPA_SECRET_KEY = os.getenv("CHAPA_SECRET_KEY")
-# Render ላይ የተሰጠዎትን የዌብሳይት ሊንክ እዚህ ያስገቡ
-WEB_APP_URL = "https://mela-bot--site.onrender.com" 
+WEB_APP_URL = "https://mala-bot.onrender.com" 
 
 # 1. የ Flask ክፍል
 app = Flask(__name__, template_folder='.')
@@ -42,7 +41,7 @@ def pay():
         "last_name": "User",
         "tx_ref": "mela-tx-" + os.urandom(4).hex(),
         "callback_url": WEB_APP_URL + "/callback",
-        "return_url": "https://t.me/your_bot_username"
+        "return_url": "https://t.me/mala_bot"
     }
     
     response = requests.post("https://api.chapa.co/v1/transaction/initialize", json=payload, headers=headers)
