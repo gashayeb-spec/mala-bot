@@ -303,6 +303,7 @@
         </div>
     </div>
 
+    <!-- WELCOME STEP -->
     <div id="step-welcome" class="step active">
         <h2 id="welcomeTitle">እንኳን ወደ መላ.ቦት በደህና መጡ</h2>
         <p class="subtitle" id="welcomeSubtitle">እባክዎ የሚፈልጉትን አማራጭ ይምረጡ (1 ሰው = 1 አካውንት)</p>
@@ -313,6 +314,7 @@
         </div>
     </div>
 
+    <!-- LOGIN STEP -->
     <div id="step-login" class="step">
         <h2 id="loginTitle">ወደ ዋሌትዎ ይግቡ (Login)</h2>
         <p class="subtitle" id="loginSubtitle">በመዝገቡበት ስልክ ቁጥር እና ፓስወርድ አካውንትዎን ይክፈቱ</p>
@@ -331,6 +333,7 @@
         </form>
     </div>
 
+    <!-- REGISTER STEP -->
     <div id="step-register" class="step">
         <h2 id="regTitle">መላ.ቦት ምዝገባ</h2>
         <p class="subtitle" id="regSubtitle">ዋሌት ለመክፈት መረጃዎን ይሙሉ (አንድ ሰው 1 አካውንት ብቻ)</p>
@@ -382,6 +385,7 @@
         </form>
     </div>
 
+    <!-- KYC STEP -->
     <div id="step-kyc" class="step">
         <h2 id="kycTitle">ብሔራዊ መታወቂያ (KYC) & ፎቶ ማረጋገጫ</h2>
         <p class="subtitle" id="kycSubtitle">አንድ ግለሰብ ከአንድ በላይ አካውንት እንዳይከፍት መታወቂያና ፎቶዎ በአድሚን በጥንቃቄ ይረጋገጣል</p>
@@ -415,6 +419,7 @@
         </form>
     </div>
 
+    <!-- PENDING STEP -->
     <div id="step-pending" class="step" style="text-align: center; justify-content: center; padding: 20px 0;">
         <h2 id="pendingTitle">ማረጋገጫ በመጠበቅ ላይ...</h2>
         <p class="subtitle" id="pendingSubtitle">መታወቂያዎ እና ፎቶዎ ለአድሚን ተልኳል። አድሚኑ እስኪያጸድቀው ይጠብቁ።</p>
@@ -424,6 +429,7 @@
         <button class="back-btn" onclick="backToWelcome()">ወደ መግቢያ ገጽ ተመለስ</button>
     </div>
 
+    <!-- WALLET STEP -->
     <div id="step-wallet" class="step">
         <div class="wallet-card">
             <span class="badge" id="verificationBadge">✅ ቬሪፋይድ ዋሌት (1 ሰው = 1 አካውንት)</span>
@@ -434,6 +440,14 @@
             </div>
             <div style="font-size: 14px; opacity: 0.9;" id="userDisplayName">ተጠቃሚ</div>
             <div style="font-size: 13px; margin-top: 6px; color: #fde047;" id="melaCoinDisplay">መላ ኮይን: 120.00 Mela Coin</div>
+        </div>
+
+        <!-- Self Reset & Delete Account Box -->
+        <div style="background: rgba(239, 68, 68, 0.1); border: 1px solid var(--error-color); padding: 14px; border-radius: 12px; margin-bottom: 15px; text-align: center;">
+            <p style="margin: 0 0 8px 0; font-size: 13px; font-weight: bold; color: var(--error-color);">⚠️ መረጃዎችን ማስተካከል (Reset / Delete Account)</p>
+            <p style="margin: 0 0 10px 0; font-size: 12px; opacity: 0.85;">መረጃዎችዎ ላይ ስህተት ካለ አካውንትዎን አጥፍተው (Self-Reset) ድጋሚ መመዝገብ ይችላሉ። (ከፍተኛ ፈቃድ: እስከ 3 ዙር ብቻ)</p>
+            <div style="font-size: 12px; font-weight: bold; margin-bottom: 8px;">ቀሪ የሪሴት እድልዎ: <span id="resetAttemptsDisplay" style="color: var(--primary-color);">3 / 3</span></div>
+            <button onclick="selfResetAccount()" style="background-color: var(--error-color); margin-top: 0; padding: 10px; font-size: 13px;">🗑️ አካውንቴን አጥፍቼ (Reset) ድጋሚ እመዝገብ</button>
         </div>
 
         <div class="action-buttons">
@@ -461,6 +475,7 @@
         <button class="back-btn" onclick="logoutUser()" style="background-color: #ef4444; margin-top: 15px;">ከአካውንት ውጣ (Logout)</button>
     </div>
 
+    <!-- DEPOSIT SECTION -->
     <div id="section-deposit" class="step">
         <h2>ገንዘብ ማስገባት (Chapa)</h2>
         <p class="subtitle">በቻፓ የክፍያ ሊንክ በኩል ክፍያ ፈጽመው ለአድሚን ማረጋገጫ ኖቲፊኬሽን ይላኩ</p>
@@ -472,6 +487,7 @@
         <button class="back-btn" onclick="backToWallet()">ወደ ዋሌት ተመለስ</button>
     </div>
 
+    <!-- LOTTERY SECTION -->
     <div id="section-lottery" class="step">
         <h2>የሎተሪ መቁረጫ (በመላ ኮይን)</h2>
         <p class="subtitle" id="lotterySubtitleStatus">ቲኬት ሲቆርጡ ኮይኑ ቀጥታ ወደ አድሚን ዋሌት ይገባል (የቲኬት ዋጋ: <span id="ticketPriceDisplay">10</span> Mela Coin)</p>
@@ -482,6 +498,7 @@
         <button class="back-btn" onclick="backToWallet()">ወደ ዋሌት ተመለስ</button>
     </div>
 
+    <!-- WITHDRAW SECTION -->
     <div id="section-withdraw" class="step">
         <h2>ገንዘብ ማውጣት (Fiat / Bank)</h2>
         <p class="subtitle">ጥያቄዎ ከነ ሙሉ መረጃውና ፎቶዎ ለአድሚን ኖቲፊኬሽን ይላካል</p>
@@ -506,6 +523,7 @@
         <button class="back-btn" onclick="backToWallet()">ወደ ዋሌት ተመለስ</button>
     </div>
 
+    <!-- P2P SECTION -->
     <div id="section-p2p" class="step">
         <h2>P2P ኮይን / ገንዘብ ማስተላለፍ</h2>
         <p class="subtitle">ለሌላ ተጠቃሚ ኮይን ወይም ገንዘብ ማስተላለፍ (ማን ለማን እንደሚልክ ለአድሚን ሪፖርት ይደረጋል)</p>
@@ -521,6 +539,7 @@
         <button class="back-btn" onclick="backToWallet()">ወደ ዋሌት ተመለስ</button>
     </div>
 
+    <!-- EXCHANGE SECTION -->
     <div id="section-exchange" class="step">
         <h2>መላ ኮይን & ዩኤስዲቲ መቀየሪያ</h2>
         <p class="subtitle">የኢትዮጵያ ብር፣ መላ ኮይን እና ዩኤስዲቲ ዋጋዎችን እርስ በእርስ ይቀይሩ</p>
@@ -541,6 +560,7 @@
         <button class="back-btn" onclick="backToWallet()">ወደ ዋሌት ተመለስ</button>
     </div>
 
+    <!-- REFERRAL SECTION -->
     <div id="section-referral" class="step">
         <h2>የሪፈራል እና ኮሚሽን ማዕከል</h2>
         <p class="subtitle">ሊንክዎን በማጋራት ተጠቃሚዎች ሲገቡ በአድሚን የተወሰነ የኮሚሽን ፐርሰንት ያግኙ</p>
@@ -559,6 +579,7 @@
         <button class="back-btn" onclick="backToWallet()">ወደ ዋሌት ተመለስ</button>
     </div>
 
+    <!-- ADMIN PANEL -->
     <div id="section-admin" class="step">
         <div class="admin-panel">
             <h3>⚙️ የአድሚን ሙሉ ቁጥጥር እና ማጽደቂያ ፓነል</h3>
@@ -593,16 +614,13 @@
                 <button onclick="adminBlockUser()" style="background-color: #ef4444; margin-top:0; flex:1;">ብሎክ</button>
                 <button onclick="adminEraseUserRegistration()" style="background-color: #b91c1c; margin-top:0; flex:1;">ምዝገባ ኢሬዝ</button>
             </div>
-
-            <div style="background: #0f172a; border: 1px solid #ef4444; padding: 12px; border-radius: 8px; margin-bottom: 15px; text-align: center;">
-                <button onclick="quickClearMyTestData()" style="background-color: #ef4444; color: white; margin-top: 0; font-size: 13px; padding: 10px;">🗑️ የእኔን የሙከራ ሬጅስትሬሽን አጥፋ</button>
-            </div>
         </div>
         <button class="back-btn" onclick="backToWallet()">ወደ ዋሌት ተመለስ</button>
     </div>
 
 </div>
 
+<!-- CUSTOM MODAL -->
 <div id="customModal" class="modal-overlay">
     <div class="modal-content">
         <h3 id="modalTitle" style="margin-top:0; color:var(--primary-color);">ማሳሰቢያ</h3>
@@ -624,7 +642,17 @@
     let referralBonusEarned = 50.00; 
     let isLotteryBlockedByAdmin = false;
     
-    let dynamicAdminPhone = localStorage.getItem('mela_admin_phone') || "+251911000000";
+    // Clean Slate: Clear legacy records on fresh initial load
+    (function cleanSlateLegacyRecords() {
+        if (!localStorage.getItem('mela_clean_slate_done')) {
+            Object.keys(localStorage).forEach(key => {
+                if (key.startsWith('mela_session_') || key.startsWith('mela_approved_') || key.startsWith('mela_pending_') || key.startsWith('mela_logged_in_') || key.startsWith('mela_reset_attempts_')) {
+                    localStorage.removeItem(key);
+                }
+            });
+            localStorage.setItem('mela_clean_slate_done', 'true');
+        }
+    })();
 
     const tg = window.Telegram.WebApp;
     tg.expand();
@@ -644,9 +672,9 @@
         updateAdminBalanceDisplay();
         loadAdminLogs();
         checkLotteryStatusPublic();
+        updateResetAttemptsDisplay();
     });
 
-    // -- ወደ Python Backend ኖቲፊኬሽን የሚልክ አጠቃላይ ፈንክሽን (CORS ተፈቷል) --
     async function sendServerNotification(type, details) {
         try {
             const response = await fetch('/api/notify-admin', {
@@ -695,7 +723,7 @@
     function goToRegisterStep() {
         const savedSession = localStorage.getItem('mela_session_' + telegramId);
         if (savedSession) {
-            showCustomModal("ማሳሰቢያ", "እርስዎ ቀደም ሲል አካውንት ከፍተዋል! እባክዎ 'ቀደም ሲል የከፈትኩት አካውንት አብራ (Login)' የሚለውን ይጠቀሙ።");
+            showCustomModal("ማሳሰቢያ", "እርስዎ ቀደም ሲል አካውንት ከፍተዋል! መረጃዎ ለማስተካከል ከፈለጉ ከዋሌት ገጽ ሆነው ሪሴት ማድረግ ይችላሉ።");
             return;
         }
         document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
@@ -734,6 +762,7 @@
         document.getElementById('step-wallet').classList.add('active');
         document.getElementById('userDisplayName').textContent = userName + " (Approved)";
         updateBalanceDisplay();
+        updateResetAttemptsDisplay();
         
         sendServerNotification("Login", `ስልክ: ${phone} ወደ ዋሌት ገብቷል።`);
         showCustomModal("እንኳን ደህና መጡ", "ወደ ዋሌትዎ በስኬት ገብተዋል!");
@@ -744,6 +773,38 @@
         document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
         document.getElementById('step-welcome').classList.add('active');
         showCustomModal("ውጣ", "ከአካውንትዎ በስኬት ወጥተዋል!");
+    }
+
+    // --- Self-Reset & Attempt Control Logic ---
+    function updateResetAttemptsDisplay() {
+        let attempts = parseInt(localStorage.getItem('mela_reset_attempts_' + telegramId) || '0');
+        let remaining = Math.max(0, 3 - attempts);
+        const displayEl = document.getElementById('resetAttemptsDisplay');
+        if (displayEl) {
+            displayEl.textContent = `${remaining} / 3`;
+        }
+    }
+
+    function selfResetAccount() {
+        let attempts = parseInt(localStorage.getItem('mela_reset_attempts_' + telegramId) || '0');
+        if (attempts >= 3) {
+            showCustomModal("ገደብ አልፏል", "ከ3 ዙር በላይ አካውንትዎን ሪሴት ማድረግ አይችሉም! እባክዎ በአድሚን በኩል እገዛ ይጠይቁ።");
+            return;
+        }
+
+        if (confirm("እርግጠኛ ኖት? አካውንትዎ ሙሉ በሙሉ ይሰረዛል እና አዲስ ምዝገባ መጀመር ይኖርብዎታል።")) {
+            attempts += 1;
+            localStorage.setItem('mela_reset_attempts_' + telegramId, attempts.toString());
+
+            // Clear session & login flags
+            localStorage.removeItem('mela_session_' + telegramId);
+            localStorage.removeItem('mela_approved_' + telegramId);
+            localStorage.removeItem('mela_pending_' + telegramId);
+            localStorage.removeItem('mela_logged_in_' + telegramId);
+
+            showCustomModal("ተሳክቷል", "አካውንትዎ ተሰርዟል። አሁን ዳግመኛ መመዝገብ ይችላሉ።");
+            backToWelcome();
+        }
     }
 
     function togglePasswordVisibility(inputId, iconId) {
@@ -854,6 +915,7 @@
                 document.getElementById('step-wallet').classList.add('active');
                 document.getElementById('userDisplayName').textContent = userName + " (Approved)";
                 updateBalanceDisplay();
+                updateResetAttemptsDisplay();
                 showCustomModal("እንኳን ደስ አለዎት", "አድሚኑ አካውንትዎን አጽድቆታል!");
             } else {
                 showCustomModal("በግምገማ ላይ", "አድሚኑ ገና አላጸደቀውም። እባክዎ ይጠብቁ።");
@@ -1123,13 +1185,6 @@
         if (!target) return;
         localStorage.removeItem('mela_session_' + target);
         showCustomModal("አድሚን", `ተጠቃሚ (${target}) ከሲስተሙ ተሰርዟል!`);
-    }
-
-    function quickClearMyTestData() {
-        localStorage.removeItem('mela_session_' + telegramId);
-        localStorage.removeItem('mela_approved_' + telegramId);
-        showCustomModal("ተሳክቷል", "የእርስዎ አካውንት መረጃ ተሰርዟል።");
-        backToWelcome();
     }
 
     function adminBlockUser() {
