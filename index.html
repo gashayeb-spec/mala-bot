@@ -250,7 +250,6 @@
         .modal-content button { margin-top: 15px; }
         .back-btn { background-color: #64748b; margin-top: 10px; }
 
-        /* Admin Panel Styles */
         .admin-panel {
             background: #1e293b;
             color: #f8fafc;
@@ -334,7 +333,7 @@
 
     <div id="step-register" class="step">
         <h2 id="regTitle">መላ.ቦት ምዝገባ</h2>
-        <p class="subtitle" id="regSubtitle">ዋሌት ለመክፈት መረጃዎን ይሙሉ (አንድ ሰው 1 አካውንት ብቻ በብሔራዊ መታወቂያ)</p>
+        <p class="subtitle" id="regSubtitle">ዋሌት ለመክፈት መረጃዎን ይሙሉ (አንድ ሰው 1 አካውንት ብቻ)</p>
         <form onsubmit="handleRegister(event)">
             <div class="form-group">
                 <label>ስም</label>
@@ -356,7 +355,6 @@
             <div class="form-group">
                 <label>ዋና ስልክ ቁጥር (+251...)</label>
                 <input type="tel" id="phoneNumber" required placeholder="+2519xxxxxxxx ወይም +2517xxxxxxxx">
-                <small style="color: var(--primary-color); font-size: 12px;">* በ +251 ተጀምሮ በ 09 ወይም 07 መሆን አለበት</small>
             </div>
 
             <div class="form-group">
@@ -370,7 +368,7 @@
             </div>
 
             <div class="form-group password-container">
-                <label>ፓስወርድ (Capital, Small, Number, Special Character)</label>
+                <label>ፓስወርድ</label>
                 <input type="password" id="userPassword" minlength="6" maxlength="20" required placeholder="ጠንካራ ፓስወርድ ያስገቡ">
                 <button type="button" class="toggle-password" onclick="togglePasswordVisibility('userPassword', 'eyeIcon1')"><span id="eyeIcon1">👁️</span></button>
             </div>
@@ -564,85 +562,41 @@
     <div id="section-admin" class="step">
         <div class="admin-panel">
             <h3>⚙️ የአድሚን ሙሉ ቁጥጥር እና ማጽደቂያ ፓነል</h3>
-            <p style="font-size: 13px; color: #cbd5e1;">የተጠቃሚዎችን መታወቂያ፣ የገንዘብ ማውጣት ጥያቄዎችን (ከነ ፎቶው እና መረጃው)፣ ሎተሪዎችን እና የኮይን ዝውውሮችን እዚህ ያስተዳድሩ።</p>
+            <p style="font-size: 13px; color: #cbd5e1;">የተጠቃሚዎችን መታወቂያ፣ የገንዘብ ማውጣት ጥያቄዎችን፣ ሎተሪዎችን እና የኮይን ዝውውሮችን እዚህ ያስተዳድሩ።</p>
             
             <div style="background: #0f172a; border: 1px solid #f59e0b; padding: 12px; border-radius: 8px; margin: 12px 0; text-align: center;">
                 <div style="font-size: 13px; color: #f59e0b; font-weight: bold;">👑 የአድሚን ዋና ዋሌት (Admin Main Balance)</div>
                 <div id="adminMainBalanceDisplay" style="font-size: 22px; font-weight: bold; color: #10b981; margin-top: 4px;">0.00 Mela Coin</div>
             </div>
 
-            <!-- 1. የሎተሪ ሂደት ብቻ ሪሴት ማድረግ (Reset Lottery Only) -->
             <div style="background: #0f172a; border: 1px solid #334155; padding: 12px; border-radius: 8px; margin-bottom: 12px;">
                 <label style="color:#f59e0b; font-weight: bold; margin-bottom: 8px;">🎲 የሎተሪ ማስተዳደሪያና ሪሴት መቆጣጠሪያዎች</label>
                 <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-                    <button onclick="adminToggleLotteryStatus(false)" style="background-color: #ef4444; margin-top:0; font-size: 12px; padding: 10px; flex:1;">ሎተሪ ዝጋ (Block)</button>
-                    <button onclick="adminToggleLotteryStatus(true)" style="background-color: #10b981; margin-top:0; font-size: 12px; padding: 10px; flex:1;">ሎተሪ ክፈት (Release)</button>
-                    <button onclick="adminResetLotteryOnly()" style="background-color: #3b82f6; margin-top:0; font-size: 12px; padding: 10px; flex:1;">ሎተሪ ብቻ ሪሴት (Reset Lottery)</button>
+                    <button onclick="adminToggleLotteryStatus(false)" style="background-color: #ef4444; margin-top:0; font-size: 12px; padding: 10px; flex:1;">ሎተሪ ዝጋ</button>
+                    <button onclick="adminToggleLotteryStatus(true)" style="background-color: #10b981; margin-top:0; font-size: 12px; padding: 10px; flex:1;">ሎተሪ ክፈት</button>
+                    <button onclick="adminResetLotteryOnly()" style="background-color: #3b82f6; margin-top:0; font-size: 12px; padding: 10px; flex:1;">ሎተሪ ሪሴት</button>
                 </div>
-            </div>
-
-            <!-- 3. ተለዋዋጭ የአድሚን ስልክ ቁጥር ማስተካከያ (Dynamic Admin Phone Number Setting) -->
-            <div style="background: #0f172a; border: 1px solid #334155; padding: 12px; border-radius: 8px; margin-bottom: 12px;">
-                <label style="color:#f59e0b; font-weight: bold; margin-bottom: 6px;">📞 የአድሚን ክፍያ መቀበያ ስልክ ቁጥር ማስተካከያ</label>
-                <div class="form-group" style="margin-bottom: 8px;">
-                    <input type="tel" id="dynamicAdminPhoneInput" placeholder="+2519xxxxxxxx" style="background:#1e293b; color:#fff; border:1px solid #475569;">
-                </div>
-                <button onclick="saveDynamicAdminPhone()" style="background-color: #f59e0b; color: #000; margin-top:0; font-size: 12px; padding: 10px;">ስልክ ቁጥሩን አዘምን (Update Admin Phone)</button>
             </div>
 
             <div style="margin-top: 15px;">
-                <label style="color:#f59e0b; font-weight: bold;">📊 የሁሉም ተጠቃሚዎች ኖቲፊኬሽኖች እና የገንዘብ ማውጣት ጥያቄዎች (Live Activity Logs & Withdrawals)</label>
-                <div id="adminActivityLogBox" class="admin-log-box">
-                    ምንም ኖቲፊኬሽን የለም...
-                </div>
-                <button onclick="loadAdminLogs()" style="background-color: #475569; margin-top: 8px; font-size: 12px; padding: 8px;">ኖቲፊኬሽኖችን አድስ (Refresh)</button>
+                <label style="color:#f59e0b; font-weight: bold;">📊 የኖቲፊኬሽኖች እና ሎግ ማሳያ (Activity Logs)</label>
+                <div id="adminActivityLogBox" class="admin-log-box">ምንም ኖቲፊኬሽን የለም...</div>
+                <button onclick="loadAdminLogs()" style="background-color: #475569; margin-top: 8px; font-size: 12px; padding: 8px;">ኖቲፊኬሽኖችን አድስ</button>
             </div>
 
-            <!-- 2. የተጠቃሚዎችን ምዝገባ ሙሉ በሙሉ ኢሬዝ ማድረግ (User Erase / Delete) -->
             <div class="form-group" style="margin-top: 15px;">
-                <label style="color:#f8fafc;">ተጠቃሚ ለማጽደቅ፣ ካንሰል ለማድረግ፣ ብሎክ ለማድረግ ወይም መረጃውን ሙሉ በሙሉ ለመሰረዝ (Telegram ID / Phone)</label>
+                <label style="color:#f8fafc;">ተጠቃሚ ለማጽደቅ ወይም ለመሰረዝ (Telegram ID / Phone)</label>
                 <input type="text" id="targetUserAccount" placeholder="ዩዘር አይዲ ወይም ስልክ ቁጥር">
             </div>
             <div style="display: flex; gap: 8px; margin-bottom: 15px; flex-wrap: wrap;">
-                <button onclick="adminApproveUser()" style="background-color: #10b981; margin-top:0; flex:1;">አጽድቅ (Approve)</button>
-                <button onclick="adminCancelUserRequest()" style="background-color: #eab308; color:#000; margin-top:0; flex:1;">ካንሰል (Cancel)</button>
-                <button onclick="adminBlockUser()" style="background-color: #ef4444; margin-top:0; flex:1;">ብሎክ (Block)</button>
-                <button onclick="adminEraseUserRegistration()" style="background-color: #b91c1c; margin-top:0; flex:1;" title="ምዝገባውን ሙሉ በሙሉ ከዳታቤዝ/ካሼር ይሰርዘዋል">ምዝገባ ኢሬዝ (Erase User)</button>
+                <button onclick="adminApproveUser()" style="background-color: #10b981; margin-top:0; flex:1;">አጽድቅ</button>
+                <button onclick="adminBlockUser()" style="background-color: #ef4444; margin-top:0; flex:1;">ብሎክ</button>
+                <button onclick="adminEraseUserRegistration()" style="background-color: #b91c1c; margin-top:0; flex:1;">ምዝገባ ኢሬዝ</button>
             </div>
 
-            <!-- በፍጥነት መሞከሪያ/ማጽጃ አዝራር (Quick Developer Clear Test Data) -->
             <div style="background: #0f172a; border: 1px solid #ef4444; padding: 12px; border-radius: 8px; margin-bottom: 15px; text-align: center;">
-                <p style="font-size: 12px; color: #fca5a5; margin: 0 0 8px 0;">ለሙከራ (Testing) የተመዘገቡበትን የራስዎን ዳታ በአንድ ክሊክ ለማጥፋት:</p>
-                <button onclick="quickClearMyTestData()" style="background-color: #ef4444; color: white; margin-top: 0; font-size: 13px; padding: 10px;">🗑️ የእኔን የሙከራ ሬጅስትሬሽን አጥፋ (Quick Erase Me)</button>
+                <button onclick="quickClearMyTestData()" style="background-color: #ef4444; color: white; margin-top: 0; font-size: 13px; padding: 10px;">🗑️ የእኔን የሙከራ ሬጅስትሬሽን አጥፋ</button>
             </div>
-
-            <div class="form-group">
-                <label style="color:#f8fafc;">የኮሚሽን ፐርሰንት ማስተካከያ (%)</label>
-                <input type="number" id="adminCommissionRate" value="10" placeholder="ምሳሌ: 10%">
-            </div>
-            <button onclick="adminSaveCommission()" style="background-color: #f59e0b; color: #000; margin-bottom: 15px;">ኮሚሽን አድስ</button>
-
-            <div class="form-group">
-                <label style="color:#f8fafc;">የኮይን ዋጋ እና የቲኬት ዋጋ ማስተካከያ</label>
-                <input type="number" id="adminTicketPrice" value="10" placeholder="የቲኬት ዋጋ በመላ ኮይን">
-            </div>
-            <button onclick="adminSaveTicketPrice()" style="background-color: #f59e0b; color: #000; margin-bottom: 15px;">ዋጋ አድስ</button>
-
-            <hr style="border-color: #334155; margin: 20px 0;">
-
-            <div class="form-group">
-                <label style="color:#f8fafc;">🎁 የሎተሪ አሸናፊ ቁጥር ማሳያ & ማስታወቂያ መላኪያ</label>
-                <input type="text" id="winnerUserId" placeholder="አሸናፊው ዩዘር አይዲ">
-                <input type="text" id="winnerLuckyNumber" placeholder="የወጣው ዕጣ ቁጥር (ምሳሌ: 7, 21)" style="margin-top: 10px;">
-                <input type="number" id="winnerCoinPrize" placeholder="የሚያሸንፈው የመላ ኮይን መጠን" style="margin-top: 10px;">
-            </div>
-            <button onclick="adminSendLotteryWinnerAlert()" style="background-color: #10b981; color: white;">እጣ ማውጫውን ለሁሉም አሳይ & አሸናፊ ላክ</button>
-            
-            <div class="form-group" style="margin-top: 15px;">
-                <label style="color:#f8fafc;">📢 አጠቃላይ ማስታወቂያ መላኪያ (Broadcast Announcement)</label>
-                <input type="text" id="adminBroadcastMsg" placeholder="ለተጠቃሚዎች የሚተላለፍ መልእክት">
-            </div>
-            <button onclick="adminSendBroadcast()" style="background-color: #0284c7; color: white;">ማስታወቂያ አስተላልፍ</button>
         </div>
         <button class="back-btn" onclick="backToWallet()">ወደ ዋሌት ተመለስ</button>
     </div>
@@ -658,12 +612,6 @@
 </div>
 
 <script>
-    const BOT_TOKEN = "8543715567:AAEeL0HgHcw62LhGaj3tNn9yJp2bh5XdmfM";
-    const ADMIN_CHAT_ID = "5351353727";
-
-    const CHAPA_PUBLIC_KEY = "CHAPUBK-hLBEJPiKDIRpfBCqTczyE1OsnrrK3Zhj";
-    const CHAPA_SECRET_KEY = "CHASECK-SncZN81Mx80yQcPiXJwRXDF6MdgchtNV";
-
     let userData = {};
     let currentLang = 'am';
     let isBalanceVisible = false;
@@ -672,10 +620,8 @@
     let userWalletBalance = 1500.00;
     let melaCoinBalance = 120.00; 
     let adminMainBalance = 5000.00; 
-
     let referralCount = 2; 
     let referralBonusEarned = 50.00; 
-    let adminCommissionPercentage = 10;
     let isLotteryBlockedByAdmin = false;
     
     let dynamicAdminPhone = localStorage.getItem('mela_admin_phone') || "+251911000000";
@@ -694,48 +640,49 @@
         document.getElementById('referralCountDisplay').textContent = referralCount + " ሰዎች";
         document.getElementById('referralBonusDisplay').textContent = referralBonusEarned.toFixed(2) + " Mela Coin";
         
-        const phoneInput = document.getElementById('dynamicAdminPhoneInput');
-        if(phoneInput) phoneInput.value = dynamicAdminPhone;
-
         updateMelaCoinDisplay();
         updateAdminBalanceDisplay();
         loadAdminLogs();
         checkLotteryStatusPublic();
     });
 
-    async function sendTelegramNotificationToAdmin(textMessage) {
+    // -- ወደ Python Backend ኖቲፊኬሽን የሚልክ አጠቃላይ ፈንክሽን (CORS ተፈቷል) --
+    async function sendServerNotification(type, details) {
         try {
-            const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
-            const response = await fetch(url, {
+            const response = await fetch('/api/notify-admin', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    chat_id: ADMIN_CHAT_ID,
-                    text: textMessage,
-                    parse_mode: 'Markdown'
+                    type: type,
+                    userName: userName,
+                    telegramId: telegramId,
+                    details: details
                 })
             });
             const data = await response.json();
-            return data.ok;
+            return data.success;
         } catch (error) {
-            console.error("Telegram API Error:", error);
+            console.error("Backend Notification Error:", error);
             return false;
         }
     }
 
-    function checkExistingAccountStatus(tgId) {
-        const isBlocked = localStorage.getItem('mela_blocked_' + tgId);
-        if (isBlocked) {
-            showBlockedState("ማሳሰቢያ፡ ይህ አካውንት በአድሚን ታግዷል!");
-            return;
-        }
-
-        const isApproved = localStorage.getItem('mela_approved_' + tgId);
-        if (isApproved === 'true' && localStorage.getItem('mela_logged_in_' + tgId) === 'true') {
-            document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
-            document.getElementById('step-wallet').classList.add('active');
-            document.getElementById('userDisplayName').textContent = userName + " (Approved)";
-            updateBalanceDisplay();
+    async function checkExistingAccountStatus(tgId) {
+        try {
+            const res = await fetch(`/check-status?user_id=${tgId}`);
+            const data = await res.json();
+            if (data.status === 'blocked') {
+                showBlockedState("ማሳሰቢያ፡ ይህ አካውንት በአድሚን ታግዷል!");
+                return;
+            }
+            if (data.status === 'approved' && localStorage.getItem('mela_logged_in_' + tgId) === 'true') {
+                document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
+                document.getElementById('step-wallet').classList.add('active');
+                document.getElementById('userDisplayName').textContent = userName + " (Approved)";
+                updateBalanceDisplay();
+            }
+        } catch (e) {
+            console.error(e);
         }
     }
 
@@ -748,7 +695,7 @@
     function goToRegisterStep() {
         const savedSession = localStorage.getItem('mela_session_' + telegramId);
         if (savedSession) {
-            showCustomModal("ማሳሰቢያ", "እርስዎ ቀደም ሲል አካውንት ከፍተዋል! እባክዎ 'ቀደም ሲል የከፈትኩት አካውንት አብራ (Login)' የሚለውን በመጠቀም በፓስወርድ ይግቡ። ወይም በአድሚን ፓነል ውስጥ ያለውን 'Quick Erase' በመጠቀም ዳታውን ማጥፋት ይችላሉ።");
+            showCustomModal("ማሳሰቢያ", "እርስዎ ቀደም ሲል አካውንት ከፍተዋል! እባክዎ 'ቀደም ሲል የከፈትኩት አካውንት አብራ (Login)' የሚለውን ይጠቀሙ።");
             return;
         }
         document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
@@ -782,19 +729,13 @@
             return;
         }
 
-        const isApproved = localStorage.getItem('mela_approved_' + telegramId);
-        if (isApproved !== 'true') {
-            document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
-            document.getElementById('step-pending').classList.add('active');
-            showCustomModal("በግምገማ ላይ", "አካውንትዎ ገና በአድሚን አልጸደቀም። እባክዎ ይጠብቁ።");
-            return;
-        }
-
         localStorage.setItem('mela_logged_in_' + telegramId, 'true');
         document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
         document.getElementById('step-wallet').classList.add('active');
         document.getElementById('userDisplayName').textContent = userName + " (Approved)";
         updateBalanceDisplay();
+        
+        sendServerNotification("Login", `ስልክ: ${phone} ወደ ዋሌት ገብቷል።`);
         showCustomModal("እንኳን ደህና መጡ", "ወደ ዋሌትዎ በስኬት ገብተዋል!");
     }
 
@@ -832,10 +773,10 @@
         const eyeBtnSpan = document.getElementById('eyeBtnText');
         if (isBalanceVisible) {
             balanceEl.textContent = userWalletBalance.toFixed(2) + " ETB";
-            eyeBtnSpan.textContent = currentLang === 'am' ? "ደብቅ" : "Hide";
+            eyeBtnSpan.textContent = "ደብቅ";
         } else {
             balanceEl.textContent = "•••• ETB";
-            eyeBtnSpan.textContent = currentLang === 'am' ? "አሳይ" : "Show";
+            eyeBtnSpan.textContent = "አሳይ";
         }
     }
 
@@ -854,56 +795,16 @@
         currentLang = document.getElementById('langSelect').value;
     }
 
-    function validateEthiopianPhone(phone) {
-        const etPhoneRegex = /^\+251(9|7)\d{8}$/;
-        return etPhoneRegex.test(phone);
-    }
-
-    function validateStrongPassword(password) {
-        const hasUpperCase = /[A-Z]/.test(password);
-        const hasLowerCase = /[a-z]/.test(password);
-        const hasNumbers = /\d/.test(password);
-        const hasNonalphanumeric = /\W/.test(password);
-        return hasUpperCase && hasLowerCase && hasNumbers && hasNonalphanumeric;
-    }
-
     function handleRegister(event) {
         event.preventDefault();
-
-        const phone = document.getElementById('phoneNumber').value.trim();
-        const secondaryPhone = document.getElementById('secondaryPhoneNumber').value.trim();
-        const pwd = document.getElementById('userPassword').value;
-        const confirmPwd = document.getElementById('confirmPassword').value;
-
-        if (!validateEthiopianPhone(phone)) {
-            showCustomModal("ስህተት", "ዋናው ስልክ ቁጥር በ +251 ተጀምሮ በ 09 ወይም 07 መቅጠል አለበት! (ምሳሌ: +251911223344)");
-            return;
-        }
-
-        if (secondaryPhone !== "" && !validateEthiopianPhone(secondaryPhone)) {
-            showCustomModal("ስህተት", "ሁለተኛው ስልክ ቁጥር ትክክለኛ የኢትዮጵያ ቁጥር መሆን አለበት (+2519 ወይም +2517)!");
-            return;
-        }
-
-        if (!validateStrongPassword(pwd)) {
-            showCustomModal("ስህተት", "ፓስወርዱ ጠንካራ መሆን አለበት! ቢያንስ አንድ Capital ፊደል፣ አንድ small ፊደል፣ አንድ ቁጥር እና አንድ Special Character መያዝ አለበት።");
-            return;
-        }
-
-        if (pwd !== confirmPwd) {
-            showCustomModal("ስህተት", "ያስገቧቸው ሁለቱ ፓስወርዶች አይመሳሰሉም!");
-            return;
-        }
-
         userData.telegramId = telegramId;
         userData.firstName = document.getElementById('firstName').value;
         userData.fatherName = document.getElementById('fatherName').value;
         userData.grandFatherName = document.getElementById('grandFatherName').value;
         userData.motherName = document.getElementById('motherName').value;
-        userData.phoneNumber = phone;
-        userData.secondaryPhoneNumber = secondaryPhone;
+        userData.phoneNumber = document.getElementById('phoneNumber').value.trim();
         userData.email = document.getElementById('userEmail').value;
-        userData.password = pwd;
+        userData.password = document.getElementById('userPassword').value;
 
         localStorage.setItem('mela_session_' + telegramId, JSON.stringify(userData));
 
@@ -920,41 +821,45 @@
         }
     }
 
-    function handleKyc(event) {
+    async function handleKyc(event) {
         event.preventDefault();
         userData.nationalIdNumber = document.getElementById('nationalIdNumber').value;
 
-        localStorage.setItem('mela_pending_' + telegramId, 'true');
-        localStorage.setItem('mela_nid_' + userData.nationalIdNumber, 'true');
-        
-        const kycMsg = `📥 *[አዲስ የቬርፋይ/KYC ጥያቄ]*\n` +
-                       `👤 ስም: ${userData.firstName} ${userData.fatherName} ${userData.grandFatherName}\n` +
-                       `📱 ስልክ: ${userData.phoneNumber}\n` +
-                       `🆔 ቴሌግራም ID: \`${telegramId}\`\n` +
-                       `🪪 ብሔራዊ መታወቂያ No: \`${userData.nationalIdNumber}\`\n` +
-                       `📧 ኢሜል: ${userData.email}\n` +
-                       `📸 ፎቶዎችና መታወቂያዎች ተያይዘዋል (Pending Approval)`;
-
-        logActivityToAdmin(kycMsg);
-        sendTelegramNotificationToAdmin(kycMsg);
-
-        document.getElementById('step-kyc').classList.remove('active');
-        document.getElementById('step-pending').classList.add('active');
-        
-        showCustomModal("ተልኳል", "መረጃዎ እና ፎቶዎ ለአድሚን ማረጋገጫ በስኬት ተልኳል።");
+        try {
+            const response = await fetch('/submit-registration', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(userData)
+            });
+            const result = await response.json();
+            if(result.status === 'success') {
+                document.getElementById('step-kyc').classList.remove('active');
+                document.getElementById('step-pending').classList.add('active');
+                showCustomModal("ተልኳል", "መረጃዎ ለአድሚን ማረጋገጫ በስኬት ተልኳል።");
+            } else {
+                showCustomModal("ስህተት", result.message);
+            }
+        } catch (e) {
+            showCustomModal("ስህተት", "ሰርቨር ማግኘት አልተቻለም።");
+        }
     }
 
-    function checkAdminApprovalStatus() {
-        const isApproved = localStorage.getItem('mela_approved_' + telegramId);
-        if (isApproved === 'true') {
-            localStorage.setItem('mela_logged_in_' + telegramId, 'true');
-            document.getElementById('step-pending').classList.remove('active');
-            document.getElementById('step-wallet').classList.add('active');
-            document.getElementById('userDisplayName').textContent = userName + " (Approved)";
-            updateBalanceDisplay();
-            showCustomModal("እንኳን ደስ አለዎት", "አድሚኑ አካውንትዎን አጽድቆታል!");
-        } else {
-            showCustomModal("በግምገማ ላይ", "አድሚኑ ገና አላጸደቀውም። እባክዎ ትንሽ ይጠብቁ።");
+    async function checkAdminApprovalStatus() {
+        try {
+            const res = await fetch(`/check-status?user_id=${telegramId}`);
+            const data = await res.json();
+            if (data.status === 'approved') {
+                localStorage.setItem('mela_logged_in_' + telegramId, 'true');
+                document.getElementById('step-pending').classList.remove('active');
+                document.getElementById('step-wallet').classList.add('active');
+                document.getElementById('userDisplayName').textContent = userName + " (Approved)";
+                updateBalanceDisplay();
+                showCustomModal("እንኳን ደስ አለዎት", "አድሚኑ አካውንትዎን አጽድቆታል!");
+            } else {
+                showCustomModal("በግምገማ ላይ", "አድሚኑ ገና አላጸደቀውም። እባክዎ ይጠብቁ።");
+            }
+        } catch (e) {
+            showCustomModal("ስህተት", "ሁኔታውን ማረጋገጥ አልተቻለም።");
         }
     }
 
@@ -979,24 +884,12 @@
     function openLotterySection() {
         document.getElementById('step-wallet').classList.remove('active');
         document.getElementById('section-lottery').classList.add('active');
-        checkLotteryStatusPublic();
         generateLotteryGrid();
     }
 
     function checkLotteryStatusPublic() {
         const blocked = localStorage.getItem('mela_lottery_blocked') === 'true';
         isLotteryBlockedByAdmin = blocked;
-        const subtitleEl = document.getElementById('lotterySubtitleStatus');
-        const buyBtn = document.getElementById('buyLotteryBtn');
-        if (blocked) {
-            subtitleEl.innerHTML = "⚠️ <span style='color:#ef4444; font-weight:bold;'>እባኮትን ጥቂት ጊዜ ይጠብቁ! ሎተሪ በአድሚኑ ታግዷል።</span>";
-            buyBtn.disabled = true;
-            buyBtn.style.opacity = "0.5";
-        } else {
-            subtitleEl.innerHTML = `ቲኬት ሲቆርጡ ኮይኑ ቀጥታ ወደ አድሚን ዋሌት ይገባል (የቲኬት ዋጋ: <span id="ticketPriceDisplay">${ticketPrice}</span> Mela Coin)`;
-            buyBtn.disabled = false;
-            buyBtn.style.opacity = "1";
-        }
     }
 
     function openWithdrawSection() {
@@ -1029,7 +922,6 @@
     function copyReferralLink() {
         const linkInput = document.getElementById('myReferralLink');
         linkInput.select();
-        linkInput.setSelectionRange(0, 99999);
         navigator.clipboard.writeText(linkInput.value);
         showCustomModal("ተሳክቷል", "የሪፈራል ሊንኩ ኮፒ ተደርጓል!");
     }
@@ -1037,7 +929,6 @@
     function generateLotteryGrid() {
         const grid = document.getElementById('lotteryGrid');
         grid.innerHTML = "";
-        
         let takenNumbers = JSON.parse(localStorage.getItem('mela_taken_lottery_numbers') || '[3, 7, 12, 15, 20, 45, 100]');
 
         for (let i = 1; i <= 100; i++) {
@@ -1050,10 +941,6 @@
             } else {
                 item.classList.add('available');
                 item.onclick = function() {
-                    if (isLotteryBlockedByAdmin) {
-                        showCustomModal("ማሳሰቢያ", "እባኮትን ጥቂት ጊዜ ይጠብቁ! ሎተሪ በአድሚኑ ታግዷል።");
-                        return;
-                    }
                     const index = selectedLotteryNumbers.indexOf(i);
                     if (index > -1) {
                         selectedLotteryNumbers.splice(index, 1);
@@ -1062,7 +949,6 @@
                         selectedLotteryNumbers.push(i);
                         item.classList.add('selected');
                     }
-                    
                     document.getElementById('selectedLotteryNum').textContent = selectedLotteryNumbers.length > 0 ? selectedLotteryNumbers.join(', ') : "ምንም የለም";
                     const totalCost = selectedLotteryNumbers.length * ticketPrice;
                     document.getElementById('totalLotteryCost').textContent = totalCost.toFixed(2) + " Mela Coin";
@@ -1072,27 +958,20 @@
         }
     }
 
-    function buySelectedLottery() {
-        if (isLotteryBlockedByAdmin) {
-            showCustomModal("ማሳሰቢያ", "እባኮትን ጥቂት ጊዜ ይጠብቁ! ሎተሪ በአድሚኑ ታግዷል።");
-            return;
-        }
-
+    async function buySelectedLottery() {
         if (selectedLotteryNumbers.length === 0) {
             showCustomModal("ማሳሰቢያ", "እባክዎ ቢያንስ አንድ የሎተሪ ቁጥር ይምረጡ!");
             return;
         }
 
         const totalCost = selectedLotteryNumbers.length * ticketPrice;
-
         if (melaCoinBalance < totalCost) {
-            showCustomModal("መላ ኮይን አያበቅም", `የመረጧቸው ${selectedLotteryNumbers.length} ቲኬቶች ድምር ${totalCost} Mela Coin ነው። መላ ኮይንዎ በቂ አይደለም!`);
+            showCustomModal("መላ ኮይን በቂ አይደለም", `ድምር ${totalCost} Mela Coin ነው።`);
             return;
         }
 
         melaCoinBalance -= totalCost;
         updateMelaCoinDisplay();
-
         adminMainBalance += totalCost;
         updateAdminBalanceDisplay();
 
@@ -1100,45 +979,43 @@
         takenNumbers = takenNumbers.concat(selectedLotteryNumbers);
         localStorage.setItem('mela_taken_lottery_numbers', JSON.stringify(takenNumbers));
 
-        const logMsg = `🎟️ *[የሎተሪ ግዢ ኖቲፊኬሽን]*\n👤 ተጠቃሚ: ${userName} (ID: \`${telegramId}\`)\n🔢 ቁጥሮች: [${selectedLotteryNumbers.join(', ')}]\n💰 መጠን: ${totalCost} Mela Coin ወደ አድሚን ዋሌት ገብቷል።`;
-        logActivityToAdmin(logMsg);
-        sendTelegramNotificationToAdmin(logMsg);
+        const logMsg = `ቁጥሮች: [${selectedLotteryNumbers.join(', ')}]\nመጠን: ${totalCost} Mela Coin ወደ አድሚን ዋሌት ገብቷል።`;
+        await sendServerNotification("Lottery Purchase", logMsg);
+        logActivityToAdmin("🎟️ " + logMsg);
 
-        showCustomModal("ስኬታማ የሎተሪ ግዢ", 
-            `ቁጥሮች: [${selectedLotteryNumbers.join(', ')}]\n` +
-            `ጠቅላላ የተቆረጠ: ${totalCost} Mela Coin\n\n` +
-            `ኮይኑ በቀጥታ ወደ አድሚን ዋሌት ገብቷል!`
-        );
-
+        showCustomModal("ስኬታማ የሎተሪ ግዢ", `ቁጥሮች: [${selectedLotteryNumbers.join(', ')}]\nጠቅላላ የተቆረጠ: ${totalCost} Mela Coin`);
         selectedLotteryNumbers = [];
         document.getElementById('selectedLotteryNum').textContent = "ምንም የለም";
         document.getElementById('totalLotteryCost').textContent = "0.00 Mela Coin";
         generateLotteryGrid();
     }
 
-    function processChapaDepositLink() {
+    async function processChapaDepositLink() {
         const amt = parseFloat(document.getElementById('depositAmount').value);
         if (!amt || amt <= 0) {
-            showCustomModal("ስህተት", "እባክዎ ትክክለኛ የሚያስገቡትን መጠን ያስገቡ");
+            showCustomModal("ስህተት", "እባክዎ ትክክለኛ መጠን ያስገቡ");
             return;
         }
 
-        const txRef = "mela-tx-" + Math.floor(Math.random() * 1000000);
-        const chapaCheckoutUrl = `https://checkout.chapa.co/checkout/payment/${txRef}?amount=${amt}&currency=ETB&first_name=${userName}&phone_number=${dynamicAdminPhone}`;
-
-        const depositMsg = `💳 *[የዲፖዚት ኖቲፊኬሽን]*\n👤 ተጠቃሚ: ${userName} (ID: \`${telegramId}\`)\n💵 መጠን: ${amt} ETB (ወደ አድሚን ስልክ: ${dynamicAdminPhone})\n🔗 TxRef: \`${txRef}\``;
-        logActivityToAdmin(depositMsg);
-        sendTelegramNotificationToAdmin(depositMsg);
-
-        showCustomModal("የቻፓ የክፍያ ሊንክ ተዘጋጅቷል", 
-            `ብር ${amt} ለመክፈት የተዘጋጀው ሊንክ ተፈጥሯል (የአድሚን ስልክ: ${dynamicAdminPhone}):\n\n` +
-            `${chapaCheckoutUrl}`
-        );
-
-        window.open(chapaCheckoutUrl, '_blank');
+        try {
+            const response = await fetch('/initiate-chapa', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ amount: amt })
+            });
+            const resData = await response.json();
+            if (resData.status === 'success') {
+                await sendServerNotification("Deposit", `ብር ${amt} የቻፓ ክፍያ ሊንክ ተፈጠረ።`);
+                window.open(resData.checkout_url, '_blank');
+            } else {
+                showCustomModal("ስህተት", resData.message);
+            }
+        } catch (e) {
+            showCustomModal("ስህተት", "የክፍያ ሊንክ መፍጠር አልተቻለም");
+        }
     }
 
-    function submitWithdrawal() {
+    async function submitWithdrawal() {
         const amt = parseFloat(document.getElementById('withdrawAmount').value);
         const method = document.getElementById('withdrawMethod').value;
         const acc = document.getElementById('withdrawAccount').value;
@@ -1148,24 +1025,21 @@
             return;
         }
         if (userWalletBalance < amt) {
-            showCustomModal("ስህተት", "ዋሌትዎ ውስጥ ካለው ገንዘብ በላይ ማውጣት አይችሉም!");
+            showCustomModal("ስህተት", "ከዋሌትዎ ቀሪ ሂሳብ በላይ ማውጣት አይችሉም!");
             return;
         }
 
         userWalletBalance -= amt;
         updateBalanceDisplay();
 
-        const sessionData = JSON.parse(localStorage.getItem('mela_session_' + telegramId) || '{}');
-        const userFullName = `${sessionData.firstName || userName} ${sessionData.fatherName || ''}`;
+        const msg = `ባንክ/ዘዴ: ${method} - ${acc}\nመጠን: ${amt} ETB`;
+        await sendServerNotification("Withdrawal Request", msg);
+        logActivityToAdmin("💸 ዊዝድሮዋል ጥያቄ: " + msg);
 
-        const withdrawMsg = `💸 *[የገንዘብ ማውጣት ጥያቄ]*\n👤 ስም: ${userFullName} (ID: \`${telegramId}\`)\n🏦 ዘዴ: ${method} - \`${acc}\`\n💵 መጠን: ${amt} ETB\n⏳ (Pending Approval)`;
-        logActivityToAdmin(withdrawMsg);
-        sendTelegramNotificationToAdmin(withdrawMsg);
-
-        showCustomModal("የማውጣት ጥያቄ ተልኳል", `ጥያቄዎ ከነ ሙሉ መረጃዎ ለአድሚን ኖቲፊኬሽን ተልኳል።`);
+        showCustomModal("የማውጣት ጥያቄ ተልኳል", "ጥያቄዎ ለአድሚን ኖቲፊኬሽን ተልኳል።");
     }
 
-    function submitP2PTransfer() {
+    async function submitP2PTransfer() {
         const recipient = document.getElementById('p2pRecipient').value;
         const amt = parseFloat(document.getElementById('p2pAmount').value);
         if (!recipient || !amt) {
@@ -1173,31 +1047,29 @@
             return;
         }
         if (userWalletBalance < amt) {
-            showCustomModal("ስህተት", "ለማስተላለፍ የጠየቁት ብር ከዋሌትዎ ቀሪ ሂሳብ ይበልጣል!");
+            showCustomModal("ስህተት", "ቀሪ ሂሳብዎ በቂ አይደለም!");
             return;
         }
         userWalletBalance -= amt;
         updateBalanceDisplay();
 
-        const p2pMsg = `🔄 *[P2P ኖቲፊኬሽን]*\n👤 ላኪ: ${userName} (ID: \`${telegramId}\`)\n📥 ተቀባይ: \`${recipient}\`\n💰 መጠን: ${amt}`;
-        logActivityToAdmin(p2pMsg);
-        sendTelegramNotificationToAdmin(p2pMsg);
+        const msg = `ተቀባይ: ${recipient}\nመጠን: ${amt}`;
+        await sendServerNotification("P2P Transfer", msg);
+        logActivityToAdmin("🔄 P2P ዝውውር: " + msg);
 
-        showCustomModal("P2P ተላልፏል", `መጠን ${amt} ለ ተቀባይ (${recipient}) በስኬት ተልኳል!`);
+        showCustomModal("P2P ተላልፏል", `መጠን ${amt} ለ ተቀባይ (${recipient}) በስኬት ተልፏል!`);
     }
 
     function processExchange() {
         const type = document.getElementById('exchangeType').value;
         const amt = parseFloat(document.getElementById('exchangeAmount').value);
-        
         if (!amt || amt <= 0) {
-            showCustomModal("ስህተት", "እባክዎ ልክ የሆነ የምንዛሬ መጠን ያስገቡ");
+            showCustomModal("ስህተት", "እባክዎ ትክክለኛ መጠን ያስገቡ");
             return;
         }
-
         if (type.startsWith('etb_') || type.startsWith('usdt_to_mela')) {
             if (userWalletBalance < amt) {
-                showCustomModal("ስህተት", "ለዚህ ልውውጥ በቂ ቀሪ ሂሳብ የለዎትም!");
+                showCustomModal("ስህተት", "በቂ ቀሪ ሂሳብ የለዎትም!");
                 return;
             }
             userWalletBalance -= amt;
@@ -1206,14 +1078,8 @@
             melaCoinBalance -= amt;
             userWalletBalance += (amt * 10);
         }
-
         updateBalanceDisplay();
         updateMelaCoinDisplay();
-
-        const exMsg = `💱 *[ምንዛሬ ልውውጥ]*\n👤 ተጠቃሚ: ${userName} (ID: \`${telegramId}\`)\n🔄 ዓይነት: ${type}\n💰 መጠን: ${amt}`;
-        logActivityToAdmin(exMsg);
-        sendTelegramNotificationToAdmin(exMsg);
-
         showCustomModal("የምንዛሬ ማዕከል", "የልውውጥዎ ጥያቄ በስኬት ተፈጽሟል!");
     }
 
@@ -1238,115 +1104,45 @@
     function adminToggleLotteryStatus(isRelease) {
         if (isRelease) {
             localStorage.removeItem('mela_lottery_blocked');
-            isLotteryBlockedByAdmin = false;
-            showCustomModal("አድሚን ፓነል", "ሎተሪ ተከፍቷል!");
+            showCustomModal("አድሚን", "ሎተሪ ተከፍቷል!");
         } else {
             localStorage.setItem('mela_lottery_blocked', 'true');
-            isLotteryBlockedByAdmin = true;
-            showCustomModal("አድሚን ፓነል", "ሎተሪ ታግዷል!");
+            showCustomModal("አድሚን", "ሎተሪ ታግዷል!");
         }
-        checkLotteryStatusPublic();
     }
 
     function adminResetLotteryOnly() {
         localStorage.removeItem('mela_taken_lottery_numbers');
         selectedLotteryNumbers = [];
         generateLotteryGrid();
-        showCustomModal("አድሚን ፓነል", "የሎተሪው ሂደት ብቻ በተሳካ ሁኔታ ሪሴት (Reset) ተደርጓል!");
-    }
-
-    function saveDynamicAdminPhone() {
-        const newPhone = document.getElementById('dynamicAdminPhoneInput').value.trim();
-        if (!validateEthiopianPhone(newPhone)) {
-            showCustomModal("ስህተት", "እባክዎ ትክክለኛ የኢትዮጵያ ስልክ ቁጥር ያስገቡ (+2519... ወይም +2517...)");
-            return;
-        }
-        dynamicAdminPhone = newPhone;
-        localStorage.setItem('mela_admin_phone', newPhone);
-        showCustomModal("አድሚን ፓነል", `የአድሚን ገንዘብ መቀበያ ስልክ ቁጥር ወደ (${newPhone}) በስኬት ተስተካክሏል!`);
+        showCustomModal("አድሚን", "የሎተሪው ሂደት ሪሴት ተደርጓል!");
     }
 
     function adminEraseUserRegistration() {
         const target = document.getElementById('targetUserAccount').value.trim();
-        if (!target) {
-            showCustomModal("ስህተት", "እባክዎ ሊሰርዙት/ኢሬዝ ሊያደርጉት የሚፈልጉትን የተጠቃሚ ቴሌግራም ID ወይም ስልክ ቁጥር ያስገቡ!");
-            return;
-        }
-        
+        if (!target) return;
         localStorage.removeItem('mela_session_' + target);
-        localStorage.removeItem('mela_approved_' + target);
-        localStorage.removeItem('mela_pending_' + target);
-        localStorage.removeItem('mela_logged_in_' + target);
-        localStorage.removeItem('mela_blocked_' + target);
-
-        showCustomModal("አድሚን ፓነል", `ተጠቃሚ (${target}) የተመዘገበበት መረጃ ከሲስተሙ ሙሉ በሙሉ ተሰርዟል/ኢሬዝ ተደርጓል!`);
+        showCustomModal("አድሚን", `ተጠቃሚ (${target}) ከሲስተሙ ተሰርዟል!`);
     }
 
-    // አዲስ የተጨመረ ፈጣን ማጽጃ (Quick Erase for testing)
     function quickClearMyTestData() {
         localStorage.removeItem('mela_session_' + telegramId);
         localStorage.removeItem('mela_approved_' + telegramId);
-        localStorage.removeItem('mela_pending_' + telegramId);
-        localStorage.removeItem('mela_logged_in_' + telegramId);
-        localStorage.removeItem('mela_blocked_' + telegramId);
-        
-        showCustomModal("ተሳክቷል", "የእርስዎ አካውንት እና የሙከራ ምዝገባ መረጃ ከካሼር (localStorage) ሙሉ በሙሉ ተሰርዟል። አሁን ወደ መጀመሪያው ገጽ በመመለስ አዲስ ምዝገባ ማካሄድ ይችላሉ።");
+        showCustomModal("ተሳክቷል", "የእርስዎ አካውንት መረጃ ተሰርዟል።");
         backToWelcome();
-    }
-
-    function adminSaveCommission() {
-        const rate = parseFloat(document.getElementById('adminCommissionRate').value);
-        if (isNaN(rate)) return;
-        adminCommissionPercentage = rate;
-        showCustomModal("አድሚን ፓነል", `የሪፈራል ኮሚሽን ፐርሰንት ወደ ${rate}% ተስተካክሏል!`);
-    }
-
-    function adminSaveTicketPrice() {
-        const price = parseFloat(document.getElementById('adminTicketPrice').value);
-        if (isNaN(price)) return;
-        ticketPrice = price;
-        document.getElementById('ticketPriceDisplay').textContent = ticketPrice;
-        showCustomModal("አድሚን ፓነል", `የሎተሪ ቲኬት ዋጋ ወደ ${ticketPrice} Mela Coin ተስተካክሏል!`);
     }
 
     function adminBlockUser() {
         const target = document.getElementById('targetUserAccount').value;
         if (!target) return;
         localStorage.setItem('mela_blocked_' + target, 'true');
-        showCustomModal("አድሚን ፓነል", `ተጠቃሚ (${target}) በስኬት ታግዷል!`);
-    }
-
-    function adminCancelUserRequest() {
-        const target = document.getElementById('targetUserAccount').value || telegramId;
-        showCustomModal("አድሚን ፓነል", `የተጠቃሚው (${target}) ጥያቄ ተሰርዟል (Cancelled)!`);
+        showCustomModal("አድሚን", `ተጠቃሚ (${target}) ታግዷል!`);
     }
 
     function adminApproveUser() {
         const target = document.getElementById('targetUserAccount').value || telegramId;
         localStorage.setItem('mela_approved_' + target, 'true');
-        localStorage.removeItem('mela_pending_' + target);
-        showCustomModal("አድሚን ፓነል", `የተጠቃሚው (${target}) አካውንት ጸድቋል!`);
-        sendTelegramNotificationToAdmin(`✅ *አካውንትዎ ጸድቋል!* (ID: \`${target}\`) አሁን ሙሉ አገልግሎቱን መጠቀም ይችላሉ።`);
-    }
-
-    function adminSendLotteryWinnerAlert() {
-        const winnerId = document.getElementById('winnerUserId').value;
-        const luckyNum = document.getElementById('winnerLuckyNumber').value;
-        const prize = parseFloat(document.getElementById('winnerCoinPrize').value);
-        if (!winnerId || !luckyNum || isNaN(prize)) {
-            showCustomModal("ስህተት", "እባክዎ የአሸናፊውን ዩዘር አይዲ፣ የወጣውን ቁጥር እና የኮይን መጠን ይሙሉ");
-            return;
-        }
-        const winAlertMsg = `🎉 *የሎተሪ ዕጣ ወጥቷል!*\nወጣው ዕጣ ቁጥር: *${luckyNum}*\nአሸናፊ ዩዘር ID: \`${winnerId}\`\nሽልማት: *${prize} Mela Coin*`;
-        sendTelegramNotificationToAdmin(winAlertMsg);
-        showCustomModal("ቦት ማስታወቂያ እና እጣ ወጥቷል", `እጣ ማውጫው ለአድሚን ቦት በስኬት ተልኳል!`);
-    }
-
-    function adminSendBroadcast() {
-        const msg = document.getElementById('adminBroadcastMsg').value;
-        if (!msg) return;
-        sendTelegramNotificationToAdmin(`📢 *ማስታወቂያ ከኮኬቲ / መላ ቦት*\n\n${msg}`);
-        showCustomModal("ማስታወቂያ ተልኳል", `ማስታወቂያው ተላልፏል!`);
+        showCustomModal("አድሚን", `ተጠቃሚ (${target}) ጸድቋል!`);
     }
 
     function showCustomModal(title, message) {
