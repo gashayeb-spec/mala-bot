@@ -22,6 +22,9 @@ logging.basicConfig(level=logging.INFO)
 bot = Bot(token=BOT_TOKEN)
 dp = Dispatcher(storage=MemoryStorage())
 
+# የተመዝጋቢዎች መረጃ ማከማቻ (Database ምትክ)
+registered_users = set()
+
 # -- Flask ሰርቨር --
 app = Flask(__name__, template_folder='.')
 
@@ -29,7 +32,7 @@ app = Flask(__name__, template_folder='.')
 def home():
     return render_template('index.html')
 
-# -- የቻፓ (Chapa) ክፍያ ሊንክ ማመንጫ ኤፒአይ (API) --
+# -- የቻፓ (Chapa) ክፍያ ሊንክ ማመንጫ ኤፒአይ --
 @app.route('/initiate-chapa', methods=['POST'])
 def initiate_chapa():
     req_data = request.json
@@ -69,23 +72,29 @@ def initiate_chapa():
 def run_web():
     app.run(host="0.0.0.0", port=10000)
 
-# ዌብ ሰርቨሩን በጀርባ ማስጀመር
 threading.Thread(target=run_web, daemon=True).start()
 
-# /start ትዕዛዝ ሲሰጥ
+# /start ትዕዛዝ (ማስታወቂያ እና የስታርት ቁልፍ)
 @dp.message(Command("start"))
 async def send_welcome(message: types.Message):
+    registered_users.add(message.from_user.id)
+    
     welcome_text = (
-        "<b>እንኳን ወደ መላ.ቦት (Mela-bot) በደህና መጡ!</b>\n\n"
-        "ደህንነቱ የተጠበቀ ዋሌት ለመክፈት፣ ኬዋይሲ (KYC) ለማረጋገጥ "
-        "እና የገንዘብ ዝውውር ለማድረግ ከታች ያለውን ቁልፍ ይጫኑ።"
+        "🌟 <b>እንኳን ወደ መላ.ቦት (Mela-bot) በደህና መጡ!</b> 🌟\n\n"
+        "💰 <b>ደህንነቱ የተጠበቀ የዲጂታል ዋሌት እና የገንዘብ ዝውውር መድረክ።</b>\n\n"
+        "📌 <i>ምን ማድረግ ይችላሉ?</i>\n"
+        "• ፈጣን እና ደህንነቱ የተጠበቀ የዋሌት አካውንት ይክፈቱ።\n"
+        "• መታወቂያዎን በመጫን ኬዋይሲ (KYC) ያረጋግጡ።\n"
+        "• በቻፓ (Chapa) በመጠቀም በብር (ETB) ገንዘብ ያስገቡ እና ያውጡ።\n"
+        "• መላ ኮይን እና ዩኤስዲቲ (USDT) ይቀይሩ እንዲሁም ሎተሪ ይሳተፉ!\n\n"
+        "👇 እባክዎ ከታች ያለውን ማስታወቂያ አንብበው ሲጨርሱ ለመጀመር ቁልፉን ይጫኑ።"
     )
     
     keyboard = InlineKeyboardMarkup(
         inline_keyboard=[
             [
                 InlineKeyboardButton(
-                    text="🚀 ዋሌት ክፈት & ኬዋይሲ አድርግ", 
+                    text="🚀 ስታርት - ዋሌት ክፈት & ኬዋይሲ አድርግ", 
                     web_app=WebAppInfo(url=WEB_APP_URL)
                 )
             ]
@@ -94,7 +103,39 @@ async def send_welcome(message: types.Message):
     
     await message.answer(welcome_text, reply_markup=keyboard, parse_mode="HTML")
 
-# ከዌብ አፕ (HTML) የሚላኩ መረጃዎችን መቀበያ እና ለአድሚን ማረጋገጫ መላኪያ
+# -- የአድሚን ስታቲስቲክስ ትዕዛዝ (/stats) --
+@dp.message(Command("stats"))
+async def admin_stats(message: types.Message):
+    if str(message.from_user.id) == str(ADMIN_CHAT_ID):
+        total_users = len(registered_users)
+        await message.answer(f"📊 <b>የቦቱ ስታቲስቲክስ</b>\n\n👥 አጠቃላይ ተጠቃሚዎች ብዛት: <b>{total_users}</b>", parse_mode="HTML")
+    else:
+        await message.answer("ይህንን ትዕዛዝ ለመጠቀም ፈቃድ የለዎትም።")
+
+# -- የአድሚን ማስታወቂያ መላኪያ ትዕዛዝ (/announce [መልእክት]) --
+@dp.message(Command("announce"))
+async def admin_announce(message: types.Message):
+    if str(message.from_user.id) == str(ADMIN_CHAT_ID):
+        args = message.text.split(maxsplit=1)
+        if len(args) < 2:
+            await message.answer("⚠️ እባክዎ ሊልኩት የሚፈልጉትን ማስታወቂያ አብረው ይጻፉ።\nምሳሌ: `/announce ሰላም ተጠቃሚዎች...`", parse_mode="HTML")
+            return
+        
+        announcement_text = f"📢 <b>ማስታወቂያ ከዕዝ ክፍል</b>\n\n{args[1]}"
+        success_count = 0
+        
+        for user_id in registered_users:
+            try:
+                await bot.send_message(chat_id=user_id, text=announcement_text, parse_mode="HTML")
+                success_count += 1
+            except:
+                pass
+                
+        await message.answer(f"✅ ማስታወቂያው ለ <b>{success_count}</b> ተጠቃሚዎች ተልኳል!", parse_mode="HTML")
+    else:
+        await message.answer("ይህንን ትዕዛዝ ለመጠቀም ፈቃድ የለዎትም።")
+
+# ከዌብ አፕ የሚመጣ መረጃ መቀበያ
 @dp.message(F.web_app_data)
 async def handle_web_app_data(message: types.Message):
     data_json = message.web_app_data.data
@@ -116,7 +157,7 @@ async def handle_web_app_data(message: types.Message):
         admin_text = f"🔔 <b>አዲስ የኬዋይሲ/ምዝገባ ጥያቄ መጥቷል!</b>\n\nተጠቃሚ: @{message.from_user.username}\n{info_text}"
         await bot.send_message(chat_id=ADMIN_CHAT_ID, text=admin_text, reply_markup=keyboard, parse_mode="HTML")
 
-# አድሚኑ አጽድቅ (Approve) ሲጫን
+# አድሚኑ አጽድቅ ሲል
 @dp.callback_query(F.data.startswith("approve_"))
 async def approve_user(callback: types.CallbackQuery):
     target_user_id = callback.data.split("_")[1]
