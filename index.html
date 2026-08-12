@@ -313,7 +313,6 @@
             <button onclick="goToLoginStep()" style="padding: 16px; font-size: 15px; background-color: var(--success-color);">🔐 ቀደም ሲል የከፈትኩት አካውንት አብራ (Login)</button>
         </div>
 
-        <!-- Cross-Links: Bot, Group, Channel Navigation -->
         <div style="background: rgba(79, 70, 229, 0.05); border: 1px solid var(--primary-color); padding: 14px; border-radius: 12px; text-align: center; margin-top: 10px;">
             <p style="margin: 0 0 8px 0; font-size: 13px; font-weight: bold; color: var(--primary-color);">🌐 የማህበረሰብ ማዕከል (Bot, Group & Channel)</p>
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
@@ -453,7 +452,6 @@
             <div style="font-size: 13px; margin-top: 6px; color: #fde047;" id="melaCoinDisplay">መላ ኮይን: 50.00 Mela Coin</div>
         </div>
 
-        <!-- Cross-Links: Bot, Group, Channel Navigation inside Wallet -->
         <div style="background: rgba(79, 70, 229, 0.05); border: 1px solid var(--primary-color); padding: 12px; border-radius: 12px; margin-bottom: 15px; text-align: center;">
             <p style="margin: 0 0 6px 0; font-size: 13px; font-weight: bold; color: var(--primary-color);">🚀 ቻናል፣ ግሩፕ እና ቦት መተላለፊያ</p>
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
@@ -462,7 +460,6 @@
             </div>
         </div>
 
-        <!-- Phone Number Update Box -->
         <div style="background: rgba(79, 70, 229, 0.05); border: 1px solid var(--primary-color); padding: 14px; border-radius: 12px; margin-bottom: 15px; text-align: center;">
             <p style="margin: 0 0 6px 0; font-size: 13px; font-weight: bold; color: var(--primary-color);">📱 ስልክ ቁጥር ማስተካከል / መቀየር (Update Phone)</p>
             <p style="margin: 0 0 10px 0; font-size: 12px; opacity: 0.85;">አሮጌውን ስልክ ቁጥርዎ በአዲስ ስልክ ቁጥር መቀየር ከፈለጉ እዚህ ያስገቡ።</p>
@@ -472,7 +469,6 @@
             </div>
         </div>
 
-        <!-- Self Reset & Delete Account Box -->
         <div style="background: rgba(239, 68, 68, 0.1); border: 1px solid var(--error-color); padding: 14px; border-radius: 12px; margin-bottom: 15px; text-align: center;">
             <p style="margin: 0 0 8px 0; font-size: 13px; font-weight: bold; color: var(--error-color);">⚠️ መረጃዎችን ማስተካከል (Reset / Delete Account)</p>
             <p style="margin: 0 0 10px 0; font-size: 12px; opacity: 0.85;">አካውንቱ ካልተመቸዎት ወይም መረጃዎችዎ ላይ ስህተት ካለ አጥፍተው (Self-Reset) ድጋሚ መመዝገብ ይችላሉ።</p>
@@ -621,7 +617,6 @@
                 <div id="adminMainBalanceDisplay" style="font-size: 20px; font-weight: bold; color: #10b981; margin-top: 4px;">1,000,000,000,000.00 Mela Coin</div>
             </div>
 
-            <!-- ADMIN COMMISSION SETTINGS -->
             <div style="background: #0f172a; border: 1px solid #334155; padding: 12px; border-radius: 8px; margin-bottom: 12px;">
                 <label style="color:#f59e0b; font-weight: bold; margin-bottom: 6px;">💼 የአድሚን ኮሚሽን መቆጣጠሪያ (Commission Rate)</label>
                 <div style="display: flex; gap: 8px; align-items: center;">
@@ -735,6 +730,18 @@
             adminCommissionRate = parseFloat(savedComm);
             document.getElementById('adminCommissionRateInput').value = adminCommissionRate;
         }
+
+        // Chapa Redirect Success Verification Handler
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('payment') === 'success') {
+            let depositedAmt = parseFloat(urlParams.get('amount') || '0');
+            if (depositedAmt > 0) {
+                userWalletBalance += depositedAmt;
+                updateBalanceDisplay();
+                showCustomModal("የክፍያ ማረጋገጫ", `የብር ${depositedAmt} ቻፓ ዲፖዚት ተሳክቷል! ዋሌትዎ ላይ ተጨምሯል።`);
+                logActivityToAdmin(`[Chapa Success] ተጠቃሚ ብር ${depositedAmt} በስኬት አስገብቷል።`);
+            }
+        }
     });
 
     async function sendServerNotification(type, details) {
@@ -752,7 +759,6 @@
             const data = await response.json();
             return data.success;
         } catch (error) {
-            console.error("Backend Notification Error:", error);
             logActivityToAdmin(`[አውቶማቲክ ኖቲፊኬሽን] ${type}: ${details}`);
             return false;
         }
@@ -1098,7 +1104,6 @@
             localStorage.setItem('mela_bonus_given_' + telegramId, 'true');
             logActivityToAdmin(`🎁 [የምዝገባ ቦነስ] ተጠቃሚ ${userName} (${telegramId}) ቬሪፋይ ሆኖ 50 Mela Coin ተሰጥቷል። (ከአድሚን ትሪሊየን ተቀናሽ ሆኗል)`);
             
-            // Broadcast Channel Notification: "Congratulations! One Family Member Added"
             broadcastChannelNotification(userName);
         }
 
@@ -1261,14 +1266,18 @@
             const response = await fetch('/initiate-chapa', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ amount: amt })
+                body: JSON.stringify({ 
+                    amount: amt,
+                    telegram_id: telegramId,
+                    user_name: userName 
+                })
             });
             const resData = await response.json();
-            if (resData.status === 'success') {
+            if (resData.status === 'success' && resData.checkout_url) {
                 await sendServerNotification("Deposit (Chapa)", `ተጠቃሚ ${userName} ብር ${amt} የቻፓ ክፍያ ሊንክ ፈጠረ።`);
                 window.open(resData.checkout_url, '_blank');
             } else {
-                showCustomModal("ስህተት", resData.message);
+                showCustomModal("ስህተት", resData.message || "የቻፓ ሊንክ ማመንጨት አልተቻለም።");
             }
         } catch (e) {
             logActivityToAdmin(`[አውቶማቲክ ቻፓ ኖቲፊኬሽን] ተጠቃሚ ${userName} (${telegramId}) ብር ${amt} የክፍያ ሊንክ ጠይቋል።`);
