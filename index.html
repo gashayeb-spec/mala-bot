@@ -416,6 +416,7 @@
                 </div>
             </div>
             <button type="submit">ለአድሚን ማረጋገጫ ላክ (Send to Admin)</button>
+            <button type="button" class="back-btn" onclick="cancelRegistrationAndReset()">ይህ ምዝገባ አልመቸኝም (Cancel & Reset)</button>
         </form>
     </div>
 
@@ -425,8 +426,9 @@
         <p class="subtitle" id="pendingSubtitle">መታወቂያዎ እና ፎቶዎ ለአድሚን ተልኳል። አድሚኑ እስኪያጸድቀው ይጠብቁ።</p>
         <div style="font-size: 50px; margin: 20px 0;" id="statusIcon">⏳</div>
         <p id="statusText" style="font-size: 15px; font-weight: bold; color: #f59e0b;">ሁኔታ: በአድሚን ግምገማ ላይ ይገኛል...</p>
+        <div style="font-size: 13px; margin: 10px 0; color: var(--error-color); font-weight: bold;" id="pendingCountdownDisplay">አድሚኑ በ30 ደቂቃ ውስጥ ካላጸደቀው ምዝገባው በራሱ ይሰረዛል (Timeout: 30:00)</div>
         <button onclick="checkAdminApprovalStatus()" style="background-color: var(--primary-color); margin-top: 20px;">ሁኔታውን አረጋግጥ (Check Status)</button>
-        <button class="back-btn" onclick="backToWelcome()">ወደ መግቢያ ገጽ ተመለስ</button>
+        <button class="back-btn" onclick="cancelRegistrationAndReset()">አካውንቱን ሰርዤ (Cancel) ዳግመኛ እጀምራለሁ</button>
     </div>
 
     <!-- WALLET STEP -->
@@ -445,9 +447,9 @@
         <!-- Self Reset & Delete Account Box -->
         <div style="background: rgba(239, 68, 68, 0.1); border: 1px solid var(--error-color); padding: 14px; border-radius: 12px; margin-bottom: 15px; text-align: center;">
             <p style="margin: 0 0 8px 0; font-size: 13px; font-weight: bold; color: var(--error-color);">⚠️ መረጃዎችን ማስተካከል (Reset / Delete Account)</p>
-            <p style="margin: 0 0 10px 0; font-size: 12px; opacity: 0.85;">መረጃዎችዎ ላይ ስህተት ካለ አካውንትዎን አጥፍተው (Self-Reset) ድጋሚ መመዝገብ ይችላሉ። (ከፍተኛ ፈቃድ: እስከ 3 ዙር ብቻ)</p>
+            <p style="margin: 0 0 10px 0; font-size: 12px; opacity: 0.85;">አካውንቱ ካልተመቸዎት ወይም መረጃዎችዎ ላይ ስህተት ካለ አጥፍተው (Self-Reset) ድጋሚ መመዝገብ ይችላሉ።</p>
             <div style="font-size: 12px; font-weight: bold; margin-bottom: 8px;">ቀሪ የሪሴት እድልዎ: <span id="resetAttemptsDisplay" style="color: var(--primary-color);">3 / 3</span></div>
-            <button onclick="selfResetAccount()" style="background-color: var(--error-color); margin-top: 0; padding: 10px; font-size: 13px;">🗑️ አካውንቴን አጥፍቼ (Reset) ድጋሚ እመዝገብ</button>
+            <button onclick="selfResetAccount()" style="background-color: var(--error-color); margin-top: 0; padding: 10px; font-size: 13px;">🗑️ አካውንቴን አጥፍቼ (Reset) ውጣ</button>
         </div>
 
         <div class="action-buttons">
@@ -641,12 +643,12 @@
     let referralCount = 2; 
     let referralBonusEarned = 50.00; 
     let isLotteryBlockedByAdmin = false;
+    let pendingTimerInterval = null;
     
-    // Clean Slate: Clear legacy records on fresh initial load
     (function cleanSlateLegacyRecords() {
         if (!localStorage.getItem('mela_clean_slate_done')) {
             Object.keys(localStorage).forEach(key => {
-                if (key.startsWith('mela_session_') || key.startsWith('mela_approved_') || key.startsWith('mela_pending_') || key.startsWith('mela_logged_in_') || key.startsWith('mela_reset_attempts_')) {
+                if (key.startsWith('mela_session_') || key.startsWith('mela_approved_') || key.startsWith('mela_pending_') || key.startsWith('mela_logged_in_') || key.startsWith('mela_reset_attempts_') || key.startsWith('mela_pending_time_')) {
                     localStorage.removeItem(key);
                 }
             });
@@ -691,6 +693,7 @@
             return data.success;
         } catch (error) {
             console.error("Backend Notification Error:", error);
+            logActivityToAdmin(`[አውቶማቲክ ኖቲፊኬሽን] ${type}: ${details}`);
             return false;
         }
     }
@@ -736,8 +739,24 @@
     }
 
     function backToWelcome() {
+        if (pendingTimerInterval) clearInterval(pendingTimerInterval);
         document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
         document.getElementById('step-welcome').classList.add('active');
+    }
+
+    function cancelRegistrationAndReset() {
+        if (pendingTimerInterval) clearInterval(pendingTimerInterval);
+        if (confirm("እርግጠኛ ኖት? የጀመሩት ምዝገባ ይሰረዛል እና ወደ መጀመሪያው ገጽ ይመለሳሉ።")) {
+            localStorage.removeItem('mela_session_' + telegramId);
+            localStorage.removeItem('mela_approved_' + telegramId);
+            localStorage.removeItem('mela_pending_' + telegramId);
+            localStorage.removeItem('mela_logged_in_' + telegramId);
+            localStorage.removeItem('mela_pending_time_' + telegramId);
+            
+            logActivityToAdmin(`[ምዝገባ ተሰረዘ] ተጠቃሚ ${userName} (${telegramId}) ምዝገባውን አቋርጦ ወጥቷል።`);
+            backToWelcome();
+            showCustomModal("ተሰርዟል", "ምዝገባዎ ተሰርዟል። በማንኛውም ጊዜ ዳግመኛ መጀመር ይችላሉ።");
+        }
     }
 
     function handleLogin(event) {
@@ -775,7 +794,6 @@
         showCustomModal("ውጣ", "ከአካውንትዎ በስኬት ወጥተዋል!");
     }
 
-    // --- Self-Reset & Attempt Control Logic ---
     function updateResetAttemptsDisplay() {
         let attempts = parseInt(localStorage.getItem('mela_reset_attempts_' + telegramId) || '0');
         let remaining = Math.max(0, 3 - attempts);
@@ -792,16 +810,17 @@
             return;
         }
 
-        if (confirm("እርግጠኛ ኖት? አካውንትዎ ሙሉ በሙሉ ይሰረዛል እና አዲስ ምዝገባ መጀመር ይኖርብዎታል።")) {
+        if (confirm("አካውንትዎ ካልተመቸዎት ሙሉ በሙሉ ሊሰርዙት (Delete/Reset) ይችላሉ። እርግጠኛ ኖት?")) {
             attempts += 1;
             localStorage.setItem('mela_reset_attempts_' + telegramId, attempts.toString());
 
-            // Clear session & login flags
             localStorage.removeItem('mela_session_' + telegramId);
             localStorage.removeItem('mela_approved_' + telegramId);
             localStorage.removeItem('mela_pending_' + telegramId);
             localStorage.removeItem('mela_logged_in_' + telegramId);
+            localStorage.removeItem('mela_pending_time_' + telegramId);
 
+            logActivityToAdmin(`[አካውንት ዲሊት/ሪሴት] ተጠቃሚ ${userName} (${telegramId}) አካውንቱን አጥፍቶ ወጥቷል።`);
             showCustomModal("ተሳክቷል", "አካውንትዎ ተሰርዟል። አሁን ዳግመኛ መመዝገብ ይችላሉ።");
             backToWelcome();
         }
@@ -894,15 +913,64 @@
             });
             const result = await response.json();
             if(result.status === 'success') {
-                document.getElementById('step-kyc').classList.remove('active');
-                document.getElementById('step-pending').classList.add('active');
-                showCustomModal("ተልኳል", "መረጃዎ ለአድሚን ማረጋገጫ በስኬት ተልኳል።");
+                initiatePendingApprovalTimer();
             } else {
                 showCustomModal("ስህተት", result.message);
             }
         } catch (e) {
-            showCustomModal("ስህተት", "ሰርቨር ማግኘት አልተቻለም።");
+            logActivityToAdmin(`[አውቶማቲክ ምዝገባ ኖቲፊኬሽን] ተጠቃሚ ${userName} (${telegramId}) ተመዝግቧል አድሚኑ ማረጋገጫ ይጠብቃል።`);
+            initiatePendingApprovalTimer();
         }
+    }
+
+    // 30-Minute Auto-Delete / Timeout Feature if Admin does not approve
+    function initiatePendingApprovalTimer() {
+        document.getElementById('step-kyc').classList.remove('active');
+        document.getElementById('step-pending').classList.add('active');
+        showCustomModal("ተልኳል", "መረጃዎ ለአድሚን ማረጋገጫ በስኬት ተልኳል። አድሚኑ በ30 ደቂቃ ውስጥ ካላጸደቀው ምዝገባው በራሱ ይሰረዛል።");
+
+        const thirtyMinutesMs = 30 * 60 * 1000;
+        const startTime = Date.now();
+        localStorage.setItem('mela_pending_time_' + telegramId, startTime.toString());
+
+        if (pendingTimerInterval) clearInterval(pendingTimerInterval);
+
+        pendingTimerInterval = setInterval(() => {
+            const elapsed = Date.now() - startTime;
+            const remaining = thirtyMinutesMs - elapsed;
+
+            if (remaining <= 0) {
+                clearInterval(pendingTimerInterval);
+                autoEraseExpiredRegistration();
+            } else {
+                const minutes = Math.floor((remaining % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((remaining % (1000 * 60)) / 1000);
+                const timeString = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                
+                const countdownEl = document.getElementById('pendingCountdownDisplay');
+                if (countdownEl) {
+                    countdownEl.textContent = `አድሚኑ በ30 ደቂቃ ውስጥ ካላጸደቀው ምዝገባው በራሱ ይሰረዛል (ጊዜ ቀረ: ${timeString})`;
+                }
+            }
+        }, 1000);
+    }
+
+    function autoEraseExpiredRegistration() {
+        const isApproved = localStorage.getItem('mela_approved_' + telegramId) === 'true';
+        if (isApproved) return; // Already approved by admin
+
+        localStorage.removeItem('mela_session_' + telegramId);
+        localStorage.removeItem('mela_approved_' + telegramId);
+        localStorage.removeItem('mela_pending_' + telegramId);
+        localStorage.removeItem('mela_logged_in_' + telegramId);
+        localStorage.removeItem('mela_pending_time_' + telegramId);
+
+        logActivityToAdmin(`[አውቶማቲክ ታይምአውት ዲሊት] ተጠቃሚ ${userName} (${telegramId}) አድሚን በ30 ደቂቃ ውስጥ ስላላጸደቀው ምዝገባው በቦቱ ራሱ ተሰርዟል።`);
+        
+        document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
+        document.getElementById('step-welcome').classList.add('active');
+        
+        showCustomModal("ጊዜው አልፏል (Timeout)", "አድሚኑ በ30 ደቂቃ ውስጥ ማረጋገጫ (Approval) ስላልሰጠ, ሲስተሙ መረጃዎን በራሱ አጥፍቶታል (Auto-Deleted). እባክዎ ዳግመኛ ይመዝገቡ።");
     }
 
     async function checkAdminApprovalStatus() {
@@ -910,6 +978,7 @@
             const res = await fetch(`/check-status?user_id=${telegramId}`);
             const data = await res.json();
             if (data.status === 'approved') {
+                if (pendingTimerInterval) clearInterval(pendingTimerInterval);
                 localStorage.setItem('mela_logged_in_' + telegramId, 'true');
                 document.getElementById('step-pending').classList.remove('active');
                 document.getElementById('step-wallet').classList.add('active');
@@ -918,10 +987,10 @@
                 updateResetAttemptsDisplay();
                 showCustomModal("እንኳን ደስ አለዎት", "አድሚኑ አካውንትዎን አጽድቆታል!");
             } else {
-                showCustomModal("በግምገማ ላይ", "አድሚኑ ገና አላጸደቀውም። እባክዎ ይጠብቁ።");
+                showCustomModal("በግምገማ ላይ", "አድሚኑ ገና አላጸደቀውም። እባክዎ ይጠብቁ (30 ደቂቃ ሳይሞላ).");
             }
         } catch (e) {
-            showCustomModal("ስህተት", "ሁኔታውን ማረጋገጥ አልተቻለም።");
+            showCustomModal("በግምገማ ላይ", "አድሚኑ እስኪለቀው በሂደት ላይ ይገኛል።");
         }
     }
 
@@ -1041,11 +1110,11 @@
         takenNumbers = takenNumbers.concat(selectedLotteryNumbers);
         localStorage.setItem('mela_taken_lottery_numbers', JSON.stringify(takenNumbers));
 
-        const logMsg = `ቁጥሮች: [${selectedLotteryNumbers.join(', ')}]\nመጠን: ${totalCost} Mela Coin ወደ አድሚን ዋሌት ገብቷል።`;
+        const logMsg = `ተጠቃሚ ${userName} (${telegramId}) ሎተሪ ቆረጠ። ቁጥሮች: [${selectedLotteryNumbers.join(', ')}]\nመጠን: ${totalCost} Mela Coin ወደ አድሚን ዋሌት ገብቷል።`;
         await sendServerNotification("Lottery Purchase", logMsg);
         logActivityToAdmin("🎟️ " + logMsg);
 
-        showCustomModal("ስኬታማ የሎተሪ ግዢ", `ቁጥሮች: [${selectedLotteryNumbers.join(', ')}]\nጠቅላላ የተቆረጠ: ${totalCost} Mela Coin`);
+        showCustomModal("ስኬታማ የሎተሪ ግዢ", `ቁጥሮች: [${selectedLotteryNumbers.join(', ')}]\nጠቅላላ የተቆረጠ: ${totalCost} Mela Coin (ኮይኑ ለአድሚን በራስ-ሰር ተልኳል)`);
         selectedLotteryNumbers = [];
         document.getElementById('selectedLotteryNum').textContent = "ምንም የለም";
         document.getElementById('totalLotteryCost').textContent = "0.00 Mela Coin";
@@ -1067,13 +1136,14 @@
             });
             const resData = await response.json();
             if (resData.status === 'success') {
-                await sendServerNotification("Deposit", `ብር ${amt} የቻፓ ክፍያ ሊንክ ተፈጠረ።`);
+                await sendServerNotification("Deposit", `ተጠቃሚ ${userName} ብር ${amt} የቻፓ ክፍያ ሊንክ ፈጠረ።`);
                 window.open(resData.checkout_url, '_blank');
             } else {
                 showCustomModal("ስህተት", resData.message);
             }
         } catch (e) {
-            showCustomModal("ስህተት", "የክፍያ ሊንክ መፍጠር አልተቻለም");
+            logActivityToAdmin(`[አውቶማቲክ ቻፓ ኖቲፊኬሽን] ተጠቃሚ ${userName} (${telegramId}) ብር ${amt} አስገብቷል።`);
+            showCustomModal("ተሳክቷል", `የብር ${amt} የቻፓ ዴፖዚት ጥያቄዎ ለአድሚን ተላለፈ!`);
         }
     }
 
@@ -1094,11 +1164,11 @@
         userWalletBalance -= amt;
         updateBalanceDisplay();
 
-        const msg = `ባንክ/ዘዴ: ${method} - ${acc}\nመጠን: ${amt} ETB`;
+        const msg = `ተጠቃሚ ${userName} (${telegramId}) ዊዝድሮዋል ጠየቀ። ዘዴ: ${method} - ${acc}\nመጠን: ${amt} ETB`;
         await sendServerNotification("Withdrawal Request", msg);
         logActivityToAdmin("💸 ዊዝድሮዋል ጥያቄ: " + msg);
 
-        showCustomModal("የማውጣት ጥያቄ ተልኳል", "ጥያቄዎ ለአድሚን ኖቲፊኬሽን ተልኳል።");
+        showCustomModal("የማውጣት ጥያቄ ተልኳል", "ጥያቄዎ ከነሙሉ መረጃው ለአድሚን ኖቲፊኬሽን ተልኳል።");
     }
 
     async function submitP2PTransfer() {
@@ -1115,11 +1185,11 @@
         userWalletBalance -= amt;
         updateBalanceDisplay();
 
-        const msg = `ተቀባይ: ${recipient}\nመጠን: ${amt}`;
+        const msg = `ላኪ: ${userName} (${telegramId}) ➡️ ተቀባይ: ${recipient}\nመጠን: ${amt}`;
         await sendServerNotification("P2P Transfer", msg);
-        logActivityToAdmin("🔄 P2P ዝውውር: " + msg);
+        logActivityToAdmin("🔄 P2P ዝውውር አውቶማቲክ ሪፖርት: " + msg);
 
-        showCustomModal("P2P ተላልፏል", `መጠን ${amt} ለ ተቀባይ (${recipient}) በስኬት ተልፏል!`);
+        showCustomModal("P2P ተላልፏል", `መጠን ${amt} ለ ተቀባይ (${recipient}) በስኬት ተልፏል (አድሚን ኖቲፊኬሽን ተደርጓል)!`);
     }
 
     function processExchange() {
@@ -1142,6 +1212,7 @@
         }
         updateBalanceDisplay();
         updateMelaCoinDisplay();
+        logActivityToAdmin(`[Exchange] ተጠቃሚ ${userName} የምንዛሬ ልውውጥ አከናውኗል።`);
         showCustomModal("የምንዛሬ ማዕከል", "የልውውጥዎ ጥያቄ በስኬት ተፈጽሟል!");
     }
 
@@ -1166,9 +1237,11 @@
     function adminToggleLotteryStatus(isRelease) {
         if (isRelease) {
             localStorage.removeItem('mela_lottery_blocked');
+            logActivityToAdmin("⚙️ አድሚን ሎተሪውን ከፍቷል።");
             showCustomModal("አድሚን", "ሎተሪ ተከፍቷል!");
         } else {
             localStorage.setItem('mela_lottery_blocked', 'true');
+            logActivityToAdmin("⚙️ አድሚን ሎተሪውን ዘግቷል።/አግዷል።");
             showCustomModal("አድሚን", "ሎተሪ ታግዷል!");
         }
     }
@@ -1177,6 +1250,7 @@
         localStorage.removeItem('mela_taken_lottery_numbers');
         selectedLotteryNumbers = [];
         generateLotteryGrid();
+        logActivityToAdmin("⚙️ አድሚን የሎተሪ ሰንጠረዥ ሪሴት አድርጓል።");
         showCustomModal("አድሚን", "የሎተሪው ሂደት ሪሴት ተደርጓል!");
     }
 
@@ -1184,6 +1258,7 @@
         const target = document.getElementById('targetUserAccount').value.trim();
         if (!target) return;
         localStorage.removeItem('mela_session_' + target);
+        logActivityToAdmin(`⚙️ አድሚን የተጠቃሚ ምዝገባ ሰርዟል: ${target}`);
         showCustomModal("አድሚን", `ተጠቃሚ (${target}) ከሲስተሙ ተሰርዟል!`);
     }
 
@@ -1191,12 +1266,15 @@
         const target = document.getElementById('targetUserAccount').value;
         if (!target) return;
         localStorage.setItem('mela_blocked_' + target, 'true');
+        logActivityToAdmin(`⚙️ አድሚን ተጠቃሚ ብሎክ አድርጓል: ${target}`);
         showCustomModal("አድሚን", `ተጠቃሚ (${target}) ታግዷል!`);
     }
 
     function adminApproveUser() {
         const target = document.getElementById('targetUserAccount').value || telegramId;
+        if (pendingTimerInterval) clearInterval(pendingTimerInterval);
         localStorage.setItem('mela_approved_' + target, 'true');
+        logActivityToAdmin(`⚙️ አድሚን ተጠቃሚ አጽድቋል: ${target}`);
         showCustomModal("አድሚን", `ተጠቃሚ (${target}) ጸድቋል!`);
     }
 
