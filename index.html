@@ -290,7 +290,7 @@
         <h2 id="pendingTitle">ማረጋገጫ በመጠበቅ ላይ...</h2>
         <p class="subtitle" id="pendingSubtitle">መረጃዎ እና የመታወቂያ ፎቶዎ ለአድሚን ተልኳል። አድሚኑ መረጃውን አረጋግጦ እስኪያጸድቅ ድረስ እባክዎ ትንሽ ይጠብቁ።</p>
         <div style="font-size: 30px; margin: 15px 0;">⏳</div>
-        <p style="font-size: 12px; opacity: 0.7;" id="pendingFooter">ማረጋገጫ ሲሰጥ ቦቱ በራሱ መልእክት ይልክልዎታል።</p>
+        <p id="statusText" style="font-size: 13px; font-weight: bold; color: #f59e0b;">ሁኔታ: ፔንዲንግ ላይ ይገኛል...</p>
     </div>
 
     <!-- ክፍል 4፡ የዋሌት ዳሽቦርድ -->
@@ -336,9 +336,12 @@
     let userData = {};
     let currentLang = 'am';
     let isBalanceVisible = false;
+    let statusCheckInterval = null;
     const actualBalance = "0.00 ETB";
     const tg = window.Telegram.WebApp;
     tg.expand();
+
+    const telegramId = tg.initDataUnsafe?.user?.id || "999999";
 
     function updateColors() {
         const bg = document.getElementById('bgPicker').value;
@@ -382,7 +385,7 @@
             btnSubmitAdmin: "ለአድሚን ማረጋገጫ ላክ",
             pendingTitle: "ማረጋገጫ በመጠበቅ ላይ...",
             pendingSubtitle: "መረጃዎ እና የመታወቂያ ፎቶዎ ለአድሚን ተልኳል። አድሚኑ መረጃውን አረጋግጦ እስኪያጸድቅ ድረስ እባክዎ ትንሽ ይጠብቁ።",
-            pendingFooter: "ማረጋገጫ ሲሰጥ ቦቱ በራሱ መልእክት ይልክልዎታል።",
+            statusText: "ሁኔታ: ፔንዲንግ ላይ ይገኛል...",
             verificationBadge: "✅ ቬሪፋይድ ዋሌት",
             txtBalanceTitle: "አጠቃላይ ቀሪ ሂሳብ",
             btnDeposit: "ገንዘብ አስገባ (Chapa)",
@@ -410,7 +413,7 @@
             btnSubmitAdmin: "Submit to Admin",
             pendingTitle: "Pending Verification...",
             pendingSubtitle: "Your info and ID photos have been sent to admin. Please wait until approved.",
-            pendingFooter: "The bot will notify you once approved.",
+            statusText: "Status: Pending...",
             verificationBadge: "✅ Verified Wallet",
             txtBalanceTitle: "Total Balance",
             btnDeposit: "Deposit (Chapa)",
@@ -445,7 +448,6 @@
         
         document.getElementById('pendingTitle').textContent = t.pendingTitle;
         document.getElementById('pendingSubtitle').textContent = t.pendingSubtitle;
-        document.getElementById('pendingFooter').textContent = t.pendingFooter;
         
         document.getElementById('verificationBadge').textContent = t.verificationBadge;
         document.getElementById('txtBalanceTitle').textContent = t.txtBalanceTitle;
@@ -472,6 +474,7 @@
             return;
         }
 
+        userData.telegramId = telegramId;
         userData.firstName = document.getElementById('firstName').value;
         userData.fatherName = document.getElementById('fatherName').value;
         userData.grandFatherName = document.getElementById('grandFatherName').value;
@@ -500,22 +503,41 @@
         // መረጃውን ለፓይተን ሰርቨር (Backend) በ POST ሪኬስት መላክ
         fetch('/submit-registration', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(userData)
         })
         .then(response => response.json())
         .then(data => {
             console.log('Success:', data);
+            startStatusChecker(); // አድሚኑ እስኪወስን በሪል-ታይም መከታተል መጀመር
         })
         .catch((error) => {
             console.error('Error:', error);
         });
+    }
 
-        if (tg && tg.sendData) {
-            tg.sendData(JSON.stringify(userData));
-        }
+    function startStatusChecker() {
+        statusCheckInterval = setInterval(() => {
+            fetch(`/check-status?user_id=${telegramId}`)
+            .then(res => res.json())
+            .then(data => {
+                if (data.status === 'approved') {
+                    clearInterval(statusCheckInterval);
+                    document.getElementById('step-pending').classList.remove('active');
+                    document.getElementById('step-wallet').classList.add('active');
+                    document.getElementById('userDisplayName').textContent = userData.firstName + " " + userData.fatherName;
+                } else if (data.status === 'cancelled') {
+                    clearInterval(statusCheckInterval);
+                    document.getElementById('statusText').textContent = currentLang === 'am' ? "❌ ኬዋይሲዎ ውድቅ ተደርጓል። እባክዎ እንደገና ይሞክሩ።" : "❌ KYC request rejected. Please try again.";
+                    document.getElementById('statusText').style.color = "#dc2626";
+                } else if (data.status === 'blocked') {
+                    clearInterval(statusCheckInterval);
+                    document.getElementById('statusText').textContent = currentLang === 'am' ? "🚫 አካውንትዎ ታግዷል።" : "🚫 Your account has been blocked.";
+                    document.getElementById('statusText').style.color = "#dc2626";
+                }
+            })
+            .catch(err => console.error("Status check error:", err));
+        }, 3000); // በየ 3 ሴኮንዱ ማረጋገጥ
     }
 
     function showCustomModal(title, message) {
