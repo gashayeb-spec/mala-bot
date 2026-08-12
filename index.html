@@ -228,7 +228,7 @@
         </div>
     </div>
 
-    <!-- ክፍል 1፡ ምዝገባ (የአባት፣ የአያት እና የእናት ስም የተካተተበት) -->
+    <!-- ክፍል 1፡ ምዝገባ -->
     <div id="step-register" class="step active">
         <h2 id="regTitle">እንኳን ወደ መላ.ቦት በደህና መጡ</h2>
         <p class="subtitle" id="regSubtitle">እባክዎ ሙሉ መረጃዎን በመሙላት ዋሌት ይክፈቱ</p>
@@ -299,7 +299,6 @@
             <span class="badge" id="verificationBadge">✅ ቬሪፋይድ ዋሌት</span>
             <div id="txtBalanceTitle">አጠቃላይ ቀሪ ሂሳብ</div>
             
-            <!-- ሚዛን መደበቂያ/ማሳያ በስታር (*) -->
             <div class="wallet-balance-container" onclick="toggleBalanceVisibility()">
                 <div class="wallet-balance" id="walletBalance">✨✨✨✨ ETB</div>
                 <button type="button" class="toggle-eye" id="eyeBtn">👁️ <span id="eyeBtnText">አሳይ</span></button>
@@ -498,6 +497,22 @@
         document.getElementById('step-kyc').classList.remove('active');
         document.getElementById('step-pending').classList.add('active');
         
+        // መረጃውን ለፓይተን ሰርቨር (Backend) በ POST ሪኬስት መላክ
+        fetch('/submit-registration', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(userData)
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Success:', data);
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+
         if (tg && tg.sendData) {
             tg.sendData(JSON.stringify(userData));
         }
