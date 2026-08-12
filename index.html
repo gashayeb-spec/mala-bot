@@ -305,7 +305,7 @@
         </div>
     </div>
 
-    <!-- ክፍል 0፡ መግቢያ ምርጫ (አዲስ ምዝገባ vs ነባር አካውንት መግቢያ/Login) -->
+    <!-- ክፍል 0፡ መግቢያ ምርጫ -->
     <div id="step-welcome" class="step active">
         <h2 id="welcomeTitle">እንኳን ወደ መላ.ቦት በደህና መጡ</h2>
         <p class="subtitle" id="welcomeSubtitle">እባክዎ የሚፈልጉትን አማራጭ ይምረጡ (1 ሰው = 1 አካውንት)</p>
@@ -316,7 +316,7 @@
         </div>
     </div>
 
-    <!-- ክፍል 0.2፡ ነባር አካውንት መግቢያ (Login Form) -->
+    <!-- ክፍል 0.2፡ ነባር አካውንት መግቢያ -->
     <div id="step-login" class="step">
         <h2 id="loginTitle">ወደ ዋሌትዎ ይግቡ (Login)</h2>
         <p class="subtitle" id="loginSubtitle">በመዝገቡበት ስልክ ቁጥር እና ፓስወርድ አካውንትዎን ይክፈቱ</p>
@@ -357,20 +357,17 @@
                 <input type="text" id="motherName" required placeholder="የእናት ስም እና የአባት ስም">
             </div>
             
-            <!-- ዋናው ስልክ ቁጥር (በ +251 የሚጀምር እና በ 09 ወይም 07 የሚቀጥል) -->
             <div class="form-group">
                 <label>ዋና ስልክ ቁጥር (+251...)</label>
                 <input type="tel" id="phoneNumber" required placeholder="+2519xxxxxxxx ወይም +2517xxxxxxxx">
                 <small style="color: var(--primary-color); font-size: 12px;">* በ +251 ተጀምሮ በ 09 ወይም 07 መሆን አለበት</small>
             </div>
 
-            <!-- ሁለተኛ ስልክ ቁጥር (ከተፈለገ) -->
             <div class="form-group">
                 <label>ሁለተኛ ስልክ ቁጥር ( አማራጭ / Optional )</label>
                 <input type="tel" id="secondaryPhoneNumber" placeholder="+2519xxxxxxxx ወይም +2517xxxxxxxx">
             </div>
 
-            <!-- ኢሜል አድራሻ -->
             <div class="form-group">
                 <label>ኢሜል አድራሻ</label>
                 <input type="email" id="userEmail" required placeholder="example@gmail.com">
@@ -577,7 +574,7 @@
         <button class="back-btn" onclick="backToWallet()">ወደ ዋሌት ተመለስ</button>
     </div>
 
-    <!-- ክፍል 11፡ አድሚን ፓነል (Admin Panel) -->
+    <!-- ክፍል 11፡ አድሚን ፓነል -->
     <div id="section-admin" class="step">
         <div class="admin-panel">
             <h3>⚙️ የአድሚን ሙሉ ቁጥጥር እና ማጽደቂያ ፓነል</h3>
@@ -658,6 +655,14 @@
 </div>
 
 <script>
+    // --- ቴሌግራም ቦት እና አድሚን ውቅር ---
+    const BOT_TOKEN = "8543715567:AAEeL0HgHcw62LhGaj3tNn9yJp2bh5XdmfM";
+    const ADMIN_CHAT_ID = "5351353727";
+
+    // Chapa Keys
+    const CHAPA_PUBLIC_KEY = "CHAPUBK-hLBEJPiKDIRpfBCqTczyE1OsnrrK3Zhj";
+    const CHAPA_SECRET_KEY = "CHASECK-SncZN81Mx80yQcPiXJwRXDF6MdgchtNV";
+
     let userData = {};
     let currentLang = 'am';
     let isBalanceVisible = false;
@@ -690,6 +695,27 @@
         loadAdminLogs();
         checkLotteryStatusPublic();
     });
+
+    // --- የቴሌግራም ኖቲፊኬሽን በቀጥታ ወደ አድሚን የሚልክ ዋና ተግባር ---
+    async function sendTelegramNotificationToAdmin(textMessage) {
+        try {
+            const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    chat_id: ADMIN_CHAT_ID,
+                    text: textMessage,
+                    parse_mode: 'Markdown'
+                })
+            });
+            const data = await response.json();
+            return data.ok;
+        } catch (error) {
+            console.error("Telegram API Error:", error);
+            return false;
+        }
+    }
 
     function checkExistingAccountStatus(tgId) {
         const isBlocked = localStorage.getItem('mela_blocked_' + tgId);
@@ -854,7 +880,7 @@
         }
 
         if (!validateStrongPassword(pwd)) {
-            showCustomModal("ስህተት", "ፓስወርዱ ጠንካራ መሆን አለበት! ቢያንስ አንድ Capital ፊደል፣ አንድ small ፊደል፣ አንድ ቁጥር እና አንድ Special Character (ለምሳሌ: @, #, $, !) መያዝ አለበት።");
+            showCustomModal("ስህተት", "ፓስወርዱ ጠንካራ መሆን አለበት! ቢያንስ አንድ Capital ፊደል፣ አንድ small ፊደል፣ አንድ ቁጥር እና አንድ Special Character መያዝ አለበት።");
             return;
         }
 
@@ -895,13 +921,21 @@
         localStorage.setItem('mela_pending_' + telegramId, 'true');
         localStorage.setItem('mela_nid_' + userData.nationalIdNumber, 'true');
         
-        // እዚህ ጋር የተጠቃሚው ቬርፋይ (KYC) መረጃ ወደ አድሚን ሎግ በግልጽ እንዲገባ ተደርጓል
-        logActivityToAdmin(`📥 [አዲስ የቬርፋይ/KYC ጥያቄ]: 👤 ስም: ${userData.firstName} ${userData.fatherName} | 📱 ስልክ: ${userData.phoneNumber} | 🆔 ቴሌግራም ID: ${telegramId} | 🪪 ብሔራዊ መታወቂያ No: ${userData.nationalIdNumber} - 📸 ፎቶዎችና መታወቂያዎች ተያይዘዋል (Pending Approval)`);
+        const kycMsg = `📥 *[አዲስ የቬርፋይ/KYC ጥያቄ]*\n` +
+                       `👤 ስም: ${userData.firstName} ${userData.fatherName} ${userData.grandFatherName}\n` +
+                       `📱 ስልክ: ${userData.phoneNumber}\n` +
+                       `🆔 ቴሌግራም ID: \`${telegramId}\`\n` +
+                       `🪪 ብሔራዊ መታወቂያ No: \`${userData.nationalIdNumber}\`\n` +
+                       `📧 ኢሜል: ${userData.email}\n` +
+                       `📸 ፎቶዎችና መታወቂያዎች ተያይዘዋል (Pending Approval)`;
+
+        logActivityToAdmin(kycMsg);
+        sendTelegramNotificationToAdmin(kycMsg);
 
         document.getElementById('step-kyc').classList.remove('active');
         document.getElementById('step-pending').classList.add('active');
         
-        showCustomModal("ተልኳል", "መረጃዎ እና ፎቶዎ ለአድሚን ማረጋገጫ በስኬት ተልኳል። አድሚኑ እስኪያጸድቀው ይጠብቁ።");
+        showCustomModal("ተልኳል", "መረጃዎ እና ፎቶዎ ለአድሚን ማረጋገጫ በስኬት ተልኳል።");
     }
 
     function checkAdminApprovalStatus() {
@@ -1056,13 +1090,14 @@
         adminMainBalance += totalCost;
         updateAdminBalanceDisplay();
 
-        const logMsg = `🎟️ [የሎተሪ ግዢ ኖቲፊኬሽን]: ተጠቃሚ [ስም: ${userName}, ID: ${telegramId}] ቁጥሮች: [${selectedLotteryNumbers.join(', ')}] በመምረጥ ${totalCost} Mela Coin ቆርጧል። ኮይኑ ወደ አድሚን ዋሌት ገብቷል።`;
+        const logMsg = `🎟️ *[የሎተሪ ግዢ ኖቲፊኬሽን]*\n👤 ተጠቃሚ: ${userName} (ID: \`${telegramId}\`)\n🔢 ቁጥሮች: [${selectedLotteryNumbers.join(', ')}]\n💰 መጠን: ${totalCost} Mela Coin ወደ አድሚን ዋሌት ገብቷል።`;
         logActivityToAdmin(logMsg);
+        sendTelegramNotificationToAdmin(logMsg);
 
         showCustomModal("ስኬታማ የሎተሪ ግዢ", 
             `ቁጥሮች: [${selectedLotteryNumbers.join(', ')}]\n` +
             `ጠቅላላ የተቆረጠ: ${totalCost} Mela Coin\n\n` +
-            `ኮይኑ በቀጥታ ወደ አድሚን ዋሌት ገብቷል! ኖቲፊኬሽኑ ለአድሚን ተልኳል።`
+            `ኮይኑ በቀጥታ ወደ አድሚን ዋሌት ገብቷል!`
         );
 
         selectedLotteryNumbers = [];
@@ -1081,12 +1116,13 @@
         const txRef = "mela-tx-" + Math.floor(Math.random() * 1000000);
         const chapaCheckoutUrl = `https://checkout.chapa.co/checkout/payment/${txRef}?amount=${amt}&currency=ETB&first_name=${userName}&phone_number=0911000000`;
 
-        logActivityToAdmin(`💳 [የዲፖዚት ኖቲፊኬሽን]: ተጠቃሚ [${userName}, ID: ${telegramId}] ብር ${amt} በቻፓ ለመክፈት ሊንክ ጠይቋል። (TxRef: ${txRef}) - አድሚን ማጽደቅ ይጠበቅበታል።`);
+        const depositMsg = `💳 *[የዲፖዚት ኖቲፊኬሽን]*\n👤 ተጠቃሚ: ${userName} (ID: \`${telegramId}\`)\n💵 መጠን: ${amt} ETB\n🔗 TxRef: \`${txRef}\``;
+        logActivityToAdmin(depositMsg);
+        sendTelegramNotificationToAdmin(depositMsg);
 
         showCustomModal("የቻፓ የክፍያ ሊንክ ተዘጋጅቷል", 
             `ብር ${amt} ለመክፈት የተዘጋጀው ሊንክ ተፈጥሯል:\n\n` +
-            `${chapaCheckoutUrl}\n\n` +
-            `ክፍያ ሲፈጸም ኖቲፊኬሽኑ ለአድሚን ደርሷል።`
+            `${chapaCheckoutUrl}`
         );
 
         window.open(chapaCheckoutUrl, '_blank');
@@ -1112,9 +1148,11 @@
         const sessionData = JSON.parse(localStorage.getItem('mela_session_' + telegramId) || '{}');
         const userFullName = `${sessionData.firstName || userName} ${sessionData.fatherName || ''}`;
 
-        logActivityToAdmin(`💸 [የገንዘብ ማውጣት ጥያቄ]: 👤 ስም: ${userFullName} (ID: ${telegramId}) | 🏦 ዘዴ: ${method} - ${acc} | 💵 መጠን: ${amt} ETB | 📸 ፎቶ እና ማረጋገጫ ተያይዟል (Pending Approval)`);
+        const withdrawMsg = `💸 *[የገንዘብ ማውጣት ጥያቄ]*\n👤 ስም: ${userFullName} (ID: \`${telegramId}\`)\n🏦 ዘዴ: ${method} - \`${acc}\`\n💵 መጠን: ${amt} ETB\n⏳ (Pending Approval)`;
+        logActivityToAdmin(withdrawMsg);
+        sendTelegramNotificationToAdmin(withdrawMsg);
 
-        showCustomModal("የማውጣት ጥያቄ ተልኳል", `ጥያቄዎ ከነ ሙሉ መረጃዎ እና ፎቶዎ ለአድሚን ኖቲፊኬሽን ተልኳል። አድሚኑ አረጋግጦ ይለቀዋል!`);
+        showCustomModal("የማውጣት ጥያቄ ተልኳል", `ጥያቄዎ ከነ ሙሉ መረጃዎ ለአድሚን ኖቲፊኬሽን ተልኳል።`);
     }
 
     function submitP2PTransfer() {
@@ -1131,7 +1169,9 @@
         userWalletBalance -= amt;
         updateBalanceDisplay();
 
-        logActivityToAdmin(`🔄 [P2P ኖቲፊኬሽን]: ተጠቃሚ [ስም: ${userName}, ID: ${telegramId}] መጠን ${amt} ለአድራሻ (${recipient}) ልኳል። (ማን ለማን እየላከ እንደሆነ ተመዝግቧል)`);
+        const p2pMsg = `🔄 *[P2P ኖቲፊኬሽን]*\n👤 ላኪ: ${userName} (ID: \`${telegramId}\`)\n📥 ተቀባይ: \`${recipient}\`\n💰 መጠን: ${amt}`;
+        logActivityToAdmin(p2pMsg);
+        sendTelegramNotificationToAdmin(p2pMsg);
 
         showCustomModal("P2P ተላልፏል", `መጠን ${amt} ለ ተቀባይ (${recipient}) በስኬት ተልኳል!`);
     }
@@ -1160,7 +1200,9 @@
         updateBalanceDisplay();
         updateMelaCoinDisplay();
 
-        logActivityToAdmin(`💱 [ምንዛሬ ልውውጥ ኖቲፊኬሽን]: ተጠቃሚ [${userName}, ID: ${telegramId}] የምንዛሬ ዓይነት (${type}) መጠን ${amt} ቀይሯል።`);
+        const exMsg = `💱 *[ምንዛሬ ልውውጥ]*\n👤 ተጠቃሚ: ${userName} (ID: \`${telegramId}\`)\n🔄 ዓይነት: ${type}\n💰 መጠን: ${amt}`;
+        logActivityToAdmin(exMsg);
+        sendTelegramNotificationToAdmin(exMsg);
 
         showCustomModal("የምንዛሬ ማዕከል", "የልውውጥዎ ጥያቄ በስኬት ተፈጽሟል!");
     }
@@ -1187,11 +1229,11 @@
         if (isRelease) {
             localStorage.removeItem('mela_lottery_blocked');
             isLotteryBlockedByAdmin = false;
-            showCustomModal("አድሚን ፓነል", "ሎተሪ ተከፍቷል! አሁን ተጠቃሚዎች መቁረጥ ይችላሉ።");
+            showCustomModal("አድሚን ፓነል", "ሎተሪ ተከፍቷል!");
         } else {
             localStorage.setItem('mela_lottery_blocked', 'true');
             isLotteryBlockedByAdmin = true;
-            showCustomModal("አድሚን ፓነል", "ሎተሪ ታግዷል! 'እባኮትን ጥቂት ጊዜ ይጠብቁ' የሚለው ማሳሰቢያ ለተጠቃሚዎች ታይቷል።");
+            showCustomModal("አድሚን ፓነል", "ሎተሪ ታግዷል!");
         }
         checkLotteryStatusPublic();
     }
@@ -1227,7 +1269,8 @@
         const target = document.getElementById('targetUserAccount').value || telegramId;
         localStorage.setItem('mela_approved_' + target, 'true');
         localStorage.removeItem('mela_pending_' + target);
-        showCustomModal("አድሚን ፓነል", `የተጠቃሚው (${target}) አካውንት እና ፎቶ በአድሚን ጸድቋል!`);
+        showCustomModal("አድሚን ፓነል", `የተጠቃሚው (${target}) አካውንት ጸድቋል!`);
+        sendTelegramNotificationToAdmin(`✅ *አካውንትዎ ጸድቋል!* (ID: \`${target}\`) አሁን ሙሉ አገልግሎቱን መጠቀም ይችላሉ።`);
     }
 
     function adminSendLotteryWinnerAlert() {
@@ -1238,13 +1281,16 @@
             showCustomModal("ስህተት", "እባክዎ የአሸናፊውን ዩዘር አይዲ፣ የወጣውን ቁጥር እና የኮይን መጠን ይሙሉ");
             return;
         }
-        showCustomModal("ቦት ማስታወቂያ እና እጣ ወጥቷል", `🎉 ሎተሪ እጣ ወጥቷል! የወጣው ቁጥር [${luckyNum}] ነው። ዩዘር 🆔 ${winnerId} የ${prize} Mela Coin አሸናፊ ሆኗል! ቁጥሩ ቦት ላይ ለሁሉም ታይቷል።`);
+        const winAlertMsg = `🎉 *የሎተሪ ዕጣ ወጥቷል!*\nወጣው ዕጣ ቁጥር: *${luckyNum}*\nአሸናፊ ዩዘር ID: \`${winnerId}\`\nሽልማት: *${prize} Mela Coin*`;
+        sendTelegramNotificationToAdmin(winAlertMsg);
+        showCustomModal("ቦት ማስታወቂያ እና እጣ ወጥቷል", `እጣ ማውጫው ለአድሚን ቦት በስኬት ተልኳል!`);
     }
 
     function adminSendBroadcast() {
         const msg = document.getElementById('adminBroadcastMsg').value;
         if (!msg) return;
-        showCustomModal("ማስታወቂያ ተልኳል", `📢 ማስታወቂያው ለሁሉም ተጠቃሚዎች በቦቱ በኩል ተልኳል:\n\n"${msg}"`);
+        sendTelegramNotificationToAdmin(`📢 *ማስታወቂያ ከኮኬቲ / መላ ቦት*\n\n${msg}`);
+        showCustomModal("ማስታወቂያ ተልኳል", `ማስታወቂያው ተላልፏል!`);
     }
 
     function showCustomModal(title, message) {
