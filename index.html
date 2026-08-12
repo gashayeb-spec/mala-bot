@@ -3,129 +3,312 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mela-bot Mini App</title>
-    <!-- የቴሌግራም ዌብ አፕ ጃቫስክሪፕት ቤተ-መጽሐፍት -->
+    <title>Mela-bot - ዋሌት እና ኬዋይሲ</title>
+    <!-- የቴሌግራም ዌብ አፕ ስክሪፕት -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background-color: #121212;
-            color: #ffffff;
-            margin: 0;
-            padding: 15px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+        :root {
+            --primary-color: #4f46e5;
+            --primary-hover: #4338ca;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-color: #1e293b;
+            --text-light: #64748b;
+            --border-color: #cbd5e1;
+            --success-color: #10b981;
         }
-        .header {
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 480px;
+            background: var(--card-bg);
+            padding: 24px;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            box-sizing: border-box;
+            margin: 16px;
+        }
+
+        .step { display: none; }
+        .step.active { display: block; }
+
+        h2 {
+            text-align: center;
+            color: var(--primary-color);
+            margin-bottom: 8px;
+            font-size: 22px;
+        }
+
+        p.subtitle {
+            text-align: center;
+            color: var(--text-light);
+            font-size: 14px;
+            margin-bottom: 24px;
+        }
+
+        .form-group { margin-bottom: 16px; }
+
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+            font-size: 13px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 14px;
+            box-sizing: border-box;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        input:focus, select:focus { border-color: var(--primary-color); }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background-color 0.2s;
+        }
+
+        button:hover { background-color: var(--primary-hover); }
+
+        .wallet-card {
+            background: linear-gradient(135deg, #4f46e5, #818cf8);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
             text-align: center;
             margin-bottom: 20px;
         }
-        .header h1 {
-            font-size: 24px;
-            margin: 5px 0;
-            color: #ffffff;
+
+        .wallet-balance {
+            font-size: 28px;
+            font-weight: bold;
+            margin: 10px 0;
         }
-        .header p {
-            font-size: 14px;
-            color: #a0a0a0;
-            margin: 0;
+
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            font-size: 12px;
+            margin-bottom: 10px;
         }
-        .grid-container {
+
+        .action-buttons {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            width: 100%;
-            max-width: 500px;
+            gap: 10px;
+            margin-top: 15px;
         }
-        .card {
-            background-color: #1e1e1e;
-            border-radius: 16px;
-            padding: 15px;
-            text-align: left;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+
+        .file-upload-box {
+            border: 2px dashed var(--border-color);
+            padding: 16px;
+            text-align: center;
+            border-radius: 8px;
             cursor: pointer;
-            transition: transform 0.2s;
-            border: 1px solid #2c2c2c;
+            margin-bottom: 12px;
         }
-        .card:hover {
-            transform: translateY(-2px);
-            border-color: #3e3e3e;
-        }
-        .card h3 {
-            font-size: 15px;
-            margin: 10px 0 5px 0;
-            color: #ffffff;
-        }
-        .card p {
-            font-size: 11px;
-            color: #888888;
-            margin: 0;
-            line-height: 1.3;
-        }
-        .icon {
-            font-size: 22px;
-        }
-        .full-width {
-            grid-column: span 2;
-        }
+
+        .file-upload-box input { display: none; }
     </style>
 </head>
 <body>
 
-    <div class="header">
-        <h1>Mela-bot</h1>
-        <p>Social growth & premium services</p>
+<div class="container">
+
+    <!-- ክፍል 1፡ ምዝገባ እና ዋሌት መክፈቻ -->
+    <div id="step-register" class="step active">
+        <h2>እንኳን ወደ መላ.ቦት በደህና መጡ</h2>
+        <p class="subtitle">እባክዎ ትክክለኛ መረጃ በመሙላት ዋሌት ይክፈቱ</p>
+        
+        <form id="registerForm" onsubmit="handleRegister(event)">
+            <div class="form-group">
+                <label>የራሱ ስም</label>
+                <input type="text" id="firstName" required placeholder="ለምሳሌ፦ ሲቤ">
+            </div>
+            <div class="form-group">
+                <label>የአባት ስም</label>
+                <input type="text" id="fatherName" required placeholder="ለምሳሌ፦ ግርማ">
+            </div>
+            <div class="form-group">
+                <label>የአያት ስም</label>
+                <input type="text" id="grandFatherName" required placeholder="ለምሳሌ፦ ...">
+            </div>
+            <div class="form-group">
+                <label>ስልክ ቁጥር</label>
+                <input type="tel" id="phoneNumber" required placeholder="+2519xxxxxxxx">
+            </div>
+            <div class="form-group">
+                <label>ኢሜይል (E-mail)</label>
+                <input type="email" id="email" required placeholder="example@gmail.com">
+            </div>
+            <div class="form-group">
+                <label>ሀገር (Country)</label>
+                <select id="country" required>
+                    <option value="ኢትዮጵያ">ኢትዮጵያ</option>
+                    <option value="አሜሪካ">አሜሪካ</option>
+                    <option value="ካናዳ">ካናዳ</option>
+                    <option value="ሌላ">ሌላ</option>
+                </select>
+            </div>
+            <button type="submit">ቀጥል & ዋሌት ክፈት</button>
+        </form>
     </div>
 
-    <div class="grid-container">
-        <!-- Social Media -->
-        <div class="card" onclick="selectService('Social Media')">
-            <div class="icon">📈</div>
-            <h3>Social Media</h3>
-            <p>Grow followers, likes, and views</p>
+    <!-- ክፍል 2፡ የኬዋይሲ (KYC) ማረጋገጫ -->
+    <div id="step-kyc" class="step">
+        <h2>የማንነት ማረጋገጫ (KYC)</h2>
+        <p class="subtitle">አካውንትዎ ደህንነቱ የተጠበቀ እንዲሆን መታወቂያ ይጫኑ</p>
+        
+        <form id="kycForm" onsubmit="handleKyc(event)">
+            <div class="form-group">
+                <label>የመታወቂያ ዓይነት ይምረጡ</label>
+                <select id="idType" required onchange="toggleIdUpload()">
+                    <option value="national_id">ናሽናል አይዲ (National ID)</option>
+                    <option value="passport">ፓስፖርት (Passport)</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>የመታወቂያው ፊት (Front Photo)</label>
+                <div class="file-upload-box" onclick="document.getElementById('frontId').click()">
+                    <span id="frontText">ፎቶ ለመምረጥ እዚህ ይጫኑ</span>
+                    <input type="file" id="frontId" accept="image/*" required onchange="updateFileName('frontId', 'frontText')">
+                </div>
+            </div>
+
+            <div class="form-group" id="backIdGroup">
+                <label>የመታወቂያው ጀርባ (Back Photo)</label>
+                <div class="file-upload-box" onclick="document.getElementById('backId').click()">
+                    <span id="backText">ፎቶ ለመምረጥ እዚህ ይጫኑ</span>
+                    <input type="file" id="backId" accept="image/*" onchange="updateFileName('backId', 'backText')">
+                </div>
+            </div>
+
+            <button type="submit">ለአድሚን ማረጋገጫ ላክ</button>
+        </form>
+    </div>
+
+    <!-- ክፍል 3፡ ለአድሚን ማረጋገጫ መጠበቂያ (Pending) -->
+    <div id="step-pending" class="step" style="text-align: center; padding: 20px 0;">
+        <h2>ማረጋገጫ በመጠበቅ ላይ...</h2>
+        <p class="subtitle">መረጃዎ ለአድሚን ተልኳል። ሲረጋገጥ በቦቱ በኩል በናቲፊኬሽን እናሳውቅዎታለን።</p>
+        <button onclick="simulatedAdminApprove()" style="background-color: var(--success-color);">[ለሙከራ] አድሚን አፕሩቭ አድርግ</button>
+    </div>
+
+    <!-- ክፍል 4፡ ዋናው የዋሌት ዳሽቦርድ -->
+    <div id="step-wallet" class="step">
+        <div class="wallet-card">
+            <span class="badge" id="verificationBadge">✅ ቬሪፋይድ ዋሌት</span>
+            <div>አጠቃላይ ቀሪ ሂሳብ</div>
+            <div class="wallet-balance" id="walletBalance">0.00 ETB</div>
+            <div style="font-size: 13px; opacity: 0.8;" id="userDisplayName">ተጠቃሚ</div>
         </div>
 
-        <!-- TikTok Coins -->
-        <div class="card" onclick="selectService('TikTok Coins')">
-            <div class="icon">🪙</div>
-            <h3>TikTok Coins</h3>
-            <p>Top up creator balances</p>
+        <div class="action-buttons">
+            <button onclick="openDepositModal()" style="background-color: var(--success-color); margin-top:0;">ገንዘብ አስገባ</button>
+            <button onclick="openLotterySection()" style="margin-top:0;">ሎተሪ መቁረጥ</button>
         </div>
 
-        <!-- Telegram Premium -->
-        <div class="card" onclick="selectService('Telegram Premium')">
-            <div class="icon">💎</div>
-            <h3>Telegram Premium</h3>
-            <p>Upgrade to premium</p>
-        </div>
-
-        <!-- Telegram Stars -->
-        <div class="card" onclick="selectService('Telegram Stars')">
-            <div class="icon">⭐</div>
-            <h3>Telegram Stars</h3>
-            <p>Send stars to any account</p>
-        </div>
-
-        <!-- Snapchat Plus -->
-        <div class="card full-width" onclick="selectService('Snapchat Plus')">
-            <div class="icon">👻</div>
-            <h3>Snapchat Plus</h3>
-            <p>Unlock exclusive Snapchat features</p>
+        <div style="margin-top: 20px;">
+            <h3 style="font-size: 16px; margin-bottom: 10px;">የንግድ አማራጮች</h3>
+            <button onclick="alert('ወደ ዩኤስዲቲ (USDT) / መላ ኮይን የመቀየሪያ ገጽ')" style="background-color: #64748b;">መላ ኮይን / ዩኤስዲቲ መቀየሪያ</button>
         </div>
     </div>
 
-    <script>
-        // የቴሌግራም ዌብ አፕ አጠቃቀምን ማስተካከል
-        let tg = window.Telegram.WebApp;
-        tg.expand();
+</div>
 
-        function selectService(serviceName) {
-            // ተጠቃሚው አገልግሎቱን ሲመርጥ የሚደረግ ተግባር
-            tg.sendData(JSON.stringify({ "selected_service": serviceName }));
-            // ወይም ለጊዜው ማሳወቂያ ማሳየት ይቻላል
-            alert(serviceName + " ተመርጧል!");
+<script>
+    let userData = {};
+    const tg = window.Telegram.WebApp;
+    tg.expand();
+
+    function handleRegister(event) {
+        event.preventDefault();
+        userData.firstName = document.getElementById('firstName').value;
+        userData.fatherName = document.getElementById('fatherName').value;
+        userData.grandFatherName = document.getElementById('grandFatherName').value;
+        userData.phoneNumber = document.getElementById('phoneNumber').value;
+        userData.email = document.getElementById('email').value;
+        userData.country = document.getElementById('country').value;
+
+        document.getElementById('step-register').classList.remove('active');
+        document.getElementById('step-kyc').classList.add('active');
+    }
+
+    function toggleIdUpload() {
+        const idType = document.getElementById('idType').value;
+        const backGroup = document.getElementById('backIdGroup');
+        if (idType === 'passport') {
+            backGroup.style.display = 'none';
+        } else {
+            backGroup.style.display = 'block';
         }
-    </script>
+    }
+
+    function updateFileName(inputId, textId) {
+        const input = document.getElementById(inputId);
+        const textSpan = document.getElementById(textId);
+        if (input.files.length > 0) {
+            textSpan.textContent = "✅ " + input.files[0].name;
+        }
+    }
+
+    function handleKyc(event) {
+        event.preventDefault();
+        document.getElementById('step-kyc').classList.remove('active');
+        document.getElementById('step-pending').classList.add('active');
+        
+        // መረጃውን ወደ ቴሌግራም ቦት መላክ
+        if (tg && tg.sendData) {
+            tg.sendData(JSON.stringify(userData));
+        }
+    }
+
+    function simulatedAdminApprove() {
+        document.getElementById('step-pending').classList.remove('active');
+        document.getElementById('step-wallet').classList.add('active');
+        document.getElementById('userDisplayName').textContent = `${userData.firstName} ${userData.fatherName}`;
+    }
+
+    function openDepositModal() {
+        let amount = prompt("ማስገባት የሚፈልጉትን የገንዘብ መጠን በ ETB ያስገቡ:");
+        if (amount) {
+            alert(`የጠየቁት የብር መጠን (${amount} ETB) ተቀብሏል። ሪሲቱ በአድሚን እስኪረጋገጥ ይጠብቁ!`);
+        }
+    }
+
+    function openLotterySection() {
+        alert("ወደ መላ ሎተሪ መቁረጫ ክፍል እየተሸጋገሩ ነው...");
+    }
+</script>
+
 </body>
 </html>
