@@ -15,18 +15,19 @@ ADMIN_CHAT_ID = "5351353727"
 CHAPA_PUBLIC_KEY = "CHAPUBK-hLBEJPiKDlRpfBCqTczyE1OsnrrK3Zhj"
 CHAPA_SECRET_KEY = "CHASECK-SncZN81Mx80yQcPiXJwRXDF6MdgchtNV"
 
-# -- ከ Render ያገኙት ትክክለኛ የዌብሳይት ሊንክ --
 WEB_APP_URL = "https://mela-bot.onrender.com"
 
 logging.basicConfig(level=logging.INFO)
 bot = Bot(token=BOT_TOKEN)
 dp = Dispatcher(storage=MemoryStorage())
 
-# የተመዝጋቢዎች መረጃ ማከማቻ
 registered_users = set()
 
 # -- Flask ሰርቨር --
 app = Flask(__name__, template_folder='.')
+
+# የቴሌግራም ቦት ክስተቶችን ከፍላስክ ቴሬድ ለመጥራት የሚረዳ ዋና አሲንክ ሉፕ
+bot_loop = None
 
 @app.route('/')
 def home():
@@ -50,22 +51,20 @@ def submit_registration():
             f"• ስልክ ቁጥር: {phone}"
         )
         
-        loop = asyncio.new_event_loop()
-        asyncio.set_event_loop(loop)
-        
         keyboard = InlineKeyboardMarkup(inline_keyboard=[
             [InlineKeyboardButton(text="✅ አጽድቅ (Approve Wallet)", callback_data="approve_web_user")]
         ])
         
-        loop.run_until_complete(bot.send_message(
-            chat_id=ADMIN_CHAT_ID, 
-            text=info_text, 
-            reply_markup=keyboard, 
-            parse_mode="HTML"
-        ))
+        # መልእክቱን በአስተማማኝ ሁኔታ ወደ አድሚን መላክ
+        if bot_loop and bot_loop.is_running():
+            asyncio.run_coroutine_threadsafe(
+                bot.send_message(chat_id=ADMIN_CHAT_ID, text=info_text, reply_markup=keyboard, parse_mode="HTML"),
+                bot_loop
+            )
         
         return jsonify({"status": "success", "message": "መረጃው ለአድሚን በተሳካ ሁኔታ ተልኳል"})
     except Exception as e:
+        print(f"Error in submit_registration: {e}")
         return jsonify({"status": "error", "message": str(e)}), 500
 
 # -- የቻፓ (Chapa) ክፍያ ሊንክ ማመንጫ ኤፒአይ --
@@ -106,9 +105,7 @@ def initiate_chapa():
         return jsonify({"status": "error", "message": "የክፍያ ሊንክ መፍጠር አልተቻለም"})
 
 def run_web():
-    app.run(host="0.0.0.0", port=10000)
-
-threading.Thread(target=run_web, daemon=True).start()
+    app.run(host="0.0.0.0", port=10000, debug=False, use_reloader=False)
 
 # /start ትዕዛዝ
 @dp.message(Command("start"))
@@ -214,6 +211,12 @@ async def approve_user(callback: types.CallbackQuery):
         await callback.answer("ተጠቃሚው ጸድቋል!")
 
 async def main():
+    global bot_loop
+    bot_loop = asyncio.get_running_loop()
+    
+    # የፍላስክ ሰርቨር በጀርባ (Background) እንድትሰራ ማድረግ
+    threading.Thread(target=run_web, daemon=True).start()
+    
     await bot.delete_webhook(drop_pending_updates=True)
     await dp.start_polling(bot)
 
