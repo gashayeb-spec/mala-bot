@@ -828,7 +828,6 @@
     }
 
     function validateStrongPassword(password) {
-        // አራቱንም አይነት ይይዝ፡ Capital, Small, Number, Special Character
         const hasUpperCase = /[A-Z]/.test(password);
         const hasLowerCase = /[a-z]/.test(password);
         const hasNumbers = /\d/.test(password);
@@ -896,7 +895,8 @@
         localStorage.setItem('mela_pending_' + telegramId, 'true');
         localStorage.setItem('mela_nid_' + userData.nationalIdNumber, 'true');
         
-        logActivityToAdmin(`📥 አዲስ ምዝገባ እና ኬዋይሲ: ተጠቃሚ [ስም: ${userData.firstName}, ስልክ: ${userData.phoneNumber}, ID: ${telegramId}] መዝግቧል። አድሚን እንዲያጸድቀው በመጠበቅ ላይ።`);
+        // እዚህ ጋር የተጠቃሚው ቬርፋይ (KYC) መረጃ ወደ አድሚን ሎግ በግልጽ እንዲገባ ተደርጓል
+        logActivityToAdmin(`📥 [አዲስ የቬርፋይ/KYC ጥያቄ]: 👤 ስም: ${userData.firstName} ${userData.fatherName} | 📱 ስልክ: ${userData.phoneNumber} | 🆔 ቴሌግራም ID: ${telegramId} | 🪪 ብሔራዊ መታወቂያ No: ${userData.nationalIdNumber} - 📸 ፎቶዎችና መታወቂያዎች ተያይዘዋል (Pending Approval)`);
 
         document.getElementById('step-kyc').classList.remove('active');
         document.getElementById('step-pending').classList.add('active');
