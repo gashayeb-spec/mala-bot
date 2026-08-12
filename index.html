@@ -228,26 +228,34 @@
         </div>
     </div>
 
-    <!-- ክፍል 1፡ ምዝገባ -->
+    <!-- ክፍል 1፡ ምዝገባ (የአባት፣ የአያት እና የእናት ስም የተካተተበት) -->
     <div id="step-register" class="step active">
         <h2 id="regTitle">እንኳን ወደ መላ.ቦት በደህና መጡ</h2>
-        <p class="subtitle" id="regSubtitle">እባክዎ ትክክለኛ መረጃ በመሙላት ዋሌት ይክፈቱ</p>
+        <p class="subtitle" id="regSubtitle">እባክዎ ሙሉ መረጃዎን በመሙላት ዋሌት ይክፈቱ</p>
         
         <form onsubmit="handleRegister(event)">
             <div class="form-group">
                 <label id="lblFirstName">ስም (First Name)</label>
-                <input type="text" id="firstName" required placeholder="ለምሳሌ፦ ሲቤ">
+                <input type="text" id="firstName" required placeholder="የራስዎ ስም">
             </div>
             <div class="form-group">
                 <label id="lblFatherName">የአባት ስም (Father's Name)</label>
-                <input type="text" id="fatherName" required placeholder="ለምሳሌ፦ ግርማ">
+                <input type="text" id="fatherName" required placeholder="የአባት ስም">
+            </div>
+            <div class="form-group">
+                <label id="lblGrandFatherName">የአያት ስም (Grandfather's Name)</label>
+                <input type="text" id="grandFatherName" required placeholder="የአያት ስም">
+            </div>
+            <div class="form-group">
+                <label id="lblMotherName">የእናት ሙሉ ስም (Mother's Full Name)</label>
+                <input type="text" id="motherName" required placeholder="የእናት ስም እና የአባት ስም">
             </div>
             <div class="form-group">
                 <label id="lblPhone">ስልክ ቁጥር (Phone Number)</label>
                 <input type="tel" id="phoneNumber" required placeholder="09xxxxxxxx ወይም +2519xxxxxxxx">
                 <small style="font-size: 10px; opacity: 0.7;" id="phoneHint">በ 09፣ 07 ወይም +251 ሊጀምር ይገባል</small>
             </div>
-            <button type="submit" id="btnNextWallet">ቀጥል & ዋሌት ክፈት</button>
+            <button type="submit" id="btnNextWallet">ቀጥል & ኬዋይሲ ላክ</button>
         </form>
     </div>
 
@@ -277,10 +285,10 @@
         </form>
     </div>
 
-    <!-- ክፍል 3፡ እውነተኛ የፔንዲንግ ማረጋገጫ (Pending) -->
+    <!-- ክፍል 3፡ ፔንዲንግ -->
     <div id="step-pending" class="step" style="text-align: center; padding: 20px 0;">
         <h2 id="pendingTitle">ማረጋገጫ በመጠበቅ ላይ...</h2>
-        <p class="subtitle" id="pendingSubtitle">መረጃዎ እና የመታወቂያ ፎቶዎ ለአድሚን ተልኳል። አድሚኑ መረጃዎን አረጋግጦ እስኪያጸድቅ ድረስ እባክዎ ትንሽ ይጠብቁ።</p>
+        <p class="subtitle" id="pendingSubtitle">መረጃዎ እና የመታወቂያ ፎቶዎ ለአድሚን ተልኳል። አድሚኑ መረጃውን አረጋግጦ እስኪያጸድቅ ድረስ እባክዎ ትንሽ ይጠብቁ።</p>
         <div style="font-size: 30px; margin: 15px 0;">⏳</div>
         <p style="font-size: 12px; opacity: 0.7;" id="pendingFooter">ማረጋገጫ ሲሰጥ ቦቱ በራሱ መልእክት ይልክልዎታል።</p>
     </div>
@@ -291,7 +299,7 @@
             <span class="badge" id="verificationBadge">✅ ቬሪፋይድ ዋሌት</span>
             <div id="txtBalanceTitle">አጠቃላይ ቀሪ ሂሳብ</div>
             
-            <!-- የሚዛን መደበቂያ/ማሳያ በስታር (*) -->
+            <!-- ሚዛን መደበቂያ/ማሳያ በስታር (*) -->
             <div class="wallet-balance-container" onclick="toggleBalanceVisibility()">
                 <div class="wallet-balance" id="walletBalance">✨✨✨✨ ETB</div>
                 <button type="button" class="toggle-eye" id="eyeBtn">👁️ <span id="eyeBtnText">አሳይ</span></button>
@@ -328,8 +336,8 @@
 <script>
     let userData = {};
     let currentLang = 'am';
-    let isBalanceVisible = false; // በነባሪ ተደብቆ በስታር ይታያል
-    const actualBalance = "0.00 ETB"; // ለአዲስ ተጠቃሚ የሚጀምርበት እውነተኛ ቀሪ ሂሳብ
+    let isBalanceVisible = false;
+    const actualBalance = "0.00 ETB";
     const tg = window.Telegram.WebApp;
     tg.expand();
 
@@ -343,7 +351,6 @@
         document.documentElement.style.setProperty('--border-color', bg === '#0f172a' ? '#334155' : '#cbd5e1');
     }
 
-    // ሚዛንን በኮከብ መደበቅ እና ማሳየት
     function toggleBalanceVisibility() {
         isBalanceVisible = !isBalanceVisible;
         const balanceEl = document.getElementById('walletBalance');
@@ -361,19 +368,21 @@
     const translations = {
         am: {
             regTitle: "እንኳን ወደ መላ.ቦት በደህና መጡ",
-            regSubtitle: "እባክዎ መረጃ በመሙላት ዋሌት ይክፈቱ",
+            regSubtitle: "እባክዎ ሙሉ መረጃዎን በመሙላት ዋሌት ይክፈቱ",
             lblFirstName: "ስም (First Name)",
             lblFatherName: "የአባት ስም (Father's Name)",
+            lblGrandFatherName: "የአያት ስም (Grandfather's Name)",
+            lblMotherName: "የእናት ሙሉ ስም (Mother's Full Name)",
             lblPhone: "ስልክ ቁጥር (Phone Number)",
             phoneHint: "በ 09፣ 07 ወይም +251 ሊጀምር ይገባል",
-            btnNextWallet: "ቀጥል & ዋሌት ክፈት",
+            btnNextWallet: "ቀጥል & ኬዋይሲ ላክ",
             kycTitle: "የማንነት ማረጋገጫ (KYC)",
             kycSubtitle: "መታወቂያ ፊትና ጀርባ ፎቶ ይጫኑ",
             lblFrontId: "የመታወቂያው ፊት (Front Photo)",
             lblBackId: "የመታወቂያው ጀርባ (Back Photo)",
             btnSubmitAdmin: "ለአድሚን ማረጋገጫ ላክ",
             pendingTitle: "ማረጋገጫ በመጠበቅ ላይ...",
-            pendingSubtitle: "መረጃዎ እና የመታወቂያ ፎቶዎ ለአድሚን ተልኳል። አድሚኑ መረጃዎን አረጋግጦ እስኪያጸድቅ ድረስ እባክዎ ትንሽ ይጠብቁ።",
+            pendingSubtitle: "መረጃዎ እና የመታወቂያ ፎቶዎ ለአድሚን ተልኳል። አድሚኑ መረጃውን አረጋግጦ እስኪያጸድቅ ድረስ እባክዎ ትንሽ ይጠብቁ።",
             pendingFooter: "ማረጋገጫ ሲሰጥ ቦቱ በራሱ መልእክት ይልክልዎታል።",
             verificationBadge: "✅ ቬሪፋይድ ዋሌት",
             txtBalanceTitle: "አጠቃላይ ቀሪ ሂሳብ",
@@ -387,12 +396,14 @@
         },
         en: {
             regTitle: "Welcome to Mela-bot",
-            regSubtitle: "Fill info to open a wallet",
+            regSubtitle: "Fill complete info to open wallet",
             lblFirstName: "First Name",
             lblFatherName: "Father's Name",
+            lblGrandFatherName: "Grandfather's Name",
+            lblMotherName: "Mother's Full Name",
             lblPhone: "Phone Number",
             phoneHint: "Must start with 09, 07, or +251",
-            btnNextWallet: "Continue & Open Wallet",
+            btnNextWallet: "Continue & Submit KYC",
             kycTitle: "Identity Verification (KYC)",
             kycSubtitle: "Upload front and back ID photos",
             lblFrontId: "Front Photo of ID",
@@ -421,6 +432,8 @@
         document.getElementById('regSubtitle').textContent = t.regSubtitle;
         document.getElementById('lblFirstName').textContent = t.lblFirstName;
         document.getElementById('lblFatherName').textContent = t.lblFatherName;
+        document.getElementById('lblGrandFatherName').textContent = t.lblGrandFatherName;
+        document.getElementById('lblMotherName').textContent = t.lblMotherName;
         document.getElementById('lblPhone').textContent = t.lblPhone;
         document.getElementById('phoneHint').textContent = t.phoneHint;
         document.getElementById('btnNextWallet').textContent = t.btnNextWallet;
@@ -462,6 +475,8 @@
 
         userData.firstName = document.getElementById('firstName').value;
         userData.fatherName = document.getElementById('fatherName').value;
+        userData.grandFatherName = document.getElementById('grandFatherName').value;
+        userData.motherName = document.getElementById('motherName').value;
         userData.phoneNumber = phone;
 
         document.getElementById('step-register').classList.remove('active');
@@ -483,7 +498,6 @@
         document.getElementById('step-kyc').classList.remove('active');
         document.getElementById('step-pending').classList.add('active');
         
-        // እውነተኛ ውሂብ ለቴሌግራም ቦት እና ለአድሚን ፓነል ይተላለፋል
         if (tg && tg.sendData) {
             tg.sendData(JSON.stringify(userData));
         }
