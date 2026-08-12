@@ -17,7 +17,7 @@
             --success-color: #10b981;
         }
 
-        /* ಥሜ ማስተካከያዎች (Themes) */
+        /* ቴም ማስተካከያዎች (Themes) */
         body.theme-default { --bg-color: #f8fafc; --card-bg: #ffffff; --text-color: #1e293b; }
         body.theme-blue { --bg-color: #eff6ff; --card-bg: #ffffff; --text-color: #1e3a8a; --primary-color: #2563eb; }
         body.theme-green { --bg-color: #f0fdf4; --card-bg: #ffffff; --text-color: #065f46; --primary-color: #059669; }
@@ -269,19 +269,21 @@
                 </select>
             </div>
 
+            <!-- የተስተካከለ የፊት ፎቶ ማጫኛ (ከላይብረሪ በሰላም እንዲመረጥ የተደረገ) -->
             <div class="form-group">
                 <label id="lblFrontId">የመታወቂያው ፊት (Front Photo)</label>
                 <div class="file-upload-box" onclick="document.getElementById('frontId').click()">
                     <span id="frontText">ፎቶ ለመምረጥ እዚህ ይጫኑ</span>
-                    <input type="file" id="frontId" accept="image/*" required onchange="updateFileName('frontId', 'frontText')">
+                    <input type="file" id="frontId" accept="image/jpeg, image/png, image/jpg" required onchange="updateFileName('frontId', 'frontText')">
                 </div>
             </div>
 
+            <!-- የተስተካከለ የጀርባ ፎቶ ማጫኛ -->
             <div class="form-group" id="backIdGroup">
                 <label id="lblBackId">የመታወቂያው ጀርባ (Back Photo)</label>
                 <div class="file-upload-box" onclick="document.getElementById('backId').click()">
                     <span id="backText">ፎቶ ለመምረጥ እዚህ ይጫኑ</span>
-                    <input type="file" id="backId" accept="image/*" onchange="updateFileName('backId', 'backText')">
+                    <input type="file" id="backId" accept="image/jpeg, image/png, image/jpg" onchange="updateFileName('backId', 'backText')">
                 </div>
             </div>
 
@@ -323,7 +325,6 @@
     const tg = window.Telegram.WebApp;
     tg.expand();
 
-    // ቋንቋ መቀየሪያ መዝገበ ቃላት
     const translations = {
         am: {
             regTitle: "እንኳን ወደ መላ.ቦት በደህና መጡ",
@@ -468,11 +469,15 @@
         }
     }
 
+    // የተስተካከለ የፋይል ስም ማሳያ (ከጋለሪ ሲመረጥ ብራውዘሩ እንዳይጨናነቅ የተደረገ)
     function updateFileName(inputId, textId) {
         const input = document.getElementById(inputId);
         const textSpan = document.getElementById(textId);
-        if (input.files.length > 0) {
-            textSpan.textContent = "✅ " + input.files[0].name;
+        if (input.files && input.files.length > 0) {
+            const fileName = input.files[0].name;
+            const shortName = fileName.length > 20 ? fileName.substring(0, 17) + "..." : fileName;
+            textSpan.textContent = "✅ " + shortName;
+            textSpan.style.color = "var(--success-color, #10b981)";
         }
     }
 
@@ -481,7 +486,6 @@
         document.getElementById('step-kyc').classList.remove('active');
         document.getElementById('step-pending').classList.add('active');
         
-        // መረጃውን ወደ ቴሌግራም ቦት (አድሚን) መላክ
         if (tg && tg.sendData) {
             tg.sendData(JSON.stringify(userData));
         }
