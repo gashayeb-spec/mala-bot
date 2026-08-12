@@ -1,3 +1,4 @@
+import os
 import logging
 import requests
 from aiogram import Bot, Dispatcher, types, F
@@ -12,7 +13,7 @@ import json
 BOT_TOKEN = "8543715567:AAEeL0HgHcw62LhGaj3tNn9yJp2bh5XdmfM"
 ADMIN_CHAT_ID = "5351353727" 
 CHAPA_PUBLIC_KEY = "CHAPUBK-hLBEJPiKDlRpfBCqTczyE1OsnrrK3Zhj"
-CHAPA_SECRET_KEY = "CHASECK-SncZN81Mx80yQcPiXJwRXDF6MdgchtNV"
+CHASECK_SECRET_KEY = "CHASECK-SncZN81Mx80yQcPiXJwRXDF6MdgchtNV"
 
 WEB_APP_URL = "https://mela-bot.onrender.com"
 
@@ -29,6 +30,14 @@ app = Flask(__name__, template_folder='.')
 @app.route('/')
 def home():
     return render_template('index.html')
+
+# -- CORS ማስተካከያ (Headers) --
+@app.after_request
+def add_cors_headers(response):
+    response.headers['Access-Control-Allow-Origin'] = '*'
+    response.headers['Access-Control-Allow-Headers'] = 'Content-Type,Authorization'
+    response.headers['Access-Control-Allow-Methods'] = 'GET,POST,OPTIONS'
+    return response
 
 # -- ተጠቃሚው የጸደቀ መሆኑን በዌብሳይቱ በኩል ለማረጋገጥ የሚረዳ ኤፒአይ --
 @app.route('/check-status', methods=['GET'])
@@ -47,6 +56,7 @@ def submit_registration():
         grand_father_name = data.get('grandFatherName', '')
         mother_name = data.get('motherName', '')
         phone = data.get('phoneNumber', '')
+        nid = data.get('nationalIdNumber', '')
         
         user_status[user_id] = 'pending'
         
@@ -55,10 +65,11 @@ def submit_registration():
             f"• መለያ (ID): <code>{user_id}</code>\n"
             f"• ስም: <b>{first_name} {father_name} {grand_father_name}</b>\n"
             f"• የእናት ስም: {mother_name}\n"
-            f"• ስልክ ቁጥር: {phone}"
+            f"• ስልክ ቁጥር: {phone}\n"
+            f"• ብሔራዊ መታወቂያ No: <code>{nid}</code>"
         )
         
-        # አድሚኑ የሚጠቀምባቸው ሶስት አማራጮች (አጽድቅ፣ ሰርዝ፣ አግድ)
+        # አድሚኑ የሚጠቀምባቸው አማራጮች (አጽድቅ፣ ሰርዝ፣ አግድ)
         keyboard = InlineKeyboardMarkup(inline_keyboard=[
             [
                 InlineKeyboardButton(text="✅ አጽድቅ", callback_data=f"approve_{user_id}"),
@@ -79,6 +90,36 @@ def submit_registration():
     except Exception as e:
         return jsonify({"status": "error", "message": str(e)}), 500
 
+# -- አጠቃላይ የኖቲፊኬሽን እና ግብይት መቀበያ API (CORS የሚፈታ) --
+@app.route('/api/notify-admin', methods=['POST'])
+def notify_admin():
+    try:
+        data = request.get_json()
+        if not data:
+            return jsonify({"success": False, "error": "No data provided"}), 400
+
+        message_type = data.get('type', 'general')
+        user_name = data.get('userName', 'ተጠቃሚ')
+        telegram_id = data.get('telegramId', 'N/A')
+        details = data.get('details', '')
+
+        formatted_msg = (
+            f"⚡ *[Mela-Bot አውቶማቲክ ሲስተም ሪፖርት]*\n"
+            f"📌 ዓይነት: `{message_type}`\n"
+            f"👤 ተጠቃሚ: {user_name} (ID: `{telegram_id}`)\n\n"
+            f"📝 ዝርዝር መረጃ:\n{details}"
+        )
+
+        if bot_loop and bot_loop.is_running():
+            asyncio.run_coroutine_threadsafe(
+                bot.send_message(chat_id=ADMIN_CHAT_ID, text=formatted_msg, parse_mode="Markdown"),
+                bot_loop
+            )
+
+        return jsonify({"success": True, "message": "Notification sent successfully!"}), 200
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)}), 500
+
 @app.route('/initiate-chapa', methods=['POST'])
 def initiate_chapa():
     req_data = request.json
@@ -88,9 +129,9 @@ def initiate_chapa():
     last_name = req_data.get('last_name', 'User')
     phone = req_data.get('phone', '0911000000')
     
-    tx_ref = f"mela-tx-{asyncio.get_event_loop().time()}"
+    tx_ref = f"mela-tx-{int(asyncio.get_event_loop().time())}"
     headers = {
-        "Authorization": f"Bearer {CHAPA_SECRET_KEY}",
+        "Authorization": f"Bearer {CHASECK_SECRET_KEY}",
         "Content-Type": "application/json"
     }
     payload = {
@@ -114,7 +155,8 @@ def initiate_chapa():
         return jsonify({"status": "error", "message": "የክፍያ ሊንክ መፍጠር አልተቻለም"})
 
 def run_web():
-    app.run(host="0.0.0.0", port=10000, debug=False, use_reloader=False)
+    port = int(os.environ.get("PORT", 10000))
+    app.run(host="0.0.0.0", port=port, debug=False, use_reloader=False)
 
 @dp.message(Command("start"))
 async def send_welcome(message: types.Message):
@@ -142,7 +184,6 @@ async def send_welcome(message: types.Message):
     )
     await message.answer(welcome_text, reply_markup=keyboard, parse_mode="HTML")
 
-# -- የአድሚን እርምጃዎች (Callback Queries: Approve, Cancel, Block) --
 @dp.callback_query(F.data.startswith("approve_"))
 async def approve_user_cb(callback: types.CallbackQuery):
     target_user_id = callback.data.split("_")[1]
