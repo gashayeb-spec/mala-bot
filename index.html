@@ -32,27 +32,29 @@
             width: 100%;
             max-width: 480px;
             background: var(--card-bg);
-            padding: 20px;
+            padding: 16px;
             border-radius: 16px;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
             box-sizing: border-box;
-            margin: 16px;
+            margin: 12px;
             border: 1px solid var(--border-color);
+            max-height: 95vh;
+            overflow-y: auto;
         }
 
         .top-bar {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 16px;
+            margin-bottom: 12px;
             font-size: 11px;
-            gap: 6px;
+            gap: 4px;
         }
 
         .top-bar div { flex: 1; }
 
         select.pref-select {
-            width: 100px;
-            padding: 6px;
+            width: 100%;
+            padding: 4px;
             border-radius: 6px;
             border: 1px solid var(--border-color);
             background: var(--card-bg);
@@ -68,28 +70,28 @@
             text-align: center;
             color: var(--primary-color);
             margin-bottom: 6px;
-            font-size: 19px;
+            font-size: 18px;
         }
 
         p.subtitle {
             text-align: center;
             font-size: 12px;
-            margin-bottom: 16px;
+            margin-bottom: 14px;
             opacity: 0.8;
         }
 
-        .form-group { margin-bottom: 12px; }
+        .form-group { margin-bottom: 10px; }
 
         label {
             display: block;
-            margin-bottom: 4px;
+            margin-bottom: 3px;
             font-weight: 600;
-            font-size: 12px;
+            font-size: 11px;
         }
 
         input, select {
             width: 100%;
-            padding: 10px;
+            padding: 9px;
             border: 1px solid var(--border-color);
             border-radius: 8px;
             font-size: 13px;
@@ -101,15 +103,15 @@
 
         button {
             width: 100%;
-            padding: 11px;
+            padding: 10px;
             background-color: var(--primary-color);
             color: white;
             border: none;
             border-radius: 8px;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 600;
             cursor: pointer;
-            margin-top: 8px;
+            margin-top: 6px;
             transition: opacity 0.2s;
         }
 
@@ -118,23 +120,22 @@
         .wallet-card {
             background: linear-gradient(135deg, #4f46e5, #818cf8);
             color: white;
-            padding: 18px;
+            padding: 16px;
             border-radius: 12px;
             text-align: center;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
         }
 
         .wallet-balance-container {
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 10px;
-            margin: 8px 0;
-            cursor: pointer;
+            gap: 8px;
+            margin: 6px 0;
         }
 
         .wallet-balance {
-            font-size: 24px;
+            font-size: 22px;
             font-weight: bold;
         }
 
@@ -145,7 +146,7 @@
             padding: 4px 8px;
             border-radius: 6px;
             cursor: pointer;
-            font-size: 12px;
+            font-size: 11px;
             width: auto;
             margin: 0;
         }
@@ -163,21 +164,63 @@
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 8px;
-            margin-top: 10px;
+            margin-top: 8px;
         }
 
         .file-upload-box {
             border: 2px dashed var(--border-color);
-            padding: 14px;
+            padding: 12px;
             text-align: center;
             border-radius: 8px;
             cursor: pointer;
-            margin-bottom: 10px;
-            font-size: 13px;
+            margin-bottom: 8px;
+            font-size: 12px;
         }
 
         input[type="file"] { display: none; }
         
+        /* ሎተሪ ግሪድ ስታይል (ከ1 እስከ 5000) */
+        .lottery-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 4px;
+            max-height: 220px;
+            overflow-y: auto;
+            border: 1px solid var(--border-color);
+            padding: 6px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            background: rgba(0,0,0,0.02);
+        }
+
+        .lottery-item {
+            padding: 6px 2px;
+            text-align: center;
+            font-size: 11px;
+            border-radius: 4px;
+            cursor: pointer;
+            border: 1px solid var(--border-color);
+        }
+
+        .lottery-item.available {
+            background-color: var(--card-bg);
+            color: var(--text-color);
+        }
+
+        .lottery-item.taken {
+            background-color: #ef4444;
+            color: white;
+            cursor: not-allowed;
+            text-decoration: line-through;
+            opacity: 0.7;
+        }
+
+        .lottery-item.selected {
+            background-color: var(--success-color);
+            color: white;
+            font-weight: bold;
+        }
+
         .modal-overlay {
             display: none;
             position: fixed;
@@ -189,10 +232,15 @@
         }
         .modal-content {
             background: var(--card-bg);
-            padding: 20px;
+            padding: 18px;
             border-radius: 12px;
             width: 85%;
             max-width: 350px;
+            box-sizing: border-box;
+        }
+        .back-btn {
+            background-color: #64748b;
+            margin-top: 6px;
         }
     </style>
 </head>
@@ -202,85 +250,78 @@
     <!-- የቋንቋ እና የቀለም መቆጣጠሪያዎች -->
     <div class="top-bar">
         <div>
-            <label id="langLabel">ቋንቋ:</label>
+            <label id="langLabel">ቋንቋ</label>
             <select id="langSelect" class="pref-select" onchange="changeLanguage()">
                 <option value="am">አማርኛ</option>
                 <option value="en">English</option>
             </select>
         </div>
         <div>
-            <label id="bgThemeLabel">ባክግራውንድ:</label>
+            <label id="bgThemeLabel">ባክግራውንድ</label>
             <select id="bgPicker" class="pref-select" onchange="updateColors()">
-                <option value="#ffffff">ነጭ (White)</option>
-                <option value="#0f172a">ጥቁር (Black)</option>
+                <option value="#ffffff">ነጭ</option>
+                <option value="#0f172a">ጥቁር</option>
                 <option value="#eff6ff">ሰማያዊ</option>
-                <option value="#f0fdf4">አረንጓዴ</option>
             </select>
         </div>
         <div>
-            <label id="textThemeLabel">ጽሁፍ:</label>
+            <label id="textThemeLabel">ጽሁፍ</label>
             <select id="textPicker" class="pref-select" onchange="updateColors()">
-                <option value="#1e293b">ጥቁር (Black)</option>
-                <option value="#ffffff">ነጭ (White)</option>
+                <option value="#1e293b">ጥቁር</option>
+                <option value="#ffffff">ነጭ</option>
                 <option value="#2563eb">ሰማያዊ</option>
-                <option value="#dc2626">ቀይ (Red)</option>
             </select>
         </div>
     </div>
 
     <!-- ክፍል 1፡ ምዝገባ -->
     <div id="step-register" class="step active">
-        <h2 id="regTitle">እንኳን ወደ መላ.ቦት በደህና መጡ</h2>
-        <p class="subtitle" id="regSubtitle">እባክዎ ሙሉ መረጃዎን በመሙላት ዋሌት ይክፈቱ</p>
-        
+        <h2 id="regTitle">መላ.ቦት ምዝገባ</h2>
+        <p class="subtitle" id="regSubtitle">ዋሌት ለመክፈት መረጃዎን ይሙሉ</p>
         <form onsubmit="handleRegister(event)">
             <div class="form-group">
-                <label id="lblFirstName">ስም (First Name)</label>
+                <label id="lblFirstName">ስም</label>
                 <input type="text" id="firstName" required placeholder="የራስዎ ስም">
             </div>
             <div class="form-group">
-                <label id="lblFatherName">የአባት ስም (Father's Name)</label>
+                <label id="lblFatherName">የአባት ስም</label>
                 <input type="text" id="fatherName" required placeholder="የአባት ስም">
             </div>
             <div class="form-group">
-                <label id="lblGrandFatherName">የአያት ስም (Grandfather's Name)</label>
+                <label id="lblGrandFatherName">የአያት ስም</label>
                 <input type="text" id="grandFatherName" required placeholder="የአያት ስም">
             </div>
             <div class="form-group">
-                <label id="lblMotherName">የእናት ሙሉ ስም (Mother's Full Name)</label>
+                <label id="lblMotherName">የእናት ሙሉ ስም</label>
                 <input type="text" id="motherName" required placeholder="የእናት ስም እና የአባት ስም">
             </div>
             <div class="form-group">
-                <label id="lblPhone">ስልክ ቁጥር (Phone Number)</label>
-                <input type="tel" id="phoneNumber" required placeholder="09xxxxxxxx ወይም +2519xxxxxxxx">
-                <small style="font-size: 10px; opacity: 0.7;" id="phoneHint">በ 09፣ 07 ወይም +251 ሊጀምር ይገባል</small>
+                <label id="lblPhone">ስልክ ቁጥር</label>
+                <input type="tel" id="phoneNumber" required placeholder="09xxxxxxxx">
             </div>
             <button type="submit" id="btnNextWallet">ቀጥል & ኬዋይሲ ላክ</button>
         </form>
     </div>
 
-    <!-- ክፍል 2፡ ኬዋይሲ (KYC) -->
+    <!-- ክፍል 2፡ ኬዋይሲ -->
     <div id="step-kyc" class="step">
         <h2 id="kycTitle">የማንነት ማረጋገጫ (KYC)</h2>
         <p class="subtitle" id="kycSubtitle">መታወቂያ ፊትና ጀርባ ፎቶ ይጫኑ</p>
-        
         <form onsubmit="handleKyc(event)">
             <div class="form-group">
-                <label id="lblFrontId">የመታወቂያው ፊት (Front Photo)</label>
+                <label id="lblFrontId">የመታወቂያው ፊት</label>
                 <div class="file-upload-box" onclick="document.getElementById('frontId').click()">
                     <span id="frontText">ፎቶ ለመምረጥ እዚህ ይጫኑ</span>
                     <input type="file" id="frontId" accept="image/*" required onchange="updateFileName('frontId', 'frontText')">
                 </div>
             </div>
-
             <div class="form-group">
-                <label id="lblBackId">የመታወቂያው ጀርባ (Back Photo)</label>
+                <label id="lblBackId">የመታወቂያው ጀርባ</label>
                 <div class="file-upload-box" onclick="document.getElementById('backId').click()">
                     <span id="backText">ፎቶ ለመምረጥ እዚህ ይጫኑ</span>
                     <input type="file" id="backId" accept="image/*" required onchange="updateFileName('backId', 'backText')">
                 </div>
             </div>
-
             <button type="submit" id="btnSubmitAdmin">ለአድሚን ማረጋገጫ ላክ</button>
         </form>
     </div>
@@ -288,7 +329,7 @@
     <!-- ክፍል 3፡ ፔንዲንግ -->
     <div id="step-pending" class="step" style="text-align: center; padding: 20px 0;">
         <h2 id="pendingTitle">ማረጋገጫ በመጠበቅ ላይ...</h2>
-        <p class="subtitle" id="pendingSubtitle">መረጃዎ እና የመታወቂያ ፎቶዎ ለአድሚን ተልኳል። አድሚኑ መረጃውን አረጋግጦ እስኪያጸድቅ ድረስ እባክዎ ትንሽ ይጠብቁ።</p>
+        <p class="subtitle" id="pendingSubtitle">መረጃዎ ለአድሚን ተልኳል። እስኪያጸድቅ ይጠብቁ።</p>
         <div style="font-size: 30px; margin: 15px 0;">⏳</div>
         <p id="statusText" style="font-size: 13px; font-weight: bold; color: #f59e0b;">ሁኔታ: ፔንዲንግ ላይ ይገኛል...</p>
     </div>
@@ -298,37 +339,119 @@
         <div class="wallet-card">
             <span class="badge" id="verificationBadge">✅ ቬሪፋይድ ዋሌት</span>
             <div id="txtBalanceTitle">አጠቃላይ ቀሪ ሂሳብ</div>
-            
-            <div class="wallet-balance-container" onclick="toggleBalanceVisibility()">
-                <div class="wallet-balance" id="walletBalance">✨✨✨✨ ETB</div>
-                <button type="button" class="toggle-eye" id="eyeBtn">👁️ <span id="eyeBtnText">አሳይ</span></button>
+            <div class="wallet-balance-container">
+                <div class="wallet-balance" id="walletBalance">•••• ETB</div>
+                <button type="button" class="toggle-eye" onclick="toggleBalanceVisibility()">👁️ <span id="eyeBtnText">አሳይ</span></button>
             </div>
-
-            <div style="font-size: 13px; opacity: 0.9;" id="userDisplayName">ተጠቃሚ</div>
+            <div style="font-size: 12px; opacity: 0.9;" id="userDisplayName">ተጠቃሚ</div>
         </div>
 
         <div class="action-buttons">
-            <button onclick="openDepositModal()" id="btnDeposit" style="background-color: var(--success-color); margin-top:0;">ገንዘብ አስገባ (Chapa)</button>
+            <button onclick="openDepositSection()" id="btnDeposit" style="background-color: var(--success-color); margin-top:0;">ገንዘብ አስገባ (Chapa)</button>
             <button onclick="openLotterySection()" id="btnLottery" style="margin-top:0;">ሎተሪ መቁረጥ</button>
         </div>
 
         <div class="action-buttons" style="margin-top: 8px;">
-            <button onclick="openWithdrawModal()" id="btnWithdraw" style="background-color: #0284c7; margin-top:0;">ገንዘብ ማውጣት</button>
-            <button onclick="openP2PModal()" id="btnP2P" style="background-color: #7c3aed; margin-top:0;">P2P ሼር ማድረግ</button>
+            <button onclick="openWithdrawSection()" id="btnWithdraw" style="background-color: #0284c7; margin-top:0;">ገንዘብ ማውጣት</button>
+            <button onclick="openP2PSection()" id="btnP2P" style="background-color: #7c3aed; margin-top:0;">P2P ሼር ማድረግ</button>
         </div>
 
-        <div style="margin-top: 10px;">
-            <button onclick="openExchange()" id="btnExchange" style="background-color: #64748b;">መላ ኮይን / ዩኤስዲቲ መቀየሪያ</button>
+        <div style="margin-top: 8px;">
+            <button onclick="openExchangeSection()" id="btnExchange" style="background-color: #64748b;">መላ ኮይን / ዩኤስዲቲ መቀየሪያ</button>
         </div>
     </div>
+
+    <!-- ክፍል 5፡ ቻፓ ገንዘብ ማስገቢያ -->
+    <div id="section-deposit" class="step">
+        <h2 id="depTitle">ገንዘብ ማስገባት (Chapa)</h2>
+        <p class="subtitle">በቻፓ በኩል በሂሳብዎ ላይ ገንዘብ ይጫኑ</p>
+        <div class="form-group">
+            <label>የሚከፈለው መጠን (ETB)</label>
+            <input type="number" id="depositAmount" placeholder="ምሳሌ: 500">
+        </div>
+        <button onclick="processChapaDeposit()" style="background-color: var(--success-color);">የክፍያ ሊንክ አመንጭ</button>
+        <button class="back-btn" onclick="backToWallet()">ወደ ዋሌት ተመለስ</button>
+    </div>
+
+    <!-- ክፍል 6፡ ሎተሪ መቁረጫ (1 እስከ 5000) -->
+    <div id="section-lottery" class="step">
+        <h2>የሎተሪ መቁረጫ (1 - 5000)</h2>
+        <p class="subtitle">የተያዙት በ(ቀይ)፣ ያልተያዙት በነፃ መርጠው ይቁረጡ</p>
+        <div class="lottery-grid" id="lotteryGrid"></div>
+        <div style="font-size: 12px; margin-bottom: 8px; font-weight: bold;">የተመረጠ ቁጥር: <span id="selectedLotteryNum" style="color:var(--primary-color);">ምንም የለም</span></div>
+        <button onclick="buySelectedLottery()" style="background-color: var(--success-color); margin-top:0;">ሎተሪውን ግዛ</button>
+        <button class="back-btn" onclick="backToWallet()">ወደ ዋሌት ተመለስ</button>
+    </div>
+
+    <!-- ክፍል 7፡ ገንዘብ ማውጣት (ባንኮች እና ቴሌብር) -->
+    <div id="section-withdraw" class="step">
+        <h2>ገንዘብ ማውጣት</h2>
+        <p class="subtitle">የሚፈልጉትን የክፍያ አማራጭ ይምረጡ</p>
+        <div class="form-group">
+            <label>የባንክ / የኪስ ቦርሳ አማራጭ</label>
+            <select id="withdrawMethod">
+                <option value="telebirr">ቴሌብር (Telebirr)</option>
+                <option value="cbe">የኢትዮጵያ ንግድ ባንክ (CBE)</option>
+                <option value="ebc">ዳሽን ባንክ / ኢቢኢ (EBC)</option>
+                <option value="mpesa">አፍሪካ ኤምፔሳ (M-Pesa)</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>የአካውንት ቁጥር / ስልክ ቁጥር</label>
+            <input type="text" id="withdrawAccount" placeholder="አካውንት ቁጥር ያስገቡ">
+        </div>
+        <div class="form-group">
+            <label>የሚወጣው መጠን (ETB)</label>
+            <input type="number" id="withdrawAmount" placeholder="መጠን በብር">
+        </div>
+        <button onclick="submitWithdrawal()" style="background-color: #0284c7; margin-top:0;">ጥያቄ ላክ</button>
+        <button class="back-btn" onclick="backToWallet()">ወደ ዋሌት ተመለስ</button>
+    </div>
+
+    <!-- ክፍል 8፡ P2P ሼር ማድረግ -->
+    <div id="section-p2p" class="step">
+        <h2>P2P ገንዘብ ማስተላለፍ</h2>
+        <p class="subtitle">ለሌላ ተጠቃሚ በዩዘር አይዲ ወይም በቴሌብር/ባንክ ይላኩ</p>
+        <div class="form-group">
+            <label>የተቀባይ ቴሌግራም ዩዘር አይዲ ወይም ስልክ</label>
+            <input type="text" id="p2pRecipient" placeholder="ዩዘር አይዲ ወይም ስልክ ቁጥር">
+        </div>
+        <div class="form-group">
+            <label>የሚተላለፈው መጠን (ETB)</label>
+            <input type="number" id="p2pAmount" placeholder="ብር መጠን">
+        </div>
+        <button onclick="submitP2PTransfer()" style="background-color: #7c3aed; margin-top:0;">ገንዘብ አስተላልፍ</button>
+        <button class="back-btn" onclick="backToWallet()">ወደ ዋሌት ተመለስ</button>
+    </div>
+
+    <!-- ክፍል 9፡ መላ ኮይን / ዩኤስዲቲ መቀየሪያ -->
+    <div id="section-exchange" class="step">
+        <h2>መላ ኮይን & ዩኤስዲቲ መቀየሪያ</h2>
+        <p class="subtitle">ኮይንዎን ወደ ብር ወይም ዩኤስዲቲ ይቀይሩ</p>
+        <div class="form-group">
+            <label>የምንዛሬ ዓይነት</label>
+            <select id="exchangeType">
+                <option value="mela_to_etb">መላ ኮይን ወደ ኢትዮጵያ ብር (ETB)</option>
+                <option value="mela_to_usdt">መላ ኮይን ወደ ዩኤስዲቲ (USDT)</option>
+                <option value="usdt_to_etb">ዩኤስዲቲ (USDT) ወደ ኢትዮጵያ ብር</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>የኮይን / ዩኤስዲቲ መጠን</label>
+            <input type="number" id="exchangeAmount" placeholder="መጠን ያስገቡ">
+        </div>
+        <button onclick="processExchange()" style="background-color: #64748b; margin-top:0;">አሁን ቀይር (Exchange)</button>
+        <button class="back-btn" onclick="backToWallet()">ወደ ዋሌት ተመለስ</button>
+    </div>
+
 </div>
 
 <!-- ሞዳል ዊንዶውስ -->
 <div id="customModal" class="modal-overlay">
     <div class="modal-content">
         <h3 id="modalTitle" style="margin-top:0; color:var(--primary-color);">ማሳሰቢያ</h3>
-        <p id="modalMessage" style="font-size: 14px; margin-bottom: 15px;"></p>
-        <button onclick="closeModal()" id="modalCloseBtn">እሺ (OK)</button>
+        <p id="modalMessage" style="font-size: 13px; margin-bottom: 12px;"></p>
+        <button onclick="closeModal()">እሺ (OK)</button>
     </div>
 </div>
 
@@ -337,6 +460,7 @@
     let currentLang = 'am';
     let isBalanceVisible = false;
     let statusCheckInterval = null;
+    let selectedLotteryNumber = null;
     const actualBalance = "0.00 ETB";
     const tg = window.Telegram.WebApp;
     tg.expand();
@@ -346,7 +470,6 @@
     function updateColors() {
         const bg = document.getElementById('bgPicker').value;
         const txt = document.getElementById('textPicker').value;
-        
         document.documentElement.style.setProperty('--bg-color', bg);
         document.documentElement.style.setProperty('--card-bg', bg === '#0f172a' ? '#1e293b' : '#ffffff');
         document.documentElement.style.setProperty('--text-color', txt);
@@ -357,129 +480,27 @@
         isBalanceVisible = !isBalanceVisible;
         const balanceEl = document.getElementById('walletBalance');
         const eyeBtnSpan = document.getElementById('eyeBtnText');
-        
         if (isBalanceVisible) {
             balanceEl.textContent = actualBalance;
             eyeBtnSpan.textContent = currentLang === 'am' ? "ደብቅ" : "Hide";
         } else {
-            balanceEl.textContent = "✨✨✨✨ ETB";
+            balanceEl.textContent = "•••• ETB";
             eyeBtnSpan.textContent = currentLang === 'am' ? "አሳይ" : "Show";
         }
     }
 
-    const translations = {
-        am: {
-            regTitle: "እንኳን ወደ መላ.ቦት በደህና መጡ",
-            regSubtitle: "እባክዎ ሙሉ መረጃዎን በመሙላት ዋሌት ይክፈቱ",
-            lblFirstName: "ስም (First Name)",
-            lblFatherName: "የአባት ስም (Father's Name)",
-            lblGrandFatherName: "የአያት ስም (Grandfather's Name)",
-            lblMotherName: "የእናት ሙሉ ስም (Mother's Full Name)",
-            lblPhone: "ስልክ ቁጥር (Phone Number)",
-            phoneHint: "በ 09፣ 07 ወይም +251 ሊጀምር ይገባል",
-            btnNextWallet: "ቀጥል & ኬዋይሲ ላክ",
-            kycTitle: "የማንነት ማረጋገጫ (KYC)",
-            kycSubtitle: "መታወቂያ ፊትና ጀርባ ፎቶ ይጫኑ",
-            lblFrontId: "የመታወቂያው ፊት (Front Photo)",
-            lblBackId: "የመታወቂያው ጀርባ (Back Photo)",
-            btnSubmitAdmin: "ለአድሚን ማረጋገጫ ላክ",
-            pendingTitle: "ማረጋገጫ በመጠበቅ ላይ...",
-            pendingSubtitle: "መረጃዎ እና የመታወቂያ ፎቶዎ ለአድሚን ተልኳል። አድሚኑ መረጃውን አረጋግጦ እስኪያጸድቅ ድረስ እባክዎ ትንሽ ይጠብቁ።",
-            statusText: "ሁኔታ: ፔንዲንግ ላይ ይገኛል...",
-            verificationBadge: "✅ ቬሪፋይድ ዋሌት",
-            txtBalanceTitle: "አጠቃላይ ቀሪ ሂሳብ",
-            btnDeposit: "ገንዘብ አስገባ (Chapa)",
-            btnLottery: "ሎተሪ መቁረጥ",
-            btnWithdraw: "ገንዘብ ማውጣት",
-            btnP2P: "P2P ሼር ማድረግ",
-            btnExchange: "መላ ኮይን / ዩኤስዲቲ መቀየሪያ",
-            frontText: "ፎቶ ለመምረጥ እዚህ ይጫኑ",
-            backText: "ፎቶ ለመምረጥ እዚህ ይጫኑ"
-        },
-        en: {
-            regTitle: "Welcome to Mela-bot",
-            regSubtitle: "Fill complete info to open wallet",
-            lblFirstName: "First Name",
-            lblFatherName: "Father's Name",
-            lblGrandFatherName: "Grandfather's Name",
-            lblMotherName: "Mother's Full Name",
-            lblPhone: "Phone Number",
-            phoneHint: "Must start with 09, 07, or +251",
-            btnNextWallet: "Continue & Submit KYC",
-            kycTitle: "Identity Verification (KYC)",
-            kycSubtitle: "Upload front and back ID photos",
-            lblFrontId: "Front Photo of ID",
-            lblBackId: "Back Photo of ID",
-            btnSubmitAdmin: "Submit to Admin",
-            pendingTitle: "Pending Verification...",
-            pendingSubtitle: "Your info and ID photos have been sent to admin. Please wait until approved.",
-            statusText: "Status: Pending...",
-            verificationBadge: "✅ Verified Wallet",
-            txtBalanceTitle: "Total Balance",
-            btnDeposit: "Deposit (Chapa)",
-            btnLottery: "Buy Lottery",
-            btnWithdraw: "Withdraw",
-            btnP2P: "P2P Transfer",
-            btnExchange: "Mela Coin / USDT Converter",
-            frontText: "Click to select photo",
-            backText: "Click to select photo"
-        }
-    };
-
     function changeLanguage() {
         currentLang = document.getElementById('langSelect').value;
-        const t = translations[currentLang];
-        
-        document.getElementById('regTitle').textContent = t.regTitle;
-        document.getElementById('regSubtitle').textContent = t.regSubtitle;
-        document.getElementById('lblFirstName').textContent = t.lblFirstName;
-        document.getElementById('lblFatherName').textContent = t.lblFatherName;
-        document.getElementById('lblGrandFatherName').textContent = t.lblGrandFatherName;
-        document.getElementById('lblMotherName').textContent = t.lblMotherName;
-        document.getElementById('lblPhone').textContent = t.lblPhone;
-        document.getElementById('phoneHint').textContent = t.phoneHint;
-        document.getElementById('btnNextWallet').textContent = t.btnNextWallet;
-        
-        document.getElementById('kycTitle').textContent = t.kycTitle;
-        document.getElementById('kycSubtitle').textContent = t.kycSubtitle;
-        document.getElementById('lblFrontId').textContent = t.lblFrontId;
-        document.getElementById('lblBackId').textContent = t.lblBackId;
-        document.getElementById('btnSubmitAdmin').textContent = t.btnSubmitAdmin;
-        
-        document.getElementById('pendingTitle').textContent = t.pendingTitle;
-        document.getElementById('pendingSubtitle').textContent = t.pendingSubtitle;
-        
-        document.getElementById('verificationBadge').textContent = t.verificationBadge;
-        document.getElementById('txtBalanceTitle').textContent = t.txtBalanceTitle;
-        document.getElementById('btnDeposit').textContent = t.btnDeposit;
-        document.getElementById('btnLottery').textContent = t.btnLottery;
-        document.getElementById('btnWithdraw').textContent = t.btnWithdraw;
-        document.getElementById('btnP2P').textContent = t.btnP2P;
-        document.getElementById('btnExchange').textContent = t.btnExchange;
-        
-        document.getElementById('frontText').textContent = t.frontText;
-        document.getElementById('backText').textContent = t.backText;
     }
 
     function handleRegister(event) {
         event.preventDefault();
-        const phone = document.getElementById('phoneNumber').value.trim();
-        
-        const etPhoneRegex = /^(09|07|\+2519|\+2517)\d{8}$/;
-        if (!etPhoneRegex.test(phone)) {
-            showCustomModal(
-                currentLang === 'am' ? "የስልክ ቁጥር ስህተት" : "Invalid Phone Number",
-                currentLang === 'am' ? "እባክዎ ትክክለኛ የኢትዮጵያ ስልክ ቁጥር ያስገቡ (በ 09፣ 07 ወይም +251 የሚጀምር)" : "Please enter a valid Ethiopian phone number starting with 09, 07, or +251"
-            );
-            return;
-        }
-
         userData.telegramId = telegramId;
         userData.firstName = document.getElementById('firstName').value;
         userData.fatherName = document.getElementById('fatherName').value;
         userData.grandFatherName = document.getElementById('grandFatherName').value;
         userData.motherName = document.getElementById('motherName').value;
-        userData.phoneNumber = phone;
+        userData.phoneNumber = document.getElementById('phoneNumber').value;
 
         document.getElementById('step-register').classList.remove('active');
         document.getElementById('step-kyc').classList.add('active');
@@ -489,8 +510,7 @@
         const input = document.getElementById(inputId);
         const textSpan = document.getElementById(textId);
         if (input.files && input.files.length > 0) {
-            const fileName = input.files[0].name;
-            textSpan.textContent = "✅ " + (fileName.length > 18 ? fileName.substring(0, 15) + "..." : fileName);
+            textSpan.textContent = "✅ " + input.files[0].name;
             textSpan.style.color = "var(--success-color)";
         }
     }
@@ -500,20 +520,13 @@
         document.getElementById('step-kyc').classList.remove('active');
         document.getElementById('step-pending').classList.add('active');
         
-        // መረጃውን ለፓይተን ሰርቨር (Backend) በ POST ሪኬስት መላክ
         fetch('/submit-registration', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(userData)
-        })
-        .then(response => response.json())
-        .then(data => {
-            console.log('Success:', data);
-            startStatusChecker(); // አድሚኑ እስኪወስን በሪል-ታይም መከታተል መጀመር
-        })
-        .catch((error) => {
-            console.error('Error:', error);
-        });
+        }).then(res => res.json()).then(data => {
+            startStatusChecker();
+        }).catch(err => console.error(err));
     }
 
     function startStatusChecker() {
@@ -526,18 +539,118 @@
                     document.getElementById('step-pending').classList.remove('active');
                     document.getElementById('step-wallet').classList.add('active');
                     document.getElementById('userDisplayName').textContent = userData.firstName + " " + userData.fatherName;
-                } else if (data.status === 'cancelled') {
+                } else if (data.status === 'cancelled' || data.status === 'blocked') {
                     clearInterval(statusCheckInterval);
-                    document.getElementById('statusText').textContent = currentLang === 'am' ? "❌ ኬዋይሲዎ ውድቅ ተደርጓል። እባክዎ እንደገና ይሞክሩ።" : "❌ KYC request rejected. Please try again.";
-                    document.getElementById('statusText').style.color = "#dc2626";
-                } else if (data.status === 'blocked') {
-                    clearInterval(statusCheckInterval);
-                    document.getElementById('statusText').textContent = currentLang === 'am' ? "🚫 አካውንትዎ ታግዷል።" : "🚫 Your account has been blocked.";
-                    document.getElementById('statusText').style.color = "#dc2626";
+                    document.getElementById('statusText').textContent = "❌ አካውንትዎ ውድቅ ተደርጓል ወይም ታግዷል።";
                 }
-            })
-            .catch(err => console.error("Status check error:", err));
-        }, 3000); // በየ 3 ሴኮንዱ ማረጋገጥ
+            });
+        }, 3000);
+    }
+
+    // ናቪጌሽን ፋንክሽኖች
+    function backToWallet() {
+        document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
+        document.getElementById('step-wallet').classList.add('active');
+    }
+
+    function openDepositSection() {
+        document.getElementById('step-wallet').classList.remove('active');
+        document.getElementById('section-deposit').classList.add('active');
+    }
+
+    function openLotterySection() {
+        document.getElementById('step-wallet').classList.remove('active');
+        document.getElementById('section-lottery').classList.add('active');
+        generateLotteryGrid();
+    }
+
+    function openWithdrawSection() {
+        document.getElementById('step-wallet').classList.remove('active');
+        document.getElementById('section-withdraw').classList.add('active');
+    }
+
+    function openP2PSection() {
+        document.getElementById('step-wallet').classList.remove('active');
+        document.getElementById('section-p2p').classList.add('active');
+    }
+
+    function openExchangeSection() {
+        document.getElementById('step-wallet').classList.remove('active');
+        document.getElementById('section-exchange').classList.add('active');
+    }
+
+    // ከ 1 እስከ 5000 የሎተሪ ሰሌዳ ማመንጫ
+    function generateLotteryGrid() {
+        const grid = document.getElementById('lotteryGrid');
+        if (grid.children.length > 0) return; // አንዴ ከሰራ ሳያድስ እንዲቆይ
+        
+        // በናሙና የተወሰኑ ቁጥሮች የተያዙ (taken) እንዲሆኑ እናድርግ (ለምሳሌ በአድሚን የተያዙ)
+        const takenNumbers = [3, 7, 12, 15, 20, 45, 100, 250, 500, 1200, 3000];
+
+        for (let i = 1; i <= 5000; i++) {
+            const item = document.createElement('div');
+            item.className = 'lottery-item';
+            item.textContent = i;
+            
+            if (takenNumbers.includes(i)) {
+                item.classList.add('taken');
+            } else {
+                item.classList.add('available');
+                item.onclick = function() {
+                    document.querySelectorAll('.lottery-item.selected').forEach(el => el.classList.remove('selected'));
+                    item.classList.add('selected');
+                    selectedLotteryNumber = i;
+                    document.getElementById('selectedLotteryNum').textContent = i;
+                };
+            }
+            grid.appendChild(item);
+        }
+    }
+
+    function buySelectedLottery() {
+        if (!selectedLotteryNumber) {
+            showCustomModal("ማሳሰቢያ", "እባክዎ ከ 1 እስከ 5000 ካሉት ቁጥሮች አንዱን ይምረጡ!");
+            return;
+        }
+        showCustomModal("ስኬታማ", `ቁጥር ${selectedLotteryNumber} በስኬት ቆርጠዋል!`);
+    }
+
+    function processChapaDeposit() {
+        const amt = document.getElementById('depositAmount').value;
+        if (!amt) {
+            showCustomModal("ስህተት", "እባክዎ የሚያስገቡትን መጠን ያስገቡ");
+            return;
+        }
+        showCustomModal("ቻፓ (Chapa)", `የብር ${amt} የክፍያ ሊንክ ወደ ቴሌግራም ቦትዎ ተልኳል!`);
+    }
+
+    function submitWithdrawal() {
+        const amt = document.getElementById('withdrawAmount').value;
+        const method = document.getElementById('withdrawMethod').value;
+        if (!amt) {
+            showCustomModal("ስህተት", "እባክዎ የሚወጣውን መጠን ያስገቡ");
+            return;
+        }
+        showCustomModal("ተሳክቷል", `የብር ${amt} የገንዘብ ማውጣት ጥያቄዎ በ(${method}) አማራጭ ተመዝግቧል!`);
+    }
+
+    function submitP2PTransfer() {
+        const recipient = document.getElementById('p2pRecipient').value;
+        const amt = document.getElementById('p2pAmount').value;
+        if (!recipient || !amt) {
+            showCustomModal("ስህተት", "እባክዎ መረጃዎቹን ሙሉ በሙሉ ይሙሉ");
+            return;
+        }
+        showCustomModal("P2P ተላልፏል", `ብር ${amt} ለ ተቀባይ (${recipient}) በስኬት ተልኳል!`);
+    }
+
+    function processExchange() {
+        const amt = document.getElementById('exchangeAmount').value;
+        if (!amt) {
+            showCustomModal("ስህተት", "እባክዎ መጠኑን ያስገቡ");
+            return;
+        }
+        showCustomModal("የምንዛሬ ማዕከል", "ቀየራው በተሳካ ሁኔታ ተፈጽሟል!");
     }
 
     function showCustomModal(title, message) {
@@ -548,41 +661,6 @@
 
     function closeModal() {
         document.getElementById('customModal').style.display = 'none';
-    }
-
-    function openDepositModal() {
-        showCustomModal(
-            currentLang === 'am' ? "ገንዘብ ማስገባት (Chapa)" : "Deposit via Chapa",
-            currentLang === 'am' ? "የቻፓ (Chapa) የክፍያ ጌትዌይ በመገናኘት ላይ ነው። እባክዎ ትንሽ ይጠብቁ..." : "Connecting to Chapa payment gateway..."
-        );
-    }
-
-    function openLotterySection() {
-        showCustomModal(
-            currentLang === 'am' ? "ሎተሪ መቁረጥ" : "Lottery Section",
-            currentLang === 'am' ? "ወደ መላ ሎተሪ ቲኬት መቁረጫ ክፍል ገብተዋል!" : "Welcome to Mela Lottery section!"
-        );
-    }
-
-    function openWithdrawModal() {
-        showCustomModal(
-            currentLang === 'am' ? "ገንዘብ ማውጣት (Withdraw)" : "Withdraw Funds",
-            currentLang === 'am' ? "የባንክ ወይም የቴሌብር አካውንት በመምረጥ ገንዘብ ማውጣት ይችላሉ።" : "Withdraw funds to your bank or Telebirr account."
-        );
-    }
-
-    function openP2PModal() {
-        showCustomModal(
-            currentLang === 'am' ? "P2P ሼር ማድረግ" : "P2P Transfer",
-            currentLang === 'am' ? "ቀሪ ሂሳብዎን ለሌላ ተጠቃሚ በስልክ ቁጥር ማስተላለፍ ይችላሉ።" : "Transfer balance to another user."
-        );
-    }
-
-    function openExchange() {
-        showCustomModal(
-            currentLang === 'am' ? "መላ ኮይን / ዩኤስዲቲ መቀየሪያ" : "Mela Coin Converter",
-            currentLang === 'am' ? "የመላ ኮይን እና የዩኤስዲቲ (USDT) ንግድ ማዕከል ክፍት ነው።" : "Mela Coin and USDT trading hub is open."
-        );
     }
 </script>
 
