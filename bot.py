@@ -5,7 +5,7 @@ from aiogram.filters import Command
 from aiogram.types import WebAppInfo, InlineKeyboardMarkup, InlineKeyboardButton
 from aiogram.fsm.storage.memory import MemoryStorage
 import asyncio
-from flask import Flask
+from flask import Flask, render_template
 import threading
 
 # -- የተጠቃሚው ትክክለኛ መረጃዎች --
@@ -21,18 +21,18 @@ logging.basicConfig(level=logging.INFO)
 bot = Bot(token=BOT_TOKEN)
 dp = Dispatcher(storage=MemoryStorage())
 
-# -- Flask ዌብ ሰርቨር ለ Render ፖርት ማሟያ --
-app = Flask(__name__)
+# -- Flask ሰርቨር ራሱን የቻለ index.html ፋይል እንዲጠቀም እናደርጋለን --
+app = Flask(__name__, template_folder='.')
 
 @app.route('/')
 def home():
-    return "Mela-bot is running successfully!"
+    # ሪፖዚቶሪዎ ውስጥ ካለው index.html ፋይል ጋር ያገናኘዋል
+    return render_template('index.html')
 
 def run_web():
-    # Render የሚጠብቀውን ፖርት 10000 ከፍቶ እንዲቆይ እናደርጋለን
     app.run(host="0.0.0.0", port=10000)
 
-# ዌብ ሰርቨሩን ከቦቱ ጎን ለጎን በጀርባ (Background) ማስጀመር
+# ዌብ ሰርቨሩን በጀርባ ማስጀመር
 threading.Thread(target=run_web, daemon=True).start()
 
 # /start ትዕዛዝ ሲሰጥ
@@ -67,29 +67,7 @@ async def handle_web_app_data(message: types.Message):
         admin_text = f"🔔 <b>አዲስ የኬዋይሲ/ምዝገባ ጥያቄ መጥቷል!</b>\n\nተጠቃሚ: @{message.from_user.username}\nመረጃ: {data}"
         await bot.send_message(chat_id=ADMIN_CHAT_ID, text=admin_text, parse_mode="HTML")
 
-# ቻፓ ክፍያ ማጀመሪያ ፉንክሽን (Chapa Initialization)
-def initialize_chapa_payment(amount, email, first_name, last_name, phone):
-    url = "https://api.chapa.co/v1/transaction/initialize"
-    headers = {
-        "Authorization": f"Bearer {CHAPA_SECRET_KEY}",
-        "Content-Type": "application/json"
-    }
-    payload = {
-        "amount": str(amount),
-        "currency": "ETB",
-        "email": email,
-        "first_name": first_name,
-        "last_name": last_name,
-        "phone_number": phone,
-        "tx_ref": f"mela-tx-{asyncio.get_event_loop().time()}",
-        "callback_url": "https://webhook.site/callback",
-        "return_url": "https://t.me/your_bot_username"
-    }
-    response = requests.post(url, json=payload, headers=headers)
-    return response.json()
-
 async def main():
-    # የቆዩ ግጭቶችን (TelegramConflictError) በራስ ሰር እንዲያጸዳው እናደርጋለን
     await bot.delete_webhook(drop_pending_updates=True)
     await dp.start_polling(bot)
 
