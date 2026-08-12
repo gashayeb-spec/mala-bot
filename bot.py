@@ -22,7 +22,7 @@ logging.basicConfig(level=logging.INFO)
 bot = Bot(token=BOT_TOKEN)
 dp = Dispatcher(storage=MemoryStorage())
 
-# የተመዝጋቢዎች መረጃ ማከማቻ (Database ምትክ)
+# የተመዝጋቢዎች መረጃ ማከማቻ
 registered_users = set()
 
 # -- Flask ሰርቨር --
@@ -31,6 +31,42 @@ app = Flask(__name__, template_folder='.')
 @app.route('/')
 def home():
     return render_template('index.html')
+
+# -- ከዌብሳይት በቀጥታ የሚመጣ የምዝገባ መረጃ መቀበያ ኤፒአይ --
+@app.route('/submit-registration', methods=['POST'])
+def submit_registration():
+    try:
+        data = request.json
+        first_name = data.get('firstName', '')
+        father_name = data.get('fatherName', '')
+        grand_father_name = data.get('grandFatherName', '')
+        mother_name = data.get('motherName', '')
+        phone = data.get('phoneNumber', '')
+        
+        info_text = (
+            f"👤 <b>አዲስ የዌብ ምዝገባ/ኬዋይሲ ጥያቄ!</b>\n\n"
+            f"• ስም: <b>{first_name} {father_name} {grand_father_name}</b>\n"
+            f"• የእናት ስም: {mother_name}\n"
+            f"• ስልክ ቁጥር: {phone}"
+        )
+        
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        
+        keyboard = InlineKeyboardMarkup(inline_keyboard=[
+            [InlineKeyboardButton(text="✅ አጽድቅ (Approve Wallet)", callback_data="approve_web_user")]
+        ])
+        
+        loop.run_until_complete(bot.send_message(
+            chat_id=ADMIN_CHAT_ID, 
+            text=info_text, 
+            reply_markup=keyboard, 
+            parse_mode="HTML"
+        ))
+        
+        return jsonify({"status": "success", "message": "መረጃው ለአድሚን በተሳካ ሁኔታ ተልኳል"})
+    except Exception as e:
+        return jsonify({"status": "error", "message": str(e)}), 500
 
 # -- የቻፓ (Chapa) ክፍያ ሊንክ ማመንጫ ኤፒአይ --
 @app.route('/initiate-chapa', methods=['POST'])
@@ -74,7 +110,7 @@ def run_web():
 
 threading.Thread(target=run_web, daemon=True).start()
 
-# /start ትዕዛዝ (ማስታወቂያ እና የስታርት ቁልፍ)
+# /start ትዕዛዝ
 @dp.message(Command("start"))
 async def send_welcome(message: types.Message):
     registered_users.add(message.from_user.id)
@@ -112,7 +148,7 @@ async def admin_stats(message: types.Message):
     else:
         await message.answer("ይህንን ትዕዛዝ ለመጠቀም ፈቃድ የለዎትም።")
 
-# -- የአድሚን ማስታወቂያ መላኪያ ትዕዛዝ (/announce [መልእክት]) --
+# -- የአድሚን ማስታወቂያ መላኪያ ትዕዛዝ (/announce) --
 @dp.message(Command("announce"))
 async def admin_announce(message: types.Message):
     if str(message.from_user.id) == str(ADMIN_CHAT_ID):
@@ -135,7 +171,7 @@ async def admin_announce(message: types.Message):
     else:
         await message.answer("ይህንን ትዕዛዝ ለመጠቀም ፈቃድ የለዎትም።")
 
-# ከዌብ አፕ የሚመጣ መረጃ መቀበያ
+# ከቴሌግራም ዌብ አፕ የሚመጣ መረጃ መቀበያ
 @dp.message(F.web_app_data)
 async def handle_web_app_data(message: types.Message):
     data_json = message.web_app_data.data
@@ -146,7 +182,7 @@ async def handle_web_app_data(message: types.Message):
     if ADMIN_CHAT_ID:
         try:
             parsed = json.loads(data_json)
-            info_text = f"ስም: {parsed.get('firstName')} {parsed.get('fatherName')}\nስልክ: {parsed.get('phoneNumber')}\nኢሜይል: {parsed.get('email')}\nሀገር: {parsed.get('country')}"
+            info_text = f"ስም: {parsed.get('firstName')} {parsed.get('fatherName')}\nስልክ: {parsed.get('phoneNumber')}"
         except:
             info_text = data_json
 
@@ -154,24 +190,28 @@ async def handle_web_app_data(message: types.Message):
             [InlineKeyboardButton(text="✅ አጽድቅ (Approve Wallet)", callback_data=f"approve_{user_id}")]
         ])
         
-        admin_text = f"🔔 <b>አዲስ የኬዋይሲ/ምዝገባ ጥያቄ መጥቷል!</b>\n\nተጠቃሚ: @{message.from_user.username}\n{info_text}"
+        admin_text = f"🔔 <b>አዲስ የኬዋይሲ/ምዝገባ ጥያቄ መጥቷል!</b>\n\nተጠቃሚ ID: {user_id}\n{info_text}"
         await bot.send_message(chat_id=ADMIN_CHAT_ID, text=admin_text, reply_markup=keyboard, parse_mode="HTML")
 
 # አድሚኑ አጽድቅ ሲል
 @dp.callback_query(F.data.startswith("approve_"))
 async def approve_user(callback: types.CallbackQuery):
-    target_user_id = callback.data.split("_")[1]
-    
-    try:
-        await bot.send_message(
-            chat_id=target_user_id, 
-            text="🎉 <b>እንኳን ደስ አለዎት!</b>\n\nየእርስዎ ኬዋይሲ (KYC) በአድሚን ጸድቋል። አሁን ዋሌትዎ ክፍት ነው፤ በቻፓ በኩል ገንዘብ ማስገባት እና መገበያየት ይችላሉ!", 
-            parse_mode="HTML"
-        )
-        await callback.message.edit_text(callback.message.text + "\n\n<b>[✅ ጸድቋል]</b>", parse_mode="HTML")
-        await callback.answer("ተጠቃሚው በተሳካ ሁኔታ ጸድቋል!")
-    except Exception as e:
-        await callback.answer(f"ስህተት ተፈጥሯል: {e}", show_alert=True)
+    parts = callback.data.split("_")
+    if len(parts) > 1 and parts[1] != "web":
+        target_user_id = parts[1]
+        try:
+            await bot.send_message(
+                chat_id=target_user_id, 
+                text="🎉 <b>እንኳን ደስ አለዎት!</b>\n\nየእርስዎ ኬዋይሲ (KYC) በአድሚን ጸድቋል። አሁን ዋሌትዎ ክፍት ነው!", 
+                parse_mode="HTML"
+            )
+            await callback.message.edit_text(callback.message.text + "\n\n<b>[✅ ጸድቋል]</b>", parse_mode="HTML")
+            await callback.answer("ተጠቃሚው በተሳካ ሁኔታ ጸድቋል!")
+        except Exception as e:
+            await callback.answer(f"ስህተት ተፈጥሯል: {e}", show_alert=True)
+    else:
+        await callback.message.edit_text(callback.message.text + "\n\n<b>[✅ የዌብ ተጠቃሚ ጸድቋል]</b>", parse_mode="HTML")
+        await callback.answer("ተጠቃሚው ጸድቋል!")
 
 async def main():
     await bot.delete_webhook(drop_pending_updates=True)
