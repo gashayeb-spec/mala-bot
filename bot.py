@@ -11,7 +11,9 @@ BOT_TOKEN = "8543715567:AAEeL0HgHcw62LhGaj3tNn9yJp2bh5XdmfM"
 ADMIN_CHAT_ID = "5351353727" 
 CHAPA_PUBLIC_KEY = "CHAPUBK-hLBEJPiKDlRpfBCqTczyE1OsnrrK3Zhj"
 CHAPA_SECRET_KEY = "CHASECK-SncZN81Mx80yQcPiXJwRXDF6MdgchtNV"
-WEB_APP_URL = "https://your-app-name.onrender.com" # ሰርቨር ላይ ሲያደርጉ የዌብሳይትዎን ሊንክ ያስገቡበት
+
+# -- ከ Render ያገኙት ትክክለኛ የዌብሳይት ሊንክ --
+WEB_APP_URL = "https://mela-bot.onrender.com"
 
 logging.basicConfig(level=logging.INFO)
 bot = Bot(token=BOT_TOKEN)
