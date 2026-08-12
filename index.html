@@ -13,6 +13,7 @@
             --card-bg: #ffffff;
             --border-color: #cbd5e1;
             --success-color: #10b981;
+            --error-color: #ef4444;
         }
 
         body {
@@ -179,7 +180,6 @@
 
         input[type="file"] { display: none; }
         
-        /* ሎተሪ ግሪድ ስታይል (ከ1 እስከ 5000) */
         .lottery-grid {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
@@ -277,7 +277,7 @@
     <!-- ክፍል 1፡ ምዝገባ -->
     <div id="step-register" class="step active">
         <h2 id="regTitle">መላ.ቦት ምዝገባ</h2>
-        <p class="subtitle" id="regSubtitle">ዋሌት ለመክፈት መረጃዎን ይሙሉ</p>
+        <p class="subtitle" id="regSubtitle">ዋሌት ለመክፈት መረጃዎን ይሙሉ (አንድ ሰው 1 አካውንት ብቻ)</p>
         <form onsubmit="handleRegister(event)">
             <div class="form-group">
                 <label id="lblFirstName">ስም</label>
@@ -303,41 +303,45 @@
         </form>
     </div>
 
-    <!-- ክፍል 2፡ ኬዋይሲ -->
+    <!-- ክፍል 2፡ ኬዋይሲ (ብሔራዊ መታወቂያ ማረጋገጫ) -->
     <div id="step-kyc" class="step">
-        <h2 id="kycTitle">የማንነት ማረጋገጫ (KYC)</h2>
-        <p class="subtitle" id="kycSubtitle">መታወቂያ ፊትና ጀርባ ፎቶ ይጫኑ</p>
+        <h2 id="kycTitle">ብሔራዊ መታወቂያ (KYC)</h2>
+        <p class="subtitle" id="kycSubtitle">አንድ ግለሰብ ከአንድ በላይ አካውንት መክፈት ስለተከለከለ መታወቂያዎ በጥንቃቄ ይመረመራል</p>
         <form onsubmit="handleKyc(event)">
             <div class="form-group">
-                <label id="lblFrontId">የመታወቂያው ፊት</label>
+                <label>ብሔራዊ መታወቂያ ቁጥር (National ID No)</label>
+                <input type="text" id="nationalIdNumber" required placeholder="የመታወቂያ ቁጥር ያስገቡ">
+            </div>
+            <div class="form-group">
+                <label id="lblFrontId">የመታወቂያው ፊት (ID Card Front)</label>
                 <div class="file-upload-box" onclick="document.getElementById('frontId').click()">
                     <span id="frontText">ፎቶ ለመምረጥ እዚህ ይጫኑ</span>
                     <input type="file" id="frontId" accept="image/*" required onchange="updateFileName('frontId', 'frontText')">
                 </div>
             </div>
             <div class="form-group">
-                <label id="lblBackId">የመታወቂያው ጀርባ</label>
+                <label id="lblBackId">የመታወቂያው ጀርባ (ID Card Back)</label>
                 <div class="file-upload-box" onclick="document.getElementById('backId').click()">
                     <span id="backText">ፎቶ ለመምረጥ እዚህ ይጫኑ</span>
                     <input type="file" id="backId" accept="image/*" required onchange="updateFileName('backId', 'backText')">
                 </div>
             </div>
-            <button type="submit" id="btnSubmitAdmin">ለአድሚን ማረጋገጫ ላክ</button>
+            <button type="submit" id="btnSubmitAdmin">ለአድሚን ማረጋገጫ ላክ (ድብቅ ምዝገባ ይዘጋል)</button>
         </form>
     </div>
 
-    <!-- ክፍል 3፡ ፔንዲንግ -->
+    <!-- ክፍል 3፡ ፔንዲንግ ወይም ብሎክ የተደረገበት ማሳያ -->
     <div id="step-pending" class="step" style="text-align: center; padding: 20px 0;">
         <h2 id="pendingTitle">ማረጋገጫ በመጠበቅ ላይ...</h2>
-        <p class="subtitle" id="pendingSubtitle">መረጃዎ ለአድሚን ተልኳል። እስኪያጸድቅ ይጠብቁ።</p>
-        <div style="font-size: 30px; margin: 15px 0;">⏳</div>
+        <p class="subtitle" id="pendingSubtitle">መታወቂያዎ እና ቴሌግራም ዩዘርዎ ተረጋግጦ ይከፈታል</p>
+        <div style="font-size: 30px; margin: 15px 0;" id="statusIcon">⏳</div>
         <p id="statusText" style="font-size: 13px; font-weight: bold; color: #f59e0b;">ሁኔታ: ፔንዲንግ ላይ ይገኛል...</p>
     </div>
 
     <!-- ክፍል 4፡ የዋሌት ዳሽቦርድ -->
     <div id="step-wallet" class="step">
         <div class="wallet-card">
-            <span class="badge" id="verificationBadge">✅ ቬሪፋይድ ዋሌት</span>
+            <span class="badge" id="verificationBadge">✅ ቬሪፋይድ ዋሌት (1 ሰው = 1 አካውንት)</span>
             <div id="txtBalanceTitle">አጠቃላይ ቀሪ ሂሳብ</div>
             <div class="wallet-balance-container">
                 <div class="wallet-balance" id="walletBalance">•••• ETB</div>
@@ -364,12 +368,12 @@
     <!-- ክፍል 5፡ ቻፓ ገንዘብ ማስገቢያ -->
     <div id="section-deposit" class="step">
         <h2 id="depTitle">ገንዘብ ማስገባት (Chapa)</h2>
-        <p class="subtitle">በቻፓ በኩል በሂሳብዎ ላይ ገንዘብ ይጫኑ</p>
+        <p class="subtitle">በቻፓ በኩል የክፍያ ጥያቄ ለአድሚን ይላካል</p>
         <div class="form-group">
             <label>የሚከፈለው መጠን (ETB)</label>
             <input type="number" id="depositAmount" placeholder="ምሳሌ: 500">
         </div>
-        <button onclick="processChapaDeposit()" style="background-color: var(--success-color);">የክፍያ ሊንክ አመንጭ</button>
+        <button onclick="processChapaDeposit()" style="background-color: var(--success-color);">የክፍያ ጥያቄ ለአድሚን ላክ</button>
         <button class="back-btn" onclick="backToWallet()">ወደ ዋሌት ተመለስ</button>
     </div>
 
@@ -379,14 +383,14 @@
         <p class="subtitle">የተያዙት በ(ቀይ)፣ ያልተያዙት በነፃ መርጠው ይቁረጡ</p>
         <div class="lottery-grid" id="lotteryGrid"></div>
         <div style="font-size: 12px; margin-bottom: 8px; font-weight: bold;">የተመረጠ ቁጥር: <span id="selectedLotteryNum" style="color:var(--primary-color);">ምንም የለም</span></div>
-        <button onclick="buySelectedLottery()" style="background-color: var(--success-color); margin-top:0;">ሎተሪውን ግዛ</button>
+        <button onclick="buySelectedLottery()" style="background-color: var(--success-color); margin-top:0;">ሎተሪውን በኮይን ግዛ (አውቶማቲክ)</button>
         <button class="back-btn" onclick="backToWallet()">ወደ ዋሌት ተመለስ</button>
     </div>
 
-    <!-- ክፍል 7፡ ገንዘብ ማውጣት (ባንኮች እና ቴሌብር) -->
+    <!-- ክፍል 7፡ ገንዘብ ማውጣት -->
     <div id="section-withdraw" class="step">
         <h2>ገንዘብ ማውጣት</h2>
-        <p class="subtitle">የሚፈልጉትን የክፍያ አማራጭ ይምረጡ</p>
+        <p class="subtitle">መረጃዎ ለአድሚን ማረጋገጫ ይተላለፋል</p>
         <div class="form-group">
             <label>የባንክ / የኪስ ቦርሳ አማራጭ</label>
             <select id="withdrawMethod">
@@ -404,14 +408,14 @@
             <label>የሚወጣው መጠን (ETB)</label>
             <input type="number" id="withdrawAmount" placeholder="መጠን በብር">
         </div>
-        <button onclick="submitWithdrawal()" style="background-color: #0284c7; margin-top:0;">ጥያቄ ላክ</button>
+        <button onclick="submitWithdrawal()" style="background-color: #0284c7; margin-top:0;">የማውጣት ጥያቄ ላክ (አድሚን መረጃውን ያያል)</button>
         <button class="back-btn" onclick="backToWallet()">ወደ ዋሌት ተመለስ</button>
     </div>
 
     <!-- ክፍል 8፡ P2P ሼር ማድረግ -->
     <div id="section-p2p" class="step">
         <h2>P2P ገንዘብ ማስተላለፍ</h2>
-        <p class="subtitle">ለሌላ ተጠቃሚ በዩዘር አይዲ ወይም በቴሌብር/ባንክ ይላኩ</p>
+        <p class="subtitle">ለሌላ ተጠቃሚ በዩዘር አይዲ ወይም ስልክ በኮይን/ብር ማስተላለፍ</p>
         <div class="form-group">
             <label>የተቀባይ ቴሌግራም ዩዘር አይዲ ወይም ስልክ</label>
             <input type="text" id="p2pRecipient" placeholder="ዩዘር አይዲ ወይም ስልክ ቁጥር">
@@ -420,14 +424,14 @@
             <label>የሚተላለፈው መጠን (ETB)</label>
             <input type="number" id="p2pAmount" placeholder="ብር መጠን">
         </div>
-        <button onclick="submitP2PTransfer()" style="background-color: #7c3aed; margin-top:0;">ገንዘብ አስተላልፍ</button>
+        <button onclick="submitP2PTransfer()" style="background-color: #7c3aed; margin-top:0;">አሁን አስተላልፍ (አውቶማቲክ)</button>
         <button class="back-btn" onclick="backToWallet()">ወደ ዋሌት ተመለስ</button>
     </div>
 
     <!-- ክፍል 9፡ መላ ኮይን / ዩኤስዲቲ መቀየሪያ -->
     <div id="section-exchange" class="step">
         <h2>መላ ኮይን & ዩኤስዲቲ መቀየሪያ</h2>
-        <p class="subtitle">ኮይንዎን ወደ ብር ወይም ዩኤስዲቲ ይቀይሩ</p>
+        <p class="subtitle">ኮይንዎን በሲስተሙ በኩል ወዲያውኑ ይቀይሩ</p>
         <div class="form-group">
             <label>የምንዛሬ ዓይነት</label>
             <select id="exchangeType">
@@ -440,7 +444,7 @@
             <label>የኮይን / ዩኤስዲቲ መጠን</label>
             <input type="number" id="exchangeAmount" placeholder="መጠን ያስገቡ">
         </div>
-        <button onclick="processExchange()" style="background-color: #64748b; margin-top:0;">አሁን ቀይር (Exchange)</button>
+        <button onclick="processExchange()" style="background-color: #64748b; margin-top:0;">አሁን ቀይር (አውቶማቲክ)</button>
         <button class="back-btn" onclick="backToWallet()">ወደ ዋሌት ተመለስ</button>
     </div>
 
@@ -466,6 +470,38 @@
     tg.expand();
 
     const telegramId = tg.initDataUnsafe?.user?.id || "999999";
+
+    // ሲከፈት ይህ ቴሌግራም ዩዘር ወይም ናሽናል አይዲ ቀድሞ ተመዝግቦ እንደሆነ ማረጋገጫ (Duplicate Prevention Check)
+    window.addEventListener('DOMContentLoaded', () => {
+        checkExistingAccount(telegramId);
+    });
+
+    function checkExistingAccount(tgId) {
+        // እዚህጋ ከሰርቨር ጋር በመገናኘት ቴሌግራም አይዲው ወይም ናሽናል አይዲው ቀድሞ መኖሩ ይረጋገጣል
+        fetch(`/check-duplicate?telegram_id=${tgId}`)
+        .then(res => res.json())
+        .then(data => {
+            if (data.exists && data.status === 'blocked') {
+                showBlockedState("ይህ የቴሌግራም አካውንት ወይም መታወቂያ ቀድሞ ተመዝግቧል። በአንድ ሰው 1 አካውንት ብቻ የሚፈቀድ በመሆኑ ተጨማሪ መክፈት አይችሉም።");
+            }
+        }).catch(err => {
+            // ለሙከራ ሲባል በሎካል ስቶሬጅ (localStorage) የመታወቂያ ድግግሞሽ ማረጋገጫ
+            const registeredBefore = localStorage.getItem('mela_registered_' + tgId);
+            if (registeredBefore) {
+                showBlockedState("ማሳሰቢያ፡ በዚሁ ቴሌግራም ዩዘር ቀድሞ አካውንት ተመዝግቧል! ድጋሚ መክፈት የተከለከለ ነው።");
+            }
+        });
+    }
+
+    function showBlockedState(message) {
+        document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
+        document.getElementById('step-pending').classList.add('active');
+        document.getElementById('pendingTitle').textContent = "ምዝገባው ታግዷል (Blocked)";
+        document.getElementById('pendingSubtitle').textContent = "አንድ ሰው 1 አካውንት ብቻ ነው የሚኖረው።";
+        document.getElementById('statusIcon').textContent = "🚫";
+        document.getElementById('statusText').style.color = "var(--error-color)";
+        document.getElementById('statusText').textContent = message;
+    }
 
     function updateColors() {
         const bg = document.getElementById('bgPicker').value;
@@ -517,16 +553,25 @@
 
     function handleKyc(event) {
         event.preventDefault();
+        userData.nationalIdNumber = document.getElementById('nationalIdNumber').value;
+
         document.getElementById('step-kyc').classList.remove('active');
         document.getElementById('step-pending').classList.add('active');
         
+        // ምዝገባውን እና የመታወቂያ ቁጥሩን ለአድሚን መላክ (Duplicate check በናሽናል አይዲ እና ቴሌግራም ዩዘር)
         fetch('/submit-registration', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(userData)
         }).then(res => res.json()).then(data => {
+            // በሲስተሙ ድግግሞሽ እንዳይኖር ሎካል መረጃ መያዝ
+            localStorage.setItem('mela_registered_' + telegramId, 'true');
+            localStorage.setItem('mela_nid_' + userData.nationalIdNumber, 'true');
             startStatusChecker();
-        }).catch(err => console.error(err));
+        }).catch(err => {
+            localStorage.setItem('mela_registered_' + telegramId, 'true');
+            startStatusChecker();
+        });
     }
 
     function startStatusChecker() {
@@ -541,13 +586,12 @@
                     document.getElementById('userDisplayName').textContent = userData.firstName + " " + userData.fatherName;
                 } else if (data.status === 'cancelled' || data.status === 'blocked') {
                     clearInterval(statusCheckInterval);
-                    document.getElementById('statusText').textContent = "❌ አካውንትዎ ውድቅ ተደርጓል ወይም ታግዷል።";
+                    showBlockedState("አካውንትዎ በመታወቂያ ድግግሞሽ ወይም በአስተዳዳሪው ውድቅ ተደርጓል። (አንድ ሰው 1 አካውንት ብቻ)።");
                 }
             });
         }, 3000);
     }
 
-    // ናቪጌሽን ፋንክሽኖች
     function backToWallet() {
         document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
         document.getElementById('step-wallet').classList.add('active');
@@ -579,12 +623,10 @@
         document.getElementById('section-exchange').classList.add('active');
     }
 
-    // ከ 1 እስከ 5000 የሎተሪ ሰሌዳ ማመንጫ
     function generateLotteryGrid() {
         const grid = document.getElementById('lotteryGrid');
-        if (grid.children.length > 0) return; // አንዴ ከሰራ ሳያድስ እንዲቆይ
+        if (grid.children.length > 0) return;
         
-        // በናሙና የተወሰኑ ቁጥሮች የተያዙ (taken) እንዲሆኑ እናድርግ (ለምሳሌ በአድሚን የተያዙ)
         const takenNumbers = [3, 7, 12, 15, 20, 45, 100, 250, 500, 1200, 3000];
 
         for (let i = 1; i <= 5000; i++) {
@@ -612,7 +654,7 @@
             showCustomModal("ማሳሰቢያ", "እባክዎ ከ 1 እስከ 5000 ካሉት ቁጥሮች አንዱን ይምረጡ!");
             return;
         }
-        showCustomModal("ስኬታማ", `ቁጥር ${selectedLotteryNumber} በስኬት ቆርጠዋል!`);
+        showCustomModal("ስኬታማ (አውቶማቲክ)", `ቁጥር ${selectedLotteryNumber} በኮይን በስኬት ተቆርጧል!`);
     }
 
     function processChapaDeposit() {
@@ -621,17 +663,25 @@
             showCustomModal("ስህተት", "እባክዎ የሚያስገቡትን መጠን ያስገቡ");
             return;
         }
-        showCustomModal("ቻፓ (Chapa)", `የብር ${amt} የክፍያ ሊንክ ወደ ቴሌግራም ቦትዎ ተልኳል!`);
+        showCustomModal("ቻፓ (Chapa - Admin Approval)", `የብር ${amt} የክፍያ ጥያቄዎ ለአድሚን ተልኳል። አድሚኑ ሲያረጋግጥ ዋሌትዎ ይጫናል!`);
     }
 
     function submitWithdrawal() {
         const amt = document.getElementById('withdrawAmount').value;
         const method = document.getElementById('withdrawMethod').value;
-        if (!amt) {
-            showCustomModal("ስህተት", "እባክዎ የሚወጣውን መጠን ያስገቡ");
+        const acc = document.getElementById('withdrawAccount').value;
+        
+        if (!amt || !acc) {
+            showCustomModal("ስህተት", "እባክዎ አካውንት እና የሚወጣውን መጠን ሙሉ በሙሉ ይሙሉ");
             return;
         }
-        showCustomModal("ተሳክቷል", `የብር ${amt} የገንዘብ ማውጣት ጥያቄዎ በ(${method}) አማራጭ ተመዝግቧል!`);
+
+        showCustomModal("የማውጣት ጥያቄ ተልኳል", 
+            `መጠን: ብር ${amt}\n` +
+            `አማራጭ: ${method}\n` +
+            `መድረሻ አካውንት: ${acc}\n\n` +
+            `የእርስዎ ሙሉ መረጃ (ናሽናል አይዲ እና ቴሌግራም ዩዘር) ለአድሚን በኖቲፊኬሽን ተልኳል!`
+        );
     }
 
     function submitP2PTransfer() {
@@ -641,7 +691,7 @@
             showCustomModal("ስህተት", "እባክዎ መረጃዎቹን ሙሉ በሙሉ ይሙሉ");
             return;
         }
-        showCustomModal("P2P ተላልፏል", `ብር ${amt} ለ ተቀባይ (${recipient}) በስኬት ተልኳል!`);
+        showCustomModal("P2P ተላልፏል (አውቶማቲክ)", `ብር ${amt} ለ ተቀባይ (${recipient}) በሲስተሙ በኩል በስኬት ተልኳል!`);
     }
 
     function processExchange() {
@@ -650,7 +700,7 @@
             showCustomModal("ስህተት", "እባክዎ መጠኑን ያስገቡ");
             return;
         }
-        showCustomModal("የምንዛሬ ማዕከል", "ቀየራው በተሳካ ሁኔታ ተፈጽሟል!");
+        showCustomModal("የምንዛሬ ማዕከል (አውቶማቲክ)", "የኮይን/ዩኤስዲቲ ልውውጥዎ በሲስተሙ ተፈጽሟል!");
     }
 
     function showCustomModal(title, message) {
