@@ -3,30 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mela-bot - Wallet & KYC</title>
+    <title>Mela-bot - Complete Wallet & KYC</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         :root {
-            --primary-color: #4f46e5;
-            --primary-hover: #4338ca;
-            --bg-color: #f8fafc;
-            --card-bg: #ffffff;
+            --bg-color: #ffffff;
             --text-color: #1e293b;
-            --text-light: #64748b;
+            --primary-color: #4f46e5;
+            --card-bg: #ffffff;
             --border-color: #cbd5e1;
             --success-color: #10b981;
         }
 
-        /* ቴም ማስተካከያዎች (Themes) */
-        body.theme-default { --bg-color: #f8fafc; --card-bg: #ffffff; --text-color: #1e293b; }
-        body.theme-blue { --bg-color: #eff6ff; --card-bg: #ffffff; --text-color: #1e3a8a; --primary-color: #2563eb; }
-        body.theme-green { --bg-color: #f0fdf4; --card-bg: #ffffff; --text-color: #065f46; --primary-color: #059669; }
-        body.theme-dark { --bg-color: #0f172a; --card-bg: #1e293b; --text-color: #f8fafc; --text-light: #94a3b8; --border-color: #334155; }
-
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: var(--bg-color);
             color: var(--text-color);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             padding: 0;
             display: flex;
@@ -45,23 +37,30 @@
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
             box-sizing: border-box;
             margin: 16px;
-            transition: background-color 0.3s;
+            border: 1px solid var(--border-color);
         }
 
         .top-bar {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 16px;
+            margin-bottom: 20px;
             font-size: 12px;
+            gap: 10px;
+        }
+
+        .top-bar div {
+            flex: 1;
         }
 
         select.pref-select {
-            padding: 4px 8px;
+            width: 100%;
+            padding: 8px;
             border-radius: 6px;
             border: 1px solid var(--border-color);
             background: var(--card-bg);
             color: var(--text-color);
             cursor: pointer;
+            margin-top: 4px;
         }
 
         .step { display: none; }
@@ -71,17 +70,17 @@
             text-align: center;
             color: var(--primary-color);
             margin-bottom: 8px;
-            font-size: 22px;
+            font-size: 20px;
         }
 
         p.subtitle {
             text-align: center;
-            color: var(--text-light);
-            font-size: 14px;
-            margin-bottom: 24px;
+            font-size: 13px;
+            margin-bottom: 20px;
+            opacity: 0.8;
         }
 
-        .form-group { margin-bottom: 16px; }
+        .form-group { margin-bottom: 14px; }
 
         label {
             display: block;
@@ -92,7 +91,7 @@
 
         input, select {
             width: 100%;
-            padding: 12px;
+            padding: 10px;
             border: 1px solid var(--border-color);
             border-radius: 8px;
             font-size: 14px;
@@ -100,10 +99,7 @@
             outline: none;
             background: var(--card-bg);
             color: var(--text-color);
-            transition: border-color 0.2s;
         }
-
-        input:focus, select:focus { border-color: var(--primary-color); }
 
         button {
             width: 100%;
@@ -112,11 +108,11 @@
             color: white;
             border: none;
             border-radius: 8px;
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 600;
             cursor: pointer;
             margin-top: 10px;
-            transition: background-color 0.2s;
+            transition: opacity 0.2s;
         }
 
         button:hover { opacity: 0.9; }
@@ -131,7 +127,7 @@
         }
 
         .wallet-balance {
-            font-size: 28px;
+            font-size: 26px;
             font-weight: bold;
             margin: 10px 0;
         }
@@ -142,7 +138,7 @@
             background-color: rgba(255, 255, 255, 0.2);
             border-radius: 20px;
             font-size: 12px;
-            margin-bottom: 10px;
+            margin-bottom: 6px;
         }
 
         .action-buttons {
@@ -161,129 +157,82 @@
             margin-bottom: 12px;
         }
 
-        .file-upload-box input { display: none; }
+        input[type="file"] { display: none; }
     </style>
 </head>
-<body class="theme-default">
+<body>
 
 <div class="container">
-    <!-- የቋንቋ እና የባክግራውንድ (Theme) መቆጣጠሪያ -->
+    <!-- የቋንቋ እና የቀለም (Theme) መቆጣጠሪያዎች -->
     <div class="top-bar">
         <div>
-            <label style="display:inline; font-size:11px;" id="langLabel">ቋንቋ:</label>
+            <label id="langLabel" style="font-size:11px;">ቋንቋ:</label>
             <select id="langSelect" class="pref-select" onchange="changeLanguage()">
                 <option value="am">አማርኛ</option>
                 <option value="en">English</option>
             </select>
         </div>
         <div>
-            <label style="display:inline; font-size:11px;" id="themeLabel">ቀለም:</label>
-            <select id="themeSelect" class="pref-select" onchange="changeTheme()">
-                <option value="default">ነባር (Default)</option>
-                <option value="blue">ሰማያዊ (Blue)</option>
-                <option value="green">አረንጓዴ (Green)</option>
-                <option value="dark">ጨለማ (Dark)</option>
+            <label id="bgThemeLabel" style="font-size:11px;">ባክግራውንድ:</label>
+            <select id="bgPicker" class="pref-select" onchange="updateColors()">
+                <option value="#ffffff">ነጭ (White)</option>
+                <option value="#0f172a">ጥቁር (Black)</option>
+                <option value="#eff6ff">ሰማያዊ (Light Blue)</option>
+                <option value="#f0fdf4">አረንጓዴ (Light Green)</option>
+            </select>
+        </div>
+        <div>
+            <label id="textThemeLabel" style="font-size:11px;">ጽሁፍ ቀለም:</label>
+            <select id="textPicker" class="pref-select" onchange="updateColors()">
+                <option value="#1e293b">ጥቁር (Black)</option>
+                <option value="#ffffff">ነጭ (White)</option>
+                <option value="#2563eb">ሰማያዊ (Blue)</option>
+                <option value="#dc2626">ቀይ (Red)</option>
             </select>
         </div>
     </div>
 
-    <!-- ክፍል 1፡ ምዝገባ እና ዋሌት መክፈቻ -->
+    <!-- ክፍል 1፡ ምዝገባ -->
     <div id="step-register" class="step active">
         <h2 id="regTitle">እንኳን ወደ መላ.ቦት በደህና መጡ</h2>
         <p class="subtitle" id="regSubtitle">እባክዎ ትክክለኛ መረጃ በመሙላት ዋሌት ይክፈቱ</p>
         
-        <form id="registerForm" onsubmit="handleRegister(event)">
+        <form onsubmit="handleRegister(event)">
             <div class="form-group">
                 <label id="lblFirstName">የራሱ ስም (First Name)</label>
-                <input type="text" id="firstName" required placeholder="ለምሳሌ፦ ሲቤ / Sibe">
+                <input type="text" id="firstName" required placeholder="ለምሳሌ፦ ሲቤ">
             </div>
             <div class="form-group">
                 <label id="lblFatherName">የአባት ስም (Father's Name)</label>
-                <input type="text" id="fatherName" required placeholder="ለምሳሌ፦ ግርማ / Girma">
-            </div>
-            <div class="form-group">
-                <label id="lblGrandFatherName">የአያት ስም (Grandfather's Name)</label>
-                <input type="text" id="grandFatherName" required placeholder="ለምሳሌ፦ ...">
+                <input type="text" id="fatherName" required placeholder="ለምሳሌ፦ ግርማ">
             </div>
             <div class="form-group">
                 <label id="lblPhone">ስልክ ቁጥር (Phone Number)</label>
                 <input type="tel" id="phoneNumber" required placeholder="+2519xxxxxxxx">
             </div>
-            <div class="form-group">
-                <label id="lblEmail">ኢሜይል (E-mail)</label>
-                <input type="email" id="email" required placeholder="example@gmail.com">
-            </div>
-            
-            <!-- ሀገር መምረጫ -->
-            <div class="form-group">
-                <label id="lblCountry">ሀገር (Country)</label>
-                <select id="country" required onchange="handleCountryChange()">
-                    <option value="Ethiopia">ኢትዮጵያ / Ethiopia</option>
-                    <option value="USA">አሜሪካ / USA</option>
-                    <option value="Canada">ካናዳ / Canada</option>
-                    <option value="UK">ዩናይትድ ኪንግደም / UK</option>
-                    <option value="Other">ሌላ ሀገር / Other Country</option>
-                </select>
-            </div>
-
-            <!-- የኢትዮጵያ ክልል እና ከተማ (በዲናሚክ የሚከፈት) -->
-            <div id="ethiopiaAddressSection">
-                <div class="form-group">
-                    <label id="lblRegion">ክልል (Region)</label>
-                    <select id="region" onchange="updateEthiopianCities()">
-                        <option value="Sidama">ሲዳማ (Sidama - Hawassa)</option>
-                        <option value="Addis Ababa">አዲስ አበባ (Addis Ababa)</option>
-                        <option value="Oromia">ኦሮሚያ (Oromia)</option>
-                        <option value="Amhara">አማራ (Amhara)</option>
-                        <option value="Tigray">ትግራይ (Tigray)</option>
-                        <option value="SNNPR">ደቡብ (SNNPR)</option>
-                        <option value="Somali">ሶማሌ (Somali)</option>
-                        <option value="Afar">አፋር (Afar)</option>
-                        <option value="Benishangul">ቤንሻንጉል ጉሙዝ (Benishangul-Gumuz)</option>
-                        <option value="Gambela">ጋምቤላ (Gambela)</option>
-                        <option value="Harari">ሐረሪ (Harari)</option>
-                        <option value="Dire Dawa">ድሬዳዋ (Dire Dawa)</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label id="lblCity">ከተማ (City)</label>
-                    <input type="text" id="city" placeholder="ለምሳሌ፦ ሀዋሳ / Hawassa">
-                </div>
-            </div>
-
             <button type="submit" id="btnNextWallet">ቀጥል & ዋሌት ክፈት</button>
         </form>
     </div>
 
-    <!-- ክፍል 2፡ የኬዋይሲ (KYC) ማረጋገጫ -->
+    <!-- ክፍል 2፡ ኬዋይሲ (KYC) ፎቶ መጫኛ -->
     <div id="step-kyc" class="step">
         <h2 id="kycTitle">የማንነት ማረጋገጫ (KYC)</h2>
-        <p class="subtitle" id="kycSubtitle">አካውንትዎ ደህንነቱ የተጠበቀ እንዲሆን መታወቂያ ይጫኑ</p>
+        <p class="subtitle" id="kycSubtitle">አካውንትዎ ደህንነቱ የተጠበቀ እንዲሆን መታወቂያ ፊትና ጀርባ ይጫኑ</p>
         
-        <form id="kycForm" onsubmit="handleKyc(event)">
-            <div class="form-group">
-                <label id="lblIdType">የመታወቂያ ዓይነት ይምረጡ</label>
-                <select id="idType" required onchange="toggleIdUpload()">
-                    <option value="national_id">ናሽናል አይዲ (National ID)</option>
-                    <option value="passport">ፓስፖርት (Passport)</option>
-                </select>
-            </div>
-
-            <!-- የተስተካከለ የፊት ፎቶ ማጫኛ (ከላይብረሪ በሰላም እንዲመረጥ የተደረገ) -->
+        <form onsubmit="handleKyc(event)">
             <div class="form-group">
                 <label id="lblFrontId">የመታወቂያው ፊት (Front Photo)</label>
                 <div class="file-upload-box" onclick="document.getElementById('frontId').click()">
                     <span id="frontText">ፎቶ ለመምረጥ እዚህ ይጫኑ</span>
-                    <input type="file" id="frontId" accept="image/jpeg, image/png, image/jpg" required onchange="updateFileName('frontId', 'frontText')">
+                    <input type="file" id="frontId" accept="image/*" required onchange="updateFileName('frontId', 'frontText')">
                 </div>
             </div>
 
-            <!-- የተስተካከለ የጀርባ ፎቶ ማጫኛ -->
-            <div class="form-group" id="backIdGroup">
+            <div class="form-group">
                 <label id="lblBackId">የመታወቂያው ጀርባ (Back Photo)</label>
                 <div class="file-upload-box" onclick="document.getElementById('backId').click()">
                     <span id="backText">ፎቶ ለመምረጥ እዚህ ይጫኑ</span>
-                    <input type="file" id="backId" accept="image/jpeg, image/png, image/jpg" onchange="updateFileName('backId', 'backText')">
+                    <input type="file" id="backId" accept="image/*" onchange="updateFileName('backId', 'backText')">
                 </div>
             </div>
 
@@ -291,11 +240,11 @@
         </form>
     </div>
 
-    <!-- ክፍል 3፡ ለአድሚን ማረጋገጫ መጠበቂያ (Pending) -->
-    <div id="step-pending" class="step" style="text-align: center; padding: 20px 0;">
+    <!-- ክፍል 3፡ ማረጋገጫ በመጠበቅ ላይ (Pending) -->
+    <div id="step-pending" class="step" style="text-align: center; padding: 10px 0;">
         <h2 id="pendingTitle">ማረጋገጫ በመጠበቅ ላይ...</h2>
-        <p class="subtitle" id="pendingSubtitle">መረጃዎ ለአድሚን ተልኳል። ሲረጋገጥ በቦቱ በኩል በናቲፊኬሽን እናሳውቅዎታለን።</p>
-        <button onclick="simulatedAdminApprove()" id="btnSimulate" style="background-color: var(--success-color);">[ለሙከራ] አድሚን አፕሩቭ አድርግ</button>
+        <p class="subtitle" id="pendingSubtitle">መረጃዎ ለአድሚን ተልኳል። ሲረጋገጥ እናሳውቅዎታለን።</p>
+        <button onclick="simulatedAdminApprove()" id="btnSimulate" style="background-color: var(--success-color);">[ለሙከራ] ወደ ዋሌት ግባ</button>
     </div>
 
     <!-- ክፍል 4፡ ዋናው የዋሌት ዳሽቦርድ -->
@@ -304,7 +253,7 @@
             <span class="badge" id="verificationBadge">✅ ቬሪፋይድ ዋሌት</span>
             <div id="txtBalanceTitle">አጠቃላይ ቀሪ ሂሳብ</div>
             <div class="wallet-balance" id="walletBalance">0.00 ETB</div>
-            <div style="font-size: 13px; opacity: 0.8;" id="userDisplayName">ተጠቃሚ</div>
+            <div style="font-size: 13px; opacity: 0.9;" id="userDisplayName">ተጠቃሚ</div>
         </div>
 
         <div class="action-buttons">
@@ -312,9 +261,8 @@
             <button onclick="openLotterySection()" id="btnLottery" style="margin-top:0;">ሎተሪ መቁረጥ</button>
         </div>
 
-        <div style="margin-top: 20px;">
-            <h3 id="txtTradeOpt" style="font-size: 16px; margin-bottom: 10px;">የንግድ አማራጮች</h3>
-            <button onclick="alert(currentLang === 'am' ? 'ወደ ዩኤስዲቲ / መላ ኮይን መቀየሪያ ገጽ' : 'Redirecting to USDT / Mela Coin exchange')" id="btnExchange" style="background-color: var(--text-light);">መላ ኮይን / ዩኤስዲቲ መቀየሪያ</button>
+        <div style="margin-top: 15px;">
+            <button onclick="openExchange()" id="btnExchange" style="background-color: #64748b;">መላ ኮይን / ዩኤስዲቲ መቀየሪያ</button>
         </div>
     </div>
 </div>
@@ -325,66 +273,64 @@
     const tg = window.Telegram.WebApp;
     tg.expand();
 
+    // የቀለም ቲም መቀየሪያ (ባክግራውንድ እና ጽሁፍ ለየብቻ)
+    function updateColors() {
+        const bg = document.getElementById('bgPicker').value;
+        const txt = document.getElementById('textPicker').value;
+        
+        document.documentElement.style.setProperty('--bg-color', bg);
+        document.documentElement.style.setProperty('--card-bg', bg === '#0f172a' ? '#1e293b' : '#ffffff');
+        document.documentElement.style.setProperty('--text-color', txt);
+        document.documentElement.style.setProperty('--border-color', bg === '#0f172a' ? '#334155' : '#cbd5e1');
+    }
+
+    // የቋንቋ መዝገበ-ቃላት
     const translations = {
         am: {
             regTitle: "እንኳን ወደ መላ.ቦት በደህና መጡ",
-            regSubtitle: "እባክዎ ትክክለኛ መረጃ በመሙላት ዋሌት ይክፈቱ",
+            regSubtitle: "እባክዎ መረጃ በመሙላት ዋሌት ይክፈቱ",
             lblFirstName: "የራሱ ስም (First Name)",
             lblFatherName: "የአባት ስም (Father's Name)",
-            lblGrandFatherName: "የአያት ስም (Grandfather's Name)",
             lblPhone: "ስልክ ቁጥር (Phone Number)",
-            lblEmail: "ኢሜይል (E-mail)",
-            lblCountry: "ሀገር (Country)",
-            lblRegion: "ክልል (Region)",
-            lblCity: "ከተማ (City)",
             btnNextWallet: "ቀጥል & ዋሌት ክፈት",
             kycTitle: "የማንነት ማረጋገጫ (KYC)",
-            kycSubtitle: "አካውንትዎ ደህንነቱ የተጠበቀ እንዲሆን መታወቂያ ይጫኑ",
-            lblIdType: "የመታወቂያ ዓይነት ይምረጡ",
+            kycSubtitle: "መታወቂያ ፊትና ጀርባ ፎቶ ይጫኑ",
             lblFrontId: "የመታወቂያው ፊት (Front Photo)",
             lblBackId: "የመታወቂያው ጀርባ (Back Photo)",
             btnSubmitAdmin: "ለአድሚን ማረጋገጫ ላክ",
             pendingTitle: "ማረጋገጫ በመጠበቅ ላይ...",
-            pendingSubtitle: "መረጃዎ ለአድሚን ተልኳል። ሲረጋገጥ በቦቱ በኩል እናሳውቅዎታለን።",
-            btnSimulate: "[ለሙከራ] አድሚን አፕሩቭ አድርግ",
+            pendingSubtitle: "መረጃዎ ለአድሚን ተልኳል።",
+            btnSimulate: "[ለሙከራ] ወደ ዋሌት ግባ",
             verificationBadge: "✅ ቬሪፋይድ ዋሌት",
             txtBalanceTitle: "አጠቃላይ ቀሪ ሂሳብ",
             btnDeposit: "ገንዘብ አስገባ (Chapa)",
             btnLottery: "ሎተሪ መቁረጥ",
-            txtTradeOpt: "የንግድ አማራጮች",
             btnExchange: "መላ ኮይን / ዩኤስዲቲ መቀየሪያ",
             frontText: "ፎቶ ለመምረጥ እዚህ ይጫኑ",
             backText: "ፎቶ ለመምረጥ እዚህ ይጫኑ"
         },
         en: {
             regTitle: "Welcome to Mela-bot",
-            regSubtitle: "Please fill in accurate information to open a wallet",
+            regSubtitle: "Fill info to open a wallet",
             lblFirstName: "First Name",
             lblFatherName: "Father's Name",
-            lblGrandFatherName: "Grandfather's Name",
             lblPhone: "Phone Number",
-            lblEmail: "E-mail",
-            lblCountry: "Country",
-            lblRegion: "Region / State",
-            lblCity: "City",
             btnNextWallet: "Continue & Open Wallet",
             kycTitle: "Identity Verification (KYC)",
-            kycSubtitle: "Please upload your ID to secure your account",
-            lblIdType: "Select ID Type",
+            kycSubtitle: "Upload front and back ID photos",
             lblFrontId: "Front Photo of ID",
             lblBackId: "Back Photo of ID",
-            btnSubmitAdmin: "Submit to Admin for Approval",
+            btnSubmitAdmin: "Submit to Admin",
             pendingTitle: "Pending Verification...",
-            pendingSubtitle: "Your info has been sent to admin. We will notify you once approved.",
-            btnSimulate: "[Test] Simulate Admin Approval",
+            pendingSubtitle: "Your info has been sent to admin.",
+            btnSimulate: "[Test] Enter Wallet",
             verificationBadge: "✅ Verified Wallet",
             txtBalanceTitle: "Total Balance",
-            btnDeposit: "Deposit Money (Chapa)",
+            btnDeposit: "Deposit (Chapa)",
             btnLottery: "Buy Lottery",
-            txtTradeOpt: "Trading Options",
             btnExchange: "Mela Coin / USDT Converter",
-            frontText: "Click here to select photo",
-            backText: "Click here to select photo"
+            frontText: "Click to select photo",
+            backText: "Click to select photo"
         }
     };
 
@@ -396,17 +342,11 @@
         document.getElementById('regSubtitle').textContent = t.regSubtitle;
         document.getElementById('lblFirstName').textContent = t.lblFirstName;
         document.getElementById('lblFatherName').textContent = t.lblFatherName;
-        document.getElementById('lblGrandFatherName').textContent = t.lblGrandFatherName;
         document.getElementById('lblPhone').textContent = t.lblPhone;
-        document.getElementById('lblEmail').textContent = t.lblEmail;
-        document.getElementById('lblCountry').textContent = t.lblCountry;
-        document.getElementById('lblRegion').textContent = t.lblRegion;
-        document.getElementById('lblCity').textContent = t.lblCity;
         document.getElementById('btnNextWallet').textContent = t.btnNextWallet;
         
         document.getElementById('kycTitle').textContent = t.kycTitle;
         document.getElementById('kycSubtitle').textContent = t.kycSubtitle;
-        document.getElementById('lblIdType').textContent = t.lblIdType;
         document.getElementById('lblFrontId').textContent = t.lblFrontId;
         document.getElementById('lblBackId').textContent = t.lblBackId;
         document.getElementById('btnSubmitAdmin').textContent = t.btnSubmitAdmin;
@@ -419,65 +359,30 @@
         document.getElementById('txtBalanceTitle').textContent = t.txtBalanceTitle;
         document.getElementById('btnDeposit').textContent = t.btnDeposit;
         document.getElementById('btnLottery').textContent = t.btnLottery;
-        document.getElementById('txtTradeOpt').textContent = t.txtTradeOpt;
         document.getElementById('btnExchange').textContent = t.btnExchange;
         
         document.getElementById('frontText').textContent = t.frontText;
         document.getElementById('backText').textContent = t.backText;
     }
 
-    function changeTheme() {
-        const theme = document.getElementById('themeSelect').value;
-        document.body.className = 'theme-' + theme;
-    }
-
-    function handleCountryChange() {
-        const country = document.getElementById('country').value;
-        const ethSection = document.getElementById('ethiopiaAddressSection');
-        if (country === 'Ethiopia') {
-            ethSection.style.display = 'block';
-        } else {
-            ethSection.style.display = 'none';
-        }
-    }
-
     function handleRegister(event) {
         event.preventDefault();
         userData.firstName = document.getElementById('firstName').value;
         userData.fatherName = document.getElementById('fatherName').value;
-        userData.grandFatherName = document.getElementById('grandFatherName').value;
         userData.phoneNumber = document.getElementById('phoneNumber').value;
-        userData.email = document.getElementById('email').value;
-        userData.country = document.getElementById('country').value;
-        
-        if (userData.country === 'Ethiopia') {
-            userData.region = document.getElementById('region').value;
-            userData.city = document.getElementById('city').value;
-        }
 
         document.getElementById('step-register').classList.remove('active');
         document.getElementById('step-kyc').classList.add('active');
     }
 
-    function toggleIdUpload() {
-        const idType = document.getElementById('idType').value;
-        const backGroup = document.getElementById('backIdGroup');
-        if (idType === 'passport') {
-            backGroup.style.display = 'none';
-        } else {
-            backGroup.style.display = 'block';
-        }
-    }
-
-    // የተስተካከለ የፋይል ስም ማሳያ (ከጋለሪ ሲመረጥ ብራውዘሩ እንዳይጨናነቅ የተደረገ)
+    // ፎቶ ሲመረጥ ስልኩ እንዳይጨናነቅ (Freeze እንዳያደርግ) የሚረዳ
     function updateFileName(inputId, textId) {
         const input = document.getElementById(inputId);
         const textSpan = document.getElementById(textId);
         if (input.files && input.files.length > 0) {
             const fileName = input.files[0].name;
-            const shortName = fileName.length > 20 ? fileName.substring(0, 17) + "..." : fileName;
-            textSpan.textContent = "✅ " + shortName;
-            textSpan.style.color = "var(--success-color, #10b981)";
+            textSpan.textContent = "✅ " + (fileName.length > 18 ? fileName.substring(0, 15) + "..." : fileName);
+            textSpan.style.color = "var(--success-color)";
         }
     }
 
@@ -494,18 +399,22 @@
     function simulatedAdminApprove() {
         document.getElementById('step-pending').classList.remove('active');
         document.getElementById('step-wallet').classList.add('active');
-        document.getElementById('userDisplayName').textContent = `${userData.firstName} ${userData.fatherName}`;
+        document.getElementById('userDisplayName').textContent = `${userData.firstName || 'ሲቤ'} ${userData.fatherName || 'ግርማ'}`;
     }
 
     function openDepositModal() {
         let amount = prompt(currentLang === 'am' ? "ማስገባት የሚፈልጉትን የገንዘብ መጠን በ ETB ያስገቡ:" : "Enter deposit amount in ETB:");
         if (amount) {
-            alert(currentLang === 'am' ? `የጠየቁት የብር መጠን (${amount} ETB) በ Chapa ተቀብሏል። ሪሲቱ እስኪረጋገጥ ይጠብቁ!` : `Deposit request of (${amount} ETB) initialized via Chapa!`);
+            alert(currentLang === 'am' ? `የጠየቁት መጠን (${amount} ETB) በ Chapa ተጀምሯል!` : `Deposit of (${amount} ETB) initialized!`);
         }
     }
 
     function openLotterySection() {
-        alert(currentLang === 'am' ? "ወደ መላ ሎተሪ መቁረጫ ክፍል እየተሸጋገሩ ነው..." : "Redirecting to Mela Lottery section...");
+        alert(currentLang === 'am' ? "ወደ ሎተሪ መቁረጫ ክፍል ተሸጋግረዋል!" : "Redirecting to lottery section!");
+    }
+
+    function openExchange() {
+        alert(currentLang === 'am' ? "ወደ መላ ኮይን መቀየሪያ ገጽ ተሸጋግረዋል!" : "Redirecting to Mela Coin converter!");
     }
 </script>
 
