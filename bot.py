@@ -5,6 +5,8 @@ from aiogram.filters import Command
 from aiogram.types import WebAppInfo, InlineKeyboardMarkup, InlineKeyboardButton
 from aiogram.fsm.storage.memory import MemoryStorage
 import asyncio
+from flask import Flask
+import threading
 
 # -- የተጠቃሚው ትክክለኛ መረጃዎች --
 BOT_TOKEN = "8543715567:AAEeL0HgHcw62LhGaj3tNn9yJp2bh5XdmfM"
@@ -18,6 +20,20 @@ WEB_APP_URL = "https://mela-bot.onrender.com"
 logging.basicConfig(level=logging.INFO)
 bot = Bot(token=BOT_TOKEN)
 dp = Dispatcher(storage=MemoryStorage())
+
+# -- Flask ዌብ ሰርቨር ለ Render ፖርት ማሟያ --
+app = Flask(__name__)
+
+@app.route('/')
+def home():
+    return "Mela-bot is running successfully!"
+
+def run_web():
+    # Render የሚጠብቀውን ፖርት 10000 ከፍቶ እንዲቆይ እናደርጋለን
+    app.run(host="0.0.0.0", port=10000)
+
+# ዌብ ሰርቨሩን ከቦቱ ጎን ለጎን በጀርባ (Background) ማስጀመር
+threading.Thread(target=run_web, daemon=True).start()
 
 # /start ትዕዛዝ ሲሰጥ
 @dp.message(Command("start"))
@@ -73,8 +89,9 @@ def initialize_chapa_payment(amount, email, first_name, last_name, phone):
     return response.json()
 
 async def main():
+    # የቆዩ ግጭቶችን (TelegramConflictError) በራስ ሰር እንዲያጸዳው እናደርጋለን
+    await bot.delete_webhook(drop_pending_updates=True)
     await dp.start_polling(bot)
 
 if __name__ == "__main__":
     asyncio.run(main())
-drop_pending_updates=True
