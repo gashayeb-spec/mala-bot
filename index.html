@@ -377,13 +377,13 @@
             </div>
 
             <div class="form-group password-container">
-                <label>ፓስወርድ (ከ 4 እስከ 16 ፊደላት/ቁጥሮች)</label>
-                <input type="password" id="userPassword" minlength="4" maxlength="16" required placeholder="ፓስወርድ ያስገቡ">
+                <label>ፓስወርድ (Capital, Small, Number, Special Character)</label>
+                <input type="password" id="userPassword" minlength="6" maxlength="20" required placeholder="ጠንካራ ፓስወርድ ያስገቡ">
                 <button type="button" class="toggle-password" onclick="togglePasswordVisibility('userPassword', 'eyeIcon1')"><span id="eyeIcon1">👁️</span></button>
             </div>
             <div class="form-group password-container">
                 <label>ፓስወርድ ድገም (Confirm Password)</label>
-                <input type="password" id="confirmPassword" minlength="4" maxlength="16" required placeholder="ፓስወርዱን እንደገና ያስገቡ">
+                <input type="password" id="confirmPassword" minlength="6" maxlength="20" required placeholder="ፓስወርዱን እንደገና ያስገቡ">
                 <button type="button" class="toggle-password" onclick="togglePasswordVisibility('confirmPassword', 'eyeIcon2')"><span id="eyeIcon2">👁️</span></button>
             </div>
             <button type="submit">ቀጥል & ኬዋይሲ ላክ</button>
@@ -488,18 +488,18 @@
     <!-- ክፍል 6፡ ሎተሪ መቁረጫ -->
     <div id="section-lottery" class="step">
         <h2>የሎተሪ መቁረጫ (በመላ ኮይን)</h2>
-        <p class="subtitle">ቲኬት ሲቆርጡ ኮይኑ ቀጥታ ወደ አድሚን ዋሌት ይገባል (የቲኬት ዋጋ: <span id="ticketPriceDisplay">10</span> Mela Coin)</p>
+        <p class="subtitle" id="lotterySubtitleStatus">ቲኬት ሲቆርጡ ኮይኑ ቀጥታ ወደ አድሚን ዋሌት ይገባል (የቲኬት ዋጋ: <span id="ticketPriceDisplay">10</span> Mela Coin)</p>
         <div class="lottery-grid" id="lotteryGrid"></div>
         <div style="font-size: 14px; margin-bottom: 12px; font-weight: bold;">የተመረጡ ቁጥሮች: <span id="selectedLotteryNum" style="color:var(--primary-color);">ምንም የለም</span></div>
         <div style="font-size: 14px; margin-bottom: 15px; font-weight: bold;">አጠቃላይ የሚከፈል: <span id="totalLotteryCost" style="color:var(--success-color);">0.00 Mela Coin</span></div>
-        <button onclick="buySelectedLottery()" style="background-color: var(--success-color);">ቁጥሮቹን ቆርጦ ኮይኑን ለአድሚን ላክ</button>
+        <button id="buyLotteryBtn" onclick="buySelectedLottery()" style="background-color: var(--success-color);">ቁጥሮቹን ቆርጦ ኮይኑን ለአድሚን ላክ</button>
         <button class="back-btn" onclick="backToWallet()">ወደ ዋሌት ተመለስ</button>
     </div>
 
     <!-- ክፍል 7፡ ገንዘብ ማውጣት -->
     <div id="section-withdraw" class="step">
         <h2>ገንዘብ ማውጣት (Fiat / Bank)</h2>
-        <p class="subtitle">ጥያቄዎ ለአድሚን ኖቲፊኬሽን ይላካል፤ አድሚኑ አረጋግጦ ይለቀዋል</p>
+        <p class="subtitle">ጥያቄዎ ከነ ሙሉ መረጃውና ፎቶዎ ለአድሚን ኖቲፊኬሽን ይላካል</p>
         <div class="form-group">
             <label>የባንክ / የኪስ ቦርሳ አማራጭ</label>
             <select id="withdrawMethod">
@@ -523,15 +523,15 @@
 
     <!-- ክፍል 8፡ P2P ሼር ማድረግ -->
     <div id="section-p2p" class="step">
-        <h2>P2P ገንዘብ ማስተላለፍ</h2>
-        <p class="subtitle">ለሌላ ተጠቃሚ በዩዘር አይዲ ወይም ስልክ ማስተላለፍ</p>
+        <h2>P2P ኮይን / ገንዘብ ማስተላለፍ</h2>
+        <p class="subtitle">ለሌላ ተጠቃሚ ኮይን ወይም ገንዘብ ማስተላለፍ (ማን ለማን እንደሚልክ ለአድሚን ሪፖርት ይደረጋል)</p>
         <div class="form-group">
             <label>የተቀባይ ቴሌግራም ዩዘር አይዲ ወይም ስልክ</label>
             <input type="text" id="p2pRecipient" placeholder="ዩዘር አይዲ ወይም ስልክ ቁጥር">
         </div>
         <div class="form-group">
-            <label>የሚተላለፈው መጠን (ETB)</label>
-            <input type="number" id="p2pAmount" placeholder="ብር መጠን">
+            <label>የሚተላለፈው መጠን (ኮይን/ብር)</label>
+            <input type="number" id="p2pAmount" placeholder="መጠን ያስገቡ">
         </div>
         <button onclick="submitP2PTransfer()" style="background-color: #7c3aed;">አሁን አስተላልፍ</button>
         <button class="back-btn" onclick="backToWallet()">ወደ ዋሌት ተመለስ</button>
@@ -581,15 +581,24 @@
     <div id="section-admin" class="step">
         <div class="admin-panel">
             <h3>⚙️ የአድሚን ሙሉ ቁጥጥር እና ማጽደቂያ ፓነል</h3>
-            <p style="font-size: 13px; color: #cbd5e1;">የተጠቃሚዎችን መታወቂያ፣ የሎተሪ ግዢዎች (ኮይኑ ወደ አድሚን የገባበትን) እና የገንዘብ እንቅስቃሴዎች እዚህ እየገቡ አፕሩቭ (Approve) ያድርጉ።</p>
+            <p style="font-size: 13px; color: #cbd5e1;">የተጠቃሚዎችን መታወቂያ፣ የገንዘብ ማውጣት ጥያቄዎችን (ከነ ፎቶው እና መረጃው)፣ ሎተሪዎችን እና የኮይን ዝውውሮችን እዚህ ያስተዳድሩ።</p>
             
             <div style="background: #0f172a; border: 1px solid #f59e0b; padding: 12px; border-radius: 8px; margin: 12px 0; text-align: center;">
                 <div style="font-size: 13px; color: #f59e0b; font-weight: bold;">👑 የአድሚን ዋና ዋሌት (Admin Main Balance)</div>
                 <div id="adminMainBalanceDisplay" style="font-size: 22px; font-weight: bold; color: #10b981; margin-top: 4px;">0.00 Mela Coin</div>
             </div>
 
+            <!-- ሎተሪ ማገድ / መቀየር መቆጣጠሪያ -->
+            <div style="background: #0f172a; border: 1px solid #334155; padding: 12px; border-radius: 8px; margin-bottom: 12px;">
+                <label style="color:#f59e0b; font-weight: bold; margin-bottom: 8px;">🎲 የሎተሪ ማስተዳደሪያ ቁልፎች</label>
+                <div style="display: flex; gap: 8px;">
+                    <button onclick="adminToggleLotteryStatus(false)" style="background-color: #ef4444; margin-top:0; font-size: 12px; padding: 10px;">ሎተሪ ዝጋ (Block / Pause)</button>
+                    <button onclick="adminToggleLotteryStatus(true)" style="background-color: #10b981; margin-top:0; font-size: 12px; padding: 10px;">ሎተሪ ክፈት (Release)</button>
+                </div>
+            </div>
+
             <div style="margin-top: 15px;">
-                <label style="color:#f59e0b; font-weight: bold;">📊 የሁሉም ተጠቃሚዎች ሎተሪ እና የገንዘብ ኖቲፊኬሽኖች (Live Action Logs)</label>
+                <label style="color:#f59e0b; font-weight: bold;">📊 የሁሉም ተጠቃሚዎች ኖቲፊኬሽኖች እና የገንዘብ ማውጣት ጥያቄዎች (Live Activity Logs & Withdrawals)</label>
                 <div id="adminActivityLogBox" class="admin-log-box">
                     ምንም ኖቲፊኬሽን የለም...
                 </div>
@@ -597,34 +606,42 @@
             </div>
 
             <div class="form-group" style="margin-top: 15px;">
-                <label style="color:#f8fafc;">ተጠቃሚ ለማጽደቅ ወይም ብሎክ ለማድረግ (Telegram ID / Phone)</label>
+                <label style="color:#f8fafc;">ተጠቃሚ ለማጽደቅ፣ ካንሰል ለማድረግ ወይም ብሎክ ለማድረግ (Telegram ID / Phone)</label>
                 <input type="text" id="targetUserAccount" placeholder="ዩዘር አይዲ ወይም ስልክ ቁጥር">
             </div>
-            <div style="display: flex; gap: 10px; margin-bottom: 15px;">
-                <button onclick="adminApproveUser()" style="background-color: #10b981; margin-top:0;">አካውንት አጽድቅ (Approve)</button>
-                <button onclick="adminBlockUser()" style="background-color: #ef4444; margin-top:0;">ብሎክ አድርግ</button>
+            <div style="display: flex; gap: 8px; margin-bottom: 15px; flex-wrap: wrap;">
+                <button onclick="adminApproveUser()" style="background-color: #10b981; margin-top:0; flex:1;">አጽድቅ (Approve)</button>
+                <button onclick="adminCancelUserRequest()" style="background-color: #eab308; color:#000; margin-top:0; flex:1;">ካንሰል (Cancel)</button>
+                <button onclick="adminBlockUser()" style="background-color: #ef4444; margin-top:0; flex:1;">ብሎክ (Block)</button>
             </div>
 
             <div class="form-group">
-                <label style="color:#f8fafc;">የሪፈራል ኮሚሽን ፐርሰንት (Admin Set)</label>
+                <label style="color:#f8fafc;">የኮሚሽን ፐርሰንት ማስተካከያ (%)</label>
                 <input type="number" id="adminCommissionRate" value="10" placeholder="ምሳሌ: 10%">
             </div>
-            <button onclick="adminSaveCommission()" style="background-color: #f59e0b; color: #000; margin-bottom: 15px;">የኮሚሽን ፐርሰንት አድስ</button>
+            <button onclick="adminSaveCommission()" style="background-color: #f59e0b; color: #000; margin-bottom: 15px;">ኮሚሽን አድስ</button>
 
             <div class="form-group">
-                <label style="color:#f8fafc;">የሎተሪ ቲኬት ዋጋ በመላ ኮይን (Ticket Price)</label>
-                <input type="number" id="adminTicketPrice" value="10" placeholder="ቲኬት ዋጋ">
+                <label style="color:#f8fafc;">የኮይን ዋጋ እና የቲኬት ዋጋ ማስተካከያ</label>
+                <input type="number" id="adminTicketPrice" value="10" placeholder="የቲኬት ዋጋ በመላ ኮይን">
             </div>
-            <button onclick="adminSaveTicketPrice()" style="background-color: #f59e0b; color: #000; margin-bottom: 15px;">የቲኬት ዋጋ አድስ</button>
+            <button onclick="adminSaveTicketPrice()" style="background-color: #f59e0b; color: #000; margin-bottom: 15px;">ዋጋ አድስ</button>
 
             <hr style="border-color: #334155; margin: 20px 0;">
 
             <div class="form-group">
-                <label style="color:#f8fafc;">🎁 የሎተሪ አሸናፊ መምረጫ & ቦቱ ላይ መልእክት መላኪያ</label>
+                <label style="color:#f8fafc;">🎁 የሎተሪ አሸናፊ ቁጥር ማሳያ & ማስታወቂያ መላኪያ</label>
                 <input type="text" id="winnerUserId" placeholder="አሸናፊው ዩዘር አይዲ">
+                <input type="text" id="winnerLuckyNumber" placeholder="የወጣው ዕጣ ቁጥር (ምሳሌ: 7, 21)" style="margin-top: 10px;">
                 <input type="number" id="winnerCoinPrize" placeholder="የሚያሸንፈው የመላ ኮይን መጠን" style="margin-top: 10px;">
             </div>
-            <button onclick="adminSendLotteryWinnerAlert()" style="background-color: #10b981; color: white;">አሸናፊውን ለይቶ ቦቱ ላይ 'እንኳን ደስ አለህ' ላክ</button>
+            <button onclick="adminSendLotteryWinnerAlert()" style="background-color: #10b981; color: white;">እጣ ማውጫውን ለሁሉም አሳይ & አሸናፊ ላክ</button>
+            
+            <div class="form-group" style="margin-top: 15px;">
+                <label style="color:#f8fafc;">📢 አጠቃላይ ማስታወቂያ መላኪያ (Broadcast Announcement)</label>
+                <input type="text" id="adminBroadcastMsg" placeholder="ለተጠቃሚዎች የሚተላለፍ መልእክት">
+            </div>
+            <button onclick="adminSendBroadcast()" style="background-color: #0284c7; color: white;">ማስታወቂያ አስተላልፍ</button>
         </div>
         <button class="back-btn" onclick="backToWallet()">ወደ ዋሌት ተመለስ</button>
     </div>
@@ -653,6 +670,7 @@
     let referralCount = 2; 
     let referralBonusEarned = 50.00; 
     let adminCommissionPercentage = 10;
+    let isLotteryBlockedByAdmin = false;
 
     const tg = window.Telegram.WebApp;
     tg.expand();
@@ -670,6 +688,7 @@
         updateMelaCoinDisplay();
         updateAdminBalanceDisplay();
         loadAdminLogs();
+        checkLotteryStatusPublic();
     });
 
     function checkExistingAccountStatus(tgId) {
@@ -677,13 +696,6 @@
         if (isBlocked) {
             showBlockedState("ማሳሰቢያ፡ ይህ አካውንት በአድሚን ታግዷል!");
             return;
-        }
-
-        // አስቀድሞ በዚሁ ቴሌግራም አካውንት የተመዘገበ መሆኑን መፈተሽ
-        const savedSession = localStorage.getItem('mela_session_' + tgId);
-        if (savedSession) {
-            // ቀድሞ የተመዘገበ ከሆነ በቀጥታ ወደ welcome ገጽ እንጂ ብሎክ አናደርገውም፤ 
-            // ይልቁንም "ቀደም ሲል የከፈትኩት አካውንት አብራ (Login)" የሚለውን አማራጭ እንዲጠቀም እናደርጋለን።
         }
 
         const isApproved = localStorage.getItem('mela_approved_' + tgId);
@@ -702,13 +714,11 @@
     }
 
     function goToRegisterStep() {
-        // አንድ ሰው አስቀድሞ አካውንት ከፍቶ ከነበረ አዲስ መክፈት አይችልም
         const savedSession = localStorage.getItem('mela_session_' + telegramId);
         if (savedSession) {
             showCustomModal("ማሳሰቢያ", "እርስዎ ቀደም ሲል አካውንት ከፍተዋል! እባክዎ 'ቀደም ሲል የከፈትኩት አካውንት አብራ (Login)' የሚለውን በመጠቀም በፓስወርድ ይግቡ።");
             return;
         }
-
         document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
         document.getElementById('step-register').classList.add('active');
     }
@@ -723,7 +733,6 @@
         document.getElementById('step-welcome').classList.add('active');
     }
 
-    // የነባር አካውንት መግቢያ (Login) ሎጀክ
     function handleLogin(event) {
         event.preventDefault();
         const phone = document.getElementById('loginPhone').value.trim();
@@ -818,6 +827,15 @@
         return etPhoneRegex.test(phone);
     }
 
+    function validateStrongPassword(password) {
+        // አራቱንም አይነት ይይዝ፡ Capital, Small, Number, Special Character
+        const hasUpperCase = /[A-Z]/.test(password);
+        const hasLowerCase = /[a-z]/.test(password);
+        const hasNumbers = /\d/.test(password);
+        const hasNonalphanumeric = /\W/.test(password);
+        return hasUpperCase && hasLowerCase && hasNumbers && hasNonalphanumeric;
+    }
+
     function handleRegister(event) {
         event.preventDefault();
 
@@ -836,10 +854,11 @@
             return;
         }
 
-        if (pwd.length < 4 || pwd.length > 16) {
-            showCustomModal("ስህተት", "ፓስወርዱ ከ 4 እስከ 16 ፊደላት ወይም ቁጥሮች መሆን አለበት!");
+        if (!validateStrongPassword(pwd)) {
+            showCustomModal("ስህተት", "ፓስወርዱ ጠንካራ መሆን አለበት! ቢያንስ አንድ Capital ፊደል፣ አንድ small ፊደል፣ አንድ ቁጥር እና አንድ Special Character (ለምሳሌ: @, #, $, !) መያዝ አለበት።");
             return;
         }
+
         if (pwd !== confirmPwd) {
             showCustomModal("ስህተት", "ያስገቧቸው ሁለቱ ፓስወርዶች አይመሳሰሉም!");
             return;
@@ -855,7 +874,6 @@
         userData.email = document.getElementById('userEmail').value;
         userData.password = pwd;
 
-        // የሰክሽን ውሂብን በ localStorage ማስቀመጥ (ለ Login እንዲያገለግል)
         localStorage.setItem('mela_session_' + telegramId, JSON.stringify(userData));
 
         document.getElementById('step-register').classList.remove('active');
@@ -921,7 +939,24 @@
     function openLotterySection() {
         document.getElementById('step-wallet').classList.remove('active');
         document.getElementById('section-lottery').classList.add('active');
+        checkLotteryStatusPublic();
         generateLotteryGrid();
+    }
+
+    function checkLotteryStatusPublic() {
+        const blocked = localStorage.getItem('mela_lottery_blocked') === 'true';
+        isLotteryBlockedByAdmin = blocked;
+        const subtitleEl = document.getElementById('lotterySubtitleStatus');
+        const buyBtn = document.getElementById('buyLotteryBtn');
+        if (blocked) {
+            subtitleEl.innerHTML = "⚠️ <span style='color:#ef4444; font-weight:bold;'>እባኮትን ጥቂት ጊዜ ይጠብቁ! ሎተሪ በአድሚኑ ታግዷል።</span>";
+            buyBtn.disabled = true;
+            buyBtn.style.opacity = "0.5";
+        } else {
+            subtitleEl.innerHTML = `ቲኬት ሲቆርጡ ኮይኑ ቀጥታ ወደ አድሚን ዋሌት ይገባል (የቲኬት ዋጋ: <span id="ticketPriceDisplay">${ticketPrice}</span> Mela Coin)`;
+            buyBtn.disabled = false;
+            buyBtn.style.opacity = "1";
+        }
     }
 
     function openWithdrawSection() {
@@ -961,7 +996,7 @@
 
     function generateLotteryGrid() {
         const grid = document.getElementById('lotteryGrid');
-        if (grid.children.length > 0) return;
+        grid.innerHTML = "";
         
         const takenNumbers = [3, 7, 12, 15, 20, 45, 100];
 
@@ -975,6 +1010,10 @@
             } else {
                 item.classList.add('available');
                 item.onclick = function() {
+                    if (isLotteryBlockedByAdmin) {
+                        showCustomModal("ማሳሰቢያ", "እባኮትን ጥቂት ጊዜ ይጠብቁ! ሎተሪ በአድሚኑ ታግዷል።");
+                        return;
+                    }
                     const index = selectedLotteryNumbers.indexOf(i);
                     if (index > -1) {
                         selectedLotteryNumbers.splice(index, 1);
@@ -994,6 +1033,11 @@
     }
 
     function buySelectedLottery() {
+        if (isLotteryBlockedByAdmin) {
+            showCustomModal("ማሳሰቢያ", "እባኮትን ጥቂት ጊዜ ይጠብቁ! ሎተሪ በአድሚኑ ታግዷል።");
+            return;
+        }
+
         if (selectedLotteryNumbers.length === 0) {
             showCustomModal("ማሳሰቢያ", "እባክዎ ቢያንስ አንድ የሎተሪ ቁጥር ይምረጡ!");
             return;
@@ -1065,9 +1109,12 @@
         userWalletBalance -= amt;
         updateBalanceDisplay();
 
-        logActivityToAdmin(`💸 [የገንዘብ ማውጣት ኖቲፊኬሽን]: ተጠቃሚ [${userName}, ID: ${telegramId}] ብር ${amt} በወጪ ማስተላለፊያ (${method} - ${acc}) እንዲለቀቅለት ጠይቋል። አድሚን ይገመግማል።`);
+        const sessionData = JSON.parse(localStorage.getItem('mela_session_' + telegramId) || '{}');
+        const userFullName = `${sessionData.firstName || userName} ${sessionData.fatherName || ''}`;
 
-        showCustomModal("የማውጣት ጥያቄ ተልኳል", `ጥያቄዎ ለአድሚን ኖቲፊኬሽን ተልኳል። አድሚኑ አረጋግጦ ይለቀዋል!`);
+        logActivityToAdmin(`💸 [የገንዘብ ማውጣት ጥያቄ]: 👤 ስም: ${userFullName} (ID: ${telegramId}) | 🏦 ዘዴ: ${method} - ${acc} | 💵 መጠን: ${amt} ETB | 📸 ፎቶ እና ማረጋገጫ ተያይዟል (Pending Approval)`);
+
+        showCustomModal("የማውጣት ጥያቄ ተልኳል", `ጥያቄዎ ከነ ሙሉ መረጃዎ እና ፎቶዎ ለአድሚን ኖቲፊኬሽን ተልኳል። አድሚኑ አረጋግጦ ይለቀዋል!`);
     }
 
     function submitP2PTransfer() {
@@ -1084,9 +1131,9 @@
         userWalletBalance -= amt;
         updateBalanceDisplay();
 
-        logActivityToAdmin(`🔄 [P2P ኖቲፊኬሽን]: ተጠቃሚ [${userName}, ID: ${telegramId}] ብር ${amt} ለ ተቀባይ (${recipient}) አስተላልፏል።`);
+        logActivityToAdmin(`🔄 [P2P ኖቲፊኬሽን]: ተጠቃሚ [ስም: ${userName}, ID: ${telegramId}] መጠን ${amt} ለአድራሻ (${recipient}) ልኳል። (ማን ለማን እየላከ እንደሆነ ተመዝግቧል)`);
 
-        showCustomModal("P2P ተላልፏል", `ብር ${amt} ለ ተቀባይ (${recipient}) ተልኳል!`);
+        showCustomModal("P2P ተላልፏል", `መጠን ${amt} ለ ተቀባይ (${recipient}) በስኬት ተልኳል!`);
     }
 
     function processExchange() {
@@ -1136,6 +1183,19 @@
         logBox.innerHTML = logs.join('<hr style="border-color:#334155; margin:6px 0;">');
     }
 
+    function adminToggleLotteryStatus(isRelease) {
+        if (isRelease) {
+            localStorage.removeItem('mela_lottery_blocked');
+            isLotteryBlockedByAdmin = false;
+            showCustomModal("አድሚን ፓነል", "ሎተሪ ተከፍቷል! አሁን ተጠቃሚዎች መቁረጥ ይችላሉ።");
+        } else {
+            localStorage.setItem('mela_lottery_blocked', 'true');
+            isLotteryBlockedByAdmin = true;
+            showCustomModal("አድሚን ፓነል", "ሎተሪ ታግዷል! 'እባኮትን ጥቂት ጊዜ ይጠብቁ' የሚለው ማሳሰቢያ ለተጠቃሚዎች ታይቷል።");
+        }
+        checkLotteryStatusPublic();
+    }
+
     function adminSaveCommission() {
         const rate = parseFloat(document.getElementById('adminCommissionRate').value);
         if (isNaN(rate)) return;
@@ -1158,6 +1218,11 @@
         showCustomModal("አድሚን ፓነል", `ተጠቃሚ (${target}) በስኬት ታግዷል!`);
     }
 
+    function adminCancelUserRequest() {
+        const target = document.getElementById('targetUserAccount').value || telegramId;
+        showCustomModal("አድሚን ፓነል", `የተጠቃሚው (${target}) ጥያቄ ተሰርዟል (Cancelled)!`);
+    }
+
     function adminApproveUser() {
         const target = document.getElementById('targetUserAccount').value || telegramId;
         localStorage.setItem('mela_approved_' + target, 'true');
@@ -1167,12 +1232,19 @@
 
     function adminSendLotteryWinnerAlert() {
         const winnerId = document.getElementById('winnerUserId').value;
+        const luckyNum = document.getElementById('winnerLuckyNumber').value;
         const prize = parseFloat(document.getElementById('winnerCoinPrize').value);
-        if (!winnerId || isNaN(prize)) {
-            showCustomModal("ስህተት", "እባክዎ የአሸናፊውን ዩዘር አይዲ እና የኮይን መጠን ይሙሉ");
+        if (!winnerId || !luckyNum || isNaN(prize)) {
+            showCustomModal("ስህተት", "እባክዎ የአሸናፊውን ዩዘር አይዲ፣ የወጣውን ቁጥር እና የኮይን መጠን ይሙሉ");
             return;
         }
-        showCustomModal("ቦት ማስታወቂያ ተልኳል", `🎉 እንኳን ደስ አለዎት! ዩዘር 🆔 ${winnerId} የ${prize} Mela Coin ሎተሪ አሸናፊ ሆኗል!`);
+        showCustomModal("ቦት ማስታወቂያ እና እጣ ወጥቷል", `🎉 ሎተሪ እጣ ወጥቷል! የወጣው ቁጥር [${luckyNum}] ነው። ዩዘር 🆔 ${winnerId} የ${prize} Mela Coin አሸናፊ ሆኗል! ቁጥሩ ቦት ላይ ለሁሉም ታይቷል።`);
+    }
+
+    function adminSendBroadcast() {
+        const msg = document.getElementById('adminBroadcastMsg').value;
+        if (!msg) return;
+        showCustomModal("ማስታወቂያ ተልኳል", `📢 ማስታወቂያው ለሁሉም ተጠቃሚዎች በቦቱ በኩል ተልኳል:\n\n"${msg}"`);
     }
 
     function showCustomModal(title, message) {
