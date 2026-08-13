@@ -817,7 +817,7 @@
     let customerSupportPhone = "+251911223344";
 
     let currentTelegramId = "user_" + Math.random().toString(36).substring(2, 9);
-    let currentUserName = "ተጠቃሚ";
+    let currentUserName = "Sibey Girma";
 
     const ADMIN_SECRET_PASSWORD = "mala_master_admin_2026";
 
@@ -873,7 +873,7 @@
     try { tg.expand(); 
         if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
             currentTelegramId = tg.initDataUnsafe.user.id.toString();
-            currentUserName = tg.initDataUnsafe.user.first_name || "ተጠቃሚ";
+            currentUserName = tg.initDataUnsafe.user.first_name || "Sibey Girma";
         }
     } catch (e) {}
 
