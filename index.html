@@ -101,6 +101,31 @@
             color: var(--text-color);
         }
 
+        .phone-input-wrapper {
+            display: flex;
+            align-items: center;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            background: var(--card-bg);
+            overflow: hidden;
+        }
+
+        .phone-prefix {
+            padding: 14px 12px;
+            background: rgba(79, 70, 229, 0.08);
+            font-weight: bold;
+            font-size: 15px;
+            color: var(--primary-color);
+            border-right: 1px solid var(--border-color);
+            white-space: nowrap;
+        }
+
+        .phone-input-wrapper input {
+            border: none;
+            border-radius: 0;
+            background: transparent;
+        }
+
         .password-container { position: relative; }
 
         .toggle-password {
@@ -344,8 +369,11 @@
         <p class="subtitle" id="loginSubtitle">በመዝገቡበት ስልክ ቁጥር እና ፓስወርድ አካውንትዎን ይክፈቱ</p>
         <form onsubmit="handleLogin(event)">
             <div class="form-group">
-                <label>ስልክ ቁጥር (+251...)</label>
-                <input type="tel" id="loginPhone" autocomplete="tel" required placeholder="+2519xxxxxxxx ወይም +2517xxxxxxxx">
+                <label>ስልክ ቁጥር (251...)</label>
+                <div class="phone-input-wrapper">
+                    <div class="phone-prefix">+251</div>
+                    <input type="tel" id="loginPhone" autocomplete="tel" maxlength="9" required placeholder="9xxxxxxxx ወይም 7xxxxxxxx">
+                </div>
             </div>
             <div class="form-group password-container">
                 <label>ፓስወርድ (Password)</label>
@@ -360,7 +388,7 @@
     <!-- REGISTER STEP -->
     <div id="step-register" class="step">
         <h2 id="regTitle">ማላ ኦፊሻል ቦት ምዝገባ</h2>
-        <p class="subtitle" id="regSubtitle">ዋሌት ለመክፈት መረጃዎን ይሙሉ (ሲጸድቅ 50 ኮይን ቦነስ በቀጥታ ዋሌትዎ ላይ ይገባል)</p>
+        <p class="subtitle" id="regSubtitle">ዋሌት ለመክፈት መረጃዎን ይሙሉ (ሲጸድቅ 50 ኮነስ ቦነስ በቀጥታ ዋሌትዎ ላይ ይገባል)</p>
         <form onsubmit="handleRegister(event)">
             <div class="form-group">
                 <label>ስም</label>
@@ -380,13 +408,46 @@
             </div>
             
             <div class="form-group">
-                <label>ዋና ስልክ ቁጥር (+251...)</label>
-                <input type="tel" id="phoneNumber" autocomplete="tel" required placeholder="+2519xxxxxxxx ወይም +2517xxxxxxxx">
+                <label>ዋና ስልክ ቁጥር (+251 በራስ-ሰር ተሞልቷል)</label>
+                <div class="phone-input-wrapper">
+                    <div class="phone-prefix">+251</div>
+                    <input type="tel" id="phoneNumber" autocomplete="tel" maxlength="9" required placeholder="9xxxxxxxx ወይም 7xxxxxxxx">
+                </div>
             </div>
 
             <div class="form-group">
                 <label>ሁለተኛ ስልክ ቁጥር ( አማራጭ / Optional )</label>
-                <input type="tel" id="secondaryPhoneNumber" autocomplete="tel" placeholder="+2519xxxxxxxx ወይም +2517xxxxxxxx">
+                <div class="phone-input-wrapper">
+                    <div class="phone-prefix">+251</div>
+                    <input type="tel" id="secondaryPhoneNumber" autocomplete="tel" maxlength="9" placeholder="9xxxxxxxx ወይም 7xxxxxxxx">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>ሀገር (Country)</label>
+                <select id="userCountry" onchange="onCountryChange()" required>
+                    <option value="Ethiopia">ኢትዮጵያ (Ethiopia)</option>
+                    <option value="USA">አሜሪካ (USA)</option>
+                    <option value="Canada">ካናዳ (Canada)</option>
+                    <option value="UK">ዩናይትድ ኪንግደም (UK)</option>
+                    <option value="UAE">ዩኤኢ (UAE)</option>
+                    <option value="Kenya">ኬንያ (Kenya)</option>
+                    <option value="Other">ሌሎች ሀገራት (Other Worldwide)</option>
+                </select>
+            </div>
+
+            <div class="form-group" id="cityGroup">
+                <label id="cityLabel">ከተማ (City / Region)</label>
+                <select id="userCity" required>
+                    <option value="Hawassa">ሀዋሳ (Hawassa) - የተመረጠ</option>
+                    <option value="Addis Ababa">አዲስ አበባ (Addis Ababa)</option>
+                    <option value="Jimma">ጅማ (Jimma)</option>
+                    <option value="Bahir Dar">ባህር ዳር (Bahir Dar)</option>
+                    <option value="Adama">አዳማ (Adama)</option>
+                    <option value="Dire Dawa">ድሬዳዋ (Dire Dawa)</option>
+                    <option value="Mekelle">መቀሌ (Mekelle)</option>
+                    <option value="OtherCity">ሌላ ከተማ</option>
+                </select>
             </div>
 
             <div class="form-group">
@@ -478,9 +539,12 @@
 
         <div style="background: rgba(79, 70, 229, 0.05); border: 1px solid var(--primary-color); padding: 14px; border-radius: 12px; margin-bottom: 15px; text-align: center;">
             <p style="margin: 0 0 6px 0; font-size: 13px; font-weight: bold; color: var(--primary-color);">📱 ስልክ ቁጥር ማስተካከል / መቀየር (Update Phone)</p>
-            <p style="margin: 0 0 10px 0; font-size: 12px; opacity: 0.85;">አሮጌውን ስልክ ቁጥርዎ በአዲስ ስልክ ቁጥር መቀየር ከፈለጉ እዚህ ያስገቡ።</p>
+            <p style="margin: 0 0 10px 0; font-size: 12px; opacity: 0.85;">አሮጌውን ስልክ ቁጥርዎ በአዲስ ስልክ ቁጥር መቀየር ከፈለጉ እዚህ ያስገቡ (+251 በራስ-ሰር ተካቷል)።</p>
             <div style="display: flex; gap: 8px;">
-                <input type="tel" id="newPhoneInput" autocomplete="tel" placeholder="አዲስ ስልክ ቁጥር (+251...)" style="padding: 10px; font-size: 13px;">
+                <div class="phone-input-wrapper" style="flex: 1;">
+                    <div class="phone-prefix">+251</div>
+                    <input type="tel" id="newPhoneInput" autocomplete="tel" maxlength="9" placeholder="9xxxxxxxx ወይም 7xxxxxxxx" style="padding: 10px; font-size: 13px; border:none;">
+                </div>
                 <button onclick="updateUserPhoneNumber()" style="background-color: var(--primary-color); margin-top: 0; padding: 10px 14px; font-size: 13px; width: auto;">ቀይር</button>
             </div>
         </div>
@@ -543,8 +607,11 @@
             </select>
         </div>
         <div class="form-group">
-            <label>የአካውንት ቁጥር / ስልክ ቁጥር</label>
-            <input type="text" id="withdrawAccount" placeholder="አካውንት ቁጥር ያስገቡ">
+            <label>የአካውንት ቁጥር / ስልክ ቁጥር (+251 በራስ-ሰር ተካቷል)</label>
+            <div class="phone-input-wrapper">
+                <div class="phone-prefix">+251</div>
+                <input type="text" id="withdrawAccount" maxlength="9" placeholder="9xxxxxxxx ወይም 7xxxxxxxx">
+            </div>
         </div>
         <div class="form-group">
             <label>የሚወጣው መጠን (ኮይን/ብር - ሚኒመም 2000)</label>
@@ -559,8 +626,11 @@
         <h2>P2P ኮይን / ገንዘብ ማስተላለፍ</h2>
         <p class="subtitle">ለሌላ ተጠቃሚ ኮይን ማስተላለፍ (የተቆለፈውን 50 ቦነስ ኮይን ሳይሞላ ማስተላለፍ አይቻልም)</p>
         <div class="form-group">
-            <label>የተቀባይ ቴሌግራም ዩዘር አይዲ ወይም ስልክ</label>
-            <input type="text" id="p2pRecipient" placeholder="ዩዘር አይዲ ወይም ስልክ ቁጥር">
+            <label>የተቀባይ ቴሌግራም ዩዘር አይዲ ወይም ስልክ (+251 በራስ-ሰር ተካቷል)</label>
+            <div class="phone-input-wrapper">
+                <div class="phone-prefix">+251</div>
+                <input type="text" id="p2pRecipient" maxlength="9" placeholder="9xxxxxxxx ወይም 7xxxxxxxx">
+            </div>
         </div>
         <div class="form-group">
             <label>የሚተላለፈው መጠን (ኮይን/ብር)</label>
@@ -683,7 +753,7 @@
     let ticketPrice = 10; 
     let userWalletBalance = 0.00;
     let melaCoinBalance = 0.00; 
-    let bonusCoinBalance = 50.00; // Locked bonus coin pool
+    let bonusCoinBalance = 50.00; 
     let adminMainBalance = 1000000000000.00; 
     let adminCommissionRate = 2.5; 
     let referralCount = 2; 
@@ -692,21 +762,56 @@
     let pendingTimerInterval = null;
     let minWithdrawLimit = 2000.00; 
 
-    // Dynamic unique user session token/id simulation
     let currentTelegramId = "user_" + Math.random().toString(36).substring(2, 9);
     let currentUserName = "ተጠቃሚ";
 
-    // Secret Master Password for Admin Panel
     const ADMIN_SECRET_PASSWORD = "mala_master_admin_2026";
 
+    const cityMap = {
+        "Ethiopia": [
+            {value: "Hawassa", label: "ሀዋሳ (Hawassa)"},
+            {value: "Addis Ababa", label: "አዲስ አበባ (Addis Ababa)"},
+            {value: "Jimma", label: "ጅማ (Jimma)"},
+            {value: "Bahir Dar", label: "ባህር ዳር (Bahir Dar)"},
+            {value: "Adama", label: "አዳማ (Adama)"},
+            {value: "Dire Dawa", label: "ድሬዳዋ (Dire Dawa)"},
+            {value: "Mekelle", label: "መቀሌ (Mekelle)"}
+        ],
+        "USA": [
+            {value: "Washington DC", label: "ዋሽንግተን ዲሲ (Washington DC)"},
+            {value: "New York", label: "ኒውዮርክ (New York)"},
+            {value: "Los Angeles", label: "ሎስ አንጀለስ (Los Angeles)"}
+        ],
+        "Canada": [
+            {value: "Toronto", label: "ቶሮንቶ (Toronto)"},
+            {value: "Vancouver", label: "ቫንኮቨር (Vancouver)"},
+            {value: "Ottawa", label: "ኦታዋ (Ottawa)"}
+        ],
+        "UK": [
+            {value: "London", label: "ለንደን (London)"},
+            {value: "Manchester", label: "ማንቸስተር (Manchester)"}
+        ],
+        "UAE": [
+            {value: "Dubai", label: "ዱባይ (Dubai)"},
+            {value: "Abu Dhabi", label: "አቡ ዳቢ (Abu Dhabi)"}
+        ],
+        "Kenya": [
+            {value: "Nairobi", label: "ናይሮቢ (Nairobi)"},
+            {value: "Mombasa", label: "ሞምባሳ (Mombasa)"}
+        ],
+        "Other": [
+            {value: "Global", label: "መላው አለም (Global Worldwide)"}
+        ]
+    };
+
     (function cleanSlateLegacyRecords() {
-        if (!localStorage.getItem('mala_clean_slate_done_v3')) {
+        if (!localStorage.getItem('mala_clean_slate_done_v4')) {
             Object.keys(localStorage).forEach(key => {
-                if (key.startsWith('mala_session_') || key.startsWith('mala_approved_') || key.startsWith('mala_pending_') || key.startsWith('mala_logged_in_') || key.startsWith('mala_admin_logged_in') || key.startsWith('mala_trillion_bal_') || key.startsWith('mala_user_coins_')) {
+                if (key.startsWith('mala_session_') || key.startsWith('mala_approved_') || key.startsWith('mala_pending_') || key.startsWith('mala_logged_in_') || key.startsWith('mala_admin_logged_in')) {
                     localStorage.removeItem(key);
                 }
             });
-            localStorage.setItem('mala_clean_slate_done_v3', 'true');
+            localStorage.setItem('mala_clean_slate_done_v4', 'true');
         }
     })();
 
@@ -755,6 +860,9 @@
             document.getElementById('adminCommissionRateInput').value = adminCommissionRate;
         }
 
+        // Auto-detect and pre-select Hawassa / Ethiopia on initial load
+        autoDetectUserLocationAndPreselect();
+
         const urlParams = new URLSearchParams(window.location.search);
         if (urlParams.get('payment') === 'success') {
             let depositedAmt = parseFloat(urlParams.get('amount') || '0');
@@ -766,6 +874,33 @@
             }
         }
     });
+
+    function autoDetectUserLocationAndPreselect() {
+        const countrySelect = document.getElementById('userCountry');
+        countrySelect.value = "Ethiopia";
+        onCountryChange();
+        
+        const citySelect = document.getElementById('userCity');
+        citySelect.value = "Hawassa";
+    }
+
+    function onCountryChange() {
+        const country = document.getElementById('userCountry').value;
+        const citySelect = document.getElementById('userCity');
+        citySelect.innerHTML = "";
+        
+        const cities = cityMap[country] || cityMap["Other"];
+        cities.forEach(c => {
+            const opt = document.createElement('option');
+            opt.value = c.value;
+            opt.textContent = c.label;
+            citySelect.appendChild(opt);
+        });
+
+        if (country === "Ethiopia") {
+            citySelect.value = "Hawassa";
+        }
+    }
 
     async function sendServerNotification(type, details) {
         try {
@@ -902,7 +1037,8 @@
 
     function handleLogin(event) {
         event.preventDefault();
-        const phone = document.getElementById('loginPhone').value.trim();
+        const phoneInput = document.getElementById('loginPhone').value.trim();
+        const phone = "+251" + phoneInput;
         const pwd = document.getElementById('loginPassword').value;
 
         const savedSession = JSON.parse(localStorage.getItem('mala_session_' + currentTelegramId) || '{}');
@@ -936,11 +1072,12 @@
     }
 
     function updateUserPhoneNumber() {
-        const newPhone = document.getElementById('newPhoneInput').value.trim();
-        if (!newPhone) {
+        const phoneInput = document.getElementById('newPhoneInput').value.trim();
+        if (!phoneInput) {
             showCustomModal("ስህተት", "እባክዎ አዲስ ስልክ ቁጥር ያስገቡ");
             return;
         }
+        const newPhone = "+251" + phoneInput;
         let savedSession = JSON.parse(localStorage.getItem('mala_session_' + currentTelegramId) || '{}');
         if (!savedSession.phoneNumber) {
             showCustomModal("ስህተት", "ንቁ አካውንት አልተገኘም!");
@@ -1027,12 +1164,15 @@
 
     function handleRegister(event) {
         event.preventDefault();
+        const phoneInput = document.getElementById('phoneNumber').value.trim();
         userData.telegramId = currentTelegramId;
         userData.firstName = document.getElementById('firstName').value;
         userData.fatherName = document.getElementById('fatherName').value;
         userData.grandFatherName = document.getElementById('grandFatherName').value;
         userData.motherName = document.getElementById('motherName').value;
-        userData.phoneNumber = document.getElementById('phoneNumber').value.trim();
+        userData.phoneNumber = "+251" + phoneInput;
+        userData.country = document.getElementById('userCountry').value;
+        userData.city = document.getElementById('userCity').value;
         userData.email = document.getElementById('userEmail').value;
         userData.password = document.getElementById('userPassword').value;
 
@@ -1121,7 +1261,7 @@
         document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
         document.getElementById('step-welcome').classList.add('active');
         
-        showCustomModal("ጊዜው አልፏል (Timeout)", "አድሚኑ በ30 ደቂቃ ውስጥ ማረጋገጫ (Approval) ስላልሰጠ, ሲስተሙ መረጃዎን በራሱ አጥፍቶታል (Auto-Deleted). እባክዎ ዳግመኛ ይመዝገบบል።");
+        showCustomModal("ጊዜው አልፏል (Timeout)", "አድሚኑ በ30 ደቂቃ ውስጥ ማረጋገጫ (Approval) ስላልሰጠ, ሲስተሙ መረጃዎን በራሱ አጥፍቶታል (Auto-Deleted). እባክዎ ዳግመኛ ይመዝገቡ።");
     }
 
     async function checkAdminApprovalStatus() {
@@ -1289,14 +1429,13 @@
 
     async function executeBuyLottery() {
         const totalCost = selectedLotteryNumbers.length * ticketPrice;
-        let totalAvailableCoins = melaCoinBalance + bonusCoinBalance;
+        let totalActiveCoins = melaCoinBalance + bonusCoinBalance;
 
-        if (totalAvailableCoins < totalCost) {
+        if (totalActiveCoins < totalCost) {
             showCustomModal("ማላ ኮይን በቂ አይደለም", `ድምር ${totalCost} Mela Coin ነው። (የቦነሷ 50 ኮይን ሙሉ 2000 እስኪሞላ ለይቶ ይቆያል)`);
             return;
         }
 
-        // Deduct from regular balance first, then from locked bonus if needed
         if (melaCoinBalance >= totalCost) {
             melaCoinBalance -= totalCost;
         } else {
@@ -1367,9 +1506,10 @@
     function confirmAndSubmitWithdrawal() {
         const amt = parseFloat(document.getElementById('withdrawAmount').value);
         const method = document.getElementById('withdrawMethod').value;
-        const acc = document.getElementById('withdrawAccount').value;
+        const accInput = document.getElementById('withdrawAccount').value.trim();
+        const acc = "+251" + accInput;
         
-        if (!amt || !acc) {
+        if (!amt || !accInput) {
             showCustomModal("ስህተት", "እባክዎ መረጃውን ሙሉ በሙሉ ይሙሉ");
             return;
         }
@@ -1385,7 +1525,6 @@
             return;
         }
 
-        // If total balance reached 2000, unlock the 50 bonus permanently into main balance
         if (totalAvailableCoins >= minWithdrawLimit && bonusCoinBalance > 0) {
             melaCoinBalance += bonusCoinBalance;
             bonusCoinBalance = 0;
@@ -1398,7 +1537,7 @@
     async function executeSubmitWithdrawal() {
         const amt = parseFloat(document.getElementById('withdrawAmount').value);
         const method = document.getElementById('withdrawMethod').value;
-        const acc = document.getElementById('withdrawAccount').value;
+        const acc = "+251" + document.getElementById('withdrawAccount').value.trim();
 
         if (melaCoinBalance >= amt) {
             melaCoinBalance -= amt;
@@ -1417,9 +1556,10 @@
     }
 
     function confirmAndSubmitP2P() {
-        const recipient = document.getElementById('p2pRecipient').value;
+        const recipientInput = document.getElementById('p2pRecipient').value.trim();
+        const recipient = "+251" + recipientInput;
         const amt = parseFloat(document.getElementById('p2pAmount').value);
-        if (!recipient || !amt) {
+        if (!recipientInput || !amt) {
             showCustomModal("ስህተት", "እባክዎ መረጃዎቹን ሙሉ በሙሉ ይሙሉ");
             return;
         }
@@ -1439,7 +1579,7 @@
     }
 
     async function executeSubmitP2P() {
-        const recipient = document.getElementById('p2pRecipient').value;
+        const recipient = "+251" + document.getElementById('p2pRecipient').value.trim();
         const amt = parseFloat(document.getElementById('p2pAmount').value);
         
         if (melaCoinBalance >= amt) {
@@ -1594,7 +1734,7 @@
     }
 
     function closeModal() {
-        document.getElementById('modalModal') ? document.getElementById('modalModal').style.display = 'none' : document.getElementById('customModal').style.display = 'none';
+        document.getElementById('customModal').style.display = 'none';
     }
 </script>
 
