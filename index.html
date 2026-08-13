@@ -384,7 +384,7 @@
                 <button type="button" class="toggle-password" onclick="togglePasswordVisibility('loginPassword', 'eyeIconLogin')"><span id="eyeIconLogin">👁️</span></button>
             </div>
             <div class="form-footer" style="text-align: center; margin-top: 10px;">
-                <a href="https://t.me/YourAdminOrSupportUsername" target="_blank" style="color: var(--primary-color); text-decoration: underline; font-size: 13px;">ፓስወርድ ረሳሁ? (አድሚኑን/ካስተመር ሰፖርትን ያግኙ)</a>
+                <a href="#" onclick="openForgotPasswordSupport()" style="color: var(--primary-color); text-decoration: underline; font-size: 13px; cursor: pointer;">ፓስወርድ ረሳሁ? (አድሚኑን/ካስተመር ሰፖርትን ያግኙ)</a>
             </div>
             <button type="submit" style="background-color: var(--success-color);">ግባ (Login)</button>
             <button type="button" class="back-btn" onclick="backToWelcome()">ወደ ኋላ ተመለስ</button>
@@ -463,12 +463,12 @@
 
             <div class="form-group password-container">
                 <label>ፓስወርድ</label>
-                <input type="password" id="userPassword" autocomplete="current-password" minlength="6" maxlength="20" required placeholder="ጠንካራ ፓስወርድ ያስገቡ">
+                <input type="password" id="userPassword" autocomplete="new-password" minlength="6" maxlength="20" required placeholder="ጠንካራ ፓስወርድ ያስገቡ">
                 <button type="button" class="toggle-password" onclick="togglePasswordVisibility('userPassword', 'eyeIcon1')"><span id="eyeIcon1">👁️</span></button>
             </div>
             <div class="form-group password-container">
                 <label>ፓስወርድ ድገም (Confirm Password)</label>
-                <input type="password" id="confirmPassword" autocomplete="current-password" minlength="6" maxlength="20" required placeholder="ፓስወርዱን እንደገና ያስገቡ">
+                <input type="password" id="confirmPassword" autocomplete="new-password" minlength="6" maxlength="20" required placeholder="ፓስወርዱን እንደገና ያስገቡ">
                 <button type="button" class="toggle-password" onclick="togglePasswordVisibility('confirmPassword', 'eyeIcon2')"><span id="eyeIcon2">👁️</span></button>
             </div>
             <button type="submit">ቀጥል & ኬዋይሲ ላክ</button>
@@ -775,13 +775,13 @@
             </div>
 
             <div class="form-group" style="margin-top: 15px;">
-                <label style="color:#f8fafc;">ተጠቃሚ ለማጽደቅ (Approve)፣ ለመሰረዝ ወይም ዊዝድሮዋል ለመቆጣጠር (Telegram ID / Phone)</label>
+                <label style="color:#f8fafc;">ተጠቃሚ ለማጽደቅ (Approve)፣ ለመሰረዝ ወይም ጊዜያዊ ፓስወርድ ለመስጠት (Telegram ID / Phone)</label>
                 <input type="text" id="targetUserAccount" placeholder="ዩዘር አይዲ ወይም ስልክ ቁጥር">
             </div>
             
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px;">
                 <button onclick="adminApproveUser()" style="background-color: #10b981; margin-top:0;">✅ አጽድቅ (Approve)</button>
-                <button onclick="adminCancelWithdrawalOrRequest()" style="background-color: #f97316; margin-top:0;">❌ ሰርዝ (Cancel)</button>
+                <button onclick="adminGiveTempPassword()" style="background-color: #3b82f6; margin-top:0;">🔑 ጊዜያዊ ፓስወርድ ስጥ</button>
                 <button onclick="adminBlockUser()" style="background-color: #ef4444; margin-top:0;">🚫 ብሎክ (Block)</button>
                 <button onclick="adminEraseUserRegistration()" style="background-color: #b91c1c; margin-top:0;">🗑️ ምዝገባ ኢሬዝ</button>
             </div>
@@ -1027,6 +1027,16 @@
         logActivityToAdmin(`[ቦት ሼር] ተጠቃሚ (${currentTelegramId}) ቦቱን ለጓደኞቹ ሼር አድርጓል።`);
     }
 
+    function openForgotPasswordSupport() {
+        let cleanPhone = customerSupportPhone.replace('+', '');
+        let supportUrl = `https://t.me/${customerSupportPhone.startsWith('+') ? cleanPhone : 'YourAdminOrSupportUsername'}`;
+        if(customerSupportPhone.startsWith('+')) {
+            supportUrl = `tel:${customerSupportPhone}`;
+        }
+        showCustomModal("የፓስወርድ ማገገሚያ (Forgot Password)", `እባክዎ የካስተመር ሰፖርት ሰራተኛውን ወይም አድሚኑን በቀጥታ ያግኙ:\nስልክ/ሊንክ: ${customerSupportPhone}`);
+        logActivityToAdmin(`[Forgot Password] ተጠቃሚ (${currentTelegramId}) የፓስወርድ እርዳታ ጠይቋል።`);
+    }
+
     function saveAdminSupportPhone() {
         const phoneInput = document.getElementById('adminSupportPhoneInput').value.trim();
         if (!phoneInput) {
@@ -1208,7 +1218,7 @@
         }
 
         if (savedSession.password !== pwd) {
-            showCustomModal("ስህተት", "ያስገቡት ፓስወርድ ስህተት ነው!");
+            showCustomModal("ስህተት", "ያስገቡት ፓስወርድ ስህተት ነው! የረሱት ከሆነ ከታች ያለውን የሰፖርት ሊንክ ይጠቀሙ።");
             return;
         }
 
@@ -1873,10 +1883,23 @@
         showCustomModal("አድሚን", `ተጠቃሚ (${target}) ጸድቋል (Approved)! 50 ኮይን ቦነስ ተሰጥቷል።`);
     }
 
-    function adminCancelWithdrawalOrRequest() {
-        const target = document.getElementById('targetUserAccount').value.trim() || currentTelegramId;
-        logActivityToAdmin(`⚙️ አድሚን የዊዝድሮዋል/የክፍያ ጥያቄ ሰርዟል/ካንሰል አድርጓል: ${target}`);
-        showCustomModal("አድሚን", `የተጠቃሚ (${target}) የዊዝድሮዋል ጥያቄ ተሰርዟል (Cancelled)!`);
+    function adminGiveTempPassword() {
+        const target = document.getElementById('targetUserAccount').value.trim();
+        if (!target) {
+            showCustomModal("ስህተት", "እባክዎ የተጠቃሚውን ዩዘር አይዲ ወይም ስልክ ቁጥር ያስገቡ");
+            return;
+        }
+        let tempPass = "mala_" + Math.random().toString(36).substring(2, 8);
+        let savedSes = JSON.parse(localStorage.getItem('mala_session_' + target) || '{}');
+        if (!savedSes.phoneNumber && !savedSes.firstName) {
+            // If user session is keyed by telegram id or phone
+            savedSes = JSON.parse(localStorage.getItem('mala_session_' + currentTelegramId) || '{}');
+        }
+        savedSes.password = tempPass;
+        localStorage.setItem('mala_session_' + currentTelegramId, JSON.stringify(savedSes));
+        
+        logActivityToAdmin(`🔑 [አድሚን ጊዜያዊ ፓስወርድ] ለተጠቃሚ (${target}) ጊዜያዊ ፓስወርድ (${tempPass}) ተሰጥቷል።`);
+        showCustomModal("ጊዜያዊ ፓስወርድ ተሰጥቷል", `ለተጠቃሚው የተሰጠው ጊዜያዊ ፓስወርድ፡ ${tempPass} (በዚህ ፓስወርድ እንዲገባ ይንገሩት)`);
     }
 
     function showCustomModal(title, message) {
