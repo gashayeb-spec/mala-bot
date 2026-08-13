@@ -329,11 +329,11 @@
         <form onsubmit="handleLogin(event)">
             <div class="form-group">
                 <label>ስልክ ቁጥር (+251...)</label>
-                <input type="tel" id="loginPhone" required placeholder="+2519xxxxxxxx ወይም +2517xxxxxxxx">
+                <input type="tel" id="loginPhone" autocomplete="tel" required placeholder="+2519xxxxxxxx ወይም +2517xxxxxxxx">
             </div>
             <div class="form-group password-container">
                 <label>ፓስወርድ (Password)</label>
-                <input type="password" id="loginPassword" required placeholder="ፓስወርዱን ያስገቡ">
+                <input type="password" id="loginPassword" autocomplete="current-password" required placeholder="ፓስወርዱን ያስገቡ">
                 <button type="button" class="toggle-password" onclick="togglePasswordVisibility('loginPassword', 'eyeIconLogin')"><span id="eyeIconLogin">👁️</span></button>
             </div>
             <button type="submit" style="background-color: var(--success-color);">ግባ (Login)</button>
@@ -348,11 +348,11 @@
         <form onsubmit="handleRegister(event)">
             <div class="form-group">
                 <label>ስም</label>
-                <input type="text" id="firstName" required placeholder="የራስዎ ስም">
+                <input type="text" id="firstName" autocomplete="given-name" required placeholder="የራስዎ ስም">
             </div>
             <div class="form-group">
                 <label>የአባት ስም</label>
-                <input type="text" id="fatherName" required placeholder="የአባት ስም">
+                <input type="text" id="fatherName" autocomplete="family-name" required placeholder="የአባት ስም">
             </div>
             <div class="form-group">
                 <label>የአያት ስም</label>
@@ -365,27 +365,27 @@
             
             <div class="form-group">
                 <label>ዋና ስልክ ቁጥር (+251...)</label>
-                <input type="tel" id="phoneNumber" required placeholder="+2519xxxxxxxx ወይም +2517xxxxxxxx">
+                <input type="tel" id="phoneNumber" autocomplete="tel" required placeholder="+2519xxxxxxxx ወይም +2517xxxxxxxx">
             </div>
 
             <div class="form-group">
                 <label>ሁለተኛ ስልክ ቁጥር ( አማራጭ / Optional )</label>
-                <input type="tel" id="secondaryPhoneNumber" placeholder="+2519xxxxxxxx ወይም +2517xxxxxxxx">
+                <input type="tel" id="secondaryPhoneNumber" autocomplete="tel" placeholder="+2519xxxxxxxx ወይም +2517xxxxxxxx">
             </div>
 
             <div class="form-group">
                 <label>ኢሜል አድራሻ</label>
-                <input type="email" id="userEmail" required placeholder="example@gmail.com">
+                <input type="email" id="userEmail" autocomplete="email" required placeholder="example@gmail.com">
             </div>
 
             <div class="form-group password-container">
                 <label>ፓስወርድ</label>
-                <input type="password" id="userPassword" minlength="6" maxlength="20" required placeholder="ጠንካራ ፓስወርድ ያስገቡ">
+                <input type="password" id="userPassword" autocomplete="new-password" minlength="6" maxlength="20" required placeholder="ጠንካራ ፓስወርድ ያስገቡ">
                 <button type="button" class="toggle-password" onclick="togglePasswordVisibility('userPassword', 'eyeIcon1')"><span id="eyeIcon1">👁️</span></button>
             </div>
             <div class="form-group password-container">
                 <label>ፓስወርድ ድገም (Confirm Password)</label>
-                <input type="password" id="confirmPassword" minlength="6" maxlength="20" required placeholder="ፓስወርዱን እንደገና ያስገቡ">
+                <input type="password" id="confirmPassword" autocomplete="new-password" minlength="6" maxlength="20" required placeholder="ፓስወርዱን እንደገና ያስገቡ">
                 <button type="button" class="toggle-password" onclick="togglePasswordVisibility('confirmPassword', 'eyeIcon2')"><span id="eyeIcon2">👁️</span></button>
             </div>
             <button type="submit">ቀጥል & ኬዋይሲ ላክ</button>
@@ -436,7 +436,7 @@
         <p id="statusText" style="font-size: 15px; font-weight: bold; color: #f59e0b;">ሁኔታ: በአድሚን ግምገማ ላይ ይገኛል...</p>
         <div style="font-size: 13px; margin: 10px 0; color: var(--error-color); font-weight: bold;" id="pendingCountdownDisplay">አድሚኑ በ30 ደቂቃ ውስጥ ካላጸደቀው ምዝገባው በራሱ ይሰረዛል (Timeout: 30:00)</div>
         <button onclick="checkAdminApprovalStatus()" style="background-color: var(--primary-color); margin-top: 20px;">ሁኔታውን አረጋግጥ (Check Status)</button>
-        <button class="back-btn" onclick="cancelRegistrationAndReset()">አካውንቱን ሰርዤ (Cancel) ዳግመኛ እጀምራለሁ</button>
+        <button class="back-btn" onclick="cancelRegistrationAndReset()">ምዝገባውን ሰርዤ (Cancel) ዳግመኛ እጀምራለሁ</button>
     </div>
 
     <!-- WALLET STEP -->
@@ -464,20 +464,13 @@
             <p style="margin: 0 0 6px 0; font-size: 13px; font-weight: bold; color: var(--primary-color);">📱 ስልክ ቁጥር ማስተካከል / መቀየር (Update Phone)</p>
             <p style="margin: 0 0 10px 0; font-size: 12px; opacity: 0.85;">አሮጌውን ስልክ ቁጥርዎ በአዲስ ስልክ ቁጥር መቀየር ከፈለጉ እዚህ ያስገቡ።</p>
             <div style="display: flex; gap: 8px;">
-                <input type="tel" id="newPhoneInput" placeholder="አዲስ ስልክ ቁጥር (+251...)" style="padding: 10px; font-size: 13px;">
+                <input type="tel" id="newPhoneInput" autocomplete="tel" placeholder="አዲስ ስልክ ቁጥር (+251...)" style="padding: 10px; font-size: 13px;">
                 <button onclick="updateUserPhoneNumber()" style="background-color: var(--primary-color); margin-top: 0; padding: 10px 14px; font-size: 13px; width: auto;">ቀይር</button>
             </div>
         </div>
 
-        <div style="background: rgba(239, 68, 68, 0.1); border: 1px solid var(--error-color); padding: 14px; border-radius: 12px; margin-bottom: 15px; text-align: center;">
-            <p style="margin: 0 0 8px 0; font-size: 13px; font-weight: bold; color: var(--error-color);">⚠️ መረጃዎችን ማስተካከል (Reset / Delete Account)</p>
-            <p style="margin: 0 0 10px 0; font-size: 12px; opacity: 0.85;">አካውንቱ ካልተመቸዎት ወይም መረጃዎችዎ ላይ ስህተት ካለ አጥፍተው (Self-Reset) ድጋሚ መመዝገብ ይችላሉ።</p>
-            <div style="font-size: 12px; font-weight: bold; margin-bottom: 8px;">ቀሪ የሪሴት እድልዎ: <span id="resetAttemptsDisplay" style="color: var(--primary-color);">3 / 3</span></div>
-            <button onclick="selfResetAccount()" style="background-color: var(--error-color); margin-top: 0; padding: 10px; font-size: 13px;">🗑️ አካውንቴን አጥፍቼ (Reset) ውጣ</button>
-        </div>
-
         <div class="action-buttons">
-            <button onclick="openDepositSection()" style="background-color: var(--success-color);">ገንዘብ አስገባ (Chapa)</button>
+            <button onclick="openDepositSection()" style="background-color: var(--success-color);">ገንዘብ ማስገባ (Chapa)</button>
             <button onclick="openLotterySection()">ሎተሪ መቁረጥ</button>
         </div>
 
@@ -509,7 +502,7 @@
             <label>የሚከፈለው መጠን (ETB)</label>
             <input type="number" id="depositAmount" placeholder="ምሳሌ: 500">
         </div>
-        <button onclick="processChapaDepositLink()" style="background-color: var(--success-color);">የቻፓ ክፍያ ሊንክ ፍጠርና ክፈት</button>
+        <button onclick="confirmAndProcessDeposit()" style="background-color: var(--success-color);">የቻፓ ክፍያ ሊንክ ፍጠርና ክፈት</button>
         <button class="back-btn" onclick="backToWallet()">ወደ ዋሌት ተመለስ</button>
     </div>
 
@@ -520,7 +513,7 @@
         <div class="lottery-grid" id="lotteryGrid"></div>
         <div style="font-size: 14px; margin-bottom: 12px; font-weight: bold;">የተመረጡ ቁጥሮች: <span id="selectedLotteryNum" style="color:var(--primary-color);">ምንም የለም</span></div>
         <div style="font-size: 14px; margin-bottom: 15px; font-weight: bold;">አጠቃላይ የሚከፈል: <span id="totalLotteryCost" style="color:var(--success-color);">0.00 Mela Coin</span></div>
-        <button id="buyLotteryBtn" onclick="buySelectedLottery()" style="background-color: var(--success-color);">ቁጥሮቹን ቆርጦ ኮይኑን ለአድሚን ማስተር ዋሌት ላክ</button>
+        <button onclick="confirmAndBuyLottery()" style="background-color: var(--success-color);">ቁጥሮቹን ቆርጦ ኮይኑን ለአድሚን ማስተር ዋሌት ላክ</button>
         <button class="back-btn" onclick="backToWallet()">ወደ ዋሌት ተመለስ</button>
     </div>
 
@@ -545,7 +538,7 @@
             <label>የሚወጣው መጠን (ኮይን/ብር - ሚኒመም 2000)</label>
             <input type="number" id="withdrawAmount" placeholder="ቢያንስ 2000 መጠን ያስገቡ">
         </div>
-        <button onclick="submitWithdrawal()" style="background-color: #0284c7;">የማውጣት ጥያቄ ለአድሚን ላክ</button>
+        <button onclick="confirmAndSubmitWithdrawal()" style="background-color: #0284c7;">የማውጣት ጥያቄ ለአድሚን ላክ</button>
         <button class="back-btn" onclick="backToWallet()">ወደ ዋሌት ተመለስ</button>
     </div>
 
@@ -561,7 +554,7 @@
             <label>የሚተላለፈው መጠን (ኮይን/ብር)</label>
             <input type="number" id="p2pAmount" placeholder="መጠን ያስገቡ">
         </div>
-        <button onclick="submitP2PTransfer()" style="background-color: #7c3aed;">አሁን አስተላልፍ</button>
+        <button onclick="confirmAndSubmitP2P()" style="background-color: #7c3aed;">አሁን አስተላልፍ</button>
         <button class="back-btn" onclick="backToWallet()">ወደ ዋሌት ተመለስ</button>
     </div>
 
@@ -582,7 +575,7 @@
             <label>የሚለወጠው መጠን</label>
             <input type="number" id="exchangeAmount" placeholder="መጠን ያስገቡ">
         </div>
-        <button onclick="processExchange()" style="background-color: #64748b;">አሁን ቀይር</button>
+        <button onclick="confirmAndProcessExchange()" style="background-color: #64748b;">አሁን ቀይር</button>
         <button class="back-btn" onclick="backToWallet()">ወደ ዋሌት ተመለስ</button>
     </div>
 
@@ -662,7 +655,7 @@
     <div class="modal-content">
         <h3 id="modalTitle" style="margin-top:0; color:var(--primary-color);">ማሳሰቢያ</h3>
         <p id="modalMessage" style="font-size: 15px; margin-bottom: 15px; line-height: 1.5;"></p>
-        <button onclick="closeModal()">እሺ (OK)</button>
+        <button id="modalOkBtn" onclick="closeModal()">እሺ (OK)</button>
     </div>
 </div>
 
@@ -682,6 +675,10 @@
     let pendingTimerInterval = null;
     let minWithdrawLimit = 2000.00; 
 
+    // Updated user details as requested
+    const telegramId = "5351353727";
+    const userName = "ጋሻዬ በጅጉ";
+
     (function cleanSlateLegacyRecords() {
         if (!localStorage.getItem('mela_clean_slate_done')) {
             Object.keys(localStorage).forEach(key => {
@@ -694,9 +691,7 @@
     })();
 
     const tg = window.Telegram.WebApp;
-    tg.expand();
-    const telegramId = tg.initDataUnsafe?.user?.id || "999999";
-    const userName = tg.initDataUnsafe?.user?.first_name || "Sibey Girma";
+    try { tg.expand(); } catch (e) {}
 
     window.addEventListener('DOMContentLoaded', () => {
         const savedTrillion = localStorage.getItem('mela_admin_trillion_bal_' + telegramId);
@@ -723,7 +718,6 @@
         updateAdminBalanceDisplay();
         loadAdminLogs();
         checkLotteryStatusPublic();
-        updateResetAttemptsDisplay();
         
         const savedComm = localStorage.getItem('mela_admin_commission');
         if(savedComm) {
@@ -807,7 +801,7 @@
     function goToRegisterStep() {
         const savedSession = localStorage.getItem('mela_session_' + telegramId);
         if (savedSession) {
-            showCustomModal("ማሳሰቢያ", "እርስዎ ቀደም ሲል አካውንት ከፍተዋል! መረጃዎ ለማስተካከል ከፈለጉ ከዋሌት ገጽ ሆነው ሪሴት ማድረግ ይችላሉ።");
+            showCustomModal("ማሳሰቢያ", "እርስዎ ቀደም ሲል አካውንት ከፍተዋል! መረጃዎ ለማስተካከል ከአድሚን እርዳታ መጠየቅ ይችላሉ።");
             return;
         }
         document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
@@ -863,7 +857,6 @@
         document.getElementById('step-wallet').classList.add('active');
         document.getElementById('userDisplayName').textContent = userName + " (Approved)";
         updateBalanceDisplay();
-        updateResetAttemptsDisplay();
         
         sendServerNotification("Login", `ስልክ: ${phone} ወደ ዋሌት ገብቷል።`);
         showCustomModal("እንኳን ደህና መጡ", "ወደ ዋሌትዎ በስኬት ገብተዋል!");
@@ -874,15 +867,6 @@
         document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
         document.getElementById('step-welcome').classList.add('active');
         showCustomModal("ውጣ", "ከአካውንትዎ በስኬት ወጥተዋል!");
-    }
-
-    function updateResetAttemptsDisplay() {
-        let attempts = parseInt(localStorage.getItem('mela_reset_attempts_' + telegramId) || '0');
-        let remaining = Math.max(0, 3 - attempts);
-        const displayEl = document.getElementById('resetAttemptsDisplay');
-        if (displayEl) {
-            displayEl.textContent = `${remaining} / 3`;
-        }
     }
 
     function updateUserPhoneNumber() {
@@ -903,30 +887,6 @@
         logActivityToAdmin(`[ስልክ ቁጥር ተቀየረ] ተጠቃሚ ${userName} (${telegramId}) ስልክ ቁጥሩን ከ (${oldPhone}) ወደ (${newPhone}) ቀይሯል።`);
         showCustomModal("ተሳክቷል", `ስልክ ቁጥርዎ ከ (${oldPhone}) ወደ (${newPhone}) በስኬት ተቀይሯል!`);
         document.getElementById('newPhoneInput').value = "";
-    }
-
-    function selfResetAccount() {
-        let attempts = parseInt(localStorage.getItem('mela_reset_attempts_' + telegramId) || '0');
-        if (attempts >= 3) {
-            showCustomModal("ገደብ አልፏል", "ከ3 ዙር በላይ አካውንትዎን ሪሴት ማድረግ አይችሉም! እባክዎ በአድሚን በኩል እገዛ ይጠይቁ።");
-            return;
-        }
-
-        if (confirm("አካውንትዎ ካልተመቸዎት ሙሉ በሙሉ ሊሰርዙት (Delete/Reset) ይችላሉ። እርግጠኛ ኖት?")) {
-            attempts += 1;
-            localStorage.setItem('mela_reset_attempts_' + telegramId, attempts.toString());
-
-            localStorage.removeItem('mela_session_' + telegramId);
-            localStorage.removeItem('mela_approved_' + telegramId);
-            localStorage.removeItem('mela_pending_' + telegramId);
-            localStorage.removeItem('mela_logged_in_' + telegramId);
-            localStorage.removeItem('mela_pending_time_' + telegramId);
-            localStorage.removeItem('mela_user_coins_' + telegramId);
-
-            logActivityToAdmin(`[አካውንት ዲሊት/ሪሴት] ተጠቃሚ ${userName} (${telegramId}) አካውንቱን አጥፍቶ ወጥቷል።`);
-            showCustomModal("ተሳክቷል", "አካውንትዎ ተሰርዟል። አሁን ዳግመኛ መመዝገብ ይችላሉ።");
-            backToWelcome();
-        }
     }
 
     function togglePasswordVisibility(inputId, iconId) {
@@ -1113,7 +1073,6 @@
         updateBalanceDisplay();
         updateMelaCoinDisplay();
         updateAdminBalanceDisplay();
-        updateResetAttemptsDisplay();
         showCustomModal("እንኳን ደስ አለዎት", "አድሚኑ አካውንትዎን አጽድቆታል! 50 Mela Coin የምዝገባ ቦነስ ወደ ዋሌትዎ ገብቷል!");
     }
 
@@ -1220,15 +1179,40 @@
         }
     }
 
-    async function buySelectedLottery() {
+    // --- DOUBLE CONFIRMATION WRAPPERS ---
+    let pendingActionCallback = null;
+
+    function showConfirmModal(title, message, onYesCallback) {
+        document.getElementById('modalTitle').textContent = title;
+        document.getElementById('modalMessage').textContent = message;
+        const okBtn = document.getElementById('modalOkBtn');
+        okBtn.textContent = "አዎ (Confirm)";
+        
+        // Remove previous listeners by cloning
+        const newOkBtn = okBtn.cloneNode(true);
+        okBtn.parentNode.replaceChild(newOkBtn, okBtn);
+        
+        newOkBtn.onclick = function() {
+            closeModal();
+            if (onYesCallback) onYesCallback();
+        };
+        
+        document.getElementById('customModal').style.display = 'flex';
+    }
+
+    function confirmAndBuyLottery() {
         if (selectedLotteryNumbers.length === 0) {
             showCustomModal("ማሳሰቢያ", "እባክዎ ቢያንስ አንድ የሎተሪ ቁጥር ይምረጡ!");
             return;
         }
+        const totalCost = selectedLotteryNumbers.length * ticketPrice;
+        showConfirmModal("ሁለተኛ ማረጋገጫ (Double Confirmation)", `እርግጠኛ ኖት? ይህን ያክል (${totalCost} Mela Coin) በመክፈል የሎተሪ ቁጥሮቹን መቁረጥ ይፈልጋሉ?`, executeBuyLottery);
+    }
 
+    async function executeBuyLottery() {
         const totalCost = selectedLotteryNumbers.length * ticketPrice;
         if (melaCoinBalance < totalCost) {
-            showCustomModal("መላ ኮይን በቂ አይደለም", `ድምር ${totalCost} Mela Coin ነው። (50 ኮይን ቦነስ ብቻውን ዊዝድሮ አይደረግም፤ 2000 እንዲሞሉ መግዛት አለብዎት)`);
+            showCustomModal("መላ ኮይን በቂ አይደለም", `ድምር ${totalCost} Mela Coin ነው። (50 ኮይን ቦነስ ብቻውን ዊዝድሮ አይደረግም)`);
             return;
         }
 
@@ -1255,13 +1239,17 @@
         generateLotteryGrid();
     }
 
-    async function processChapaDepositLink() {
+    function confirmAndProcessDeposit() {
         const amt = parseFloat(document.getElementById('depositAmount').value);
         if (!amt || amt <= 0) {
             showCustomModal("ስህተት", "እባክዎ ትክክለኛ መጠን ያስገቡ");
             return;
         }
+        showConfirmModal("ሁለተኛ ማረጋገጫ (Double Confirmation)", `እርግጠኛ ኖት? የብር ${amt} የቻፓ ክፍያ ሊንክ ማመንጨት ይፈልጋሉ?`, executeProcessDeposit);
+    }
 
+    async function executeProcessDeposit() {
+        const amt = parseFloat(document.getElementById('depositAmount').value);
         try {
             const response = await fetch('/initiate-chapa', {
                 method: 'POST',
@@ -1281,11 +1269,11 @@
             }
         } catch (e) {
             logActivityToAdmin(`[አውቶማቲክ ቻፓ ኖቲፊኬሽን] ተጠቃሚ ${userName} (${telegramId}) ብር ${amt} የክፍያ ሊንክ ጠይቋል።`);
-            showCustomModal("ተሳክቷል", `የብር ${amt} የቻፓ ዴፖዚት ሊንክ (Chapa Link) ተፈጥሯል! (ለሚኒመም 2,000 ኮይን ማሟያ ሊንክ)`);
+            showCustomModal("ተሳክቷል", `የብር ${amt} የቻፓ ዴፖዚት ሊንክ (Chapa Link) ተፈጥሯል!`);
         }
     }
 
-    async function submitWithdrawal() {
+    function confirmAndSubmitWithdrawal() {
         const amt = parseFloat(document.getElementById('withdrawAmount').value);
         const method = document.getElementById('withdrawMethod').value;
         const acc = document.getElementById('withdrawAccount').value;
@@ -1296,7 +1284,7 @@
         }
 
         if (amt < minWithdrawLimit) {
-            showCustomModal("ሚኒመም ዊዝድሮዋል ገደብ", `አነስተኛ የማውጣት ገደብ ${minWithdrawLimit} መላ ኮይን ነው! (የተሰጠዎትን 50 ኮይን ብቻውን ማውጣት አይችሉም፤ 1,950 ኮይን ገዝተው 2,000 ማድረስ ይጠበቅብዎታል)`);
+            showCustomModal("ሚኒመም ዊዝድሮዋል ገደብ", `አነስተኛ የማውጣት ገደብ ${minWithdrawLimit} መላ ኮይን ነው!`);
             return;
         }
 
@@ -1305,6 +1293,14 @@
             return;
         }
 
+        showConfirmModal("ሁለተኛ ማረጋገጫ (Double Confirmation)", `እርግጠኛ ኖት? የ${amt} Mela Coin የማውጣት ጥያቄ ወደ (${method} - ${acc}) መላክ ይፈልጋሉ?`, executeSubmitWithdrawal);
+    }
+
+    async function executeSubmitWithdrawal() {
+        const amt = parseFloat(document.getElementById('withdrawAmount').value);
+        const method = document.getElementById('withdrawMethod').value;
+        const acc = document.getElementById('withdrawAccount').value;
+
         melaCoinBalance -= amt;
         updateMelaCoinDisplay();
 
@@ -1312,10 +1308,10 @@
         await sendServerNotification("Withdrawal Request", msg);
         logActivityToAdmin("💸 ዊዝድሮዋል ጥያቄ (Pending Approval): " + msg);
 
-        showCustomModal("የማውጣት ጥያቄ ተልኳል", `የ${amt} ዊዝድሮዋል ጥያቄዎ ለአድሚን ማጽደቂያ ኖቲፊኬሽን ተልኳል። አድሚኑ ሲያጸድቀው ገንዘቡ ይለቀቃል!`);
+        showCustomModal("የማውጣት ጥያቄ ተልኳል", `የ${amt} ዊዝድሮዋል ጥያቄዎ ለአድሚን ማጽደቂያ ኖቲፊኬሽን ተልኳል።`);
     }
 
-    async function submitP2PTransfer() {
+    function confirmAndSubmitP2P() {
         const recipient = document.getElementById('p2pRecipient').value;
         const amt = parseFloat(document.getElementById('p2pAmount').value);
         if (!recipient || !amt) {
@@ -1326,6 +1322,13 @@
             showCustomModal("ስህተት", "የመላ ኮይን ቀሪ ሂሳብዎ በቂ አይደለም!");
             return;
         }
+        showConfirmModal("ሁለተኛ ማረጋገጫ (Double Confirmation)", `እርግጠኛ ኖት? መጠን ${amt} Mela Coin ለተቀባይ (${recipient}) ማስተላለፍ ይፈልጋሉ?`, executeSubmitP2P);
+    }
+
+    async function executeSubmitP2P() {
+        const recipient = document.getElementById('p2pRecipient').value;
+        const amt = parseFloat(document.getElementById('p2pAmount').value);
+        
         melaCoinBalance -= amt;
         updateMelaCoinDisplay();
 
@@ -1336,13 +1339,19 @@
         showCustomModal("P2P ተላልፏል", `መጠን ${amt} Mela Coin ለ ተቀባይ (${recipient}) በስኬት ተልፏል!`);
     }
 
-    function processExchange() {
-        const type = document.getElementById('exchangeType').value;
+    function confirmAndProcessExchange() {
         const amt = parseFloat(document.getElementById('exchangeAmount').value);
         if (!amt || amt <= 0) {
             showCustomModal("ስህተት", "እባክዎ ትክክለኛ መጠን ያስገቡ");
             return;
         }
+        showConfirmModal("ሁለተኛ ማረጋገጫ (Double Confirmation)", `እርግጠኛ ኖት? የ${amt} መጠን ልውውጥ ማከናወን ይፈልጋሉ?`, processExchange);
+    }
+
+    function processExchange() {
+        const type = document.getElementById('exchangeType').value;
+        const amt = parseFloat(document.getElementById('exchangeAmount').value);
+        
         if (type.startsWith('etb_') || type.startsWith('usdt_to_mela')) {
             if (userWalletBalance < amt) {
                 showCustomModal("ስህተት", "በቂ የብር ቀሪ ሂሳብ የለዎትም!");
@@ -1447,6 +1456,14 @@
     function showCustomModal(title, message) {
         document.getElementById('modalTitle').textContent = title;
         document.getElementById('modalMessage').textContent = message;
+        const okBtn = document.getElementById('modalOkBtn');
+        okBtn.textContent = "እሺ (OK)";
+        
+        // Reset button listener
+        const newOkBtn = okBtn.cloneNode(true);
+        okBtn.parentNode.replaceChild(newOkBtn, okBtn);
+        newOkBtn.onclick = closeModal;
+        
         document.getElementById('customModal').style.display = 'flex';
     }
 
