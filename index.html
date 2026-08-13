@@ -938,23 +938,14 @@
     });
 
     function openForgotPassword() {
-        // ተጠቃሚው ያስገባውን ስልክ ቁጥር ወይም ቴሌግራም ID እንወስዳለን
         let userPhone = document.getElementById('loginPhone') ? document.getElementById('loginPhone').value : '';
-        
-        // የካስተመር ሰፖርት/አድሚን ቴሌግራም ዩዘርኔም
-        let adminUsername = "YourAdminUsername"; // እዚህ ጋር የአድሚኑን ዩዘርኔም ያስገቡ
-        
+        let adminUsername = "YourAdminUsername"; 
         let message = encodeURIComponent(`ሰላም አድሚን፣ ፓስወርዴን ረክቻለሁ። እባክዎ አካውንቴን እንድያስተካክሉኝ እረዳኝ። ስልክ ቁጥሬ: ${userPhone}`);
-        
-        // በቀጥታ ወደ አድሚኑ ቻት ይወስደዋል
         window.open(`https://t.me/${adminUsername}?text=${message}`, '_blank');
     }
 
     function verifyAdminPassword(inputPassword) {
-        // ዋናው የአድሚን ፓስወርድ (በLocalStorage ወይም በኮድ ውስጥ ያለ)
         let savedAdminPass = localStorage.getItem('masterPassword') || "admin123"; 
-        
-        // የድንገተኛ ማስተካከያ ቁልፍ (Emergency Recovery Code - ለምሳሌ አድሚኑ ሲጠፋ የሚጠቀመው)
         let emergencyKey = "SUPA_ADMIN_RESET_2026"; 
 
         if (inputPassword === savedAdminPass || inputPassword === emergencyKey) {
@@ -966,7 +957,7 @@
                     return true;
                 }
             }
-            return true; // ፓስወርዱ ትክክል ነው
+            return true;
         } else {
             alert("የተሳሳተ ማስተር ፓስወርድ!");
             return false;
