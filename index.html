@@ -384,7 +384,7 @@
                 <button type="button" class="toggle-password" onclick="togglePasswordVisibility('loginPassword', 'eyeIconLogin')"><span id="eyeIconLogin">👁️</span></button>
             </div>
             <div class="form-footer" style="text-align: center; margin-top: 10px;">
-                <a href="#" onclick="openForgotPasswordSupport()" style="color: var(--primary-color); text-decoration: underline; font-size: 13px; cursor: pointer;">ፓስወርድ ረሳሁ? (አድሚኑን/ካስተመር ሰፖርትን ያግኙ)</a>
+                <a href="#" onclick="handleForgotPasswordClick(); return false;" style="color: var(--primary-color); text-decoration: underline; font-size: 13px; cursor: pointer;">ፓስወርድ ረሳሁ? (የድሮ ፒን በማስገባት ለአድሚን ጥያቄ ላክ)</a>
             </div>
             <button type="submit" style="background-color: var(--success-color);">ግባ (Login)</button>
             <button type="button" class="back-btn" onclick="backToWelcome()">ወደ ኋላ ተመለስ</button>
@@ -1027,15 +1027,56 @@
         logActivityToAdmin(`[ቦት ሼር] ተጠቃሚ (${currentTelegramId}) ቦቱን ለጓደኞቹ ሼር አድርጓል።`);
     }
 
-    function openForgotPasswordSupport() {
-        let cleanPhone = customerSupportPhone.replace('+', '');
-        let supportUrl = `https://t.me/${customerSupportPhone.startsWith('+') ? cleanPhone : 'YourAdminOrSupportUsername'}`;
-        if(customerSupportPhone.startsWith('+')) {
-            supportUrl = `tel:${customerSupportPhone}`;
-        }
-        showCustomModal("የፓስወርድ ማገገሚያ (Forgot Password)", `እባክዎ የካስተመር ሰፖርት ሰራተኛውን ወይም አድሚኑን በቀጥታ ያግኙ:\nስልክ/ሊንክ: ${customerSupportPhone}`);
-        logActivityToAdmin(`[Forgot Password] ተጠቃሚ (${currentTelegramId}) የፓስወርድ እርዳታ ጠይቋል።`);
+    // --- Forgot Password Integration Functions ---
+    function getCurrentUserId() {
+        return currentTelegramId;
     }
+
+    function getCurrentUserPhone() {
+        let savedSession = JSON.parse(localStorage.getItem('mala_session_' + currentTelegramId) || '{}');
+        return savedSession.phoneNumber || document.getElementById('loginPhone')?.value || "+251900000000";
+    }
+
+    function sendPasswordResetRequestToAdmin(requestData) {
+        logActivityToAdmin(`[Password Reset Request] ዩዘር ID: ${requestData.userId}, ስልክ: ${requestData.userPhone}, የድሮ ግምት: ${requestData.attemptedOldPin}`);
+        sendServerNotification("Password Reset Request", `ተጠቃሚ (ID: ${requestData.userId}) የድሮ ፒን ግምት (${requestData.attemptedOldPin}) አስገብቶ የፓስወርድ ማስተካከያ ጠይቋል።`);
+    }
+
+    function saveTemporaryPinToDatabase(targetUserId, temporaryPin) {
+        localStorage.setItem('mala_temp_pin_' + targetUserId, temporaryPin.toString());
+        logActivityToAdmin(`[Temp Pin Saved] ለዩዘር ID ${targetUserId} ጊዜያዊ ፒን ተቀምጧል።`);
+    }
+
+    function sendSmsOrBotMessage(targetUserPhone, messageText) {
+        logActivityToAdmin(`[SMS/Bot Sent] ወደ ${targetUserPhone} የተላከ መልዕክት: "${messageText}"`);
+    }
+
+    function gis(text) {
+        return text;
+    }
+
+    function handleForgotPasswordClick() {
+        let oldInputGuess = prompt("እባክዎ ትዝ የሚልዎትን የነበረውን የድሮ ፒን/ፓስወርድ (የተሳሳተውንም ቢሆን) ያስገቡ:");
+        
+        if (oldInputGuess !== null) {
+            sendPasswordResetRequestToAdmin({
+                userId: getCurrentUserId(),
+                userPhone: getCurrentUserPhone(),
+                attemptedOldPin: oldInputGuess,
+                requestTime: new Date()
+            });
+            
+            showCustomModal("ጥያቄ ተልኳል", "የፓስወርድ ማስተካከያ ጥያቄዎ ለአድሚን ተልኳል። አድሚኑ አረጋግጦ ጊዜያዊ ፒን ይልክልዎታል።");
+        }
+    }
+
+    function adminSendTemporaryPin(targetUserId, targetUserPhone) {
+        let temporaryPin = Math.floor(1000 + Math.random() * 9000);
+        saveTemporaryPinToDatabase(targetUserId, temporaryPin);
+        sendSmsOrBotMessage(targetUserPhone, `የዋሌትዎ ጊዜያዊ ማስተካከያ ፒን (OTP) ይህ ነው: ${temporaryPin}. እባክዎ ገብተው የራስዎን አዲስ ፒን ይቀይሩ።`);
+        showCustomModal("ጊዜያዊ ፒን ተልኳል", `ለተጠቃሚው (ID: ${targetUserId}) ጊዜያዊ ፒን ${temporaryPin} ተልኳል!`);
+    }
+    // ---------------------------------------------
 
     function saveAdminSupportPhone() {
         const phoneInput = document.getElementById('adminSupportPhoneInput').value.trim();
@@ -1091,8 +1132,14 @@
         }
 
         if (savedSession.password !== oldPwd) {
-            showCustomModal("ስህተት", "ያስገቡት የቀድሞው ፓስወርድ ልክ አይደለም!");
-            return;
+            let tempPin = localStorage.getItem('mala_temp_pin_' + currentTelegramId);
+            if (tempPin && tempPin === oldPwd) {
+                // Temporary pin accepted as old password
+                localStorage.removeItem('mala_temp_pin_' + currentTelegramId);
+            } else {
+                showCustomModal("ስህተት", "ያስገቡት የቀድሞው ፓስወርድ ወይም ጊዜያዊ ፒን ልክ አይደለም!");
+                return;
+            }
         }
 
         savedSession.password = newPwd;
@@ -1217,9 +1264,14 @@
             return;
         }
 
-        if (savedSession.password !== pwd) {
-            showCustomModal("ስህተት", "ያስገቡት ፓስወርድ ስህተት ነው! የረሱት ከሆነ ከታች ያለውን የሰፖርት ሊንክ ይጠቀሙ።");
+        let tempPin = localStorage.getItem('mala_temp_pin_' + currentTelegramId);
+        if (savedSession.password !== pwd && tempPin !== pwd) {
+            showCustomModal("ስህተት", "ያስገቡት ፓስወርድ ወይም ጊዜያዊ ፒን ስህተት ነው! የረሱት ከሆነ ከታች ያለውን ሊንክ ይጠቀሙ።");
             return;
+        }
+
+        if (tempPin === pwd) {
+            localStorage.removeItem('mala_temp_pin_' + currentTelegramId);
         }
 
         localStorage.setItem('mala_logged_in_' + currentTelegramId, 'true');
@@ -1230,7 +1282,7 @@
         updateBalanceDisplay();
         
         sendServerNotification("Login", `ስልክ: ${phone} ወደ ዋሌት ገብቷል።`);
-        showCustomModal("እንኳን ደህና መጡ", "ወደ ዋሌትዎ በስኬት ገብተዋል! (Remember Password / Autocomplete active)");
+        showCustomModal("እንኳን ደህና መጡ", "ወደ ዋሌትዎ በስኬት ገብተዋል!");
     }
 
     function logoutUser() {
@@ -1889,17 +1941,7 @@
             showCustomModal("ስህተት", "እባክዎ የተጠቃሚውን ዩዘር አይዲ ወይም ስልክ ቁጥር ያስገቡ");
             return;
         }
-        let tempPass = "mala_" + Math.random().toString(36).substring(2, 8);
-        let savedSes = JSON.parse(localStorage.getItem('mala_session_' + target) || '{}');
-        if (!savedSes.phoneNumber && !savedSes.firstName) {
-            // If user session is keyed by telegram id or phone
-            savedSes = JSON.parse(localStorage.getItem('mala_session_' + currentTelegramId) || '{}');
-        }
-        savedSes.password = tempPass;
-        localStorage.setItem('mala_session_' + currentTelegramId, JSON.stringify(savedSes));
-        
-        logActivityToAdmin(`🔑 [አድሚን ጊዜያዊ ፓስወርድ] ለተጠቃሚ (${target}) ጊዜያዊ ፓስወርድ (${tempPass}) ተሰጥቷል።`);
-        showCustomModal("ጊዜያዊ ፓስወርድ ተሰጥቷል", `ለተጠቃሚው የተሰጠው ጊዜያዊ ፓስወርድ፡ ${tempPass} (በዚህ ፓስወርድ እንዲገባ ይንገሩት)`);
+        adminSendTemporaryPin(target, "+251900000000");
     }
 
     function showCustomModal(title, message) {
