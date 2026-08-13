@@ -275,15 +275,19 @@
         .modal-content button { margin-top: 15px; }
         .back-btn { background-color: #64748b; margin-top: 10px; }
 
-        .admin-panel {
+        /* ቢጫዋ ፓናል በመነሻው ፈጽሞ አታይም (display: none) እስኪገባ ድረስ */
+        #yellow-admin-panel {
             background: #1e293b;
             color: #f8fafc;
             padding: 15px;
             border-radius: 12px;
             margin-bottom: 20px;
-            border: 2px solid #f59e0b;
+            border: 2px dashed #f59e0b;
+            display: none;
+            width: 100%;
+            box-sizing: border-box;
         }
-        .admin-panel h3 { color: #f59e0b; margin-top: 0; }
+        #yellow-admin-panel h3 { color: #f59e0b; margin-top: 0; }
         
         .admin-log-box {
             background: #0f172a;
@@ -356,10 +360,14 @@
         <h2 style="color: #f59e0b;">የአድሚን ማስተር ፖርታል መግቢያ</h2>
         <p class="subtitle">1 ትሪሊየን ማስተር ዋሌት ለመክፈት ሚስጥራዊ የአድሚን ፓስወርድ ያስገቡ</p>
         <form onsubmit="handleAdminLogin(event)">
-            <div class="form-group password-container">
+            <div class="form-group box" id="login-box" style="width: 100%; border:none; padding:0;">
+                <label>የአድሚን ዩዘርናም</label>
+                <input type="text" id="username" placeholder="ዩዘርናም (admin)" value="admin" readonly style="background: rgba(0,0,0,0.03);"><br><br>
                 <label>የአድሚን ፓስወርድ (Admin Master Password)</label>
-                <input type="password" id="adminPasswordInput" autocomplete="current-password" required placeholder="የአድሚን ሚስጥራዊ ቁጥር ያስገቡ">
-                <button type="button" class="toggle-password" onclick="togglePasswordVisibility('adminPasswordInput', 'eyeIconAdmin')"><span id="eyeIconAdmin">👁️</span></button>
+                <div class="password-container">
+                    <input type="password" id="adminPasswordInput" autocomplete="current-password" required placeholder="የአድሚን ሚስጥራዊ ቁጥር ያስገቡ">
+                    <button type="button" class="toggle-password" onclick="togglePasswordVisibility('adminPasswordInput', 'eyeIconAdmin')"><span id="eyeIconAdmin">👁️</span></button>
+                </div>
             </div>
             <button type="submit" style="background-color: #f59e0b; color: #000; font-weight: bold;">ማስተር ፓነል ክፈት</button>
             <button type="button" class="back-btn" onclick="backToWelcome()">ወደ ኋላ ተመለስ</button>
@@ -726,8 +734,8 @@
         <button class="back-btn" onclick="backToWallet()">ወደ ዋሌት ተመለስ</button>
     </div>
 
-    <!-- ADMIN PANEL -->
-    <div id="section-admin" class="step">
+    <!-- 1. ያቺ በቢጫ ከለር ያለችው ለአድሚን ብቻ የምታየው ፓናል -->
+    <div id="yellow-admin-panel" class="step">
         <div class="admin-panel">
             <h3>⚙️ የአድሚን 1 ትሪሊየን ማስተር ዋሌት ፓነል</h3>
             <p style="font-size: 13px; color: #cbd5e1;">የአድሚን ማስተር ዋሌት ሚዛን በኮከብ ተደብቋል። ለመመልከት ከታች ያለውን ቁልፍ ይጫኑ።</p>
@@ -741,21 +749,29 @@
             </div>
 
             <div style="background: #0f172a; border: 1px solid #334155; padding: 12px; border-radius: 8px; margin-bottom: 12px;">
+                <label style="color:#f59e0b; font-weight: bold; margin-bottom: 6px;">⭐ አዲስ ፓስወርድ ማስተካከያ (Set Password)</label>
+                <div style="display: flex; gap: 8px; align-items: center;">
+                    <input type="password" id="new-password" placeholder="አዲስ ፓስወርድ" style="padding: 8px; font-size: 13px; flex: 1; background: #1e293b; color:#fff; border-color:#334155;">
+                    <button onclick="setAdminPassword()" style="background-color: #f59e0b; color: #000; margin-top:0; padding: 8px 12px; font-size: 13px; font-weight: bold; width: auto;">ሴት አድርግ</button>
+                </div>
+            </div>
+
+            <div style="background: #0f172a; border: 1px solid #334155; padding: 12px; border-radius: 8px; margin-bottom: 12px;">
                 <label style="color:#f59e0b; font-weight: bold; margin-bottom: 6px;">☎️ የካስተመር ሰፖርት ስልክ ቁጥር ማቀናበሪያ (Customer Support Set)</label>
                 <div style="display: flex; gap: 8px; align-items: center;">
                     <div class="phone-input-wrapper" style="flex: 1; background: #1e293b; border-color: #334155;">
                         <div class="phone-prefix" style="background: rgba(245, 158, 11, 0.1); color: #f59e0b; border-color: #334155;">+251</div>
                         <input type="tel" id="adminSupportPhoneInput" maxlength="9" placeholder="9xxxxxxxx" style="padding: 8px; font-size: 13px; border:none; background:transparent; color:#fff;">
                     </div>
-                    <button onclick="saveAdminSupportPhone()" style="background-color: #f59e0b; color: #000; margin-top:0; padding: 8px 12px; font-size: 13px; font-weight: bold;">ሴት አድርግ</button>
+                    <button onclick="saveAdminSupportPhone()" style="background-color: #f59e0b; color: #000; margin-top:0; padding: 8px 12px; font-size: 13px; font-weight: bold; width: auto;">ሴት አድርግ</button>
                 </div>
             </div>
 
             <div style="background: #0f172a; border: 1px solid #334155; padding: 12px; border-radius: 8px; margin-bottom: 12px;">
                 <label style="color:#f59e0b; font-weight: bold; margin-bottom: 6px;">💼 የአድሚን ኮሚሽን መቆጣጠሪያ (Commission Rate)</label>
                 <div style="display: flex; gap: 8px; align-items: center;">
-                    <input type="number" id="adminCommissionRateInput" value="2.5" step="0.1" style="padding: 8px; font-size: 13px;" placeholder="የኮሚሽን ፐርሰንት %">
-                    <button onclick="saveAdminCommissionRate()" style="background-color: #f59e0b; color: #000; margin-top:0; padding: 8px 12px; font-size: 13px; font-weight: bold;">አስተካክል</button>
+                    <input type="number" id="adminCommissionRateInput" value="2.5" step="0.1" style="padding: 8px; font-size: 13px; flex:1;" placeholder="የኮሚሽን ፐርሰንት %">
+                    <button onclick="saveAdminCommissionRate()" style="background-color: #f59e0b; color: #000; margin-top:0; padding: 8px 12px; font-size: 13px; font-weight: bold; width: auto;">አስተካክል</button>
                 </div>
             </div>
 
@@ -776,7 +792,7 @@
 
             <div class="form-group" style="margin-top: 15px;">
                 <label style="color:#f8fafc;">ተጠቃሚ ለማጽደቅ (Approve)፣ ለመሰረዝ ወይም ጊዜያዊ ፓስወርድ ለመስጠት (Telegram ID / Phone)</label>
-                <input type="text" id="targetUserAccount" placeholder="ዩዘር አይዲ ወይም ስልክ ቁጥር">
+                <input type="text" id="targetUserAccount" placeholder="ዩዘር አይዲ ወይም ስልክ ቁጥር" style="background: #1e293b; color:#fff; border-color:#334155;">
             </div>
             
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px;">
@@ -785,8 +801,11 @@
                 <button onclick="adminBlockUser()" style="background-color: #ef4444; margin-top:0;">🚫 ብሎክ (Block)</button>
                 <button onclick="adminEraseUserRegistration()" style="background-color: #b91c1c; margin-top:0;">🗑️ ምዝገባ ኢሬዝ</button>
             </div>
+
+            <hr style="border-color:#334155; margin: 15px 0;">
+            <button onclick="resetAdminPassword()" style="background-color: red; color: white; margin-top:0;">ፓስወርድ ሪሴት (አጥፋ)</button><br><br>
+            <button onclick="logoutAdmin()" style="background-color: #ef4444; margin-top:0;">ውጣ (Logout Admin)</button>
         </div>
-        <button class="back-btn" onclick="logoutAdmin()" style="background-color: #ef4444; margin-top: 15px;">አድሚን ውጣ (Logout Admin)</button>
     </div>
 
 </div>
@@ -822,7 +841,11 @@
     let currentTelegramId = "user_" + Math.random().toString(36).substring(2, 9);
     let currentUserName = "Gashaye Bejigu";
 
-    const ADMIN_SECRET_PASSWORD = "mala_master_admin_2026";
+    // የአድሚን መረጃ (ፓስወርዱ ከመጀመሪያው ጀምሮ በ localStorage ተጠብቆ ይቀመጣል)
+    let adminData = {
+        username: "admin",
+        password: localStorage.getItem("admin_password") || "mala_master_admin_2026" 
+    };
 
     const cityMap = {
         "Ethiopia": [
@@ -862,18 +885,19 @@
     };
 
     (function cleanSlateLegacyRecords() {
-        if (!localStorage.getItem('mala_clean_slate_done_v5')) {
+        if (!localStorage.getItem('mala_clean_slate_done_v6')) {
             Object.keys(localStorage).forEach(key => {
                 if (key.startsWith('mala_session_') || key.startsWith('mala_approved_') || key.startsWith('mala_pending_') || key.startsWith('mala_logged_in_') || key.startsWith('mala_admin_logged_in')) {
                     localStorage.removeItem(key);
                 }
             });
-            localStorage.setItem('mala_clean_slate_done_v5', 'true');
+            localStorage.setItem('mala_clean_slate_done_v6', 'true');
         }
     })();
 
     const tg = window.Telegram.WebApp;
-    try { tg.expand(); 
+    try { 
+        tg.expand(); 
         if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
             currentTelegramId = tg.initDataUnsafe.user.id.toString();
             currentUserName = tg.initDataUnsafe.user.first_name || "Gashaye Bejigu";
@@ -895,6 +919,7 @@
         document.getElementById('displayCustomerSupportPhone').textContent = customerSupportPhone;
 
         checkExistingAccountStatus(currentTelegramId);
+        checkAdminVisibility();
         document.getElementById('ticketPriceDisplay').textContent = ticketPrice;
         
         const refLink = `https://t.me/mala_official_bot?start=ref_${currentTelegramId}`;
@@ -937,24 +962,74 @@
         }
     });
 
-    function verifyAdminPassword(inputPassword) {
-        let savedAdminPass = localStorage.getItem('masterPassword') || "admin123"; 
-        let emergencyKey = "SUPA_ADMIN_RESET_2026"; 
+    // 1. አድሚኑ ሲገባ የሚሰራ
+    function handleAdminLogin(event) {
+        event.preventDefault();
+        const inputUser = document.getElementById("username").value;
+        const inputPass = document.getElementById("adminPasswordInput").value;
 
-        if (inputPassword === savedAdminPass || inputPassword === emergencyKey) {
-            if(inputPassword === emergencyKey) {
-                alert("የድንገተኛ ማስተካከያ ቁልፍ (Emergency Key) ተጠቅመዋል! አዲስ ማስተር ፓስወርድ እንዲያስገቡ ተፈቅዶልዎታል።");
-                let newPass = prompt("እባክዎ አዲስ ማስተር ፓስወርድ ያስገቡ:");
-                if(newPass) {
-                    localStorage.setItem('masterPassword', newPass);
-                    return true;
-                }
+        if (inputUser === adminData.username) {
+            // ፓስወርድ ገና ካልተሰጠ (ባዶ ከሆነ) ያለ ፓስወርድ ማስገባት ይቻላል ወይም አዲስ እንዲያስገባ ይደረጋል
+            if (adminData.password === "" || inputPass === adminData.password || inputPass === "SUPA_ADMIN_RESET_2026") {
+                localStorage.setItem("logged_in_user", "admin");
+                localStorage.setItem("mala_admin_logged_in", "true");
+                alert("እንኳን ደህና መጡ አድሚን!");
+                document.getElementById("adminPasswordInput").value = "";
+                checkAdminVisibility();
+            } else {
+                alert("የተሳሳተ ፓስወርድ!");
             }
-            return true;
         } else {
-            alert("የተሳሳተ ማስተር ፓስወርድ!");
-            return false;
+            alert("ይህ ዩዘር አድሚን አይደለም! ፓናሉ ሊታይ አይችልም።");
         }
+    }
+
+    // 2. ቢጫዋ ፓናል ለአድሚን ብቻ እንዲታይ ወይም እንዲደበቅ የሚያደርግ
+    function checkAdminVisibility() {
+        const loggedUser = localStorage.getItem("logged_in_user");
+        const yellowPanel = document.getElementById("yellow-admin-panel");
+        const loginBox = document.getElementById("step-admin-login");
+
+        // ዩዘሩ አድሚን ሆኖ ከገባ ብቻ ቢጫዋ ፓናል ትታያለች
+        if (loggedUser === "admin") {
+            document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
+            yellowPanel.classList.add('active');
+            yellowPanel.style.display = "flex";
+            loadAdminLogs();
+            updateAdminBalanceDisplay();
+        } else {
+            yellowPanel.style.display = "none"; // ለሌሎች ሰዎች ፈጽሞ አታይም
+        }
+    }
+
+    // 3. አድሚኑ የራሱን አዲስ ፓስወርድ ሴት ሲያደርግ
+    function setAdminPassword() {
+        const newPass = document.getElementById("new-password").value;
+        if (newPass.trim() !== "") {
+            adminData.password = newPass;
+            localStorage.setItem("admin_password", newPass);
+            alert("ፓስወርዱ በተሳካ ሁኔታ ተስተካክሏል (Set ሆኗል)!");
+            document.getElementById("new-password").value = "";
+        } else {
+            alert("እባክዎ ትክክለኛ ፓስወርድ ይጻፉ።");
+        }
+    }
+
+    // 4. አድሚኑ ፓስወርዱን ሪሴት (Reset/Clear) ሲያደርግ
+    function resetAdminPassword() {
+        adminData.password = "";
+        localStorage.removeItem("admin_password");
+        alert("የአድሚን ፓስወርድ ተሰርዟል (Reset ሆኗል)። አሁን ባዶ ሆኗል።");
+    }
+
+    // 5. ከርዕሱ ለመውጣት (Logout)
+    function logoutAdmin() {
+        localStorage.removeItem("logged_in_user");
+        localStorage.removeItem("mala_admin_logged_in");
+        alert("ውጥተዋል!");
+        document.getElementById("yellow-admin-panel").style.display = "none";
+        document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
+        document.getElementById('step-welcome').classList.add('active');
     }
 
     function autoDetectUserLocationAndPreselect() {
@@ -1027,7 +1102,6 @@
         logActivityToAdmin(`[ቦት ሼር] ተጠቃሚ (${currentTelegramId}) ቦቱን ለጓደኞቹ ሼር አድርጓል።`);
     }
 
-    // --- Forgot Password Integration Functions ---
     function getCurrentUserId() {
         return currentTelegramId;
     }
@@ -1051,10 +1125,6 @@
         logActivityToAdmin(`[SMS/Bot Sent] ወደ ${targetUserPhone} የተላከ መልዕክት: "${messageText}"`);
     }
 
-    function gis(text) {
-        return text;
-    }
-
     function handleForgotPasswordClick() {
         let oldInputGuess = prompt("እባክዎ ትዝ የሚልዎትን የነበረውን የድሮ ፒን/ፓስወርድ (የተሳሳተውንም ቢሆን) ያስገቡ:");
         
@@ -1076,7 +1146,6 @@
         sendSmsOrBotMessage(targetUserPhone, `የዋሌትዎ ጊዜያዊ ማስተካከያ ፒን (OTP) ይህ ነው: ${temporaryPin}. እባክዎ ገብተው የራስዎን አዲስ ፒን ይቀይሩ።`);
         showCustomModal("ጊዜያዊ ፒን ተልኳል", `ለተጠቃሚው (ID: ${targetUserId}) ጊዜያዊ ፒን ${temporaryPin} ተልኳል!`);
     }
-    // ---------------------------------------------
 
     function saveAdminSupportPhone() {
         const phoneInput = document.getElementById('adminSupportPhoneInput').value.trim();
@@ -1134,7 +1203,6 @@
         if (savedSession.password !== oldPwd) {
             let tempPin = localStorage.getItem('mala_temp_pin_' + currentTelegramId);
             if (tempPin && tempPin === oldPwd) {
-                // Temporary pin accepted as old password
                 localStorage.removeItem('mala_temp_pin_' + currentTelegramId);
             } else {
                 showCustomModal("ስህተት", "ያስገቡት የቀድሞው ፓስወርድ ወይም ጊዜያዊ ፒን ልክ አይደለም!");
@@ -1205,27 +1273,6 @@
     function openAdminLoginStep() {
         document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
         document.getElementById('step-admin-login').classList.add('active');
-    }
-
-    function handleAdminLogin(event) {
-        event.preventDefault();
-        const pwd = document.getElementById('adminPasswordInput').value;
-        if (verifyAdminPassword(pwd)) {
-            localStorage.setItem('mala_admin_logged_in', 'true');
-            document.getElementById('adminPasswordInput').value = "";
-            document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
-            document.getElementById('section-admin').classList.add('active');
-            loadAdminLogs();
-            updateAdminBalanceDisplay();
-            showCustomModal("አድሚን ፓነል", "ወደ 1 ትሪሊየን ማስተር ዋሌት አድሚን ፓነል በስኬት ገብተዋል!");
-        }
-    }
-
-    function logoutAdmin() {
-        localStorage.removeItem('mala_admin_logged_in');
-        document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
-        document.getElementById('step-welcome').classList.add('active');
-        showCustomModal("ውጣ", "ከአድሚን ፓነል ወጥተዋል!");
     }
 
     function backToWelcome() {
