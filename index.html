@@ -820,7 +820,7 @@
     let customerSupportPhone = "+251911223344";
 
     let currentTelegramId = "user_" + Math.random().toString(36).substring(2, 9);
-    let currentUserName = "Sibey Girma";
+    let currentUserName = "Gashaye Bejigu";
 
     const ADMIN_SECRET_PASSWORD = "mala_master_admin_2026";
 
@@ -876,7 +876,7 @@
     try { tg.expand(); 
         if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
             currentTelegramId = tg.initDataUnsafe.user.id.toString();
-            currentUserName = tg.initDataUnsafe.user.first_name || "Sibey Girma";
+            currentUserName = tg.initDataUnsafe.user.first_name || "Gashaye Bejigu";
         }
     } catch (e) {}
 
@@ -955,20 +955,6 @@
             alert("የተሳሳተ ማስተር ፓስወርድ!");
             return false;
         }
-    }
-
-    // አድሚኑ ዳታቤዝ ውስጥ ፓስወርድ ሪሴት የሚያደርግበት የ Backend Function (Node.js/Bcrypt) ምሳሌ
-    const bcrypt = require ? require('bcrypt') : null;
-    async function adminResetPassword(userEmail, temporaryPassword) {
-        if (!bcrypt) return;
-        const saltRounds = 10;
-        const hashedPassword = await bcrypt.hash(temporaryPassword, saltRounds);
-
-        // ዳታቤዝ ውስጥ ማስተካከያ ትዕዛዝ (SQL Command)
-        // UPDATE users SET password = 'NEW_HASHED_PASSWORD_HERE' WHERE email = 'user_email@example.com';
-        // await database.query('UPDATE users SET password = ? WHERE email = ?', [hashedPassword, userEmail]);
-        
-        console.log(`የ ${userEmail} ፓስወርድ ተቀይሯል፤ ጊዜያዊ ፓስወርዱም: ${temporaryPassword} ነው።`);
     }
 
     function autoDetectUserLocationAndPreselect() {
