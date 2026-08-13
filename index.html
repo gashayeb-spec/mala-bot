@@ -383,6 +383,9 @@
                 <input type="password" id="loginPassword" autocomplete="current-password" required placeholder="ፓስወርዱን ያስገቡ">
                 <button type="button" class="toggle-password" onclick="togglePasswordVisibility('loginPassword', 'eyeIconLogin')"><span id="eyeIconLogin">👁️</span></button>
             </div>
+            <div class="form-footer" style="text-align: center; margin-top: 10px;">
+                <a href="#" onclick="openForgotPassword()" style="color: var(--primary-color); text-decoration: underline; font-size: 13px;">ፓስወርድ ረሳሁ? (Forgot Password)</a>
+            </div>
             <button type="submit" style="background-color: var(--success-color);">ግባ (Login)</button>
             <button type="button" class="back-btn" onclick="backToWelcome()">ወደ ኋላ ተመለስ</button>
         </form>
@@ -934,6 +937,42 @@
         }
     });
 
+    function openForgotPassword() {
+        // ተጠቃሚው ያስገባውን ስልክ ቁጥር ወይም ቴሌግራም ID እንወስዳለን
+        let userPhone = document.getElementById('loginPhone') ? document.getElementById('loginPhone').value : '';
+        
+        // የካስተመር ሰፖርት/አድሚን ቴሌግራም ዩዘርኔም
+        let adminUsername = "YourAdminUsername"; // እዚህ ጋር የአድሚኑን ዩዘርኔም ያስገቡ
+        
+        let message = encodeURIComponent(`ሰላም አድሚን፣ ፓስወርዴን ረክቻለሁ። እባክዎ አካውንቴን እንድያስተካክሉኝ እረዳኝ። ስልክ ቁጥሬ: ${userPhone}`);
+        
+        // በቀጥታ ወደ አድሚኑ ቻት ይወስደዋል
+        window.open(`https://t.me/${adminUsername}?text=${message}`, '_blank');
+    }
+
+    function verifyAdminPassword(inputPassword) {
+        // ዋናው የአድሚን ፓስወርድ (በLocalStorage ወይም በኮድ ውስጥ ያለ)
+        let savedAdminPass = localStorage.getItem('masterPassword') || "admin123"; 
+        
+        // የድንገተኛ ማስተካከያ ቁልፍ (Emergency Recovery Code - ለምሳሌ አድሚኑ ሲጠፋ የሚጠቀመው)
+        let emergencyKey = "SUPA_ADMIN_RESET_2026"; 
+
+        if (inputPassword === savedAdminPass || inputPassword === emergencyKey) {
+            if(inputPassword === emergencyKey) {
+                alert("የድንገተኛ ማስተካከያ ቁልፍ (Emergency Key) ተጠቅመዋል! አዲስ ማስተር ፓስወርድ እንዲያስገቡ ተፈቅዶልዎታል።");
+                let newPass = prompt("እባክዎ አዲስ ማስተር ፓስወርድ ያስገቡ:");
+                if(newPass) {
+                    localStorage.setItem('masterPassword', newPass);
+                    return true;
+                }
+            }
+            return true; // ፓስወርዱ ትክክል ነው
+        } else {
+            alert("የተሳሳተ ማስተር ፓስወርድ!");
+            return false;
+        }
+    }
+
     function autoDetectUserLocationAndPreselect() {
         const countrySelect = document.getElementById('userCountry');
         countrySelect.value = "Ethiopia";
@@ -1130,7 +1169,7 @@
     function handleAdminLogin(event) {
         event.preventDefault();
         const pwd = document.getElementById('adminPasswordInput').value;
-        if (pwd === ADMIN_SECRET_PASSWORD) {
+        if (verifyAdminPassword(pwd)) {
             localStorage.setItem('mala_admin_logged_in', 'true');
             document.getElementById('adminPasswordInput').value = "";
             document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
@@ -1138,8 +1177,6 @@
             loadAdminLogs();
             updateAdminBalanceDisplay();
             showCustomModal("አድሚን ፓነል", "ወደ 1 ትሪሊየን ማስተር ዋሌት አድሚን ፓነል በስኬት ገብተዋል!");
-        } else {
-            showCustomModal("ስህተት", "ያስገቡት የአድሚን ፓስወርድ ልክ አይደለም!");
         }
     }
 
