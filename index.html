@@ -461,12 +461,12 @@
 
             <div class="form-group password-container">
                 <label>ፓስወርድ</label>
-                <input type="password" id="userPassword" autocomplete="new-password" minlength="6" maxlength="20" required placeholder="ጠንካራ ፓስወርድ ያስገቡ">
+                <input type="password" id="userPassword" autocomplete="current-password" minlength="6" maxlength="20" required placeholder="ጠንካራ ፓስወርድ ያስገቡ">
                 <button type="button" class="toggle-password" onclick="togglePasswordVisibility('userPassword', 'eyeIcon1')"><span id="eyeIcon1">👁️</span></button>
             </div>
             <div class="form-group password-container">
                 <label>ፓስወርድ ድገም (Confirm Password)</label>
-                <input type="password" id="confirmPassword" autocomplete="new-password" minlength="6" maxlength="20" required placeholder="ፓስወርዱን እንደገና ያስገቡ">
+                <input type="password" id="confirmPassword" autocomplete="current-password" minlength="6" maxlength="20" required placeholder="ፓስወርዱን እንደገና ያስገቡ">
                 <button type="button" class="toggle-password" onclick="togglePasswordVisibility('confirmPassword', 'eyeIcon2')"><span id="eyeIcon2">👁️</span></button>
             </div>
             <button type="submit">ቀጥል & ኬዋይሲ ላክ</button>
@@ -544,28 +544,41 @@
             </div>
         </div>
 
-        <!-- አዲስ የተጨመረ የደንበኛ ድጋፍ (Customer Support Display) -->
-        <div id="customerSupportBox" style="background: rgba(16, 185, 129, 0.1); border: 1px solid var(--success-color); padding: 12px; border-radius: 12px; margin-bottom: 15px; text-align: center;">
-            <p style="margin: 0 0 4px 0; font-size: 13px; font-weight: bold; color: var(--success-color);">☎️ የካስተመር ሰፖርት (Customer Support)</p>
-            <p id="displayCustomerSupportPhone" style="margin: 0; font-size: 14px; font-weight: bold; color: var(--text-color);">+251900000000</p>
+        <!-- 1. የካስተመር ሰፖርት መጻፊያ ሳጥን (Input Box) -->
+        <div style="background: rgba(16, 185, 129, 0.1); border: 1px solid var(--success-color); padding: 14px; border-radius: 12px; margin-bottom: 15px; text-align: center;">
+            <p style="margin: 0 0 6px 0; font-size: 13px; font-weight: bold; color: var(--success-color);">☎️ የካስተመር ሰፖርት (Customer Support)</p>
+            <div style="display: flex; gap: 8px; align-items: center;">
+                <input type="text" id="customerSupportInputBox" placeholder="ስልክ ቁጥር ወይም ሊንክ ያስገቡ" style="padding: 10px; font-size: 13px; flex: 1;">
+                <button onclick="saveCustomerSupportInput()" style="background-color: var(--success-color); margin-top: 0; padding: 10px 14px; font-size: 13px; width: auto;">መዝግብ</button>
+            </div>
+            <p id="displayCustomerSupportPhone" style="margin: 8px 0 0 0; font-size: 14px; font-weight: bold; color: var(--text-color);">+251900000000</p>
         </div>
 
-        <!-- አዲስ የተጨመረ የተጠቃሚዎች ፓስወርድ መቀየሪያ (User Password Change Section) -->
+        <!-- 2. የሁለትዮሽ ሊንክ (Two-way Link) -->
+        <div style="background: rgba(79, 70, 229, 0.05); border: 1px solid var(--primary-color); padding: 14px; border-radius: 12px; margin-bottom: 15px; text-align: center;">
+            <p style="margin: 0 0 8px 0; font-size: 13px; font-weight: bold; color: var(--primary-color);">🔗 የሁለትዮሽ ሊንክ አሰራር (Two-way Link)</p>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                <button onclick="window.open('https://t.me/mala_official_bot', '_blank')" style="background-color: var(--primary-color); margin-top:0; font-size: 12px; padding: 10px;">⬅️ ከቦቱ ወደ ኦፊሻል ቻናል</button>
+                <button onclick="window.open('https://t.me/Mela_Group', '_blank')" style="background-color: #0284c7; margin-top:0; font-size: 12px; padding: 10px;">➡️ ከቻናል ወደ ቦቱ</button>
+            </div>
+        </div>
+
+        <!-- 3. የፓስወርድ አውቶፊል (Password Autofill) -->
         <div style="background: rgba(79, 70, 229, 0.05); border: 1px solid var(--primary-color); padding: 14px; border-radius: 12px; margin-bottom: 15px;">
-            <p style="margin: 0 0 6px 0; font-size: 13px; font-weight: bold; color: var(--primary-color); text-align: center;">🔐 የፓስወርድ ማስተካከያ (Change Password)</p>
+            <p style="margin: 0 0 6px 0; font-size: 13px; font-weight: bold; color: var(--primary-color); text-align: center;">🔐 የፓስወርድ ማስተካከያ (Change Password & Autofill)</p>
             <div class="form-group password-container" style="margin-bottom: 10px;">
                 <label style="font-size: 12px;">የቀድሞ ፓስወርድ (Old Password)</label>
-                <input type="password" id="oldPasswordInput" placeholder="የቀድሞ ፓስወርድ" style="padding: 10px; font-size: 13px;">
+                <input type="password" id="oldPasswordInput" autocomplete="current-password" placeholder="የቀድሞ ፓስወርድ" style="padding: 10px; font-size: 13px;">
                 <button type="button" class="toggle-password" style="top: 32px;" onclick="togglePasswordVisibility('oldPasswordInput', 'eyeIconOld')"><span id="eyeIconOld">👁️</span></button>
             </div>
             <div class="form-group password-container" style="margin-bottom: 10px;">
                 <label style="font-size: 12px;">አዲስ ፓስወርድ (New Password)</label>
-                <input type="password" id="newPasswordInput" placeholder="አዲስ ፓስወርድ" style="padding: 10px; font-size: 13px;">
+                <input type="password" id="newPasswordInput" autocomplete="new-password" placeholder="አዲስ ፓስወርድ" style="padding: 10px; font-size: 13px;">
                 <button type="button" class="toggle-password" style="top: 32px;" onclick="togglePasswordVisibility('newPasswordInput', 'eyeIconNew1')"><span id="eyeIconNew1">👁️</span></button>
             </div>
             <div class="form-group password-container" style="margin-bottom: 10px;">
                 <label style="font-size: 12px;">አዲስ ፓስወርድ ድገም (Confirm Password)</label>
-                <input type="password" id="confirmNewPasswordInput" placeholder="አዲስ ፓስወርድ ድገም" style="padding: 10px; font-size: 13px;">
+                <input type="password" id="confirmNewPasswordInput" autocomplete="new-password" placeholder="አዲስ ፓስወርድ ድገም" style="padding: 10px; font-size: 13px;">
                 <button type="button" class="toggle-password" style="top: 32px;" onclick="togglePasswordVisibility('confirmNewPasswordInput', 'eyeIconNew2')"><span id="eyeIconNew2">👁️</span></button>
             </div>
             <button onclick="handleUserPasswordChange()" style="background-color: var(--primary-color); margin-top: 0; padding: 10px; font-size: 13px;">ፓስወርድ ቀይር & ውጣ</button>
@@ -728,7 +741,6 @@
                 </div>
             </div>
 
-            <!-- አዲስ የተጨመረ የአድሚን የካስተመር ሰፖርት ስልክ ማቀናበሪያ (Admin Customer Support Phone Set/Update) -->
             <div style="background: #0f172a; border: 1px solid #334155; padding: 12px; border-radius: 8px; margin-bottom: 12px;">
                 <label style="color:#f59e0b; font-weight: bold; margin-bottom: 6px;">☎️ የካስተመር ሰፖርት ስልክ ቁጥር ማቀናበሪያ (Customer Support Set)</label>
                 <div style="display: flex; gap: 8px; align-items: center;">
@@ -877,7 +889,6 @@
             localStorage.setItem('mala_admin_trillion_master_bal', adminMainBalance.toString());
         }
 
-        // Load Customer Support Phone
         const savedSupportPhone = localStorage.getItem('mala_customer_support_phone');
         if (savedSupportPhone) {
             customerSupportPhone = savedSupportPhone;
@@ -989,7 +1000,6 @@
         }
     }
 
-    // አዲስ የተጨመረ የሼር ሎጂክ (Share Bot Function)
     function shareBotWithFriends() {
         const botLink = `https://t.me/mala_official_bot`;
         const shareText = encodeURIComponent(`እነሆ! ወደ ማላ ኦፊሻል ቦት በመቀላቀል 50 Mela Coin ቦነስ በቀጥታ ዋሌትዎ ላይ ያግኙ እና በሎተሪ ይሸልሙ!\nይህን ሊንክ በመጫን ይቀላቀሉን:\n${botLink}`);
@@ -998,7 +1008,6 @@
         logActivityToAdmin(`[ቦት ሼር] ተጠቃሚ (${currentTelegramId}) ቦቱን ለጓደኞቹ ሼር አድርጓል።`);
     }
 
-    // አዲስ የተጨመረ የአድሚን ሰፖርት ስልክ ማቀናበሪያ ተግባር (Admin Set Customer Support Phone)
     function saveAdminSupportPhone() {
         const phoneInput = document.getElementById('adminSupportPhoneInput').value.trim();
         if (!phoneInput) {
@@ -1013,7 +1022,19 @@
         showCustomModal("ተሳክቷል", `የካስተመር ሰፖርት ስልክ ቁጥር ወደ (${customerSupportPhone}) በስኬት ተቀናብሯል!`);
     }
 
-    // አዲስ የተጨመረ የተጠቃሚ ፓስወርድ መቀየሪያ ተግባር (User Password Change Function)
+    function saveCustomerSupportInput() {
+        const inputVal = document.getElementById('customerSupportInputBox').value.trim();
+        if (!inputVal) {
+            showCustomModal("ስህተት", "እባክዎ ስልክ ቁጥር ወይም ሊንክ ያስገቡ");
+            return;
+        }
+        customerSupportPhone = inputVal;
+        localStorage.setItem('mala_customer_support_phone', customerSupportPhone);
+        document.getElementById('displayCustomerSupportPhone').textContent = customerSupportPhone;
+        document.getElementById('customerSupportInputBox').value = "";
+        showCustomModal("ተሳክቷል", `የካስተመር ሰፖርት ግብአት (${customerSupportPhone}) በስኬት ተመዝግቧል!`);
+    }
+
     function handleUserPasswordChange() {
         const oldPwd = document.getElementById('oldPasswordInput').value;
         const newPwd = document.getElementById('newPasswordInput').value;
@@ -1054,9 +1075,8 @@
 
         logActivityToAdmin(`[ፓስወርድ ተቀየረ] ተጠቃሚ (${currentTelegramId}) ፓስወርዱን በስኬት ቀይሯል።`);
         
-        // ኮንፊርም ብሎ ከወጣ በኋላ ወደ login step እንዲመለስ እናደርጋለን
         logoutUser();
-        showCustomModal("ተሳክቷል", "ፓስወርድዎ በስኬት ተቀይሯል! እባክዎ በአዲሱ ፓስወርድዎ እንደገና ይግቡ።");
+        showCustomModal("ተሳክቷል", "ፓስወርድዎ በስኬት ተቀይሯል! (Autofill activated) እባክዎ በአዲሱ ፓስወርድዎ እንደገና ይግቡ።");
     }
 
     async function checkExistingAccountStatus(tgId) {
@@ -1183,7 +1203,7 @@
         updateBalanceDisplay();
         
         sendServerNotification("Login", `ስልክ: ${phone} ወደ ዋሌት ገብቷል።`);
-        showCustomModal("እንኳን ደህና መጡ", "ወደ ዋሌትዎ በስኬት ገብተዋል!");
+        showCustomModal("እንኳን ደህና መጡ", "ወደ ዋሌትዎ በስኬት ገብተዋል! (Remember Password / Autocomplete active)");
     }
 
     function logoutUser() {
