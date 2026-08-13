@@ -345,7 +345,6 @@
                 <button onclick="window.open('https://t.me/mala_official_bot', '_blank')" style="background-color: #0284c7; margin-top:0; font-size: 12px; padding: 10px;">🤖 ኦፊሻል ቦታችንን ይጎብኙ</button>
                 <button onclick="window.open('https://t.me/Mela_Group', '_blank')" style="background-color: #0d9488; margin-top:0; font-size: 12px; padding: 10px;">💬 የውይይት ግሩፕ</button>
             </div>
-            <!-- አዲስ የተጨመረ የሼር አዝራር (Channel Integration & Share) -->
             <div style="margin-top: 10px;">
                 <button onclick="shareBotWithFriends()" style="background-color: #2563eb; margin-top:0; font-size: 13px; padding: 10px;">📤 ቦቱን ለሌሎች ሼር አድርግ (Share Bot)</button>
             </div>
@@ -544,7 +543,6 @@
             </div>
         </div>
 
-        <!-- 1. የካስተመር ሰፖርት መጻፊያ ሳጥን (Input Box) -->
         <div style="background: rgba(16, 185, 129, 0.1); border: 1px solid var(--success-color); padding: 14px; border-radius: 12px; margin-bottom: 15px; text-align: center;">
             <p style="margin: 0 0 6px 0; font-size: 13px; font-weight: bold; color: var(--success-color);">☎️ የካስተመር ሰፖርት (Customer Support)</p>
             <div style="display: flex; gap: 8px; align-items: center;">
@@ -554,7 +552,6 @@
             <p id="displayCustomerSupportPhone" style="margin: 8px 0 0 0; font-size: 14px; font-weight: bold; color: var(--text-color);">+251900000000</p>
         </div>
 
-        <!-- 2. የሁለትዮሽ ሊንክ (Two-way Link) -->
         <div style="background: rgba(79, 70, 229, 0.05); border: 1px solid var(--primary-color); padding: 14px; border-radius: 12px; margin-bottom: 15px; text-align: center;">
             <p style="margin: 0 0 8px 0; font-size: 13px; font-weight: bold; color: var(--primary-color);">🔗 የሁለትዮሽ ሊንክ አሰራር (Two-way Link)</p>
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
@@ -563,7 +560,6 @@
             </div>
         </div>
 
-        <!-- 3. የፓስወርድ አውቶፊል (Password Autofill) -->
         <div style="background: rgba(79, 70, 229, 0.05); border: 1px solid var(--primary-color); padding: 14px; border-radius: 12px; margin-bottom: 15px;">
             <p style="margin: 0 0 6px 0; font-size: 13px; font-weight: bold; color: var(--primary-color); text-align: center;">🔐 የፓስወርድ ማስተካከያ (Change Password & Autofill)</p>
             <div class="form-group password-container" style="margin-bottom: 10px;">
@@ -727,7 +723,7 @@
         <button class="back-btn" onclick="backToWallet()">ወደ ዋሌት ተመለስ</button>
     </div>
 
-    <!-- ADMIN PANEL (1 TRILLION MASTER WALLET - PASSWORD PROTECTED & HIDDEN) -->
+    <!-- ADMIN PANEL -->
     <div id="section-admin" class="step">
         <div class="admin-panel">
             <h3>⚙️ የአድሚን 1 ትሪሊየን ማስተር ዋሌት ፓነል</h3>
@@ -818,7 +814,7 @@
     let isLotteryBlockedByAdmin = false;
     let pendingTimerInterval = null;
     let minWithdrawLimit = 2000.00; 
-    let customerSupportPhone = "+251911223344"; // Default Support Phone
+    let customerSupportPhone = "+251911223344";
 
     let currentTelegramId = "user_" + Math.random().toString(36).substring(2, 9);
     let currentUserName = "ተጠቃሚ";
