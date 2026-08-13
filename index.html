@@ -342,9 +342,15 @@
         <div style="background: rgba(79, 70, 229, 0.05); border: 1px solid var(--primary-color); padding: 14px; border-radius: 12px; text-align: center; margin-top: 10px;">
             <p style="margin: 0 0 8px 0; font-size: 13px; font-weight: bold; color: var(--primary-color);">🌐 የማህበረሰብ ማዕከል (Bot, Group & Channel)</p>
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
-                <button onclick="window.open('https://t.me/mala_official_bot', '_blank')" style="background-color: #0284c7; margin-top:0; font-size: 12px; padding: 10px;">🤖 ኦፊሻል ቦታችንን ይጎብኙ</button>
-                <button onclick="window.open('https://t.me/Mela_Group', '_blank')" style="background-color: #0d9488; margin-top:0; font-size: 12px; padding: 10px;">💬 የውይይት ግሩፕ</button>
+                <button onclick="openLinkSeamless('https://t.me/mala_official_bot')" style="background-color: #0284c7; margin-top:0; font-size: 12px; padding: 10px;">🤖 ኦፊሻል ቦታችንን ይጎብኙ</button>
+                <button onclick="openLinkSeamless('https://t.me/Mela_Group')" style="background-color: #0d9488; margin-top:0; font-size: 12px; padding: 10px;">💬 የውይይት ግሩፕ</button>
             </div>
+        </div>
+
+        <!-- Dynamic Customer Support Container -->
+        <div id="customerSupportBox" style="margin-top: 15px; padding: 12px; border-radius: 10px; background: rgba(0,0,0,0.03); text-align: center; font-size: 13px;">
+            <span id="supportLabelText" style="font-weight: bold; display: block; margin-bottom: 4px;">📞 የደንበኛ ድጋፍ (Customer Support):</span>
+            <a id="supportLinkTag" href="https://t.me/mala_official_bot" target="_blank" style="color: var(--primary-color); font-weight: bold; text-decoration: underline;">@mala_official_bot</a>
         </div>
     </div>
 
@@ -532,8 +538,8 @@
         <div style="background: rgba(79, 70, 229, 0.05); border: 1px solid var(--primary-color); padding: 12px; border-radius: 12px; margin-bottom: 15px; text-align: center;">
             <p style="margin: 0 0 6px 0; font-size: 13px; font-weight: bold; color: var(--primary-color);">🚀 ቻናል፣ ግሩፕ እና ቦት መተላለፊያ</p>
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
-                <button onclick="window.open('https://t.me/mala_official_bot', '_blank')" style="background-color: #0284c7; margin-top:0; font-size: 12px; padding: 10px;">🤖 ኦፊሻል ቦታችንን ይጎብኙ</button>
-                <button onclick="window.open('https://t.me/Mela_Group', '_blank')" style="background-color: #0d9488; margin-top:0; font-size: 12px; padding: 10px;">💬 የውይይት ግሩፕ</button>
+                <button onclick="openLinkSeamless('https://t.me/mala_official_bot')" style="background-color: #0284c7; margin-top:0; font-size: 12px; padding: 10px;">🤖 ኦፊሻል ቦታችንን ይጎብኙ</button>
+                <button onclick="openLinkSeamless('https://t.me/Mela_Group')" style="background-color: #0d9488; margin-top:0; font-size: 12px; padding: 10px;">💬 የውይይት ግሩፕ</button>
             </div>
         </div>
 
@@ -566,8 +572,38 @@
         <div style="margin-bottom: 10px;">
             <button onclick="openReferralSection()" style="background-color: #0d9488; width: 100%;">🎁 ሪፈራል ሊንክ & ኮሚሽን (Invite & Earn)</button>
         </div>
+
+        <!-- Password Change Section Button -->
+        <div style="margin-bottom: 10px;">
+            <button onclick="openPasswordChangeSection()" style="background-color: #d97706; width: 100%;">🔐 የፓስወርድ መቀየሪያ ፓናል (Change Password)</button>
+        </div>
         
         <button class="back-btn" onclick="logoutUser()" style="background-color: #ef4444; margin-top: 15px;">ከአካውንት ውጣ (Logout)</button>
+    </div>
+
+    <!-- PASSWORD CHANGE SECTION -->
+    <div id="section-password-change" class="step">
+        <h2>የፓስወርድ መቀየሪያ ፓናል</h2>
+        <p class="subtitle">አካውንትዎን ለመጠበቅ አሮጌውን እና አዲሱን ፓስወርድ ያስገቡ</p>
+        <form onsubmit="handlePasswordChangeSubmit(event)">
+            <div class="form-group password-container">
+                <label>የድሮ ፓስወርድ (Old Password)</label>
+                <input type="password" id="oldPasswordInput" required placeholder="አሁን ያለውን ፓስወርድ ያስገቡ">
+                <button type="button" class="toggle-password" onclick="togglePasswordVisibility('oldPasswordInput', 'eyeOld')"><span id="eyeOld">👁️</span></button>
+            </div>
+            <div class="form-group password-container">
+                <label>አዲስ ፓስወርድ (New Password)</label>
+                <input type="password" id="newPasswordInput" minlength="6" required placeholder="አዲሱን ፓስወርድ ያስገቡ">
+                <button type="button" class="toggle-password" onclick="togglePasswordVisibility('newPasswordInput', 'eyeNew')"><span id="eyeNew">👁️</span></button>
+            </div>
+            <div class="form-group password-container">
+                <label>አዲስ ፓስወርድ ድገም (Confirm New Password)</label>
+                <input type="password" id="confirmNewPasswordInput" minlength="6" required placeholder="አዲሱን ፓስወርድ እንደገና ያስገቡ">
+                <button type="button" class="toggle-password" onclick="togglePasswordVisibility('confirmNewPasswordInput', 'eyeConfirm')"><span id="eyeConfirm">👁️</span></button>
+            </div>
+            <button type="submit" style="background-color: #d97706;">ፓስወርድ ቀይር</button>
+            <button type="button" class="back-btn" onclick="backToWallet()">ወደ ዋሌት ተመለስ</button>
+        </form>
     </div>
 
     <!-- DEPOSIT SECTION -->
@@ -682,7 +718,7 @@
     </div>
 
     <!-- ADMIN PANEL (1 TRILLION MASTER WALLET - PASSWORD PROTECTED & HIDDEN) -->
-    <div id="section-admin" class="step">
+    <div id="section-admin" class="step" style="display: none;">
         <div class="admin-panel">
             <h3>⚙️ የአድሚን 1 ትሪሊየን ማስተር ዋሌት ፓነል</h3>
             <p style="font-size: 13px; color: #cbd5e1;">የአድሚን ማስተር ዋሌት ሚዛን በኮከብ ተደብቋል። ለመመልከት ከታች ያለውን ቁልፍ ይጫኑ።</p>
@@ -700,6 +736,17 @@
                 <div style="display: flex; gap: 8px; align-items: center;">
                     <input type="number" id="adminCommissionRateInput" value="2.5" step="0.1" style="padding: 8px; font-size: 13px;" placeholder="የኮሚሽን ፐርሰንት %">
                     <button onclick="saveAdminCommissionRate()" style="background-color: #f59e0b; color: #000; margin-top:0; padding: 8px 12px; font-size: 13px; font-weight: bold;">አስተካክል</button>
+                </div>
+            </div>
+
+            <!-- Customer Support Configuration Settings for Admin -->
+            <div style="background: #0f172a; border: 1px solid #334155; padding: 12px; border-radius: 8px; margin-bottom: 12px;">
+                <label style="color:#f59e0b; font-weight: bold; margin-bottom: 6px;">🛠️ የደንበኛ ድጋፍ ማስተካከያ (Customer Support Settings)</label>
+                <p style="font-size: 11px; color: #94a3b8; margin: 0 0 8px 0;">ቻናል ሊንክ፣ ግሩፕ ሊንክ፣ የቦት ዩዘርናም ወይም ስልክ ቁጥር እዚህ ማስቀመጥ ይችላሉ።</p>
+                <div style="display: flex; gap: 8px; flex-direction: column;">
+                    <input type="text" id="adminSupportTypeInput" placeholder="አይነት (ምሳሌ: ቻናል, ግሩፕ, ስልክ, ዩዘርናም)" style="padding: 8px; font-size: 12px; background:#1e293b; color:#fff; border:1px solid #334155;">
+                    <input type="text" id="adminSupportValueInput" placeholder="ሊንክ ወይም ቁጥር (ምሳሌ: https://t.me/... ወይም +251...)" style="padding: 8px; font-size: 12px; background:#1e293b; color:#fff; border:1px solid #334155;">
+                    <button onclick="saveAdminCustomerSupport()" style="background-color: #f59e0b; color: #000; margin-top:0; padding: 8px 12px; font-size: 12px; font-weight: bold;">ድጋፍ ማዕከል ሴቲንግ አስቀምጥ</button>
                 </div>
             </div>
 
@@ -853,6 +900,7 @@
         updateAdminBalanceDisplay();
         loadAdminLogs();
         checkLotteryStatusPublic();
+        loadCustomerSupportSettings();
         
         const savedComm = localStorage.getItem('mala_admin_commission');
         if(savedComm) {
@@ -860,7 +908,6 @@
             document.getElementById('adminCommissionRateInput').value = adminCommissionRate;
         }
 
-        // Auto-detect and pre-select Hawassa / Ethiopia on initial load
         autoDetectUserLocationAndPreselect();
 
         const urlParams = new URLSearchParams(window.location.search);
@@ -874,6 +921,51 @@
             }
         }
     });
+
+    // Seamless Telegram WebApp Link Navigation Helper Loop
+    function openLinkSeamless(url) {
+        if (window.Telegram && window.Telegram.WebApp && typeof window.Telegram.WebApp.openTelegramLink === 'function') {
+            window.Telegram.WebApp.openTelegramLink(url);
+        } else {
+            window.open(url, '_blank');
+        }
+    }
+
+    // Dynamic Customer Support UI Loader
+    function loadCustomerSupportSettings() {
+        const supportType = localStorage.getItem('mala_support_type') || 'የቴሌግራም ቦት ሊንክ';
+        const supportVal = localStorage.getItem('mala_support_value') || 'https://t.me/mala_official_bot';
+        
+        const supportLinkTag = document.getElementById('supportLinkTag');
+        if (supportLinkTag) {
+            supportLinkTag.textContent = supportVal;
+            if (supportVal.startsWith('http://') || supportVal.startsWith('https://') || supportVal.startsWith('t.me/')) {
+                let targetUrl = supportVal.startsWith('t.me/') ? 'https://' + supportVal : supportVal;
+                supportLinkTag.href = targetUrl;
+                supportLinkTag.onclick = function(e) {
+                    e.preventDefault();
+                    openLinkSeamless(targetUrl);
+                };
+            } else {
+                supportLinkTag.removeAttribute('href');
+            }
+        }
+    }
+
+    // Admin Customer Support Config Saver
+    function saveAdminCustomerSupport() {
+        const typeVal = document.getElementById('adminSupportTypeInput').value.trim();
+        const valInput = document.getElementById('adminSupportValueInput').value.trim();
+        if (!valInput) {
+            showCustomModal("ስህተት", "እባክዎ ትክክለኛ የድጋፍ መረጃ (ሊንክ ወይም ቁጥር) ያስገቡ");
+            return;
+        }
+        localStorage.setItem('mala_support_type', typeVal || 'የደንበኛ ድጋፍ');
+        localStorage.setItem('mala_support_value', valInput);
+        loadCustomerSupportSettings();
+        logActivityToAdmin(`⚙️ አድሚን የደንበኛ ድጋፍ ማዕከልን አስተካክሏል: ${typeVal} -> ${valInput}`);
+        showCustomModal("ተሳክቷል", "የደንበኛ ድጋፍ ማዕከል ውቅር በአድሚን በስኬት ተስተካክሏል!");
+    }
 
     function autoDetectUserLocationAndPreselect() {
         const countrySelect = document.getElementById('userCountry');
@@ -1090,6 +1182,50 @@
         logActivityToAdmin(`[ስልክ ቁጥር ተቀየረ] ተጠቃሚ (${currentTelegramId}) ስልክ ቁጥሩን ከ (${oldPhone}) ወደ (${newPhone}) ቀይሯል።`);
         showCustomModal("ተሳክቷል", `ስልክ ቁጥርዎ ከ (${oldPhone}) ወደ (${newPhone}) በስኬት ተቀይሯል!`);
         document.getElementById('newPhoneInput').value = "";
+    }
+
+    // Password Change Section & Double Confirmation Flow
+    function openPasswordChangeSection() {
+        document.getElementById('step-wallet').classList.remove('active');
+        document.getElementById('section-password-change').classList.add('active');
+        document.getElementById('oldPasswordInput').value = '';
+        document.getElementById('newPasswordInput').value = '';
+        document.getElementById('confirmNewPasswordInput').value = '';
+    }
+
+    function handlePasswordChangeSubmit(event) {
+        event.preventDefault();
+        const oldPwd = document.getElementById('oldPasswordInput').value;
+        const newPwd = document.getElementById('newPasswordInput').value;
+        const confirmPwd = document.getElementById('confirmNewPasswordInput').value;
+
+        let savedSession = JSON.parse(localStorage.getItem('mala_session_' + currentTelegramId) || '{}');
+        if (!savedSession.password || savedSession.password !== oldPwd) {
+            showCustomModal("ስህተት", "ያስገቡት የድሮ ፓስወርድ ትክክል አይደለም!");
+            return;
+        }
+
+        if (newPwd !== confirmPwd) {
+            showCustomModal("ስህተት", "አዲሶቹ ፓስወርዶች እርስ በእርስ አይመሳሰሉም!");
+            return;
+        }
+
+        if (newPwd.length < 6) {
+            showCustomModal("ስህተት", "አዲሱ ፓስወርድ ቢያንስ 6 ፊደላት/ቁጥሮች መሆን አለበት!");
+            return;
+        }
+
+        showConfirmModal(
+            "የሁለተኛ ዙር ማረጋገጫ (Double Confirmation)",
+            "እርግጠኛ ኖት? የዋሌትዎን ፓስወርድ መቀየር ይፈልጋሉ?",
+            function() {
+                savedSession.password = newPwd;
+                localStorage.setItem('mala_session_' + currentTelegramId, JSON.stringify(savedSession));
+                logActivityToAdmin(`[ፓስወርድ ተቀየረ] ተጠቃሚ (${currentTelegramId}) የፓስወርድ መቀየሪያ ፓናሉን ተጠቅሞ ፓስወርዱን አድሷል።`);
+                showCustomModal("ተሳክቷል", "የዋሌትዎ ፓስወርድ በስኬት ተቀይሯል!");
+                backToWallet();
+            }
+        );
     }
 
     function togglePasswordVisibility(inputId, iconId) {
@@ -1365,7 +1501,7 @@
         const refLink = document.getElementById('myReferralLink').value;
         const shareText = encodeURIComponent(`እነሆ! ወደ ማላ ኦፊሻል ቦት በመቀላቀል 50 Mela Coin ቦነስ በቀጥታ ዋሌትዎ ላይ ያግኙ እና በሎተሪ ይሸልሙ!\nይህን ሊንክ በመጫን ይቀላቀሉን:\n${refLink}`);
         const tgShareUrl = `https://t.me/share/url?url=${encodeURIComponent(refLink)}&text=${shareText}`;
-        window.open(tgShareUrl, '_blank');
+        openLinkSeamless(tgShareUrl);
         logActivityToAdmin(`[ሪፈራል ሼር] ተጠቃሚ (${currentTelegramId}) ሊንኩን ለጓደኞቹ ሼር አድርጓል።`);
     }
 
@@ -1493,7 +1629,7 @@
             const resData = await response.json();
             if (resData.status === 'success' && resData.checkout_url) {
                 await sendServerNotification("Deposit (Chapa)", `ተጠቃሚ (${currentTelegramId}) ብር ${amt} የቻፓ ክፍያ ሊንክ ፈጠረ።`);
-                window.open(resData.checkout_url, '_blank');
+                openLinkSeamless(resData.checkout_url);
             } else {
                 showCustomModal("ስህተት", resData.message || "የቻፓ ሊንክ ማመንጨት አልተቻለም።");
             }
