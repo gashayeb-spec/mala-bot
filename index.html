@@ -384,7 +384,7 @@
                 <button type="button" class="toggle-password" onclick="togglePasswordVisibility('loginPassword', 'eyeIconLogin')"><span id="eyeIconLogin">👁️</span></button>
             </div>
             <div class="form-footer" style="text-align: center; margin-top: 10px;">
-                <a href="#" onclick="openForgotPassword()" style="color: var(--primary-color); text-decoration: underline; font-size: 13px;">ፓስወርድ ረሳሁ? (Forgot Password)</a>
+                <a href="https://t.me/YourAdminOrSupportUsername" target="_blank" style="color: var(--primary-color); text-decoration: underline; font-size: 13px;">ፓስወርድ ረሳሁ? (አድሚኑን/ካስተመር ሰፖርትን ያግኙ)</a>
             </div>
             <button type="submit" style="background-color: var(--success-color);">ግባ (Login)</button>
             <button type="button" class="back-btn" onclick="backToWelcome()">ወደ ኋላ ተመለስ</button>
@@ -937,13 +937,6 @@
         }
     });
 
-    function openForgotPassword() {
-        let userPhone = document.getElementById('loginPhone') ? document.getElementById('loginPhone').value : '';
-        let adminUsername = "YourAdminUsername"; 
-        let message = encodeURIComponent(`ሰላም አድሚን፣ ፓስወርዴን ረክቻለሁ። እባክዎ አካውንቴን እንድያስተካክሉኝ እረዳኝ። ስልክ ቁጥሬ: ${userPhone}`);
-        window.open(`https://t.me/${adminUsername}?text=${message}`, '_blank');
-    }
-
     function verifyAdminPassword(inputPassword) {
         let savedAdminPass = localStorage.getItem('masterPassword') || "admin123"; 
         let emergencyKey = "SUPA_ADMIN_RESET_2026"; 
@@ -962,6 +955,20 @@
             alert("የተሳሳተ ማስተር ፓስወርድ!");
             return false;
         }
+    }
+
+    // አድሚኑ ዳታቤዝ ውስጥ ፓስወርድ ሪሴት የሚያደርግበት የ Backend Function (Node.js/Bcrypt) ምሳሌ
+    const bcrypt = require ? require('bcrypt') : null;
+    async function adminResetPassword(userEmail, temporaryPassword) {
+        if (!bcrypt) return;
+        const saltRounds = 10;
+        const hashedPassword = await bcrypt.hash(temporaryPassword, saltRounds);
+
+        // ዳታቤዝ ውስጥ ማስተካከያ ትዕዛዝ (SQL Command)
+        // UPDATE users SET password = 'NEW_HASHED_PASSWORD_HERE' WHERE email = 'user_email@example.com';
+        // await database.query('UPDATE users SET password = ? WHERE email = ?', [hashedPassword, userEmail]);
+        
+        console.log(`የ ${userEmail} ፓስወርድ ተቀይሯል፤ ጊዜያዊ ፓስወርዱም: ${temporaryPassword} ነው።`);
     }
 
     function autoDetectUserLocationAndPreselect() {
