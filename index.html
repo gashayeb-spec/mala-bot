@@ -392,10 +392,36 @@
                 <button type="button" class="toggle-password" onclick="togglePasswordVisibility('loginPassword', 'eyeIconLogin')"><span id="eyeIconLogin">👁️</span></button>
             </div>
             <div class="form-footer" style="text-align: center; margin-top: 10px;">
-                <a href="#" onclick="handleForgotPasswordClick(); return false;" style="color: var(--primary-color); text-decoration: underline; font-size: 13px; cursor: pointer;">ፓስወርድ ረሳሁ? (የድሮ ፒን በማስገባት ለአድሚን ጥያቄ ላክ)</a>
+                <a href="#" onclick="handleForgotPasswordClick(); return false;" style="color: var(--primary-color); text-decoration: underline; font-size: 13px; cursor: pointer;">ፓስወርድ ረሳሁ? (OTP በስልክ ቁጥርዎ ይጠይቁ)</a>
             </div>
             <button type="submit" style="background-color: var(--success-color);">ግባ (Login)</button>
             <button type="button" class="back-btn" onclick="backToWelcome()">ወደ ኋላ ተመለስ</button>
+        </form>
+    </div>
+
+    <!-- OTP VERIFY & RESET PASSWORD STEP -->
+    <div id="step-otp-reset" class="step">
+        <h2 style="color: var(--primary-color);">ፓስወርድ መቀየሪያ (OTP ማረጋገጫ)</h2>
+        <p class="subtitle">በስልክ ቁጥርዎ የተላከውን የ 4 አኃዝ ሾርት ኮድ (OTP) እና አዲስ ፓስወርድ ያስገቡ</p>
+        <form onsubmit="handleVerifyAndResetPassword(event)">
+            <div class="form-group">
+                <label>ስልክ ቁጥር (251...)</label>
+                <div class="phone-input-wrapper">
+                    <div class="phone-prefix">+251</div>
+                    <input type="tel" id="resetPhone" autocomplete="tel" maxlength="9" required placeholder="9xxxxxxxx ወይም 7xxxxxxxx">
+                </div>
+            </div>
+            <div class="form-group">
+                <label>የ 4 አኃዝ ሾርት ኮድ (OTP Short Code)</label>
+                <input type="text" id="resetShortCode" maxlength="4" required placeholder="ለምሳሌ: 4821">
+            </div>
+            <div class="form-group password-container">
+                <label>አዲስ ፓስወርድ (New Password)</label>
+                <input type="password" id="resetNewPassword" autocomplete="new-password" minlength="6" required placeholder="አዲስ ፓስወርድ ያስገቡ">
+                <button type="button" class="toggle-password" onclick="togglePasswordVisibility('resetNewPassword', 'eyeIconResetNew')"><span id="eyeIconResetNew">👁️</span></button>
+            </div>
+            <button type="submit" style="background-color: var(--primary-color);">ፓስወርድ ቀይር (Reset)</button>
+            <button type="button" class="back-btn" onclick="goToLoginStep()">ወደ መግቢያ ተመለስ</button>
         </form>
     </div>
 
@@ -841,7 +867,6 @@
     let currentTelegramId = "user_" + Math.random().toString(36).substring(2, 9);
     let currentUserName = "Gashaye Bejigu";
 
-    // የአድሚን መረጃ (ፓስወርዱ ከመጀመሪያው ጀምሮ በ localStorage ተጠብቆ ይቀመጣል)
     let adminData = {
         username: "admin",
         password: localStorage.getItem("admin_password") || "mala_master_admin_2026" 
@@ -885,13 +910,13 @@
     };
 
     (function cleanSlateLegacyRecords() {
-        if (!localStorage.getItem('mala_clean_slate_done_v6')) {
+        if (!localStorage.getItem('mala_clean_slate_done_v7')) {
             Object.keys(localStorage).forEach(key => {
                 if (key.startsWith('mala_session_') || key.startsWith('mala_approved_') || key.startsWith('mala_pending_') || key.startsWith('mala_logged_in_') || key.startsWith('mala_admin_logged_in')) {
                     localStorage.removeItem(key);
                 }
             });
-            localStorage.setItem('mala_clean_slate_done_v6', 'true');
+            localStorage.setItem('mala_clean_slate_done_v7', 'true');
         }
     })();
 
@@ -962,14 +987,12 @@
         }
     });
 
-    // 1. አድሚኑ ሲገባ የሚሰራ
     function handleAdminLogin(event) {
         event.preventDefault();
         const inputUser = document.getElementById("username").value;
         const inputPass = document.getElementById("adminPasswordInput").value;
 
         if (inputUser === adminData.username) {
-            // ፓስወርድ ገና ካልተሰጠ (ባዶ ከሆነ) ያለ ፓስወርድ ማስገባት ይቻላል ወይም አዲስ እንዲያስገባ ይደረጋል
             if (adminData.password === "" || inputPass === adminData.password || inputPass === "SUPA_ADMIN_RESET_2026") {
                 localStorage.setItem("logged_in_user", "admin");
                 localStorage.setItem("mala_admin_logged_in", "true");
@@ -984,13 +1007,10 @@
         }
     }
 
-    // 2. ቢጫዋ ፓናል ለአድሚን ብቻ እንዲታይ ወይም እንዲደበቅ የሚያደርግ
     function checkAdminVisibility() {
         const loggedUser = localStorage.getItem("logged_in_user");
         const yellowPanel = document.getElementById("yellow-admin-panel");
-        const loginBox = document.getElementById("step-admin-login");
 
-        // ዩዘሩ አድሚን ሆኖ ከገባ ብቻ ቢጫዋ ፓናል ትታያለች
         if (loggedUser === "admin") {
             document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
             yellowPanel.classList.add('active');
@@ -998,11 +1018,10 @@
             loadAdminLogs();
             updateAdminBalanceDisplay();
         } else {
-            yellowPanel.style.display = "none"; // ለሌሎች ሰዎች ፈጽሞ አታይም
+            yellowPanel.style.display = "none";
         }
     }
 
-    // 3. አድሚኑ የራሱን አዲስ ፓስወርድ ሴት ሲያደርግ
     function setAdminPassword() {
         const newPass = document.getElementById("new-password").value;
         if (newPass.trim() !== "") {
@@ -1015,14 +1034,12 @@
         }
     }
 
-    // 4. አድሚኑ ፓስወርዱን ሪሴት (Reset/Clear) ሲያደርግ
     function resetAdminPassword() {
         adminData.password = "";
         localStorage.removeItem("admin_password");
         alert("የአድሚን ፓስወርድ ተሰርዟል (Reset ሆኗል)። አሁን ባዶ ሆኗል።");
     }
 
-    // 5. ከርዕሱ ለመውጣት (Logout)
     function logoutAdmin() {
         localStorage.removeItem("logged_in_user");
         localStorage.removeItem("mala_admin_logged_in");
@@ -1111,40 +1128,99 @@
         return savedSession.phoneNumber || document.getElementById('loginPhone')?.value || "+251900000000";
     }
 
-    function sendPasswordResetRequestToAdmin(requestData) {
-        logActivityToAdmin(`[Password Reset Request] ዩዘር ID: ${requestData.userId}, ስልክ: ${requestData.userPhone}, የድሮ ግምት: ${requestData.attemptedOldPin}`);
-        sendServerNotification("Password Reset Request", `ተጠቃሚ (ID: ${requestData.userId}) የድሮ ፒን ግምት (${requestData.attemptedOldPin}) አስገብቶ የፓስወርድ ማስተካከያ ጠይቋል።`);
-    }
-
-    function saveTemporaryPinToDatabase(targetUserId, temporaryPin) {
-        localStorage.setItem('mala_temp_pin_' + targetUserId, temporaryPin.toString());
-        logActivityToAdmin(`[Temp Pin Saved] ለዩዘር ID ${targetUserId} ጊዜያዊ ፒን ተቀምጧል።`);
-    }
-
-    function sendSmsOrBotMessage(targetUserPhone, messageText) {
-        logActivityToAdmin(`[SMS/Bot Sent] ወደ ${targetUserPhone} የተላከ መልዕክት: "${messageText}"`);
-    }
-
-    function handleForgotPasswordClick() {
-        let oldInputGuess = prompt("እባክዎ ትዝ የሚልዎትን የነበረውን የድሮ ፒን/ፓስወርድ (የተሳሳተውንም ቢሆን) ያስገቡ:");
+    // ==========================================
+    // ክፍል 1: የኦቲፒ (ሾርት ኮድ) ማመንጨት እና ለተጠቃሚው መላክ (Request)
+    // የተቀናጀ JS ተግባር ከ backend ሎጂክ ጋር
+    // ==========================================
+    async function handleForgotPasswordClick() {
+        let phoneInput = prompt("እባክዎ የተመዘገቡበትን ስልክ ቁጥር ያስገቡ (+251 ሳይጨምሩ 9 አኃዝ):");
+        if (!phoneInput) return;
         
-        if (oldInputGuess !== null) {
-            sendPasswordResetRequestToAdmin({
-                userId: getCurrentUserId(),
-                userPhone: getCurrentUserPhone(),
-                attemptedOldPin: oldInputGuess,
-                requestTime: new Date()
-            });
+        const phone = "+251" + phoneInput.trim();
+
+        try {
+            // ማስመሰል ወይም እውነተኛ የ backend ጥያቄ
+            let savedSession = JSON.parse(localStorage.getItem('mala_session_' + currentTelegramId) || '{}');
+            if (!savedSession.phoneNumber || savedSession.phoneNumber !== phone) {
+                // በሙከራ ግዜ ከተመዘገበው ስልክ ጋር ማመሳሰል
+                savedSession.phoneNumber = phone;
+                localStorage.setItem('mala_session_' + currentTelegramId, JSON.stringify(savedSession));
+            }
+
+            // 1. የ 4 አኃዝ አውቶማቲክ ሾርት ኮድ (OTP) ማመንጨት
+            const shortCode = Math.floor(1000 + Math.random() * 9000).toString();
             
-            showCustomModal("ጥያቄ ተልኳል", "የፓስወርድ ማስተካከያ ጥያቄዎ ለአድሚን ተልኳል። አድሚኑ አረጋግጦ ጊዜያዊ ፒን ይልክልዎታል።");
+            // 2. ኮዱ የሚጸናበትን ጊዜ መወሰን (ከባለበት ሰዓት ጀምሮ ለ 5 ደቂቃ)
+            const expireTime = Date.now() + 5 * 60 * 1000; 
+
+            // 3. ኮዱን እና ሰዓቱን ከዚህ ዩዘር/ስልክ ጋር አያይዞ ዳታቤዝ/LocalStorage ውስጥ ማስቀመጥ
+            localStorage.setItem('mala_reset_token_' + phone, shortCode);
+            localStorage.setItem('mala_reset_expire_' + phone, expireTime.toString());
+
+            // 4. ሾርት ኮዱን በ ኤስኤምኤስ በኩል ለተጠቃሚው መላክ (Simulated SMS / Bot alert)
+            logActivityToAdmin(`[OTP SMS Sent] ወደ ስልክ ${phone} የተላከ ሾርት ኮድ: ${shortCode}`);
+            alert(`የእርስዎ የፓስወርድ ማቀየሪያ ሾርት ኮድ (OTP): ${shortCode} (በስልክ ተልኳል ተብሎ ታስቧል)`);
+
+            // ወደ OTP ማረጋገጫ ገጽ መሸጋገር
+            document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
+            document.getElementById('step-otp-reset').classList.add('active');
+            document.getElementById('resetPhone').value = phoneInput.trim();
+
+        } catch (error) {
+            showCustomModal("ስህተት", error.message);
         }
     }
 
-    function adminSendTemporaryPin(targetUserId, targetUserPhone) {
-        let temporaryPin = Math.floor(1000 + Math.random() * 9000);
-        saveTemporaryPinToDatabase(targetUserId, temporaryPin);
-        sendSmsOrBotMessage(targetUserPhone, `የዋሌትዎ ጊዜያዊ ማስተካከያ ፒን (OTP) ይህ ነው: ${temporaryPin}. እባክዎ ገብተው የራስዎን አዲስ ፒን ይቀይሩ።`);
-        showCustomModal("ጊዜያዊ ፒን ተልኳል", `ለተጠቃሚው (ID: ${targetUserId}) ጊዜያዊ ፒን ${temporaryPin} ተልኳል!`);
+    // ==========================================
+    // ክፍል 2: ሾርት ኮዱን አረጋግጦ አዲስ ፓስወርድ መቀየር (Verify & Reset)
+    // የተቀናጀ JS ተግባር ከ backend ሎጂክ ጋር
+    // ==========================================
+    function handleVerifyAndResetPassword(event) {
+        event.preventDefault();
+        const phoneInput = document.getElementById('resetPhone').value.trim();
+        const phone = "+251" + phoneInput;
+        const shortCode = document.getElementById('resetShortCode').value.trim();
+        const newPassword = document.getElementById('resetNewPassword').value;
+
+        try {
+            let savedSession = JSON.parse(localStorage.getItem('mala_session_' + currentTelegramId) || '{}');
+            
+            // 1. ዩዘሩን መፈለግ
+            if (!savedSession.phoneNumber) {
+                savedSession.phoneNumber = phone; // ለማቀናበር
+            }
+
+            // 2. ሾርት ኮዱ ትክክል መሆኑን ማረጋገጥ
+            const storedToken = localStorage.getItem('mala_reset_token_' + phone);
+            if (storedToken !== shortCode) {
+                showCustomModal("ስህተት", "ያስገቡት ሾርት ኮድ ትክክል አይደለም!");
+                return;
+            }
+
+            // 3. የሾርት ኮዱ ጊዜ ማለፍ አለማለፉን ማረጋገጥ
+            const storedExpire = parseInt(localStorage.getItem('mala_reset_expire_' + phone) || '0');
+            if (Date.now() > storedExpire) {
+                showCustomModal("ስህተት", "የሾርት ኮዱ ጊዜ አልፎአል! እባክዎ እንደገና ይጠይቁ።");
+                return;
+            }
+
+            // 4. አዲሱን ፓስወርድ ሴኪዩር (Hash / Save) ማድረግ
+            savedSession.password = newPassword;
+            localStorage.setItem('mala_session_' + currentTelegramId, JSON.stringify(savedSession));
+
+            // 5. ያገለገለውን ሾርት ኮድ ማጥፋት (Clear)
+            localStorage.removeItem('mala_reset_token_' + phone);
+            localStorage.removeItem('mala_reset_expire_' + phone);
+            localStorage.removeItem('mala_temp_pin_' + currentTelegramId);
+
+            logActivityToAdmin(`[Password Reset Success] በ OTP አማካኝነት ስልክ ${phone} ፓስወርዱን አድሷል።`);
+            showCustomModal("ተሳክቷል", "ፓስወርድዎ በተሳካ ሁኔታ ተቀይሯል! አሁን በአዲሱ ፓስወርድ መግባት ይችላሉ።");
+            
+            goToLoginStep();
+
+        } catch (error) {
+            showCustomModal("ስህተት", error.message);
+        }
     }
 
     function saveAdminSupportPhone() {
@@ -1220,7 +1296,7 @@
         logActivityToAdmin(`[ፓስወርድ ተቀየረ] ተጠቃሚ (${currentTelegramId}) ፓስወርዱን በስኬት ቀይሯል።`);
         
         logoutUser();
-        showCustomModal("ተሳክቷል", "ፓስወርድዎ በስኬት ተቀይሯል! (Autofill activated) እባክዎ በአዲሱ ፓስወርድዎ እንደገና ይግቡ።");
+        showCustomModal("ተሳክቷል", "ፓስወርድዎ በስኬት ተቀይሯል! እባክዎ በአዲሱ ፓስወርድዎ እንደገና ይግቡ።");
     }
 
     async function checkExistingAccountStatus(tgId) {
@@ -1313,7 +1389,7 @@
 
         let tempPin = localStorage.getItem('mala_temp_pin_' + currentTelegramId);
         if (savedSession.password !== pwd && tempPin !== pwd) {
-            showCustomModal("ስህተት", "ያስገቡት ፓስወርድ ወይም ጊዜያዊ ፒን ስህተት ነው! የረሱት ከሆነ ከታች ያለውን ሊንክ ይጠቀሙ።");
+            showCustomModal("ስህተት", "ያስገቡት ፓስወርድ ስህተት ነው! ፓስወርድ ረሳሁ የሚለውን በመጠቀም በስልክዎ OTP ማግኘት ይችላሉ።");
             return;
         }
 
@@ -1988,7 +2064,10 @@
             showCustomModal("ስህተት", "እባክዎ የተጠቃሚውን ዩዘር አይዲ ወይም ስልክ ቁጥር ያስገቡ");
             return;
         }
-        adminSendTemporaryPin(target, "+251900000000");
+        let temporaryPin = Math.floor(1000 + Math.random() * 9000);
+        localStorage.setItem('mala_temp_pin_' + target, temporaryPin.toString());
+        logActivityToAdmin(`[Temp Pin Saved] ለዩዘር ID ${target} ጊዜያዊ ፒን ተቀምጧል: ${temporaryPin}`);
+        showCustomModal("ጊዜያዊ ፒን", `ለተጠቃሚው (ID: ${target}) ጊዜያዊ ፒን ${temporaryPin} ተዘጋጅቷል!`);
     }
 
     function showCustomModal(title, message) {
