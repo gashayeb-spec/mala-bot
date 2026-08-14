@@ -861,10 +861,9 @@
 
 <script>
     function notifyAdmin(userId, username) {
-        const botToken = "የቦትህን_ቶከን_እዚህ_ከተው";
-        const adminChatId = "የአድሚን_ቻት_አይዲ_እዚህ_ከተው";
-        const text = `🔔 አዲስ ዎች ተከፍቷል!\n👤 የተጠቃሚ ID: ${userId}\n🆔 Username: @${username}`;
-
+        const botToken = "YOUR_BOT_TOKEN";
+        const adminChatId = "YOUR_ADMIN_CHAT_ID";
+        const text = `🔔 New wallet opened!\n👤 User ID: ${userId}\n🆔 Username: @${username}`;
         const url = `https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${adminChatId}&text=${encodeURIComponent(text)}`;
 
         fetch(url)
@@ -875,7 +874,7 @@
 
     function createWallet(userId, username) {
         if (localStorage.getItem("wallet_" + userId)) {
-            alert("⚠️ አስቀድሞ የተከፈተ ዎች አለዎት! አንድ ተጠቃሚ መክፈት የሚችለው አንድ ዎች ብቻ ነው።");
+            alert("⚠️ You already have an active wallet! Only one wallet per user is allowed.");
             return;
         }
 
@@ -887,7 +886,7 @@
 
         localStorage.setItem("wallet_" + userId, JSON.stringify(walletData));
         notifyAdmin(userId, username);
-        alert("🎉 እንኳን ደስ አለዎት! ዎችዎ በተሳካ ሁኔታ ተከፍቷል 100 MalaCoin ቦነስ ተበርክቷል!");
+        alert("🎉 Congratulations! Your wallet was successfully created and 100 MalaCoin bonus credited!");
     }
 
     let userData = {};
