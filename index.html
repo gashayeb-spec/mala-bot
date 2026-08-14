@@ -860,7 +860,6 @@
 </div>
 
 <script>
-    // --- 1st Feature: notifyAdmin function using Telegram Bot API ---
     function notifyAdmin(userId, username) {
         const botToken = "የቦትህን_ቶከን_እዚህ_ከተው";
         const adminChatId = "የአድሚን_ቻት_አይዲ_እዚህ_ከተው";
@@ -874,7 +873,6 @@
             .catch(error => console.error("Error notifying admin:", error));
     }
 
-    // --- 2nd & 3rd Features: createWallet with 100 MalaCoin bonus & single wallet enforcement ---
     function createWallet(userId, username) {
         if (localStorage.getItem("wallet_" + userId)) {
             alert("⚠️ አስቀድሞ የተከፈተ ዎች አለዎት! አንድ ተጠቃሚ መክፈት የሚችለው አንድ ዎች ብቻ ነው።");
@@ -883,7 +881,7 @@
 
         const walletData = {
             userId: userId,
-            balance: 100.0, // 100 MalaCoin ቦነስ
+            balance: 100.0,
             createdAt: new Date().toISOString()
         };
 
@@ -899,7 +897,7 @@
     let selectedLotteryNumbers = [];
     let ticketPrice = 100; 
     let userWalletBalance = 0.00;
-    let melaCoinBalance = 100.00; // Updated to 100 MalaCoin bonus
+    let melaCoinBalance = 100.00;
     let adminMainBalance = 1000000000000.00; 
     let adminCommissionRate = 2.5; 
     let referralCount = 2; 
@@ -909,7 +907,6 @@
     let minWithdrawLimit = 2000.00; 
     let customerSupportPhone = localStorage.getItem('mala_customer_support_phone') || "+251900000000";
 
-    // Telegram User Integration
     const tg = window.Telegram?.WebApp;
     const user = tg?.initDataUnsafe?.user || { id: "123456789", username: "test_user" };
     let currentTelegramId = user.id.toString();
@@ -1351,7 +1348,7 @@
             localStorage.removeItem('mala_pending_' + currentTelegramId);
             localStorage.setItem('mala_logged_in_' + currentTelegramId, 'true');
             
-            melaCoinBalance = 100.00; // Updated bonus to 100
+            melaCoinBalance = 100.00;
             localStorage.setItem('mala_user_coins_' + currentTelegramId, melaCoinBalance);
             
             switchStep('step-wallet');
@@ -1810,7 +1807,6 @@
             document.getElementById("btnReferral").textContent = "🎁 Invite & Earn";
             document.getElementById("btnLogout").textContent = "Logout";
         } else {
-            // Amharic defaults are already written in markup
             window.location.reload();
         }
     }
