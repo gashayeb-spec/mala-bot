@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mala Official Bot Wallet & Admin Panel</title>
+    <title>Mela Official Bot Wallet & Admin Panel</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         :root {
@@ -346,7 +346,7 @@
             <p id="socialCenterTitle" style="margin: 0 0 8px 0; font-size: 13px; font-weight: bold; color: var(--primary-color);">🌐 የማህበራዊ ማዕከል (Bot & Channel)</p>
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
                 <button onclick="window.open('https://t.me/mala_official_bot', '_blank')" id="btnBotLink" style="background-color: #0284c7; margin-top:0; font-size: 12px; padding: 10px;">🤖 ኦፊሻል ቦት (Bot)</button>
-                <button onclick="window.open('https://t.me/Mela_Group', '_blank')" id="btnChannelLink" style="background-color: #0d9488; margin-top:0; font-size: 12px; padding: 10px;">💬 የውይይት ቻናል (Channel)</button>
+                <button onclick="window.open('https://t.me/mela_official_channel', '_blank')" id="btnChannelLink" style="background-color: #0d9488; margin-top:0; font-size: 12px; padding: 10px;">💬 የኦፊሻል ቻናል (Channel)</button>
             </div>
             <div style="margin-top: 10px;">
                 <button onclick="shareBotWithFriends()" id="btnShareBot" style="background-color: #2563eb; margin-top:0; font-size: 13px; padding: 10px;">📤 ቦቱን ለጓደኞች ሼር አድርግ (Share Bot)</button>
@@ -427,7 +427,7 @@
     <!-- REGISTER STEP -->
     <div id="step-register" class="step">
         <h2 id="regTitle">ማላ ኦፊሻል ቦት ምዝገባ</h2>
-        <p id="regSubtitle" class="subtitle">አካውንት ለማብቃት መረጃውን ይሙሉ (በመመዝገብዎ 50 ሳንቲም ሳንቲም ሽልማት ያገኛሉ)</p>
+        <p id="regSubtitle" class="subtitle">አካውንት ለማብቃት መረጃውን ይሙሉ (በመመዝገብዎ 50 ሳንቲም ሽልማት ያገኛሉ)</p>
         <form onsubmit="handleRegister(event)">
             <div class="form-group">
                 <label id="lblFirstName">ስም (First Name)</label>
@@ -565,14 +565,14 @@
                 <button type="button" class="toggle-eye" onclick="toggleBalanceVisibility()">👁️ <span id="eyeBtnText">አሳይ</span></button>
             </div>
             <div style="font-size: 14px; opacity: 0.9;" id="userDisplayName">የተጠቃሚ ስም</div>
-            <div style="font-size: 13px; margin-top: 6px; color: #fde047;" id="melaCoinDisplay">ማላ ሳንቲም ሳንቲም: 50.00 Mela Coin</div>
+            <div style="font-size: 13px; margin-top: 6px; color: #fde047;" id="melaCoinDisplay">ማላ ሳንቲም: 50.00 Mela Coin</div>
         </div>
 
         <div style="background: rgba(79, 70, 229, 0.05); border: 1px solid var(--primary-color); padding: 12px; border-radius: 12px; margin-bottom: 15px; text-align: center;">
             <p id="channelBridgeTitle" style="margin: 0 0 6px 0; font-size: 13px; font-weight: bold; color: var(--primary-color);">🚀 ቦት እና ቻናል መተላለፊያ</p>
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
                 <button onclick="window.open('https://t.me/mala_official_bot', '_blank')" id="walletBotBtn" style="background-color: #0284c7; margin-top:0; font-size: 12px; padding: 10px;">🤖 ኦፊሻል ቦት</button>
-                <button onclick="window.open('https://t.me/Mela_Group', '_blank')" id="walletChannelBtn" style="background-color: #0d9488; margin-top:0; font-size: 12px; padding: 10px;">💬 የውይይት ቻናል</button>
+                <button onclick="window.open('https://t.me/mela_official_channel', '_blank')" id="walletChannelBtn" style="background-color: #0d9488; margin-top:0; font-size: 12px; padding: 10px;">💬 የኦፊሻል ቻናል</button>
             </div>
             <div style="margin-top: 8px;">
                 <button onclick="shareBotWithFriends()" id="walletShareBtn" style="background-color: #2563eb; margin-top:0; font-size: 12px; padding: 10px; width: 100%;">📤 ቦቱን ለጓደኞች ሼር አድርግ (Share Bot)</button>
@@ -594,7 +594,7 @@
             <p id="twoWayLinkTitle" style="margin: 0 0 8px 0; font-size: 13px; font-weight: bold; color: var(--primary-color);">🔗 የሁለትዮሽ ሊንክ አሠራር (Two-way Link)</p>
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
                 <button onclick="window.open('https://t.me/mala_official_bot', '_blank')" id="btnToBot" style="background-color: var(--primary-color); margin-top:0; font-size: 12px; padding: 10px;">⬅️ ከቻናል ወደ ቦት</button>
-                <button onclick="window.open('https://t.me/Mela_Group', '_blank')" id="btnToChannel" style="background-color: #0284c7; margin-top:0; font-size: 12px; padding: 10px;">➡️ ከቦት ወደ ቻናል</button>
+                <button onclick="window.open('https://t.me/mela_official_channel', '_blank')" id="btnToChannel" style="background-color: #0284c7; margin-top:0; font-size: 12px; padding: 10px;">➡️ ከቦት ወደ ቻናል</button>
             </div>
         </div>
 
@@ -640,7 +640,7 @@
         </div>
 
         <div style="margin-bottom: 10px;">
-            <button onclick="openExchangeSection()" id="btnExchange" style="background-color: #64748b; width: 100%;">ማላ ሳንቲም ሳንቲም / ምንዛሬ መቀየሪያ (Exchange)</button>
+            <button onclick="openExchangeSection()" id="btnExchange" style="background-color: #64748b; width: 100%;">ማላ ሳንቲም / ምንዛሬ መቀየሪያ (Exchange)</button>
         </div>
 
         <div style="margin-bottom: 10px;">
@@ -664,7 +664,7 @@
 
     <!-- LOTTERY SECTION -->
     <div id="section-lottery" class="step">
-        <h2 id="lotteryTitle">ሎተሪ መግዛት (በማላ ሳንቲም ሳንቲም)</h2>
+        <h2 id="lotteryTitle">ሎተሪ መግዛት (በማላ ሳንቲም)</h2>
         <p class="subtitle" id="lotterySubtitleStatus">ቲኬት ሲገዙ ከሂሳብዎ ሳንቲም ይቀነሳል (የቲኬት ዋጋ: <span id="ticketPriceDisplay">10</span> Mela Coin, ከ1 እስከ 5000)</p>
         <div class="lottery-grid" id="lotteryGrid"></div>
         <div style="font-size: 14px; margin-bottom: 12px; font-weight: bold;"><span id="lblSelectedNums">የተመረጡ ቁጥሮች:</span> <span id="selectedLotteryNum" style="color:var(--primary-color);">ምንም የለም</span></div>
@@ -765,7 +765,7 @@
     <div id="yellow-admin-panel" class="step">
         <div class="admin-panel">
             <h3 id="adminPanelTitle">⚙️ የአስተዳዳሪ ማስተዳደሪያ ፖርታል</h3>
-            <p id="adminPanelSubtitle" style="font-size: 13px; color: #cbd5e1;">የአስተዳደር ስራዎችን ለመቆጣጠር ከታች ያሉትን አማራጮች ይጠቀሙ</p>
+            <p id="adminPanelSubtitle" style="font-size: 13px; color: #cbd5e1;">የአስተደር ስራዎችን ለመቆጣጠር ከታች ያሉትን አማራጮች ይጠቀሙ</p>
             
             <div style="background: #0f172a; border: 1px solid #f59e0b; padding: 12px; border-radius: 8px; margin: 12px 0; text-align: center;">
                 <div id="adminMasterBalTitle" style="font-size: 13px; color: #f59e0b; font-weight: bold;">👑 የማስተር ሒሳብ ቀሪ (Master Balance)</div>
@@ -1247,7 +1247,6 @@
         switchStep('step-pending');
         startPendingCountdown();
         
-        // Notification sent to admin showing user's front ID page and face photo specifically as requested
         logActivityToAdmin(`[KYC SUBMITTED] User ${userData.firstName} (${userData.phone}) submitted KYC. Front ID Page & Face Photo: ${currentUserFrontIdImg} | National ID: ${nationalId}`);
     }
 
@@ -1658,14 +1657,14 @@
             document.getElementById("bgThemeLabel").textContent = "Background";
             document.getElementById("textThemeLabel").textContent = "Text Color";
             
-            document.getElementById("welcomeTitle").textContent = "Welcome to Mala Official Bot Wallet";
+            document.getElementById("welcomeTitle").textContent = "Welcome to Mela Official Bot Wallet";
             document.getElementById("welcomeSubtitle").textContent = "Please select your option (1 Person = 1 Account)";
             document.getElementById("btnRegister").textContent = "✨ Register New Account - 50 Bonus Coins";
             document.getElementById("btnLogin").textContent = "🔐 Login to Existing Account";
             document.getElementById("btnAdminPortal").textContent = "⚙️ Admin Portal Login";
             document.getElementById("socialCenterTitle").textContent = "🌐 Social Center (Bot & Channel)";
             document.getElementById("btnBotLink").textContent = "🤖 Official Bot";
-            document.getElementById("btnChannelLink").textContent = "💬 Discussion Channel";
+            document.getElementById("btnChannelLink").textContent = "💬 Official Channel";
             document.getElementById("btnShareBot").textContent = "📤 Share Bot with Friends";
 
             document.getElementById("adminLoginTitle").textContent = "Admin Portal Login";
@@ -1691,7 +1690,7 @@
             document.getElementById("btnResetSubmit").textContent = "Reset Password";
             document.getElementById("btnBackLogin").textContent = "Back to Login";
 
-            document.getElementById("regTitle").textContent = "Mala Official Bot Registration";
+            document.getElementById("regTitle").textContent = "Mela Official Bot Registration";
             document.getElementById("regSubtitle").textContent = "Fill details for wallet (50 Bonus Coins on registration)";
             document.getElementById("lblFirstName").textContent = "First Name";
             document.getElementById("lblFatherName").textContent = "Father's Name";
@@ -1728,7 +1727,7 @@
             document.getElementById("txtBalanceTitle").textContent = "Total Wallet Balance";
             document.getElementById("channelBridgeTitle").textContent = "🚀 Bot & Channel Bridge";
             document.getElementById("walletBotBtn").textContent = "🤖 Official Bot";
-            document.getElementById("walletChannelBtn").textContent = "💬 Channel";
+            document.getElementById("walletChannelBtn").textContent = "💬 Official Channel";
             document.getElementById("walletShareBtn").textContent = "📤 Share Bot";
             document.getElementById("supportTitle").textContent = "📞 Customer Support";
             document.getElementById("btnSaveSupport").textContent = "Save";
@@ -1816,9 +1815,9 @@
             document.getElementById("btnAdminResetPass").textContent = "Reset Admin Password";
             document.getElementById("btnAdminLogout").textContent = "Logout Admin";
         } else {
-            document.getElementById("langLabel").textContent = "ቋንቋ";
-            document.getElementById("bgThemeLabel").textContent = "ባክግራውንድ";
-            document.getElementById("textThemeLabel").textContent = "ጽሁፍ";
+            document.getElementById("langLabel").textContent = "ቋንቋ / Language";
+            document.getElementById("bgThemeLabel").textContent = "ጀርባ / Background";
+            document.getElementById("textThemeLabel").textContent = "ጽሁፍ / Text";
 
             document.getElementById("welcomeTitle").textContent = "እንኳን ደህና መጡ ወደ ማላ ኦፊሻል ቦት";
             document.getElementById("welcomeSubtitle").textContent = "እባክዎ የሚፈልጉትን አማራጭ ይምረጡ (1 ሰው = 1 አጠቃቀም)";
@@ -1826,20 +1825,20 @@
             document.getElementById("btnLogin").textContent = "🔐 ቀድሞ አካውንት የከፈቱበት መግቢያ (Login)";
             document.getElementById("btnAdminPortal").textContent = "⚙️ የአስተዳዳሪ መግቢያ (Admin Portal)";
             document.getElementById("socialCenterTitle").textContent = "🌐 የማህበራዊ ማዕከል (Bot & Channel)";
-            document.getElementById("btnBotLink").textContent = "🤖 ኦፊሻል ቦት";
-            document.getElementById("btnChannelLink").textContent = "💬 የውይይት ቻናል";
+            document.getElementById("btnBotLink").textContent = "🤖 ኦፊሻል ቦት (Bot)";
+            document.getElementById("btnChannelLink").textContent = "💬 የኦፊሻል ቻናል (Channel)";
             document.getElementById("btnShareBot").textContent = "📤 ቦቱን ለጓደኞች ሼር አድርግ (Share Bot)";
 
             document.getElementById("adminLoginTitle").textContent = "የአስተዳደር ፖርታል መግቢያ";
             document.getElementById("adminLoginSubtitle").textContent = "አስተዳዳሪ ለማረጋገጥ የሚስጥር ቃል ያስገቡ";
-            document.getElementById("adminUsernameLabel").textContent = "የአስተዳዳሪ ዩዘርናም";
-            document.getElementById("adminPasswordLabel").textContent = "የአስተዳዳሪ የይለፍ ቃል";
+            document.getElementById("adminUsernameLabel").textContent = "የአስተዳዳሪ ዩዘርናም (Username)";
+            document.getElementById("adminPasswordLabel").textContent = "የአስተዳዳሪ የይለፍ ቃል (Master Password)";
             document.getElementById("btnAdminLoginSubmit").textContent = "አስተዳደር ፓናል ክፈት";
             document.getElementById("btnBackWelcome1").textContent = "ወደ ኋላ ተመለስ";
 
             document.getElementById("loginTitle").textContent = "ወደ አካውንት ይግቡ (Login)";
             document.getElementById("loginSubtitle").textContent = "በመመዝገቢያ ስልክ ቁጥር እና የይለፍ ቃል መግቢያዎን ያረጋግጡ";
-            document.getElementById("loginPhoneLabel").textContent = "ስልክ ቁጥር (251...)";
+            document.getElementById("loginPhoneLabel").textContent = "ስልክ ቁጥር (Phone Number - 251...)";
             document.getElementById("loginPasswordLabel").textContent = "የይለፍ ቃል (Password)";
             document.getElementById("forgotPassLink").textContent = "የይለፍ ቃል ረስተዋል? (OTP ማረጋገጫ)";
             document.getElementById("btnLoginSubmit").textContent = "ግባ (Login)";
@@ -1847,7 +1846,7 @@
 
             document.getElementById("resetTitle").textContent = "የይለፍ ቃል ማስተካከያ (OTP ማረጋገጫ)";
             document.getElementById("resetSubtitle").textContent = "በስልክ ቁጥርዎ የተላከውን የ 4 አሃዝ ኮድ (OTP) እና አዲስ የይለፍ ቃል ያስገቡ";
-            document.getElementById("resetPhoneLabel").textContent = "ስልክ ቁጥር (251...)";
+            document.getElementById("resetPhoneLabel").textContent = "ስልክ ቁጥር (Phone Number - 251...)";
             document.getElementById("otpCodeLabel").textContent = "የ 4 አሃዝ ኮድ (OTP Short Code)";
             document.getElementById("newPassLabel").textContent = "አዲስ የይለፍ ቃል (New Password)";
             document.getElementById("btnResetSubmit").textContent = "የይለፍ ቃል ቀይር (Reset)";
@@ -1874,15 +1873,15 @@
             document.getElementById("lblNatId").textContent = "ብሔራዊ መታወቂያ ቁጥር (National ID No)";
             document.getElementById("lblFacePhoto").textContent = "የፊት ገጽታ ፎቶ (Your Face Photo for Verification)";
             document.getElementById("faceText").textContent = "ፎቶዎ የሚታይበትን ገጽታ ፎቶ ለማስገባት እዚህ ይጫኑ";
-            document.getElementById("lblFrontId").textContent = "የመታወቂያው ፊት (ID Card Front Main Page)";
-            document.getElementById("frontText").textContent = "የመታወቂያ ፊት ፔጅ ፎቶ ለመምረጥ እዚህ ጋር ይጫኑ";
+            document.getElementById("lblFrontId").textContent = "የመታወቂያው ፊት (ID Card Front)";
+            document.getElementById("frontText").textContent = "የመታወቂያ ፊት ፎቶ ለመምረጥ እዚህ ጋር ይጫኑ";
             document.getElementById("lblBackId").textContent = "የመታወቂያው ኋላ (ID Card Back)";
             document.getElementById("backText").textContent = "የመታወቂያ ኋላ ፎቶ ለመምረጥ እዚህ ጋር ይጫኑ";
             document.getElementById("btnKycSubmit").textContent = "ለአስተዳዳሪ ማረጋገጫ ላክ (Send to Admin)";
             document.getElementById("btnKycCancel").textContent = "ምዝገባውን ሰርዝ (Cancel & Reset)";
 
             document.getElementById("pendingTitle").textContent = "ማረጋገጫ በመሰን ላይ...";
-            document.getElementById("pendingSubtitle").textContent = "የመታወቂያው ፍሮንት ፔጅ እና ፎቶዎ ለአስተዳዳሪ ተልኳል፤ እስኪጸድቅ ይጠበቃል";
+            document.getElementById("pendingSubtitle").textContent = "መታወቂያው እና ፎቶዎ ለአስተዳዳሪ ተልኳል፤ እስኪጸድቅ ይጠበቃል";
             document.getElementById("btnCheckStatus").textContent = "ህኔታውን አረጋግጥ (Check Status)";
             document.getElementById("btnCancelReg").textContent = "ምዝገባውን ሰርዝ (Cancel) ድጋሚ እንመዝገባለን";
 
@@ -1890,7 +1889,7 @@
             document.getElementById("txtBalanceTitle").textContent = "አጠቃላይ ቀሪ ሒሳብ";
             document.getElementById("channelBridgeTitle").textContent = "🚀 ቦት እና ቻናል መተላለፊያ";
             document.getElementById("walletBotBtn").textContent = "🤖 ኦፊሻል ቦት";
-            document.getElementById("walletChannelBtn").textContent = "💬 የውይይት ቻናል";
+            document.getElementById("walletChannelBtn").textContent = "💬 የኦፊሻል ቻናል";
             document.getElementById("walletShareBtn").textContent = "📤 ቦቱን ለጓደኞች ሼር አድርግ (Share Bot)";
             document.getElementById("supportTitle").textContent = "📞 የቴክኒክ ድጋፍ (Customer Support)";
             document.getElementById("btnSaveSupport").textContent = "መዝገብ";
@@ -1960,7 +1959,7 @@
             document.getElementById("adminMasterBalTitle").textContent = "👑 የማስተር ሒሳብ ቀሪ (Master Balance)";
             document.getElementById("adminSetPassLabel").textContent = "⭐ አዲስ የይለፍ ቃል ማሻሻያ (Set Password)";
             document.getElementById("btnAdminSetPass").textContent = "አስቀምጥ";
-            document.getElementById("adminSupportSetLabel").textContent = "📞 የቴክኒክ ድጋፍ ሊንክ ማስተካከያ (Customer Support Link)";
+            document.getElementById("adminSupportSetLabel").textContent = "📞 የቴክኒክ ድጋፍ ስልክ ቁጥር ወይም ሊንክ ማስተካከያ (Customer Support Link)";
             document.getElementById("btnAdminSaveSupp").textContent = "አስቀምጥ";
             document.getElementById("adminCommLabel").textContent = "💼 የኮሚሽን መጠን (Commission Rate)";
             document.getElementById("btnAdminSaveComm").textContent = "አስተካክል";
@@ -1968,7 +1967,7 @@
             document.getElementById("btnAdminLotteryClose").textContent = "ሎተሪ ዝጋ";
             document.getElementById("btnAdminLotteryOpen").textContent = "ሎተሪ ክፈት";
             document.getElementById("btnAdminLotteryReset").textContent = "ሎተሪ 0 አድርግ";
-            document.getElementById("adminLogsLabel").textContent = "📊 የእንቅስቃሴ መዝገብ እና የመታወቂያ ፍሮንት ፔጆች (Activity Logs & KYC)";
+            document.getElementById("adminLogsLabel").textContent = "📊 የእንቅስቃሴ መዝገብ እና የተጠቃሚዎች መታወቂያ ፎቶዎች (Activity Logs & KYC)";
             document.getElementById("btnAdminRefreshLogs").textContent = "መዝገብ አድስ";
             document.getElementById("adminTargetUserLabel").textContent = "ተጠቃሚ ማረጋገጥ (Approve)፤ ማገድ ወይም የይለፍ ቃል ለመስጠት (Telegram ID / Phone)";
             document.getElementById("btnAdminApprove").textContent = "✅ አጽድቅ (Approve with Front ID Photo)";
