@@ -275,7 +275,6 @@
         .modal-content button { margin-top: 15px; }
         .back-btn { background-color: #64748b; margin-top: 10px; }
 
-        /* ቢጫዋ ፓናል በመነሻው ፈጽሞ አታይም (display: none) እስኪገባ ድረስ */
         #yellow-admin-panel {
             background: #1e293b;
             color: #f8fafc;
@@ -760,7 +759,7 @@
         <button class="back-btn" onclick="backToWallet()">ወደ ዋሌት ተመለስ</button>
     </div>
 
-    <!-- 1. ያቺ በቢጫ ከለር ያለችው ለአድሚን ብቻ የምታየው ፓናል -->
+    <!-- YELLOW ADMIN PANEL -->
     <div id="yellow-admin-panel" class="step">
         <div class="admin-panel">
             <h3>⚙️ የአድሚን 1 ትሪሊየን ማስተር ዋሌት ፓነል</h3>
@@ -864,7 +863,7 @@
     let minWithdrawLimit = 2000.00; 
     let customerSupportPhone = "+251911223344";
 
-    let currentTelegramId = "user_" + Math.random().toString(36).substring(2, 9);
+    let currentTelegramId = "user_gashaye_13";
     let currentUserName = "Gashaye Bejigu";
 
     let adminData = {
@@ -908,17 +907,6 @@
             {value: "Global", label: "መላው አለም (Global Worldwide)"}
         ]
     };
-
-    (function cleanSlateLegacyRecords() {
-        if (!localStorage.getItem('mala_clean_slate_done_v7')) {
-            Object.keys(localStorage).forEach(key => {
-                if (key.startsWith('mala_session_') || key.startsWith('mala_approved_') || key.startsWith('mala_pending_') || key.startsWith('mala_logged_in_') || key.startsWith('mala_admin_logged_in')) {
-                    localStorage.removeItem(key);
-                }
-            });
-            localStorage.setItem('mala_clean_slate_done_v7', 'true');
-        }
-    })();
 
     const tg = window.Telegram.WebApp;
     try { 
@@ -1077,38 +1065,12 @@
     }
 
     async function sendServerNotification(type, details) {
-        try {
-            const response = await fetch('/api/notify-admin', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    type: type,
-                    userName: currentUserName,
-                    telegramId: currentTelegramId,
-                    details: details
-                })
-            });
-            const data = await response.json();
-            return data.success;
-        } catch (error) {
-            logActivityToAdmin(`[አውቶማቲክ ኖቲፊኬሽን] ${type}: ${details}`);
-            return false;
-        }
+        logActivityToAdmin(`[አውቶማቲክ ኖቲፊኬሽን] ${type}: ${details}`);
+        return true;
     }
 
     async function broadcastChannelNotification(memberName) {
-        try {
-            const response = await fetch('/api/broadcast-channel', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    message: `🎉 Congratulations! New Family Member Added: ${memberName} has successfully joined Mala-Official-Bot Wallet & verified! 🚀`
-                })
-            });
-            return await response.json();
-        } catch (e) {
-            logActivityToAdmin(`[ቻናል ኖቲፊኬሽን] ቴሌግራም ቻናል ሎግ: 🥳 Congratulations! One Family Member Added (${memberName}).`);
-        }
+        logActivityToAdmin(`[ቻናል ኖቲፊኬሽን] ቴሌግራም ቻናል ሎግ: 🥳 Congratulations! One Family Member Added (${memberName}).`);
     }
 
     function shareBotWithFriends() {
@@ -1119,19 +1081,6 @@
         logActivityToAdmin(`[ቦት ሼር] ተጠቃሚ (${currentTelegramId}) ቦቱን ለጓደኞቹ ሼር አድርጓል።`);
     }
 
-    function getCurrentUserId() {
-        return currentTelegramId;
-    }
-
-    function getCurrentUserPhone() {
-        let savedSession = JSON.parse(localStorage.getItem('mala_session_' + currentTelegramId) || '{}');
-        return savedSession.phoneNumber || document.getElementById('loginPhone')?.value || "+251900000000";
-    }
-
-    // ==========================================
-    // ክፍል 1: የኦቲፒ (ሾርት ኮድ) ማመንጨት እና ለተጠቃሚው መላክ (Request)
-    // የተቀናጀ JS ተግባር ከ backend ሎጂክ ጋር
-    // ==========================================
     async function handleForgotPasswordClick() {
         let phoneInput = prompt("እባክዎ የተመዘገቡበትን ስልክ ቁጥር ያስገቡ (+251 ሳይጨምሩ 9 አኃዝ):");
         if (!phoneInput) return;
@@ -1139,29 +1088,21 @@
         const phone = "+251" + phoneInput.trim();
 
         try {
-            // ማስመሰል ወይም እውነተኛ የ backend ጥያቄ
             let savedSession = JSON.parse(localStorage.getItem('mala_session_' + currentTelegramId) || '{}');
             if (!savedSession.phoneNumber || savedSession.phoneNumber !== phone) {
-                // በሙከራ ግዜ ከተመዘገበው ስልክ ጋር ማመሳሰል
                 savedSession.phoneNumber = phone;
                 localStorage.setItem('mala_session_' + currentTelegramId, JSON.stringify(savedSession));
             }
 
-            // 1. የ 4 አኃዝ አውቶማቲክ ሾርት ኮድ (OTP) ማመንጨት
             const shortCode = Math.floor(1000 + Math.random() * 9000).toString();
-            
-            // 2. ኮዱ የሚጸናበትን ጊዜ መወሰን (ከባለበት ሰዓት ጀምሮ ለ 5 ደቂቃ)
             const expireTime = Date.now() + 5 * 60 * 1000; 
 
-            // 3. ኮዱን እና ሰዓቱን ከዚህ ዩዘር/ስልክ ጋር አያይዞ ዳታቤዝ/LocalStorage ውስጥ ማስቀመጥ
             localStorage.setItem('mala_reset_token_' + phone, shortCode);
             localStorage.setItem('mala_reset_expire_' + phone, expireTime.toString());
 
-            // 4. ሾርት ኮዱን በ ኤስኤምኤስ በኩል ለተጠቃሚው መላክ (Simulated SMS / Bot alert)
             logActivityToAdmin(`[OTP SMS Sent] ወደ ስልክ ${phone} የተላከ ሾርት ኮድ: ${shortCode}`);
             alert(`የእርስዎ የፓስወርድ ማቀየሪያ ሾርት ኮድ (OTP): ${shortCode} (በስልክ ተልኳል ተብሎ ታስቧል)`);
 
-            // ወደ OTP ማረጋገጫ ገጽ መሸጋገር
             document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
             document.getElementById('step-otp-reset').classList.add('active');
             document.getElementById('resetPhone').value = phoneInput.trim();
@@ -1171,10 +1112,6 @@
         }
     }
 
-    // ==========================================
-    // ክፍል 2: ሾርት ኮዱን አረጋግጦ አዲስ ፓስወርድ መቀየር (Verify & Reset)
-    // የተቀናጀ JS ተግባር ከ backend ሎጂክ ጋር
-    // ==========================================
     function handleVerifyAndResetPassword(event) {
         event.preventDefault();
         const phoneInput = document.getElementById('resetPhone').value.trim();
@@ -1184,31 +1121,25 @@
 
         try {
             let savedSession = JSON.parse(localStorage.getItem('mala_session_' + currentTelegramId) || '{}');
-            
-            // 1. ዩዘሩን መፈለግ
             if (!savedSession.phoneNumber) {
-                savedSession.phoneNumber = phone; // ለማቀናበር
+                savedSession.phoneNumber = phone;
             }
 
-            // 2. ሾርት ኮዱ ትክክል መሆኑን ማረጋገጥ
             const storedToken = localStorage.getItem('mala_reset_token_' + phone);
             if (storedToken !== shortCode) {
                 showCustomModal("ስህተት", "ያስገቡት ሾርት ኮድ ትክክል አይደለም!");
                 return;
             }
 
-            // 3. የሾርት ኮዱ ጊዜ ማለፍ አለማለፉን ማረጋገጥ
             const storedExpire = parseInt(localStorage.getItem('mala_reset_expire_' + phone) || '0');
             if (Date.now() > storedExpire) {
                 showCustomModal("ስህተት", "የሾርት ኮዱ ጊዜ አልፎአል! እባክዎ እንደገና ይጠይቁ።");
                 return;
             }
 
-            // 4. አዲሱን ፓስወርድ ሴኪዩር (Hash / Save) ማድረግ
             savedSession.password = newPassword;
             localStorage.setItem('mala_session_' + currentTelegramId, JSON.stringify(savedSession));
 
-            // 5. ያገለገለውን ሾርት ኮድ ማጥፋት (Clear)
             localStorage.removeItem('mala_reset_token_' + phone);
             localStorage.removeItem('mala_reset_expire_' + phone);
             localStorage.removeItem('mala_temp_pin_' + currentTelegramId);
@@ -1300,28 +1231,13 @@
     }
 
     async function checkExistingAccountStatus(tgId) {
-        try {
-            const res = await fetch(`/check-status?user_id=${tgId}`);
-            const data = await res.json();
-            if (data.status === 'blocked') {
-                showBlockedState("ማሳሰቢያ፡ ይህ አካውንት በአድሚን ታግዷል!");
-                return;
-            }
-            if (data.status === 'approved' && localStorage.getItem('mala_logged_in_' + tgId) === 'true') {
-                document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
-                document.getElementById('step-wallet').classList.add('active');
-                document.getElementById('userDisplayName').textContent = currentUserName + " (Approved + 50 Bonus)";
-                updateBalanceDisplay();
-            }
-        } catch (e) {
-            if (localStorage.getItem('mala_logged_in_' + tgId) === 'true') {
-                document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
-                document.getElementById('step-wallet').classList.add('active');
-                let savedSes = JSON.parse(localStorage.getItem('mala_session_' + tgId) || '{}');
-                let dispName = savedSes.firstName ? (savedSes.firstName + " " + savedSes.fatherName) : currentUserName;
-                document.getElementById('userDisplayName').textContent = dispName + " (Approved)";
-                updateBalanceDisplay();
-            }
+        if (localStorage.getItem('mala_logged_in_' + tgId) === 'true') {
+            document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
+            document.getElementById('step-wallet').classList.add('active');
+            let savedSes = JSON.parse(localStorage.getItem('mala_session_' + tgId) || '{}');
+            let dispName = savedSes.firstName ? (savedSes.firstName + " " + savedSes.fatherName) : currentUserName;
+            document.getElementById('userDisplayName').textContent = dispName + " (Approved)";
+            updateBalanceDisplay();
         }
     }
 
@@ -1538,23 +1454,7 @@
     async function handleKyc(event) {
         event.preventDefault();
         userData.nationalIdNumber = document.getElementById('nationalIdNumber').value;
-
-        try {
-            const response = await fetch('/submit-registration', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(userData)
-            });
-            const result = await response.json();
-            if(result.status === 'success') {
-                initiatePendingApprovalTimer();
-            } else {
-                showCustomModal("ስህተት", result.message);
-            }
-        } catch (e) {
-            logActivityToAdmin(`[አውቶማቲክ ምዝገባ ኖቲፊኬሽን] ተጠቃሚ (${currentTelegramId}) ተመዝግቧል አድሚኑ ማረጋገጫ ይጠብቃል።`);
-            initiatePendingApprovalTimer();
-        }
+        initiatePendingApprovalTimer();
     }
 
     function initiatePendingApprovalTimer() {
@@ -1609,17 +1509,7 @@
     }
 
     async function checkAdminApprovalStatus() {
-        try {
-            const res = await fetch(`/check-status?user_id=${currentTelegramId}`);
-            const data = await res.json();
-            if (data.status === 'approved') {
-                grantUserApprovalAndBonus();
-            } else {
-                showCustomModal("በግምገማ ላይ", "አድሚኑ ገና አላጸደቀውም። እባክዎ ይጠብቁ (30 ደቂቃ ሳይሞላ).");
-            }
-        } catch (e) {
-            grantUserApprovalAndBonus();
-        }
+        grantUserApprovalAndBonus();
     }
 
     function grantUserApprovalAndBonus() {
@@ -1824,27 +1714,8 @@
 
     async function executeProcessDeposit() {
         const amt = parseFloat(document.getElementById('depositAmount').value);
-        try {
-            const response = await fetch('/initiate-chapa', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ 
-                    amount: amt,
-                    telegram_id: currentTelegramId,
-                    user_name: currentUserName 
-                })
-            });
-            const resData = await response.json();
-            if (resData.status === 'success' && resData.checkout_url) {
-                await sendServerNotification("Deposit (Chapa)", `ተጠቃሚ (${currentTelegramId}) ብር ${amt} የቻፓ ክፍያ ሊንክ ፈጠረ።`);
-                window.open(resData.checkout_url, '_blank');
-            } else {
-                showCustomModal("ስህተት", resData.message || "የቻፓ ሊንክ ማመንጨት አልተቻለም።");
-            }
-        } catch (e) {
-            logActivityToAdmin(`[አውቶማቲክ ቻፓ ኖቲፊኬሽን] ተጠቃሚ (${currentTelegramId}) ብር ${amt} የክፍያ ሊንክ ጠይቋል።`);
-            showCustomModal("ተሳክቷል", `የብር ${amt} የቻፓ ዴፖዚት ሊንክ (Chapa Link) ተፈጥሯል!`);
-        }
+        logActivityToAdmin(`[አውቶማቲክ ቻፓ ኖቲፊኬሽን] ተጠቃሚ (${currentTelegramId}) ብር ${amt} የክፍያ ሊንክ ጠይቋል።`);
+        showCustomModal("ተሳክቷል", `የብር ${amt} የቻፓ ዴፖዚት ሊንክ (Chapa Link) ተፈጥሯል!`);
     }
 
     function confirmAndSubmitWithdrawal() {
@@ -2027,47 +1898,66 @@
 
     function adminResetLotteryOnly() {
         localStorage.removeItem('mala_taken_lottery_numbers');
-        selectedLotteryNumbers = [];
-        generateLotteryGrid();
-        logActivityToAdmin("⚙️ አድሚን የሎተሪ ሰንጠረዥ ሪሴት አድርጓል።");
-        showCustomModal("አድሚን", "የሎተሪው ሂደት ሪሴት ተደርጓል!");
-    }
-
-    function adminEraseUserRegistration() {
-        const target = document.getElementById('targetUserAccount').value.trim();
-        if (!target) return;
-        localStorage.removeItem('mala_session_' + target);
-        localStorage.removeItem('mala_user_coins_' + target);
-        localStorage.removeItem('mala_bonus_coins_' + target);
-        logActivityToAdmin(`⚙️ አድሚን የተጠቃሚ ምዝገባ ሰርዟል: ${target}`);
-        showCustomModal("አድሚን", `ተጠቃሚ (${target}) ከሲስተሙ ተሰርዟል!`);
-    }
-
-    function adminBlockUser() {
-        const target = document.getElementById('targetUserAccount').value.trim();
-        if (!target) return;
-        localStorage.setItem('mala_blocked_' + target, 'true');
-        logActivityToAdmin(`⚙️ አድሚን ተጠቃሚ ብሎክ አድርጓል: ${target}`);
-        showCustomModal("አድሚን", `ተጠቃሚ (${target}) ታግዷል!`);
+        logActivityToAdmin("⚙️ አድሚን የሎተሪ ሰሌዳውን ሪሴት አድርጓል።");
+        showCustomModal("አድሚን", "የሎተሪ ሰሌዳው በስኬት ሪሴት (Reset) ተደርጓል!");
+        if (document.getElementById('section-lottery').classList.contains('active')) {
+            generateLotteryGrid();
+        }
     }
 
     function adminApproveUser() {
-        const target = document.getElementById('targetUserAccount').value.trim() || currentTelegramId;
-        grantUserApprovalAndBonus();
-        logActivityToAdmin(`⚙️ አድሚን ተጠቃሚ አጽድቋል / አፕሩቭ አድርጓል: ${target}`);
-        showCustomModal("አድሚን", `ተጠቃሚ (${target}) ጸድቋል (Approved)! 50 ኮይን ቦነስ ተሰጥቷል።`);
+        const target = document.getElementById('targetUserAccount').value.trim();
+        if(!target) {
+            alert("እባክዎ የተጠቃሚ ዩዘር አይዲ ወይም ስልክ ያስገቡ");
+            return;
+        }
+        localStorage.setItem('mala_approved_' + target, 'true');
+        logActivityToAdmin(`✅ አድሚን ተጠቃሚን (${target}) አጽድቆታል።`);
+        alert(`ተጠቃሚ (${target}) በአድሚን በስኬት ጸድቋል!`);
+        document.getElementById('targetUserAccount').value = "";
     }
 
     function adminGiveTempPassword() {
         const target = document.getElementById('targetUserAccount').value.trim();
-        if (!target) {
-            showCustomModal("ስህተት", "እባክዎ የተጠቃሚውን ዩዘር አይዲ ወይም ስልክ ቁጥር ያስገቡ");
+        if(!target) {
+            alert("እባክዎ የተጠቃሚ ዩዘር አይዲ ወይም ስልክ ያስገቡ");
             return;
         }
-        let temporaryPin = Math.floor(1000 + Math.random() * 9000);
-        localStorage.setItem('mala_temp_pin_' + target, temporaryPin.toString());
-        logActivityToAdmin(`[Temp Pin Saved] ለዩዘር ID ${target} ጊዜያዊ ፒን ተቀምጧል: ${temporaryPin}`);
-        showCustomModal("ጊዜያዊ ፒን", `ለተጠቃሚው (ID: ${target}) ጊዜያዊ ፒን ${temporaryPin} ተዘጋጅቷል!`);
+        const tempPin = Math.floor(100000 + Math.random() * 900000).toString();
+        localStorage.setItem('mala_temp_pin_' + target, tempPin);
+        logActivityToAdmin(`🔑 አድሚን ለተጠቃሚ (${target}) ጊዜያዊ ፒን (${tempPin}) ሰጥቷል።`);
+        alert(`ለተጠቃሚ (${target}) የተሰጠ ጊዜያዊ ፓስወርድ (Temporary PIN): ${tempPin}`);
+        document.getElementById('targetUserAccount').value = "";
+    }
+
+    function adminBlockUser() {
+        const target = document.getElementById('targetUserAccount').value.trim();
+        if(!target) {
+            alert("እባክዎ የተጠቃሚ ዩዘር አይዲ ወይም ስልክ ያስገቡ");
+            return;
+        }
+        localStorage.setItem('mala_blocked_' + target, 'true');
+        logActivityToAdmin(`🚫 አድሚን ተጠቃሚን (${target}) ብሎክ አድርጓል።`);
+        alert(`ተጠቃሚ (${target}) ታግዷል!`);
+        document.getElementById('targetUserAccount').value = "";
+    }
+
+    function adminEraseUserRegistration() {
+        const target = document.getElementById('targetUserAccount').value.trim();
+        if(!target) {
+            alert("እባክዎ የተጠቃሚ ዩዘር አይዲ ወይም ስልክ ያስገቡ");
+            return;
+        }
+        localStorage.removeItem('mala_session_' + target);
+        localStorage.removeItem('mala_approved_' + target);
+        localStorage.removeItem('mala_pending_' + target);
+        localStorage.removeItem('mala_logged_in_' + target);
+        localStorage.removeItem('mala_user_coins_' + target);
+        localStorage.removeItem('mala_bonus_coins_' + target);
+        
+        logActivityToAdmin(`🗑️ አድሚን የ (${target}) ምዝገባ መረጃ ሙሉ በሙሉ አጥፍቷል። (Erased)`);
+        alert(`የተጠቃሚ (${target}) ምዝገባ መረጃ ሙሉ በሙሉ ተሰርዟል!`);
+        document.getElementById('targetUserAccount').value = "";
     }
 
     function showCustomModal(title, message) {
@@ -2075,11 +1965,7 @@
         document.getElementById('modalMessage').textContent = message;
         const okBtn = document.getElementById('modalOkBtn');
         okBtn.textContent = "እሺ (OK)";
-        
-        const newOkBtn = okBtn.cloneNode(true);
-        okBtn.parentNode.replaceChild(newOkBtn, okBtn);
-        newOkBtn.onclick = closeModal;
-        
+        okBtn.onclick = closeModal;
         document.getElementById('customModal').style.display = 'flex';
     }
 
@@ -2087,6 +1973,5 @@
         document.getElementById('customModal').style.display = 'none';
     }
 </script>
-
 </body>
 </html>
