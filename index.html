@@ -337,7 +337,7 @@
         <p class="subtitle" id="welcomeSubtitle">እባክዎ የሚፈልጉትን አማራጭ ይምረጡ (1 ሰው = 1 አጠቃቀም)</p>
         
         <div style="margin: 20px 0; display: flex; flex-direction: column; gap: 12px;">
-            <button onclick="goToRegisterStep()" id="btnRegister" style="padding: 16px; font-size: 15px; background-color: var(--primary-color);">✨ አዲስ አጠቃቀም መመዝገብ (Register) - 50 Bonus Coin</button>
+            <button onclick="goToRegisterStep()" id="btnRegister" style="padding: 16px; font-size: 15px; background-color: var(--primary-color);">✨ አዲስ አጠቃቀም መመዝገብ (Register) - 50 Bonus ሳንቲም</button>
             <button onclick="goToLoginStep()" id="btnLogin" style="padding: 16px; font-size: 15px; background-color: var(--success-color);">🔐 ቀድሞ አካውንት የከፈቱበት መግቢያ (Login)</button>
             <button onclick="openAdminLoginStep()" id="btnAdminPortal" style="padding: 16px; font-size: 15px; background-color: #f59e0b; color: #000; font-weight: bold;">⚙️ የአስተዳዳሪ መግቢያ (Admin Portal)</button>
         </div>
@@ -362,7 +362,7 @@
             <div class="form-group box" id="login-box" style="width: 100%; border:none; padding:0;">
                 <label id="adminUsernameLabel">የአስተዳዳሪ ዩዘርናም (Username)</label>
                 <input type="text" id="username" value="admin" readonly style="background: rgba(0,0,0,0.03);"><br><br>
-                <label id="adminPasswordLabel">የአስተዳዳሪ ቃልያስያስ (Master Password)</label>
+                <label id="adminPasswordLabel">የአስተዳዳሪ የይለፍ ቃል (Master Password)</label>
                 <div class="password-container">
                     <input type="password" id="adminPasswordInput" autocomplete="current-password" required placeholder="የአስተዳዳሪ ሚስጥር ቁጥር ያስገቡ">
                     <button type="button" class="toggle-password" onclick="togglePasswordVisibility('adminPasswordInput', 'eyeIconAdmin')"><span id="eyeIconAdmin">👁️‍🗨️</span></button>
@@ -376,7 +376,7 @@
     <!-- LOGIN STEP -->
     <div id="step-login" class="step">
         <h2 id="loginTitle">ወደ አካውንት ይግቡ (Login)</h2>
-        <p id="loginSubtitle" class="subtitle">በመመዝገቢያ ስልክ ቁጥር እና ቃልያስያስ መግቢያዎን ያረጋግጡ</p>
+        <p id="loginSubtitle" class="subtitle">በመመዝገቢያ ስልክ ቁጥር እና የይለፍ ቃል መግቢያዎን ያረጋግጡ</p>
         <form onsubmit="handleLogin(event)">
             <div class="form-group">
                 <label id="loginPhoneLabel">ስልክ ቁጥር (Phone Number - 251...)</label>
@@ -386,12 +386,12 @@
                 </div>
             </div>
             <div class="form-group password-container">
-                <label id="loginPasswordLabel">ቃልያስያስ (Password)</label>
-                <input type="password" id="loginPassword" autocomplete="current-password" required placeholder="ቃልያስያስን ያስገቡ">
+                <label id="loginPasswordLabel">የይለፍ ቃል (Password)</label>
+                <input type="password" id="loginPassword" autocomplete="current-password" required placeholder="የይለፍ ቃል ያስገቡ">
                 <button type="button" class="toggle-password" onclick="togglePasswordVisibility('loginPassword', 'eyeIconLogin')"><span id="eyeIconLogin">👁️‍🗨️</span></button>
             </div>
             <div class="form-footer" style="text-align: center; margin-top: 10px;">
-                <a href="#" onclick="handleForgotPasswordClick(); return false;" id="forgotPassLink" style="color: var(--primary-color); text-decoration: underline; font-size: 13px; cursor: pointer;">ቃልያስያስ ረስተዋል? (OTP ማረጋገጫ)</a>
+                <a href="#" onclick="handleForgotPasswordClick(); return false;" id="forgotPassLink" style="color: var(--primary-color); text-decoration: underline; font-size: 13px; cursor: pointer;">የይለፍ ቃል ረስተዋል? (OTP ማረጋገጫ)</a>
             </div>
             <button type="submit" id="btnLoginSubmit" style="background-color: var(--success-color);">ግባ (Login)</button>
             <button type="button" class="back-btn" onclick="backToWelcome()" id="btnBackWelcome2">ወደ ኋላ ተመለስ</button>
@@ -400,8 +400,8 @@
 
     <!-- OTP VERIFY & RESET PASSWORD STEP -->
     <div id="step-otp-reset" class="step">
-        <h2 id="resetTitle" style="color: var(--primary-color);">ቃልያስያስ ማስተካከያ (OTP ማረጋገጫ)</h2>
-        <p id="resetSubtitle" class="subtitle">በስልክ ቁጥርዎ የተላከውን የ 4 አሃዝ ኮድ (OTP) እና አዲስ ቃልያስያስ ያስገቡ</p>
+        <h2 id="resetTitle" style="color: var(--primary-color);">የይለፍ ቃል ማስተካከያ (OTP ማረጋገጫ)</h2>
+        <p id="resetSubtitle" class="subtitle">በስልክ ቁጥርዎ የተላከውን የ 4 አሃዝ ኮድ (OTP) እና አዲስ የይለፍ ቃል ያስገቡ</p>
         <form onsubmit="handleVerifyAndResetPassword(event)">
             <div class="form-group">
                 <label id="resetPhoneLabel">ስልክ ቁጥር (Phone Number - 251...)</label>
@@ -415,11 +415,11 @@
                 <input type="text" id="resetShortCode" maxlength="4" required placeholder="ለምሳሌ: 4821">
             </div>
             <div class="form-group password-container">
-                <label id="newPassLabel">አዲስ ቃልያስያስ (New Password)</label>
-                <input type="password" id="resetNewPassword" autocomplete="new-password" minlength="6" required placeholder="አዲስ ቃልያስያስ ያስገቡ">
+                <label id="newPassLabel">አዲስ የይለፍ ቃል (New Password)</label>
+                <input type="password" id="resetNewPassword" autocomplete="new-password" minlength="6" required placeholder="አዲስ የይለፍ ቃል ያስገቡ">
                 <button type="button" class="toggle-password" onclick="togglePasswordVisibility('resetNewPassword', 'eyeIconResetNew')"><span id="eyeIconResetNew">👁️‍🗨️</span></button>
             </div>
-            <button type="submit" id="btnResetSubmit" style="background-color: var(--primary-color);">ቃልያስያስ ቀይር (Reset)</button>
+            <button type="submit" id="btnResetSubmit" style="background-color: var(--primary-color);">የይለፍ ቃል ቀይር (Reset)</button>
             <button type="button" class="back-btn" onclick="goToLoginStep()" id="btnBackLogin">ወደ መግቢያ ተመለስ</button>
         </form>
     </div>
@@ -427,7 +427,7 @@
     <!-- REGISTER STEP -->
     <div id="step-register" class="step">
         <h2 id="regTitle">ማላ ኦፊሻል ቦት ምዝገባ</h2>
-        <p id="regSubtitle" class="subtitle">አካውንት ለማብቃት መረጃውን ይሙሉ (በመመዝገብዎ 50 ጻንሾ ሽልማት ያገኛሉ)</p>
+        <p id="regSubtitle" class="subtitle">አካውንት ለማብቃት መረጃውን ይሙሉ (በመመዝገብዎ 50 ሳንቲም ሳንቲም ሽልማት ያገኛሉ)</p>
         <form onsubmit="handleRegister(event)">
             <div class="form-group">
                 <label id="lblFirstName">ስም (First Name)</label>
@@ -495,13 +495,13 @@
             </div>
 
             <div class="form-group password-container">
-                <label id="lblRegPass">ቃልያስያስ (Password)</label>
-                <input type="password" id="userPassword" autocomplete="new-password" minlength="6" maxlength="20" required placeholder="ጠንካራ ቃልያስያስ ያስገቡ">
+                <label id="lblRegPass">የይለፍ ቃል (Password)</label>
+                <input type="password" id="userPassword" autocomplete="new-password" minlength="6" maxlength="20" required placeholder="ጠንካራ የይለፍ ቃል ያስገቡ">
                 <button type="button" class="toggle-password" onclick="togglePasswordVisibility('userPassword', 'eyeIcon1')"><span id="eyeIcon1">👁️‍🗨️</span></button>
             </div>
             <div class="form-group password-container">
-                <label id="lblRegPassConfirm">ቃልያስያስ ማረጋገጫ (Confirm Password)</label>
-                <input type="password" id="confirmPassword" autocomplete="new-password" minlength="6" maxlength="20" required placeholder="ቃልያስያስን እንደገና ያስገቡ">
+                <label id="lblRegPassConfirm">የይለፍ ቃል ማረጋገጫ (Confirm Password)</label>
+                <input type="password" id="confirmPassword" autocomplete="new-password" minlength="6" maxlength="20" required placeholder="የይለፍ ቃልን እንደገና ያስገቡ">
                 <button type="button" class="toggle-password" onclick="togglePasswordVisibility('confirmPassword', 'eyeIcon2')"><span id="eyeIcon2">👁️‍🗨️</span></button>
             </div>
             <button type="submit" id="btnRegSubmit">ቀጥል & ፎቶ ማረጋገጫ (Next & KYC)</button>
@@ -558,14 +558,14 @@
     <!-- WALLET STEP (USER EXCLUSIVE) -->
     <div id="step-wallet" class="step">
         <div class="wallet-card">
-            <span class="badge" id="verificationBadge">✅ ፕሪሚየም አካውንት (+50 Bonus Coin)</span>
+            <span class="badge" id="verificationBadge">✅ ፕሪሚየም አካውንት (+50 Bonus ሳንቲም)</span>
             <div id="txtBalanceTitle" style="font-size: 15px;">አጠቃላይ ቀሪ ሒሳብ</div>
             <div class="wallet-balance-container">
                 <div class="wallet-balance" id="walletBalance">•••• ETB</div>
                 <button type="button" class="toggle-eye" onclick="toggleBalanceVisibility()">👁️ <span id="eyeBtnText">አሳይ</span></button>
             </div>
             <div style="font-size: 14px; opacity: 0.9;" id="userDisplayName">የተጠቃሚ ስም</div>
-            <div style="font-size: 13px; margin-top: 6px; color: #fde047;" id="melaCoinDisplay">ማላ ጻንሾ: 50.00 Mela Coin</div>
+            <div style="font-size: 13px; margin-top: 6px; color: #fde047;" id="melaCoinDisplay">ማላ ሳንቲም ሳንቲም: 50.00 Mela Coin</div>
         </div>
 
         <div style="background: rgba(79, 70, 229, 0.05); border: 1px solid var(--primary-color); padding: 12px; border-radius: 12px; margin-bottom: 15px; text-align: center;">
@@ -581,11 +581,13 @@
 
         <div style="background: rgba(16, 185, 129, 0.1); border: 1px solid var(--success-color); padding: 14px; border-radius: 12px; margin-bottom: 15px; text-align: center;">
             <p id="supportTitle" style="margin: 0 0 6px 0; font-size: 13px; font-weight: bold; color: var(--success-color);">📞 የቴክኒክ ድጋፍ (Customer Support)</p>
-            <div style="display: flex; gap: 8px; align-items: center;">
+            <div style="display: flex; gap: 8px; align-items: center;" id="adminSupportInputContainer">
                 <input type="text" id="customerSupportInputBox" placeholder="ስልክ ቁጥር ወይም ሊንክ ያስገቡ" style="padding: 10px; font-size: 13px; flex: 1;">
                 <button onclick="saveCustomerSupportInput()" id="btnSaveSupport" style="background-color: var(--success-color); margin-top: 0; padding: 10px 14px; font-size: 13px; width: auto;">መዝገብ</button>
             </div>
-            <p id="displayCustomerSupportPhone" style="margin: 8px 0 0 0; font-size: 14px; font-weight: bold; color: var(--text-color);">+251900000000</p>
+            <div style="margin-top: 8px;">
+                <a id="displayCustomerSupportLink" href="#" target="_blank" style="font-size: 14px; font-weight: bold; color: var(--success-color); text-decoration: underline;">+251900000000</a>
+            </div>
         </div>
 
         <div style="background: rgba(79, 70, 229, 0.05); border: 1px solid var(--primary-color); padding: 14px; border-radius: 12px; margin-bottom: 15px; text-align: center;">
@@ -597,23 +599,23 @@
         </div>
 
         <div style="background: rgba(79, 70, 229, 0.05); border: 1px solid var(--primary-color); padding: 14px; border-radius: 12px; margin-bottom: 15px;">
-            <p id="passChangeTitle" style="margin: 0 0 6px 0; font-size: 13px; font-weight: bold; color: var(--primary-color); text-align: center;">🔐 የቃልያስያስ ማሻሻያ (Change Password)</p>
+            <p id="passChangeTitle" style="margin: 0 0 6px 0; font-size: 13px; font-weight: bold; color: var(--primary-color); text-align: center;">🔐 የይለፍ ቃል ማሻሻያ (Change Password)</p>
             <div class="form-group password-container" style="margin-bottom: 10px;">
-                <label id="lblOldPass" style="font-size: 12px;">የቀድሞ ቃልያስያስ (Old Password)</label>
-                <input type="password" id="oldPasswordInput" autocomplete="current-password" placeholder="የቀድሞ ቃልያስያስ" style="padding: 10px; font-size: 13px;">
+                <label id="lblOldPass" style="font-size: 12px;">የቀድሞ የይለፍ ቃል (Old Password)</label>
+                <input type="password" id="oldPasswordInput" autocomplete="current-password" placeholder="የቀድሞ የይለፍ ቃል" style="padding: 10px; font-size: 13px;">
                 <button type="button" class="toggle-password" style="top: 32px;" onclick="togglePasswordVisibility('oldPasswordInput', 'eyeIconOld')"><span id="eyeIconOld">👁️‍🗨️</span></button>
             </div>
             <div class="form-group password-container" style="margin-bottom: 10px;">
-                <label id="lblNewPass" style="font-size: 12px;">አዲስ ቃልያስያስ (New Password)</label>
-                <input type="password" id="newPasswordInput" autocomplete="new-password" placeholder="አዲስ ቃልያስያስ" style="padding: 10px; font-size: 13px;">
+                <label id="lblNewPass" style="font-size: 12px;">አዲስ የይለፍ ቃል (New Password)</label>
+                <input type="password" id="newPasswordInput" autocomplete="new-password" placeholder="አዲስ የይለፍ ቃል" style="padding: 10px; font-size: 13px;">
                 <button type="button" class="toggle-password" style="top: 32px;" onclick="togglePasswordVisibility('newPasswordInput', 'eyeIconNew1')"><span id="eyeIconNew1">👁️‍🗨️</span></button>
             </div>
             <div class="form-group password-container" style="margin-bottom: 10px;">
-                <label id="lblConfirmNewPass" style="font-size: 12px;">አዲስ ቃልያስያስ ማረጋገጫ (Confirm Password)</label>
-                <input type="password" id="confirmNewPasswordInput" autocomplete="new-password" placeholder="አዲስ ቃልያስያስ ማረጋገጫ" style="padding: 10px; font-size: 13px;">
+                <label id="lblConfirmNewPass" style="font-size: 12px;">አዲስ የይለፍ ቃል ማረጋገጫ (Confirm Password)</label>
+                <input type="password" id="confirmNewPasswordInput" autocomplete="new-password" placeholder="አዲስ የይለፍ ቃል ማረጋገጫ" style="padding: 10px; font-size: 13px;">
                 <button type="button" class="toggle-password" style="top: 32px;" onclick="togglePasswordVisibility('confirmNewPasswordInput', 'eyeIconNew2')"><span id="eyeIconNew2">👁️‍🗨️</span></button>
             </div>
-            <button onclick="handleUserPasswordChange()" id="btnChangePass" style="background-color: var(--primary-color); margin-top: 0; padding: 10px; font-size: 13px;">ቃልያስያስ ቀይር</button>
+            <button onclick="handleUserPasswordChange()" id="btnChangePass" style="background-color: var(--primary-color); margin-top: 0; padding: 10px; font-size: 13px;">የይለፍ ቃል ቀይር</button>
         </div>
 
         <div style="background: rgba(79, 70, 229, 0.05); border: 1px solid var(--primary-color); padding: 14px; border-radius: 12px; margin-bottom: 15px; text-align: center;">
@@ -638,7 +640,7 @@
         </div>
 
         <div style="margin-bottom: 10px;">
-            <button onclick="openExchangeSection()" id="btnExchange" style="background-color: #64748b; width: 100%;">ማላ ጻንሾ / ምንዛሬ መቀየሪያ (Exchange)</button>
+            <button onclick="openExchangeSection()" id="btnExchange" style="background-color: #64748b; width: 100%;">ማላ ሳንቲም ሳንቲም / ምንዛሬ መቀየሪያ (Exchange)</button>
         </div>
 
         <div style="margin-bottom: 10px;">
@@ -662,8 +664,8 @@
 
     <!-- LOTTERY SECTION -->
     <div id="section-lottery" class="step">
-        <h2 id="lotteryTitle">ሎተሪ መግዛት (በማላ ጻንሾ)</h2>
-        <p class="subtitle" id="lotterySubtitleStatus">ቲኬት ሲገዙ ከሂሳብዎ ጻንሾ ይቀነሳል (የቲኬት ዋጋ: <span id="ticketPriceDisplay">10</span> Mela Coin, ከ1 እስከ 5000)</p>
+        <h2 id="lotteryTitle">ሎተሪ መግዛት (በማላ ሳንቲም ሳንቲም)</h2>
+        <p class="subtitle" id="lotterySubtitleStatus">ቲኬት ሲገዙ ከሂሳብዎ ሳንቲም ይቀነሳል (የቲኬት ዋጋ: <span id="ticketPriceDisplay">10</span> Mela Coin, ከ1 እስከ 5000)</p>
         <div class="lottery-grid" id="lotteryGrid"></div>
         <div style="font-size: 14px; margin-bottom: 12px; font-weight: bold;"><span id="lblSelectedNums">የተመረጡ ቁጥሮች:</span> <span id="selectedLotteryNum" style="color:var(--primary-color);">ምንም የለም</span></div>
         <div style="font-size: 14px; margin-bottom: 15px; font-weight: bold;"><span id="lblTotalCost">አጠቃላይ የሚከፈል:</span> <span id="totalLotteryCost" style="color:var(--success-color);">0.00 Mela Coin</span></div>
@@ -674,7 +676,7 @@
     <!-- WITHDRAW SECTION -->
     <div id="section-withdraw" class="step">
         <h2 id="withTitle">ገንዘብ ማውጣት (Min 2,000 Coin)</h2>
-        <p id="withSubtitle" class="subtitle">የተሰጠው 50 ጻንሾ መመለሻ ላይ (2,000) ሲሞላ ማውጣት ይችላሉ (Locked Bonus)</p>
+        <p id="withSubtitle" class="subtitle">የተሰጠው 50 ሳንቲም መመለሻ ላይ (2,000) ሲሞላ ማውጣት ይችላሉ (Locked Bonus)</p>
         <div class="form-group">
             <label id="lblWithMethod">የባንክ / የሞባይል ገንዘብ አማራጭ</label>
             <select id="withdrawMethod">
@@ -701,8 +703,8 @@
 
     <!-- P2P SECTION -->
     <div id="section-p2p" class="step">
-        <h2 id="p2pTitle">P2P ጻንሾ / ገንዘብ ማስተላለፍ</h2>
-        <p id="p2pSubtitle" class="subtitle">ለሌላ ተጠቃሚ ጻንሾ ማስተላለፍ (የተሰጠውን 50 ጻንሾ ሳይረብሽ ማስተላለፍ ይቻላል)</p>
+        <h2 id="p2pTitle">P2P ሳንቲም / ገንዘብ ማስተላለፍ</h2>
+        <p id="p2pSubtitle" class="subtitle">ለሌላ ተጠቃሚ ሳንቲም ማስተላለፍ (የተሰጠውን 50 ሳንቲም ሳይረብሽ ማስተላለፍ ይቻላል)</p>
         <div class="form-group">
             <label id="lblP2PRec">የተቀባይ ስልክ ቁጥር (+251 በራስ-ሰር ተያይዟል)</label>
             <div class="phone-input-wrapper">
@@ -711,7 +713,7 @@
             </div>
         </div>
         <div class="form-group">
-            <label id="lblP2PAmt">የሚተላለፈው መጠን (ጻንሾ/ብር)</label>
+            <label id="lblP2PAmt">የሚተላለፈው መጠን (ሳንቲም/ብር)</label>
             <input type="number" id="p2pAmount" placeholder="መጠን ያስገቡ">
         </div>
         <button onclick="confirmAndSubmitP2P()" id="btnP2PSubmit" style="background-color: #7c3aed;">አሁን አስተላልፍ (Transfer)</button>
@@ -720,15 +722,15 @@
 
     <!-- EXCHANGE SECTION -->
     <div id="section-exchange" class="step">
-        <h2 id="excTitle">ማላ ጻንሾ እና ምንዛሬ መቀየሪያ</h2>
-        <p id="excSubtitle" class="subtitle">የኢትዮጵያ ብር (ETB) እና ማላ ጻንሾ (Mela Coin) ዋጋዎችን እርስ በእርስ ይለወጡ</p>
+        <h2 id="excTitle">ማላ ሳንቲም እና ምንዛሬ መቀየሪያ</h2>
+        <p id="excSubtitle" class="subtitle">የኢትዮጵያ ብር (ETB) እና ማላ ሳንቲም (Mela Coin) ዋጋዎችን እርስ በእርስ ይለወጡ</p>
         <div class="form-group">
             <label id="lblExcType">የልውውጥ ዓይነት</label>
             <select id="exchangeType">
-                <option value="etb_to_mela">የኢትዮጵያ ብር (ETB) ➡️ ማላ ጻንሾ (Mela Coin)</option>
-                <option value="mela_to_etb">ማላ ጻንሾ (Mela Coin) ➡️ የኢትዮጵያ ብር (ETB)</option>
-                <option value="usdt_to_mela">ዩኤስዲቲ (USDT) ➡️ ማላ ጻንሾ (Mela Coin)</option>
-                <option value="mela_to_usdt">ማላ ጻንሾ (Mela Coin) ➡️ ዩኤስዲቲ (USDT)</option>
+                <option value="etb_to_mela">የኢትዮጵያ ብር (ETB) ➡️ ማላ ሳንቲም (Mela Coin)</option>
+                <option value="mela_to_etb">ማላ ሳንቲም (Mela Coin) ➡️ የኢትዮጵያ ብር (ETB)</option>
+                <option value="usdt_to_mela">ዩኤስዲቲ (USDT) ➡️ ማላ ሳንቲም (Mela Coin)</option>
+                <option value="mela_to_usdt">ማላ ሳንቲም (Mela Coin) ➡️ ዩኤስዲቲ (USDT)</option>
             </select>
         </div>
         <div class="form-group">
@@ -741,8 +743,8 @@
 
     <!-- REFERRAL SECTION -->
     <div id="section-referral" class="step">
-        <h2 id="refTitle">የጋበዙት ሰዎች እና ጻንሾ ማዕከል</h2>
-        <p id="refSubtitle" class="subtitle">ሊንኩን በመጠቀም ተጠቃሚዎች ሲመዘገቡ ቦነስ ጻንሾ ያግኙ</p>
+        <h2 id="refTitle">የጋበዙት ሰዎች እና ሳንቲም ማዕከል</h2>
+        <p id="refSubtitle" class="subtitle">ሊንኩን በመጠቀም ተጠቃሚዎች ሲመዘገቡ ቦነስ ሳንቲም ያግኙ</p>
         <div class="form-group">
             <label id="lblRefLink">የእርስዎ ማጣቀሻ (Referral) ሊንክ</label>
             <input type="text" id="myReferralLink" readonly style="background: rgba(0,0,0,0.03); font-weight: bold; text-align: center;">
@@ -774,20 +776,17 @@
             </div>
 
             <div style="background: #0f172a; border: 1px solid #334155; padding: 12px; border-radius: 8px; margin-bottom: 12px;">
-                <label id="adminSetPassLabel" style="color:#f59e0b; font-weight: bold; margin-bottom: 6px;">⭐ አዲስ ቃልያስያስ ማሻሻያ (Set Password)</label>
+                <label id="adminSetPassLabel" style="color:#f59e0b; font-weight: bold; margin-bottom: 6px;">⭐ አዲስ የይለፍ ቃል ማሻሻያ (Set Password)</label>
                 <div style="display: flex; gap: 8px; align-items: center;">
-                    <input type="password" id="new-password" placeholder="አዲስ ቃልያስያስ" style="padding: 8px; font-size: 13px; flex: 1; background: #1e293b; color:#fff; border-color:#334155;">
+                    <input type="password" id="new-password" placeholder="አዲስ የይለፍ ቃል" style="padding: 8px; font-size: 13px; flex: 1; background: #1e293b; color:#fff; border-color:#334155;">
                     <button onclick="setAdminPassword()" id="btnAdminSetPass" style="background-color: #f59e0b; color: #000; margin-top:0; padding: 8px 12px; font-size: 13px; font-weight: bold; width: auto;">አስቀምጥ</button>
                 </div>
             </div>
 
             <div style="background: #0f172a; border: 1px solid #334155; padding: 12px; border-radius: 8px; margin-bottom: 12px;">
-                <label id="adminSupportSetLabel" style="color:#f59e0b; font-weight: bold; margin-bottom: 6px;">📞 የቴክኒክ ድጋፍ ስልክ ቁጥር ማስተካከያ (Customer Support)</label>
+                <label id="adminSupportSetLabel" style="color:#f59e0b; font-weight: bold; margin-bottom: 6px;">📞 የቴክኒክ ድጋፍ ስልክ ቁጥር ወይም ሊንክ ማስተካከያ (Customer Support Link)</label>
                 <div style="display: flex; gap: 8px; align-items: center;">
-                    <div class="phone-input-wrapper" style="flex: 1; background: #1e293b; border-color: #334155;">
-                        <div class="phone-prefix" style="background: rgba(245, 158, 11, 0.1); color: #f59e0b; border-color: #334155;">+251</div>
-                        <input type="tel" id="adminSupportPhoneInput" maxlength="9" placeholder="9xxxxxxxx" style="padding: 8px; font-size: 13px; border:none; background:transparent; color:#fff;">
-                    </div>
+                    <input type="text" id="adminSupportPhoneInput" placeholder="ስልክ ቁጥር ወይም አድሚን ሊንክ (ಉ.ል t.me/...)" style="padding: 8px; font-size: 13px; flex: 1; background: #1e293b; color:#fff; border-color:#334155;">
                     <button onclick="saveAdminSupportPhone()" id="btnAdminSaveSupp" style="background-color: #f59e0b; color: #000; margin-top:0; padding: 8px 12px; font-size: 13px; font-weight: bold; width: auto;">አስቀምጥ</button>
                 </div>
             </div>
@@ -810,25 +809,25 @@
             </div>
 
             <div style="margin-top: 15px;">
-                <label id="adminLogsLabel" style="color:#f59e0b; font-weight: bold;">📊 የእንቅስቃሴ መዝገብ (Activity Logs)</label>
+                <label id="adminLogsLabel" style="color:#f59e0b; font-weight: bold;">📊 የእንቅስቃሴ መዝገብ እና የተጠቃሚዎች መታወቂያ ፎቶዎች (Activity Logs & KYC)</label>
                 <div id="adminActivityLogBox" class="admin-log-box">ምንም እንቅስቃሴ የለም...</div>
                 <button onclick="loadAdminLogs()" id="btnAdminRefreshLogs" style="background-color: #475569; margin-top: 8px; font-size: 12px; padding: 8px;">መዝገብ አድስ</button>
             </div>
 
             <div class="form-group" style="margin-top: 15px;">
-                <label id="adminTargetUserLabel" style="color:#f8fafc;">ተጠቃሚ ማረጋገጥ (Approve)፤ ማገድ ወይም ቃልያስያስ ለመስጠት (Telegram ID / Phone)</label>
+                <label id="adminTargetUserLabel" style="color:#f8fafc;">ተጠቃሚ ማረጋገጥ (Approve)፤ ማገድ ወይም የይለፍ ቃል ለመስጠት (Telegram ID / Phone)</label>
                 <input type="text" id="targetUserAccount" placeholder="ዩዘር አይዲ ወይም ስልክ ቁጥር" style="background: #1e293b; color:#fff; border-color:#334155;">
             </div>
             
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px;">
-                <button onclick="adminApproveUser()" id="btnAdminApprove" style="background-color: #10b981; margin-top:0;">✅ አጽድቅ (Approve with Photo)</button>
-                <button onclick="adminGiveTempPassword()" id="btnAdminTempPass" style="background-color: #3b82f6; margin-top:0;">🔑 ጊዜያዊ ቃልያስያስ ሰጥ</button>
+                <button onclick="adminApproveUser()" id="btnAdminApprove" style="background-color: #10b981; margin-top:0;">✅ አጽድቅ (Approve with Front ID Photo)</button>
+                <button onclick="adminGiveTempPassword()" id="btnAdminTempPass" style="background-color: #3b82f6; margin-top:0;">🔑 ጊዜያዊ የይለፍ ቃል ሰጥ</button>
                 <button onclick="adminBlockUser()" id="btnAdminBlock" style="background-color: #ef4444; margin-top:0;">🚫 አግድ (Block)</button>
                 <button onclick="adminEraseUserRegistration()" id="btnAdminErase" style="background-color: #b91c1c; margin-top:0;">🗑️ ምዝገባ ሰርዝ</button>
             </div>
 
             <hr style="border-color:#334155; margin: 15px 0;">
-            <button onclick="resetAdminPassword()" id="btnAdminResetPass" style="background-color: red; color: white; margin-top:0;">አስተዳዳሪ ቃልያስያስ ሪሴት</button><br><br>
+            <button onclick="resetAdminPassword()" id="btnAdminResetPass" style="background-color: red; color: white; margin-top:0;">አስተዳዳሪ የይለፍ ቃል ሪሴት</button><br><br>
             <button onclick="logoutAdmin()" id="btnAdminLogout" style="background-color: #ef4444; margin-top:0;">ውጣ (Logout Admin)</button>
         </div>
     </div>
@@ -861,11 +860,12 @@
     let isLotteryBlockedByAdmin = false;
     let pendingTimerInterval = null;
     let minWithdrawLimit = 2000.00; 
-    let customerSupportPhone = "+251911223344";
+    let customerSupportPhone = "https://t.me/mala_admin_support";
 
     let currentTelegramId = "user_" + Math.random().toString(36).substring(2, 9);
     let currentUserName = "Gashaye Bejigu";
     let currentUserPhoto = "https://t.me/i/userpic/300/placeholder.jpg";
+    let currentUserFrontIdImg = "https://t.me/i/userpic/300/id_front_placeholder.jpg";
 
     let adminData = {
         username: "admin",
@@ -933,7 +933,7 @@
         if (savedSupportPhone) {
             customerSupportPhone = savedSupportPhone;
         }
-        document.getElementById('displayCustomerSupportPhone').textContent = customerSupportPhone;
+        updateCustomerSupportDisplay();
 
         checkExistingAccountStatus(currentTelegramId);
         checkAdminVisibility();
@@ -979,6 +979,20 @@
         }
     });
 
+    function updateCustomerSupportDisplay() {
+        const supportLinkEl = document.getElementById('displayCustomerSupportLink');
+        supportLinkEl.textContent = customerSupportPhone;
+        if (customerSupportPhone.startsWith('http://') || customerSupportPhone.startsWith('https://') || customerSupportPhone.startsWith('t.me/')) {
+            let hrefVal = customerSupportPhone;
+            if (!hrefVal.startsWith('http://') && !hrefVal.startsWith('https://')) {
+                hrefVal = 'https://' + hrefVal;
+            }
+            supportLinkEl.href = hrefVal;
+        } else {
+            supportLinkEl.href = 'tel:' + customerSupportPhone;
+        }
+    }
+
     function handleAdminLogin(event) {
         event.preventDefault();
         const inputUser = document.getElementById("username").value;
@@ -992,7 +1006,7 @@
                 document.getElementById("adminPasswordInput").value = "";
                 checkAdminVisibility();
             } else {
-                alert(currentLang === 'en' ? "Incorrect Password!" : "የተሳሳተ ቃልያስያስ!");
+                alert(currentLang === 'en' ? "Incorrect Password!" : "የተሳሳተ የይለፍ ቃል!");
             }
         } else {
             alert(currentLang === 'en' ? "Not an admin user!" : "ይህ ዩዘር አስተዳዳሪ አይደለም!");
@@ -1019,17 +1033,17 @@
         if (newPass.trim() !== "") {
             adminData.password = newPass;
             localStorage.setItem("admin_password", newPass);
-            alert(currentLang === 'en' ? "Admin password updated successfully!" : "የአስተዳዳሪ ቃልያስያስ ተስተካክሏል!");
+            alert(currentLang === 'en' ? "Admin password updated successfully!" : "የአስተዳዳሪ የይለፍ ቃል ተስተካክሏል!");
             document.getElementById("new-password").value = "";
         } else {
-            alert(currentLang === 'en' ? "Please enter a valid password" : "እባክዎ ትክክለኛ ቃልያስያስ ያስገቡ");
+            alert(currentLang === 'en' ? "Please enter a valid password" : "እባክዎ ትክክለኛ የይለፍ ቃል ያስገቡ");
         }
     }
 
     function resetAdminPassword() {
         adminData.password = "";
         localStorage.removeItem("admin_password");
-        alert(currentLang === 'en' ? "Admin password reset successfully." : "የአስተዳዳሪ ቃልያስያስ ተሰርዟል።");
+        alert(currentLang === 'en' ? "Admin password reset successfully." : "የአስተዳዳሪ የይለፍ ቃል ተሰርዟል።");
     }
 
     function logoutAdmin() {
@@ -1079,7 +1093,7 @@
             });
             return await response.json();
         } catch (e) {
-            logActivityToAdmin(`[Channel Broadcast] Telegram Channel Notified: New User ${memberName} Joined.`);
+            logActivityToAdmin(`[Channel Broadcast] Telegram Channel Notified: New User ${memberName} Joined & Advertised on Channel.`);
         }
     }
 
@@ -1101,7 +1115,7 @@
 
     function shareReferralLinkViaTelegram() {
         const link = document.getElementById("myReferralLink").value;
-        const shareText = currentLang === 'en' ? "Register on Mala Official Bot and get 50 Bonus Coins!" : "በማላ ኦፊሻል ቦት ተመዝግበው 50 ጻንሾ ቦነስ ያግኙ!";
+        const shareText = currentLang === 'en' ? "Register on Mala Official Bot and get 50 Bonus Coins!" : "በማላ ኦፊሻል ቦት ተመዝግበው 50 ቦነስ ሳንቲም ያግኙ!";
         window.open(`https://t.me/share/url?url=${encodeURIComponent(link)}&text=${encodeURIComponent(shareText)}`, '_blank');
     }
 
@@ -1152,7 +1166,7 @@
     }
 
     function updateMelaCoinDisplay() {
-        document.getElementById("melaCoinDisplay").textContent = `${currentLang === 'en' ? 'Mela Coin: ' : 'ማላ ጻንሾ: '}${melaCoinBalance.toFixed(2)} Mela Coin`;
+        document.getElementById("melaCoinDisplay").textContent = `${currentLang === 'en' ? 'Mela Coin: ' : 'ማላ ሳንቲም: '}${melaCoinBalance.toFixed(2)} Mela Coin`;
     }
 
     function updateFileName(inputId, textSpanId) {
@@ -1204,7 +1218,7 @@
         const confirmPass = document.getElementById("confirmPassword").value;
         
         if (pass !== confirmPass) {
-            showCustomModal(currentLang === 'en' ? "Error" : "ስህተት", currentLang === 'en' ? "Passwords do not match!" : "የቃልያስያስ እና የማረጋገጫ ቃልያስያስ አይመሳሰሉም!");
+            showCustomModal(currentLang === 'en' ? "Error" : "ስህተት", currentLang === 'en' ? "Passwords do not match!" : "የይለፍ ቃል እና የማረጋገጫ የይለፍ ቃል አይመሳሰሉም!");
             return;
         }
 
@@ -1233,8 +1247,8 @@
         switchStep('step-pending');
         startPendingCountdown();
         
-        // Notification sent to admin showing user's photo and ID details as requested
-        logActivityToAdmin(`[KYC SUBMITTED] User ${userData.firstName} (${userData.phone}) submitted KYC with Photo URL: ${currentUserPhoto} and National ID: ${nationalId}`);
+        // Notification sent to admin showing user's front ID page and face photo specifically as requested
+        logActivityToAdmin(`[KYC SUBMITTED] User ${userData.firstName} (${userData.phone}) submitted KYC. Front ID Page & Face Photo: ${currentUserFrontIdImg} | National ID: ${nationalId}`);
     }
 
     function startPendingCountdown() {
@@ -1278,7 +1292,7 @@
             switchStep('step-wallet');
             document.getElementById('userDisplayName').textContent = currentUserName;
             updateMelaCoinDisplay();
-            showCustomModal(currentLang === 'en' ? "Congratulations!" : "እንኳን ደስ አለዎት!", currentLang === 'en' ? "Your registration has been approved by admin! 50 Bonus Coins credited." : "ምዝገባዎ በአስተዳዳሪ ጸድቋል! 50 ቦነስ ጻንሾ ተሰጥቶዎታል።");
+            showCustomModal(currentLang === 'en' ? "Congratulations!" : "እንኳን ደስ አለዎት!", currentLang === 'en' ? "Your registration has been approved by admin! 50 Bonus Coins credited." : "ምዝገባዎ በአስተዳዳሪ ጸድቋል! 50 ቦነስ ሳንቲም ተሰጥቶዎታል።");
             broadcastChannelNotification(currentUserName);
         } else {
             showCustomModal(currentLang === 'en' ? "Pending Review" : "በግምገማ ላይ", currentLang === 'en' ? "Admin has not approved yet or still pending review." : "አስተዳዳሪው ገና አላጸደቀውም። እባክዎ ትንሽ ይጠብቁ።");
@@ -1326,7 +1340,7 @@
             return;
         }
 
-        showCustomModal(currentLang === 'en' ? "Login Error" : "የመግቢያ ስህተት", currentLang === 'en' ? "Invalid phone number or password." : "የተሳሳተ ስልክ ቁጥር ወይም ቃልያስያስ።");
+        showCustomModal(currentLang === 'en' ? "Login Error" : "የመግቢያ ስህተት", currentLang === 'en' ? "Invalid phone number or password." : "የተሳሳተ ስልክ ቁጥር ወይም የይለፍ ቃል።");
     }
 
     function handleForgotPasswordClick() {
@@ -1338,7 +1352,7 @@
         const otp = document.getElementById("resetShortCode").value;
 
         if (otp.length === 4) {
-            showCustomModal(currentLang === 'en' ? "Success" : "ተሳክቷል", currentLang === 'en' ? "Password reset successfully. You can login now." : "አዲስ ቃልያስያስዎ ተቀይሯል። አሁን መግባት ይችላሉ።", () => {
+            showCustomModal(currentLang === 'en' ? "Success" : "ተሳክቷል", currentLang === 'en' ? "Password reset successfully. You can login now." : "አዲስ የይለፍ ቃልዎ ተቀይሯል። አሁን መግባት ይችላሉ።", () => {
                 switchStep('step-login');
             });
         } else {
@@ -1357,16 +1371,16 @@
         const confirmP = document.getElementById("confirmNewPasswordInput").value;
 
         if (!oldP || !newP || !confirmP) {
-            showCustomModal(currentLang === 'en' ? "Error" : "ስህተት", currentLang === 'en' ? "Please fill all password fields!" : "እባክዎ ሁሉንም የቃልያስያስ ባዶ ቦታዎች ይሙሉ!");
+            showCustomModal(currentLang === 'en' ? "Error" : "ስህተት", currentLang === 'en' ? "Please fill all password fields!" : "እባክዎ ሁሉንም የይለፍ ቃል ባዶ ቦታዎች ይሙሉ!");
             return;
         }
 
         if (newP !== confirmP) {
-            showCustomModal(currentLang === 'en' ? "Error" : "ስህተት", currentLang === 'en' ? "New passwords do not match!" : "አዲሶቹ ቃልያስያሶች አይመሳሰሉም!");
+            showCustomModal(currentLang === 'en' ? "Error" : "ስህተት", currentLang === 'en' ? "New passwords do not match!" : "አዲሶቹ የይለፍ ቃሎች አይመሳሰሉም!");
             return;
         }
 
-        showCustomModal(currentLang === 'en' ? "Success" : "ተሳክቷል", currentLang === 'en' ? "Password updated successfully!" : "የእርስዎ ቃልያስያስ ተቀይሯል!", () => {
+        showCustomModal(currentLang === 'en' ? "Success" : "ተሳክቷል", currentLang === 'en' ? "Password updated successfully!" : "የእርስዎ የይለፍ ቃል ተቀይሯል!", () => {
             document.getElementById("oldPasswordInput").value = "";
             document.getElementById("newPasswordInput").value = "";
             document.getElementById("confirmNewPasswordInput").value = "";
@@ -1388,7 +1402,7 @@
         if (val.trim() !== "") {
             customerSupportPhone = val;
             localStorage.setItem('mala_customer_support_phone', val);
-            document.getElementById("displayCustomerSupportPhone").textContent = val;
+            updateCustomerSupportDisplay();
             showCustomModal(currentLang === 'en' ? "Success" : "ተሳክቷል", currentLang === 'en' ? "Customer support updated!" : "የደንበኛ ድጋፍ አድራሻ ተዘምኗል!");
             document.getElementById("customerSupportInputBox").value = "";
         }
@@ -1458,7 +1472,7 @@
 
         const totalCost = selectedLotteryNumbers.length * ticketPrice;
         if (melaCoinBalance < totalCost) {
-            showCustomModal(currentLang === 'en' ? "Insufficient Balance" : "በቂ አይደለም", currentLang === 'en' ? "Insufficient Mela Coin balance!" : "የእርስዎ ማላ ጻንሾ ቀሪ ሒሳብ ለዚህ ሎተሪ በቂ አይደለም!");
+            showCustomModal(currentLang === 'en' ? "Insufficient Balance" : "በቂ አይደለም", currentLang === 'en' ? "Insufficient Mela Coin balance!" : "የእርስዎ ማላ ሳንቲም ቀሪ ሒሳብ ለዚህ ሎተሪ በቂ አይደለም!");
             return;
         }
 
@@ -1466,9 +1480,8 @@
         localStorage.setItem('mala_user_coins_' + currentTelegramId, melaCoinBalance);
         updateMelaCoinDisplay();
         
-        // Admin approval/logging requirement with photo & user ID
         showCustomModal(currentLang === 'en' ? "Success" : "ተሳክቷል", currentLang === 'en' ? `Successfully bought ${selectedLotteryNumbers.length} lottery tickets! Sent to admin with photo ID.` : `በተሳካ ሁኔታ ${selectedLotteryNumbers.length} ቲኬቶችን ገዝተዋል! ፎቶዎ እና መታወቂያዎ ለአስተዳዳሪ ተልኳል።`);
-        logActivityToAdmin(`[Lottery Purchase] User ID: ${currentTelegramId}, Name: ${currentUserName}, Photo: ${currentUserPhoto}, Bought numbers: ${selectedLotteryNumbers.join(', ')}`);
+        logActivityToAdmin(`[Lottery Purchase] User ID: ${currentTelegramId}, Name: ${currentUserName}, Front ID & Face: ${currentUserFrontIdImg}, Bought numbers: ${selectedLotteryNumbers.join(', ')}`);
         buildLotteryGrid();
     }
 
@@ -1477,7 +1490,7 @@
         const amt = parseFloat(document.getElementById("withdrawAmount").value);
 
         if (amt < minWithdrawLimit) {
-            showCustomModal(currentLang === 'en' ? "Limit" : "ገደብ", currentLang === 'en' ? `Minimum withdrawal limit is ${minWithdrawLimit} Coins!` : `ለማውጣት የሚፈቀደው ዝቅተኛው መጠን ${minWithdrawLimit} ጻንሾ/ብር ነው!`);
+            showCustomModal(currentLang === 'en' ? "Limit" : "ገደብ", currentLang === 'en' ? `Minimum withdrawal limit is ${minWithdrawLimit} Coins!` : `ለማውጣት የሚፈቀደው ዝቅተኛው መጠን ${minWithdrawLimit} ሳንቲም/ብር ነው!`);
             return;
         }
 
@@ -1489,7 +1502,7 @@
         showCustomModal(currentLang === 'en' ? "Success" : "ተሳክቷል", currentLang === 'en' ? "Withdrawal request sent to admin with user photo & ID verification." : "የማውጣት ጥያቄዎ ከፎቶ እና መታወቂያ ማረጋገጫ ጋር ለአስተዳዳሪ ተልቋል።", () => {
             backToWallet();
         });
-        logActivityToAdmin(`[Withdrawal Request] User ID: ${currentTelegramId}, Name: ${currentUserName}, Photo: ${currentUserPhoto}, Account: ${acc}, Amount: ${amt} ETB`);
+        logActivityToAdmin(`[Withdrawal Request] User ID: ${currentTelegramId}, Name: ${currentUserName}, Front ID: ${currentUserFrontIdImg}, Account: ${acc}, Amount: ${amt} ETB`);
     }
 
     function confirmAndSubmitP2P() {
@@ -1507,7 +1520,7 @@
         }
 
         if (melaCoinBalance < amt) {
-            showCustomModal(currentLang === 'en' ? "Insufficient Balance" : "በቂ አይደለም", currentLang === 'en' ? "Insufficient Mela Coin balance!" : "የእርስዎ ማላ ጻንሾ በቂ አይደለም!");
+            showCustomModal(currentLang === 'en' ? "Insufficient Balance" : "በቂ አይደለም", currentLang === 'en' ? "Insufficient Mela Coin balance!" : "የእርስዎ ማላ ሳንቲም በቂ አይደለም!");
             return;
         }
 
@@ -1518,7 +1531,7 @@
         showCustomModal(currentLang === 'en' ? "Success" : "ተሳክቷል", currentLang === 'en' ? `Successfully transferred ${amt} Mela Coin to ${recipient} (Verified with ID photo).` : `በተሳካ ሁኔታ ${amt} Mela Coin ወደ ${recipient} አስተላልፈዋል!`, () => {
             backToWallet();
         });
-        logActivityToAdmin(`[P2P Transfer] Sender: ${currentUserName} (${currentTelegramId}), Photo: ${currentUserPhoto}, Recipient: ${recipient}, Amount: ${amt}`);
+        logActivityToAdmin(`[P2P Transfer] Sender: ${currentUserName} (${currentTelegramId}), Front ID: ${currentUserFrontIdImg}, Recipient: ${recipient}, Amount: ${amt}`);
     }
 
     function confirmAndProcessExchange() {
@@ -1531,7 +1544,7 @@
         showCustomModal(currentLang === 'en' ? "Success" : "ተሳክቷል", currentLang === 'en' ? "Exchange processed successfully!" : "ልውውጡ በተሳካ ሁኔታ ተፈጽሟል!", () => {
             backToWallet();
         });
-        logActivityToAdmin(`[Exchange] User ${currentUserName}, Photo: ${currentUserPhoto} exchanged amount ${amt}`);
+        logActivityToAdmin(`[Exchange] User ${currentUserName}, ID Photo: ${currentUserFrontIdImg} exchanged amount ${amt}`);
     }
 
     function adminApproveUser() {
@@ -1541,8 +1554,8 @@
             return;
         }
         localStorage.setItem('mala_approved_' + currentTelegramId, 'true');
-        showCustomModal(currentLang === 'en' ? "Success" : "ተሳክቷል", currentLang === 'en' ? `User (${target}) approved by admin with photo verification!` : `ተጠቃሚ (${target}) ከፎቶ ማረጋገጫ ጋር በአስተዳዳሪ ጸድቋል!`);
-        logActivityToAdmin(`[Admin Approve] User ${target} approved with identity photo ${currentUserPhoto}`);
+        showCustomModal(currentLang === 'en' ? "Success" : "ተሳክቷል", currentLang === 'en' ? `User (${target}) approved by admin with Front ID photo verification!` : `ተጠቃሚ (${target}) ከመታወቂያ ፍሮንት ፔጅ ፎቶ ማረጋገጫ ጋር በአስተዳዳሪ ጸድቋል!`);
+        logActivityToAdmin(`[Admin Approve] User ${target} approved after viewing Front ID Photo: ${currentUserFrontIdImg}`);
     }
 
     function adminGiveTempPassword() {
@@ -1551,7 +1564,7 @@
             showCustomModal(currentLang === 'en' ? "Error" : "ስህተት", currentLang === 'en' ? "Enter user ID!" : "እባክዎ የተጠቃሚውን መለያ ያስገቡ!");
             return;
         }
-        showCustomModal(currentLang === 'en' ? "Success" : "ተሳክቷል", currentLang === 'en' ? `Temporary password (123456) given to (${target}).` : `ጊዜያዊ ቃልያስያስ (123456) ለተጠቃሚው (${target}) ተሰጥቷል!`);
+        showCustomModal(currentLang === 'en' ? "Success" : "ተሳክቷል", currentLang === 'en' ? `Temporary password (123456) given to (${target}).` : `ጊዜያዊ የይለፍ ቃል (123456) ለተጠቃሚው (${target}) ተሰጥቷል!`);
         logActivityToAdmin(`[Admin Temp Pass] Temp password given to user ${target}`);
     }
 
@@ -1579,15 +1592,15 @@
     }
 
     function saveAdminSupportPhone() {
-        const ph = document.getElementById("adminSupportPhoneInput").value.trim();
-        if (ph.length === 9) {
-            customerSupportPhone = "+251" + ph;
-            localStorage.setItem('mala_customer_support_phone', customerSupportPhone);
-            document.getElementById("displayCustomerSupportPhone").textContent = customerSupportPhone;
-            showCustomModal(currentLang === 'en' ? "Success" : "ተሳክቷል", currentLang === 'en' ? "Support phone updated by admin!" : "የድጋፍ ስልክ ቁጥር በአስተዳዳሪ ተዘምኗል!");
+        const val = document.getElementById("adminSupportPhoneInput").value.trim();
+        if (val !== "") {
+            customerSupportPhone = val;
+            localStorage.setItem('mala_customer_support_phone', val);
+            updateCustomerSupportDisplay();
+            showCustomModal(currentLang === 'en' ? "Success" : "ተሳክቷል", currentLang === 'en' ? "Support link/phone updated by admin!" : "የድጋፍ ሊንክ ወይም ስልክ ቁጥር በአስተዳዳሪ ተዘምኗል!");
             document.getElementById("adminSupportPhoneInput").value = "";
         } else {
-            showCustomModal(currentLang === 'en' ? "Error" : "ስህተት", currentLang === 'en' ? "Enter valid 9-digit phone" : "እባክዎ 9 አሃዝ ስልክ ቁጥር ያስገቡ");
+            showCustomModal(currentLang === 'en' ? "Error" : "ስህተት", currentLang === 'en' ? "Enter valid link or phone" : "እባክዎ ትክክለኛ ሊንክ ወይም ስልክ ያስገቡ");
         }
     }
 
@@ -1647,7 +1660,7 @@
             
             document.getElementById("welcomeTitle").textContent = "Welcome to Mala Official Bot Wallet";
             document.getElementById("welcomeSubtitle").textContent = "Please select your option (1 Person = 1 Account)";
-            document.getElementById("btnRegister").textContent = "✨ Register New Account - 50 Bonus Coin";
+            document.getElementById("btnRegister").textContent = "✨ Register New Account - 50 Bonus Coins";
             document.getElementById("btnLogin").textContent = "🔐 Login to Existing Account";
             document.getElementById("btnAdminPortal").textContent = "⚙️ Admin Portal Login";
             document.getElementById("socialCenterTitle").textContent = "🌐 Social Center (Bot & Channel)";
@@ -1679,7 +1692,7 @@
             document.getElementById("btnBackLogin").textContent = "Back to Login";
 
             document.getElementById("regTitle").textContent = "Mala Official Bot Registration";
-            document.getElementById("regSubtitle").textContent = "Fill details for wallet (50 Bonus Coin on registration)";
+            document.getElementById("regSubtitle").textContent = "Fill details for wallet (50 Bonus Coins on registration)";
             document.getElementById("lblFirstName").textContent = "First Name";
             document.getElementById("lblFatherName").textContent = "Father's Name";
             document.getElementById("lblGrandFather").textContent = "Grandfather's Name";
@@ -1699,19 +1712,19 @@
             document.getElementById("lblNatId").textContent = "National ID Number";
             document.getElementById("lblFacePhoto").textContent = "Your Face Photo for Verification";
             document.getElementById("faceText").textContent = "Click here to select your face photo";
-            document.getElementById("lblFrontId").textContent = "ID Card Front";
-            document.getElementById("frontText").textContent = "Click here to select front ID";
+            document.getElementById("lblFrontId").textContent = "ID Card Front (Main Identity Page)";
+            document.getElementById("frontText").textContent = "Click here to select front ID page";
             document.getElementById("lblBackId").textContent = "ID Card Back";
             document.getElementById("backText").textContent = "Click here to select back ID";
             document.getElementById("btnKycSubmit").textContent = "Send to Admin for Approval";
             document.getElementById("btnKycCancel").textContent = "Cancel & Reset Registration";
 
             document.getElementById("pendingTitle").textContent = "Verification Pending...";
-            document.getElementById("pendingSubtitle").textContent = "Your ID and photo have been sent to the admin for review";
+            document.getElementById("pendingSubtitle").textContent = "Your ID front page and photo have been sent to the admin for review";
             document.getElementById("btnCheckStatus").textContent = "Check Status";
             document.getElementById("btnCancelReg").textContent = "Cancel Registration & Restart";
 
-            document.getElementById("verificationBadge").textContent = "✅ Premium Account (+50 Bonus Coin)";
+            document.getElementById("verificationBadge").textContent = "✅ Premium Account (+50 Bonus Coins)";
             document.getElementById("txtBalanceTitle").textContent = "Total Wallet Balance";
             document.getElementById("channelBridgeTitle").textContent = "🚀 Bot & Channel Bridge";
             document.getElementById("walletBotBtn").textContent = "🤖 Official Bot";
@@ -1785,7 +1798,7 @@
             document.getElementById("adminMasterBalTitle").textContent = "👑 Master Account Balance";
             document.getElementById("adminSetPassLabel").textContent = "⭐ Set Admin Password";
             document.getElementById("btnAdminSetPass").textContent = "Save";
-            document.getElementById("adminSupportSetLabel").textContent = "📞 Customer Support Phone Setup";
+            document.getElementById("adminSupportSetLabel").textContent = "📞 Customer Support Link Setup";
             document.getElementById("btnAdminSaveSupp").textContent = "Save";
             document.getElementById("adminCommLabel").textContent = "💼 Admin Commission Rate";
             document.getElementById("btnAdminSaveComm").textContent = "Update";
@@ -1793,10 +1806,10 @@
             document.getElementById("btnAdminLotteryClose").textContent = "Close Lottery";
             document.getElementById("btnAdminLotteryOpen").textContent = "Open Lottery";
             document.getElementById("btnAdminLotteryReset").textContent = "Reset Lottery";
-            document.getElementById("adminLogsLabel").textContent = "📊 Activity Logs";
+            document.getElementById("adminLogsLabel").textContent = "📊 Activity Logs & KYC Front IDs";
             document.getElementById("btnAdminRefreshLogs").textContent = "Refresh Logs";
             document.getElementById("adminTargetUserLabel").textContent = "Approve, Block or Reset User (Telegram ID / Phone)";
-            document.getElementById("btnAdminApprove").textContent = "✅ Approve with Photo ID";
+            document.getElementById("btnAdminApprove").textContent = "✅ Approve with Front ID Photo";
             document.getElementById("btnAdminTempPass").textContent = "🔑 Give Temp Pass";
             document.getElementById("btnAdminBlock").textContent = "🚫 Block User";
             document.getElementById("btnAdminErase").textContent = "🗑️ Erase Registration";
@@ -1809,7 +1822,7 @@
 
             document.getElementById("welcomeTitle").textContent = "እንኳን ደህና መጡ ወደ ማላ ኦፊሻል ቦት";
             document.getElementById("welcomeSubtitle").textContent = "እባክዎ የሚፈልጉትን አማራጭ ይምረጡ (1 ሰው = 1 አጠቃቀም)";
-            document.getElementById("btnRegister").textContent = "✨ አዲስ አጠቃቀም መመዝገብ (Register) - 50 Bonus Coin";
+            document.getElementById("btnRegister").textContent = "✨ አዲስ አጠቃቀም መመዝገብ (Register) - 50 Bonus ሳንቲም";
             document.getElementById("btnLogin").textContent = "🔐 ቀድሞ አካውንት የከፈቱበት መግቢያ (Login)";
             document.getElementById("btnAdminPortal").textContent = "⚙️ የአስተዳዳሪ መግቢያ (Admin Portal)";
             document.getElementById("socialCenterTitle").textContent = "🌐 የማህበራዊ ማዕከል (Bot & Channel)";
@@ -1820,39 +1833,39 @@
             document.getElementById("adminLoginTitle").textContent = "የአስተዳደር ፖርታል መግቢያ";
             document.getElementById("adminLoginSubtitle").textContent = "አስተዳዳሪ ለማረጋገጥ የሚስጥር ቃል ያስገቡ";
             document.getElementById("adminUsernameLabel").textContent = "የአስተዳዳሪ ዩዘርናም";
-            document.getElementById("adminPasswordLabel").textContent = "የአስተዳዳሪ ቃልያስያስ";
+            document.getElementById("adminPasswordLabel").textContent = "የአስተዳዳሪ የይለፍ ቃል";
             document.getElementById("btnAdminLoginSubmit").textContent = "አስተዳደር ፓናል ክፈት";
             document.getElementById("btnBackWelcome1").textContent = "ወደ ኋላ ተመለስ";
 
             document.getElementById("loginTitle").textContent = "ወደ አካውንት ይግቡ (Login)";
-            document.getElementById("loginSubtitle").textContent = "በመመዝገቢያ ስልክ ቁጥር እና ቃልያስያስ መግቢያዎን ያረጋግጡ";
+            document.getElementById("loginSubtitle").textContent = "በመመዝገቢያ ስልክ ቁጥር እና የይለፍ ቃል መግቢያዎን ያረጋግጡ";
             document.getElementById("loginPhoneLabel").textContent = "ስልክ ቁጥር (251...)";
-            document.getElementById("loginPasswordLabel").textContent = "ቃልያስያስ (Password)";
-            document.getElementById("forgotPassLink").textContent = "ቃልያስያስ ረስተዋል? (OTP ማረጋገጫ)";
+            document.getElementById("loginPasswordLabel").textContent = "የይለፍ ቃል (Password)";
+            document.getElementById("forgotPassLink").textContent = "የይለፍ ቃል ረስተዋል? (OTP ማረጋገጫ)";
             document.getElementById("btnLoginSubmit").textContent = "ግባ (Login)";
             document.getElementById("btnBackWelcome2").textContent = "ወደ ኋላ ተመለስ";
 
-            document.getElementById("resetTitle").textContent = "ቃልያስያስ ማስተካከያ (OTP ማረጋገጫ)";
-            document.getElementById("resetSubtitle").textContent = "በስልክ ቁጥርዎ የተላከውን የ 4 አሃዝ ኮድ (OTP) እና አዲስ ቃልያስያስ ያስገቡ";
+            document.getElementById("resetTitle").textContent = "የይለፍ ቃል ማስተካከያ (OTP ማረጋገጫ)";
+            document.getElementById("resetSubtitle").textContent = "በስልክ ቁጥርዎ የተላከውን የ 4 አሃዝ ኮድ (OTP) እና አዲስ የይለፍ ቃል ያስገቡ";
             document.getElementById("resetPhoneLabel").textContent = "ስልክ ቁጥር (251...)";
             document.getElementById("otpCodeLabel").textContent = "የ 4 አሃዝ ኮድ (OTP Short Code)";
-            document.getElementById("newPassLabel").textContent = "አዲስ ቃልያስያስ (New Password)";
-            document.getElementById("btnResetSubmit").textContent = "ቃልያስያስ ቀይር (Reset)";
+            document.getElementById("newPassLabel").textContent = "አዲስ የይለፍ ቃል (New Password)";
+            document.getElementById("btnResetSubmit").textContent = "የይለፍ ቃል ቀይር (Reset)";
             document.getElementById("btnBackLogin").textContent = "ወደ መግቢያ ተመለስ";
 
             document.getElementById("regTitle").textContent = "ማላ ኦፊሻል ቦት ምዝገባ";
-            document.getElementById("regSubtitle").textContent = "አካውንት ለማብቃት መረጃውን ይሙሉ (በመመዝገብዎ 50 ጻንሾ ሽልማት ያገኛሉ)";
-            document.getElementById("lblFirstName").textContent = "ስም";
-            document.getElementById("lblFatherName").textContent = "የአባት ስም";
-            document.getElementById("lblGrandFather").textContent = "የአያት ስም";
-            document.getElementById("lblMotherName").textContent = "የእናት ሙሉ ስም";
+            document.getElementById("regSubtitle").textContent = "አካውንት ለማብቃት መረጃውን ይሙሉ (በመመዝገብዎ 50 ሳንቲም ሽልማት ያገኛሉ)";
+            document.getElementById("lblFirstName").textContent = "ስም (First Name)";
+            document.getElementById("lblFatherName").textContent = "የአባት ስም (Father's Name)";
+            document.getElementById("lblGrandFather").textContent = "የአያት ስም (Grandfather's Name)";
+            document.getElementById("lblMotherName").textContent = "የእናት ሙሉ ስም (Mother's Full Name)";
             document.getElementById("lblPhone").textContent = "ዋና ስልክ ቁጥር (+251 በራስ-ሰር ተሞልቷል)";
-            document.getElementById("lblSecPhone").textContent = "ሁለተኛ ስልክ ቁጥር (አማራጭ)";
+            document.getElementById("lblSecPhone").textContent = "ሁለተኛ ስልክ ቁጥር (አማራጭ / Optional)";
             document.getElementById("lblCountry").textContent = "ሀገር (Country)";
             document.getElementById("cityLabel").textContent = "ከተማ / ክልል (City / Region)";
-            document.getElementById("lblEmail").textContent = "ኢሜል አድራሻ";
-            document.getElementById("lblRegPass").textContent = "ቃልያስያስ";
-            document.getElementById("lblRegPassConfirm").textContent = "ቃልያስያስ ማረጋገጫ";
+            document.getElementById("lblEmail").textContent = "ኢሜል አድራሻ (Email Address)";
+            document.getElementById("lblRegPass").textContent = "የይለፍ ቃል (Password)";
+            document.getElementById("lblRegPassConfirm").textContent = "የይለፍ ቃል ማረጋገጫ (Confirm Password)";
             document.getElementById("btnRegSubmit").textContent = "ቀጥል & ፎቶ ማረጋገጫ (Next & KYC)";
             document.getElementById("btnBackWelcome3").textContent = "ወደ ኋላ ተመለስ";
 
@@ -1861,19 +1874,19 @@
             document.getElementById("lblNatId").textContent = "ብሔራዊ መታወቂያ ቁጥር (National ID No)";
             document.getElementById("lblFacePhoto").textContent = "የፊት ገጽታ ፎቶ (Your Face Photo for Verification)";
             document.getElementById("faceText").textContent = "ፎቶዎ የሚታይበትን ገጽታ ፎቶ ለማስገባት እዚህ ይጫኑ";
-            document.getElementById("lblFrontId").textContent = "የመታወቂያው ፊት (ID Card Front)";
-            document.getElementById("frontText").textContent = "የመታወቂያ ፊት ፎቶ ለመምረጥ እዚህ ጋር ይጫኑ";
+            document.getElementById("lblFrontId").textContent = "የመታወቂያው ፊት (ID Card Front Main Page)";
+            document.getElementById("frontText").textContent = "የመታወቂያ ፊት ፔጅ ፎቶ ለመምረጥ እዚህ ጋር ይጫኑ";
             document.getElementById("lblBackId").textContent = "የመታወቂያው ኋላ (ID Card Back)";
             document.getElementById("backText").textContent = "የመታወቂያ ኋላ ፎቶ ለመምረጥ እዚህ ጋር ይጫኑ";
             document.getElementById("btnKycSubmit").textContent = "ለአስተዳዳሪ ማረጋገጫ ላክ (Send to Admin)";
             document.getElementById("btnKycCancel").textContent = "ምዝገባውን ሰርዝ (Cancel & Reset)";
 
             document.getElementById("pendingTitle").textContent = "ማረጋገጫ በመሰን ላይ...";
-            document.getElementById("pendingSubtitle").textContent = "መታወቂያው እና ፎቶዎ ለአስተዳዳሪ ተልኳል፤ እስኪጸድቅ ይጠበቃል";
+            document.getElementById("pendingSubtitle").textContent = "የመታወቂያው ፍሮንት ፔጅ እና ፎቶዎ ለአስተዳዳሪ ተልኳል፤ እስኪጸድቅ ይጠበቃል";
             document.getElementById("btnCheckStatus").textContent = "ህኔታውን አረጋግጥ (Check Status)";
             document.getElementById("btnCancelReg").textContent = "ምዝገባውን ሰርዝ (Cancel) ድጋሚ እንመዝገባለን";
 
-            document.getElementById("verificationBadge").textContent = "✅ ፕሪሚየም አካውንት (+50 Bonus Coin)";
+            document.getElementById("verificationBadge").textContent = "✅ ፕሪሚየም አካውንት (+50 Bonus ሳንቲም)";
             document.getElementById("txtBalanceTitle").textContent = "አጠቃላይ ቀሪ ሒሳብ";
             document.getElementById("channelBridgeTitle").textContent = "🚀 ቦት እና ቻናል መተላለፊያ";
             document.getElementById("walletBotBtn").textContent = "🤖 ኦፊሻል ቦት";
@@ -1884,18 +1897,18 @@
             document.getElementById("twoWayLinkTitle").textContent = "🔗 የሁለትዮሽ ሊንክ አሠራር (Two-way Link)";
             document.getElementById("btnToBot").textContent = "⬅️ ከቻናል ወደ ቦት";
             document.getElementById("btnToChannel").textContent = "➡️ ከቦት ወደ ቻናል";
-            document.getElementById("passChangeTitle").textContent = "🔐 የቃልያስያስ ማሻሻያ (Change Password)";
-            document.getElementById("lblOldPass").textContent = "የቀድሞ ቃልያስያስ";
-            document.getElementById("lblNewPass").textContent = "አዲስ ቃልያስያስ";
-            document.getElementById("lblConfirmNewPass").textContent = "አዲስ ቃልያስያስ ማረጋገጫ";
-            document.getElementById("btnChangePass").textContent = "ቃልያስያስ ቀይር";
+            document.getElementById("passChangeTitle").textContent = "🔐 የይለፍ ቃል ማሻሻያ (Change Password)";
+            document.getElementById("lblOldPass").textContent = "የቀድሞ የይለፍ ቃል (Old Password)";
+            document.getElementById("lblNewPass").textContent = "አዲስ የይለፍ ቃል (New Password)";
+            document.getElementById("lblConfirmNewPass").textContent = "አዲስ የይለፍ ቃል ማረጋገጫ (Confirm Password)";
+            document.getElementById("btnChangePass").textContent = "የይለፍ ቃል ቀይር";
             document.getElementById("phoneUpdateTitle").textContent = "📱 ስልክ ቁጥር ማሻሻል (Update Phone)";
             document.getElementById("btnUpdatePhone").textContent = "ቀይር";
             document.getElementById("btnDeposit").textContent = "ገንዘብ ማስገባት (Chapa)";
             document.getElementById("btnLottery").textContent = "ሎተሪ መግዛት (Lottery)";
             document.getElementById("btnWithdraw").textContent = "ገንዘብ ማውጣት (Min 2,000 Coin)";
             document.getElementById("btnP2P").textContent = "P2P ሼር ማድረግ (Transfer)";
-            document.getElementById("btnExchange").textContent = "ማላ ጻንሾ / ምንዛሬ መቀየሪያ (Exchange)";
+            document.getElementById("btnExchange").textContent = "ማላ ሳንቲም / ምንዛሬ መቀየሪያ (Exchange)";
             document.getElementById("btnReferral").textContent = "🎁 ሼር ሊንክ እና ቦነስ (Invite & Earn)";
             document.getElementById("btnLogout").textContent = "ከአካውንት ውጣ (Logout)";
 
@@ -1905,36 +1918,36 @@
             document.getElementById("btnDepSubmit").textContent = "የክፍያ ሊንክ ፍጠር እና ቀጥል";
             document.getElementById("btnDepBack").textContent = "ወደ አካውንት ተመለስ";
 
-            document.getElementById("lotteryTitle").textContent = "ሎተሪ መግዛት (በማላ ጻንሾ)";
+            document.getElementById("lotteryTitle").textContent = "ሎተሪ መግዛት (በማላ ሳንቲም)";
             document.getElementById("lblSelectedNums").textContent = "የተመረጡ ቁጥሮች:";
             document.getElementById("lblTotalCost").textContent = "አጠቃላይ የሚከፈል:";
             document.getElementById("btnBuyLottery").textContent = "ቁጥሮቹን አረጋግጥ እና ግዛ";
             document.getElementById("btnLotteryBack").textContent = "ወደ አካውንት ተመለስ";
 
             document.getElementById("withTitle").textContent = "ገንዘብ ማውጣት (Min 2,000 Coin)";
-            document.getElementById("withSubtitle").textContent = "የተሰጠው 50 ጻንሾ መመለሻ ላይ (2,000) ሲሞላ ማውጣት ይችላሉ (Locked Bonus)";
+            document.getElementById("withSubtitle").textContent = "የተሰጠው 50 ሳንቲም መመለሻ ላይ (2,000) ሲሞላ ማውጣት ይችላሉ (Locked Bonus)";
             document.getElementById("lblWithMethod").textContent = "የባንክ / የሞባይል ገንዘብ አማራጭ";
             document.getElementById("lblWithAcc").textContent = "ስልክ ቁጥር / የሂሳብ ቁጥር (+251 በራስ-ሰር ተያይዟል)";
             document.getElementById("lblWithAmt").textContent = "የሚወጣው መጠን (Min 2000)";
             document.getElementById("btnWithSubmit").textContent = "የማውጣት ጥያቄ ለአስተዳዳሪ ላክ";
             document.getElementById("btnWithBack").textContent = "ወደ አካውንት ተመለስ";
 
-            document.getElementById("p2pTitle").textContent = "P2P ጻንሾ / ገንዘብ ማስተላለፍ";
-            document.getElementById("p2pSubtitle").textContent = "ለሌላ ተጠቃሚ ጻንሾ ማስተላለፍ (የተሰጠውን 50 ጻንሾ ሳይረብሽ ማስተላለፍ ይቻላል)";
+            document.getElementById("p2pTitle").textContent = "P2P ሳንቲም / ገንዘብ ማስተላለፍ";
+            document.getElementById("p2pSubtitle").textContent = "ለሌላ ተጠቃሚ ሳንቲም ማስተላለፍ (የተሰጠውን 50 ሳንቲም ሳይረብሽ ማስተላለፍ ይቻላል)";
             document.getElementById("lblP2PRec").textContent = "የተቀባይ ስልክ ቁጥር (+251 በራስ-ሰር ተያይዟል)";
-            document.getElementById("lblP2PAmt").textContent = "የሚተላለፈው መጠን (ጻንሾ/ብር)";
+            document.getElementById("lblP2PAmt").textContent = "የሚተላለፈው መጠን (ሳንቲም/ብር)";
             document.getElementById("btnP2PSubmit").textContent = "አሁን አስተላልፍ (Transfer)";
             document.getElementById("btnP2PBack").textContent = "ወደ አካውንት ተመለስ";
 
-            document.getElementById("excTitle").textContent = "ማላ ጻንሾ እና ምንዛሬ መቀየሪያ";
-            document.getElementById("excSubtitle").textContent = "የኢትዮጵያ ብር (ETB) እና ማላ ጻንሾ (Mela Coin) ዋጋዎችን እርስ በእርስ ይለወጡ";
+            document.getElementById("excTitle").textContent = "ማላ ሳንቲም እና ምንዛሬ መቀየሪያ";
+            document.getElementById("excSubtitle").textContent = "የኢትዮጵያ ብር (ETB) እና ማላ ሳንቲም (Mela Coin) ዋጋዎችን እርስ በእርስ ይለወጡ";
             document.getElementById("lblExcType").textContent = "የልውውጥ ዓይነት";
             document.getElementById("lblExcAmt").textContent = "የሚለወጠው መጠን (Amount)";
             document.getElementById("btnExcSubmit").textContent = "አሁን ቀይር (Exchange)";
             document.getElementById("btnExcBack").textContent = "ወደ አካውንት ተመለስ";
 
-            document.getElementById("refTitle").textContent = "የጋበዙት ሰዎች እና ጻንሾ ማዕከል";
-            document.getElementById("refSubtitle").textContent = "ሊንኩን በመጠቀም ተጠቃሚዎች ሲመዘገቡ ቦነስ ጻንሾ ያግኙ";
+            document.getElementById("refTitle").textContent = "የጋበዙት ሰዎች እና ሳንቲም ማዕከል";
+            document.getElementById("refSubtitle").textContent = "ሊንኩን በመጠቀም ተጠቃሚዎች ሲመዘገቡ ቦነስ ሳንቲም ያግኙ";
             document.getElementById("lblRefLink").textContent = "የእርስዎ ማጣቀሻ (Referral) ሊንክ";
             document.getElementById("btnCopyRef").textContent = "📋 ሊንኩን ኮፒ አድርግ (Copy Link)";
             document.getElementById("btnShareRef").textContent = "📤 ሊንኩን በቴሌግራም ሼር አድርግ (Share via Telegram)";
@@ -1945,9 +1958,9 @@
             document.getElementById("adminPanelTitle").textContent = "⚙️ የአስተዳዳሪ ማስተዳደሪያ ፖርታል";
             document.getElementById("adminPanelSubtitle").textContent = "የአስተዳደር ስራዎችን ለመቆጣጠር ከታች ያሉትን አማራጮች ይጠቀሙ";
             document.getElementById("adminMasterBalTitle").textContent = "👑 የማስተር ሒሳብ ቀሪ (Master Balance)";
-            document.getElementById("adminSetPassLabel").textContent = "⭐ አዲስ ቃልያስያስ ማሻሻያ (Set Password)";
+            document.getElementById("adminSetPassLabel").textContent = "⭐ አዲስ የይለፍ ቃል ማሻሻያ (Set Password)";
             document.getElementById("btnAdminSetPass").textContent = "አስቀምጥ";
-            document.getElementById("adminSupportSetLabel").textContent = "📞 የቴክኒክ ድጋፍ ስልክ ቁጥር ማስተካከያ";
+            document.getElementById("adminSupportSetLabel").textContent = "📞 የቴክኒክ ድጋፍ ሊንክ ማስተካከያ (Customer Support Link)";
             document.getElementById("btnAdminSaveSupp").textContent = "አስቀምጥ";
             document.getElementById("adminCommLabel").textContent = "💼 የኮሚሽን መጠን (Commission Rate)";
             document.getElementById("btnAdminSaveComm").textContent = "አስተካክል";
@@ -1955,24 +1968,24 @@
             document.getElementById("btnAdminLotteryClose").textContent = "ሎተሪ ዝጋ";
             document.getElementById("btnAdminLotteryOpen").textContent = "ሎተሪ ክፈት";
             document.getElementById("btnAdminLotteryReset").textContent = "ሎተሪ 0 አድርግ";
-            document.getElementById("adminLogsLabel").textContent = "📊 የእንቅስቃሴ መዝገብ (Activity Logs)";
+            document.getElementById("adminLogsLabel").textContent = "📊 የእንቅስቃሴ መዝገብ እና የመታወቂያ ፍሮንት ፔጆች (Activity Logs & KYC)";
             document.getElementById("btnAdminRefreshLogs").textContent = "መዝገብ አድስ";
-            document.getElementById("adminTargetUserLabel").textContent = "ተጠቃሚ ማረጋገጥ (Approve)፤ ማገድ ወይም ቃልያስያስ ለመስጠት (Telegram ID / Phone)";
-            document.getElementById("btnAdminApprove").textContent = "✅ አጽድቅ (Approve with Photo)";
-            document.getElementById("btnAdminTempPass").textContent = "🔑 ጊዜያዊ ቃልያስያስ ሰጥ";
+            document.getElementById("adminTargetUserLabel").textContent = "ተጠቃሚ ማረጋገጥ (Approve)፤ ማገድ ወይም የይለፍ ቃል ለመስጠት (Telegram ID / Phone)";
+            document.getElementById("btnAdminApprove").textContent = "✅ አጽድቅ (Approve with Front ID Photo)";
+            document.getElementById("btnAdminTempPass").textContent = "🔑 ጊዜያዊ የይለፍ ቃል ሰጥ";
             document.getElementById("btnAdminBlock").textContent = "🚫 አግድ (Block)";
             document.getElementById("btnAdminErase").textContent = "🗑️ ምዝገባ ሰርዝ";
-            document.getElementById("btnAdminResetPass").textContent = "አስተዳዳሪ ቃልያስያስ ሪሴት";
+            document.getElementById("btnAdminResetPass").textContent = "አስተዳዳሪ የይለፍ ቃል ሪሴት";
             document.getElementById("btnAdminLogout").textContent = "ውጣ (Logout Admin)";
         }
     }
 
     function updateColors() {
         const bg = document.getElementById("bgPicker").value;
-        const txt = document.getElementById("textPicker").value;
+        const text = document.getElementById("textPicker").value;
         document.documentElement.style.setProperty('--bg-color', bg);
         document.documentElement.style.setProperty('--card-bg', bg);
-        document.documentElement.style.setProperty('--text-color', txt);
+        document.documentElement.style.setProperty('--text-color', text);
     }
 </script>
 </body>
