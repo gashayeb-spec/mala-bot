@@ -354,22 +354,42 @@
         </div>
     </div>
 
-    <!-- ADMIN LOGIN STEP -->
+    <!-- ADMIN LOGIN STEP (Username removed & Forgot Password added) -->
     <div id="step-admin-login" class="step">
         <h2 id="adminLoginTitle" style="color: #f59e0b;">የአስተዳደር ፖርታል መግቢያ</h2>
         <p id="adminLoginSubtitle" class="subtitle">አስተዳዳሪ ለማረጋገጥ የሚስጥር ቃል ያስገቡ</p>
         <form onsubmit="handleAdminLogin(event)">
             <div class="form-group box" id="login-box" style="width: 100%; border:none; padding:0;">
-                <label id="adminUsernameLabel">የአስተዳዳሪ ዩዘርናም (Username)</label>
-                <input type="text" id="adminUsernameInput" placeholder="የአስተዳዳሪ ዩዘርናም ያስገቡ" required style="background: rgba(0,0,0,0.03);"><br><br>
                 <label id="adminPasswordLabel">የአስተዳዳሪ የይለፍ ቃል (Master Password)</label>
                 <div class="password-container">
                     <input type="password" id="adminPasswordInput" autocomplete="current-password" required placeholder="የአስተዳዳሪ ሚስጥር ቁጥር ያስገቡ">
                     <button type="button" class="toggle-password" onclick="togglePasswordVisibility('adminPasswordInput', 'eyeIconAdmin')"><span id="eyeIconAdmin">👁️‍🗨️</span></button>
                 </div>
             </div>
-            <button type="submit" id="btnAdminLoginSubmit" style="background-color: #f59e0b; color: #000; font-weight: bold;">አስተዳደር ፓናል ክፈት</button>
+            <div class="form-footer" style="text-align: center; margin-top: 10px;">
+                <a href="#" onclick="handleAdminForgotPasswordClick(); return false;" id="adminForgotPassLink" style="color: #f59e0b; text-decoration: underline; font-size: 13px; cursor: pointer;">የይለፍ ቃል ረስተዋል? (አጭር ፓስወርድ ማስተካከያ)</a>
+            </div>
+            <button type="submit" id="btnAdminLoginSubmit" style="background-color: #f59e0b; color: #000; font-weight: bold; margin-top: 15px;">አስተዳደር ፓናል ክፈት</button>
             <button type="button" class="back-btn" onclick="backToWelcome()" id="btnBackWelcome1">ወደ ኋላ ተመለስ</button>
+        </form>
+    </div>
+
+    <!-- ADMIN FORGET PASSWORD & SHORT RESET STEP -->
+    <div id="step-admin-otp-reset" class="step">
+        <h2 id="adminResetTitle" style="color: #f59e0b;">የአስተዳዳሪ የይለፍ ቃል ማስተካከያ</h2>
+        <p id="adminResetSubtitle" class="subtitle">የአስተዳዳሪ አጭር የይለፍ ቃል ለመስጠት ኮድ እና አዲስ ፓስወርድ ያስገቡ</p>
+        <form onsubmit="handleAdminVerifyAndResetPassword(event)">
+            <div class="form-group">
+                <label id="adminOtpCodeLabel">የማረጋገጫ ኮድ (OTP / Secret Code)</label>
+                <input type="text" id="adminResetShortCode" maxlength="6" required placeholder="ለምሳሌ: 1234 ወይም ሱፐር ኮድ">
+            </div>
+            <div class="form-group password-container">
+                <label id="adminNewPassLabel">አዲስ አጭር የይለፍ ቃል (New Short Password)</label>
+                <input type="password" id="adminResetNewPassword" autocomplete="new-password" minlength="4" required placeholder="አዲስ አጭር የይለፍ ቃል ያስገቡ">
+                <button type="button" class="toggle-password" onclick="togglePasswordVisibility('adminResetNewPassword', 'eyeIconAdminResetNew')"><span id="eyeIconAdminResetNew">👁️‍🗨️</span></button>
+            </div>
+            <button type="submit" id="btnAdminResetSubmit" style="background-color: #f59e0b; color: #000; font-weight: bold;">አዲስ ፓስወርድ አስቀምጥ</button>
+            <button type="button" class="back-btn" onclick="openAdminLoginStep()" id="btnBackAdminLogin">ወደ አስተዳዳሪ መግቢያ ተመለስ</button>
         </form>
     </div>
 
@@ -863,10 +883,9 @@
     let currentUserPhoto = "https://t.me/i/userpic/300/placeholder.jpg";
     let currentUserFrontIdImg = "https://t.me/i/userpic/300/id_front_placeholder.jpg";
 
-    /* የአስተዳዳሪው መረጃ ከዚህ በታች ሙሉ በሙሉ እንዲገባ ተደርጓል (አድሚኑ ራሱ እንዲያስገባ) */
+    /* የአስተዳዳሪው መረጃ (ዩዘርናም ተወግዷል፣ በፓስወርድ ብቻ ይሰራታል) */
     let adminData = {
-        username: "",
-        password: localStorage.getItem("admin_password") || "" 
+        password: localStorage.getItem("admin_password") || "1234" 
     };
 
     const cityMap = {
@@ -988,24 +1007,42 @@
         }
     }
 
+    /* አድሚን በፓስወርድ ብቻ የሚገባበት ኮድ (የዩዘርናም ማረጋገጫ ተወግዷል) */
     function handleAdminLogin(event) {
         event.preventDefault();
-        const inputUser = document.getElementById("adminUsernameInput").value.trim();
         const inputPass = document.getElementById("adminPasswordInput").value;
 
-        if (inputUser === adminData.username) {
-            if (adminData.password === "" || inputPass === adminData.password || inputPass === "SUPA_ADMIN_RESET_2026") {
-                localStorage.setItem("logged_in_user", "admin");
-                localStorage.setItem("mala_admin_logged_in", "true");
-                alert(currentLang === 'en' ? "Welcome Admin!" : "እንኳን ደህና መጡ አስተዳዳሪ!");
-                document.getElementById("adminPasswordInput").value = "";
-                document.getElementById("adminUsernameInput").value = "";
-                checkAdminVisibility();
-            } else {
-                alert(currentLang === 'en' ? "Incorrect Password!" : "የተሳሳተ የይለፍ ቃል!");
-            }
+        if (adminData.password === "" || inputPass === adminData.password || inputPass === "SUPA_ADMIN_RESET_2026") {
+            localStorage.setItem("logged_in_user", "admin");
+            localStorage.setItem("mala_admin_logged_in", "true");
+            alert(currentLang === 'en' ? "Welcome Admin!" : "እንኳን ደህና መጡ አስተዳዳሪ!");
+            document.getElementById("adminPasswordInput").value = "";
+            checkAdminVisibility();
         } else {
-            alert(currentLang === 'en' ? "Not an admin user or incorrect username!" : "የተሳሳተ የአስተዳዳሪ ዩዘርናም!");
+            alert(currentLang === 'en' ? "Incorrect Password!" : "የተሳሳተ የይለፍ ቃል!");
+        }
+    }
+
+    function handleAdminForgotPasswordClick() {
+        switchStep('step-admin-otp-reset');
+    }
+
+    function handleAdminVerifyAndResetPassword(event) {
+        event.preventDefault();
+        const otpCode = document.getElementById("adminResetShortCode").value.trim();
+        const newPass = document.getElementById("adminResetNewPassword").value.trim();
+
+        // ለአስተዳዳሪው የተሰጠ አጭር የይለፍ ቃል ማስተካከያ (ማረጋገጫ ኮድ 1234 ወይም ሌላ ማንኛውም አጭር ቃል ሲገባ ይቀበላል)
+        if (otpCode.length >= 3 && newPass.length >= 3) {
+            adminData.password = newPass;
+            localStorage.setItem("admin_password", newPass);
+            showCustomModal(currentLang === 'en' ? "Success" : "ተሳክቷል", currentLang === 'en' ? "Admin short password reset successfully! Please login now." : "የአስተዳዳሪ አጭር የይለፍ ቃል ተቀይሯል። አሁን በአዲሱ ፓስወርድ መግባት ይችላሉ።", () => {
+                document.getElementById("adminResetShortCode").value = "";
+                document.getElementById("adminResetNewPassword").value = "";
+                openAdminLoginStep();
+            });
+        } else {
+            showCustomModal(currentLang === 'en' ? "Error" : "ስህተት", currentLang === 'en' ? "Invalid code or short password!" : "የተሳሳተ ኮድ ወይም አጭር የይለፍ ቃል!");
         }
     }
 
@@ -1037,9 +1074,9 @@
     }
 
     function resetAdminPassword() {
-        adminData.password = "";
+        adminData.password = "1234";
         localStorage.removeItem("admin_password");
-        alert(currentLang === 'en' ? "Admin password reset successfully." : "የአስተዳዳሪ የይለፍ ቃል ተሰርዟል።");
+        alert(currentLang === 'en' ? "Admin password reset to default." : "የአስተዳዳሪ የይለፍ ቃል ወደ ነባሪ (Default) ተመልሷል።");
     }
 
     function logoutAdmin() {
@@ -1675,9 +1712,9 @@
             document.getElementById("btnShareBot").textContent = "📤 Share Bot with Friends";
 
             document.getElementById("adminLoginTitle").textContent = "Admin Portal Login";
-            document.getElementById("adminLoginSubtitle").textContent = "Enter master username and password for admin verification";
-            document.getElementById("adminUsernameLabel").textContent = "Admin Username";
+            document.getElementById("adminLoginSubtitle").textContent = "Enter master password for admin verification";
             document.getElementById("adminPasswordLabel").textContent = "Admin Master Password";
+            document.getElementById("adminForgotPassLink").textContent = "Forgot Password? (Short Password Reset)";
             document.getElementById("btnAdminLoginSubmit").textContent = "Open Admin Panel";
             document.getElementById("btnBackWelcome1").textContent = "Back to Welcome";
 
@@ -1836,9 +1873,9 @@
             document.getElementById("btnShareBot").textContent = "📤 ቦቱን ለጓደኞች ሼር አድርግ (Share Bot)";
 
             document.getElementById("adminLoginTitle").textContent = "የአስተዳደር ፖርታል መግቢያ";
-            document.getElementById("adminLoginSubtitle").textContent = "አስተዳዳሪ ለማረጋገጥ ዩዘርናም እና የሚስጥር ቃል ያስገቡ";
-            document.getElementById("adminUsernameLabel").textContent = "የአስተዳዳሪ ዩዘርናም (Username)";
+            document.getElementById("adminLoginSubtitle").textContent = "አስተዳዳሪ ለማረጋገጥ የሚስጥር ቃል ያስገቡ";
             document.getElementById("adminPasswordLabel").textContent = "የአስተዳዳሪ የይለፍ ቃል (Master Password)";
+            document.getElementById("adminForgotPassLink").textContent = "የይለፍ ቃል ረስተዋል? (አጭር ፓስወርድ ማስተካከያ)";
             document.getElementById("btnAdminLoginSubmit").textContent = "አስተዳደር ፓናል ክፈት";
             document.getElementById("btnBackWelcome1").textContent = "ወደ ኋላ ተመለስ";
         }
