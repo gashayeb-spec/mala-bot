@@ -1985,12 +1985,14 @@
     }
 
     function updateColors() {
-        const bg = document.getElementById("bgPicker").value;
-        const txt = document.getElementById("textPicker").value;
-        document.documentElement.style.setProperty('--bg-color', bg);
-        document.documentElement.style.setProperty('--card-bg', bg);
-        document.documentElement.style.setProperty('--text-color', txt);
+        const bgVal = document.getElementById("bgPicker").value;
+        const textVal = document.getElementById("textPicker").value;
+        
+        document.documentElement.style.setProperty('--bg-color', bgVal);
+        document.documentElement.style.setProperty('--card-bg', bgVal);
+        document.documentElement.style.setProperty('--text-color', textVal);
     }
 </script>
+
 </body>
 </html>
