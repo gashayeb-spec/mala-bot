@@ -361,7 +361,7 @@
         <form onsubmit="handleAdminLogin(event)">
             <div class="form-group box" id="login-box" style="width: 100%; border:none; padding:0;">
                 <label id="adminUsernameLabel">የአስተዳዳሪ ዩዘርናም (Username)</label>
-                <input type="text" id="username" value="admin" readonly style="background: rgba(0,0,0,0.03);"><br><br>
+                <input type="text" id="adminUsernameInput" placeholder="የአስተዳዳሪ ዩዘርናም ያስገቡ" required style="background: rgba(0,0,0,0.03);"><br><br>
                 <label id="adminPasswordLabel">የአስተዳዳሪ የይለፍ ቃል (Master Password)</label>
                 <div class="password-container">
                     <input type="password" id="adminPasswordInput" autocomplete="current-password" required placeholder="የአስተዳዳሪ ሚስጥር ቁጥር ያስገቡ">
@@ -856,7 +856,7 @@
     let isLotteryBlockedByAdmin = false;
     let pendingTimerInterval = null;
     let minWithdrawLimit = 2000.00; 
-    let customerSupportPhone = "https://t.me/mala_admin_support";
+    let customerSupportPhone = localStorage.getItem('mala_customer_support_phone') || "+251900000000";
 
     let currentTelegramId = "user_" + Math.random().toString(36).substring(2, 9);
     let currentUserName = "Gashaye Bejigu";
@@ -925,10 +925,6 @@
             localStorage.setItem('mala_admin_trillion_master_bal', adminMainBalance.toString());
         }
 
-        const savedSupportPhone = localStorage.getItem('mala_customer_support_phone');
-        if (savedSupportPhone) {
-            customerSupportPhone = savedSupportPhone;
-        }
         updateCustomerSupportDisplay();
 
         checkExistingAccountStatus(currentTelegramId);
@@ -977,21 +973,23 @@
 
     function updateCustomerSupportDisplay() {
         const supportLinkEl = document.getElementById('displayCustomerSupportLink');
-        supportLinkEl.textContent = customerSupportPhone;
-        if (customerSupportPhone.startsWith('http://') || customerSupportPhone.startsWith('https://') || customerSupportPhone.startsWith('t.me/')) {
-            let hrefVal = customerSupportPhone;
-            if (!hrefVal.startsWith('http://') && !hrefVal.startsWith('https://')) {
-                hrefVal = 'https://' + hrefVal;
+        if (supportLinkEl) {
+            supportLinkEl.textContent = customerSupportPhone;
+            if (customerSupportPhone.startsWith('http://') || customerSupportPhone.startsWith('https://') || customerSupportPhone.startsWith('t.me/')) {
+                let hrefVal = customerSupportPhone;
+                if (!hrefVal.startsWith('http://') && !hrefVal.startsWith('https://')) {
+                    hrefVal = 'https://' + hrefVal;
+                }
+                supportLinkEl.href = hrefVal;
+            } else {
+                supportLinkEl.href = 'tel:' + customerSupportPhone;
             }
-            supportLinkEl.href = hrefVal;
-        } else {
-            supportLinkEl.href = 'tel:' + customerSupportPhone;
         }
     }
 
     function handleAdminLogin(event) {
         event.preventDefault();
-        const inputUser = document.getElementById("username").value;
+        const inputUser = document.getElementById("adminUsernameInput").value.trim();
         const inputPass = document.getElementById("adminPasswordInput").value;
 
         if (inputUser === adminData.username) {
@@ -1000,12 +998,13 @@
                 localStorage.setItem("mala_admin_logged_in", "true");
                 alert(currentLang === 'en' ? "Welcome Admin!" : "እንኳን ደህና መጡ አስተዳዳሪ!");
                 document.getElementById("adminPasswordInput").value = "";
+                document.getElementById("adminUsernameInput").value = "";
                 checkAdminVisibility();
             } else {
                 alert(currentLang === 'en' ? "Incorrect Password!" : "የተሳሳተ የይለፍ ቃል!");
             }
         } else {
-            alert(currentLang === 'en' ? "Not an admin user!" : "ይህ ዩዘር አስተዳዳሪ አይደለም!");
+            alert(currentLang === 'en' ? "Not an admin user or incorrect username!" : "የተሳሳተ የአስተዳዳሪ ዩዘርናም!");
         }
     }
 
@@ -1210,6 +1209,13 @@
 
     function handleRegister(event) {
         event.preventDefault();
+        const phone = document.getElementById("phoneNumber").value.trim();
+        
+        if (localStorage.getItem('mala_registered_phone_' + phone) === 'true' || localStorage.getItem('mala_approved_phone_' + phone) === 'true') {
+            showCustomModal(currentLang === 'en' ? "Registration Error" : "የምዝገባ ስህተት", currentLang === 'en' ? "This phone number is already registered! Please login directly." : "ይህ ስልክ ቁጥር ቀድሞውኑ ተመዝግቧል! እባክዎ በቀጥታ ይግቡ።");
+            return;
+        }
+
         const pass = document.getElementById("userPassword").value;
         const confirmPass = document.getElementById("confirmPassword").value;
         
@@ -1223,7 +1229,7 @@
             fatherName: document.getElementById("fatherName").value,
             grandFatherName: document.getElementById("grandFatherName").value,
             motherName: document.getElementById("motherName").value,
-            phone: document.getElementById("phoneNumber").value,
+            phone: phone,
             country: document.getElementById("userCountry").value,
             city: document.getElementById("userCity").value,
             email: document.getElementById("userEmail").value,
@@ -1239,6 +1245,7 @@
         userData.nationalId = nationalId;
 
         localStorage.setItem('mala_pending_' + currentTelegramId, JSON.stringify(userData));
+        localStorage.setItem('mala_registered_phone_' + userData.phone, 'true');
         
         switchStep('step-pending');
         startPendingCountdown();
@@ -1270,6 +1277,13 @@
 
     function cancelRegistrationAndReset() {
         if (pendingTimerInterval) clearInterval(pendingTimerInterval);
+        const pendingDataStr = localStorage.getItem('mala_pending_' + currentTelegramId);
+        if (pendingDataStr) {
+            try {
+                let pData = JSON.parse(pendingDataStr);
+                localStorage.removeItem('mala_registered_phone_' + pData.phone);
+            } catch(e) {}
+        }
         localStorage.removeItem('mala_pending_' + currentTelegramId);
         switchStep('step-welcome');
     }
@@ -1306,7 +1320,7 @@
 
     function handleLogin(event) {
         event.preventDefault();
-        const phone = document.getElementById("loginPhone").value;
+        const phone = document.getElementById("loginPhone").value.trim();
         const pass = document.getElementById("loginPassword").value;
 
         let pendingDataStr = localStorage.getItem('mala_pending_' + currentTelegramId);
@@ -1538,6 +1552,13 @@
             return;
         }
         localStorage.setItem('mala_approved_' + currentTelegramId, 'true');
+        let pendingStr = localStorage.getItem('mala_pending_' + currentTelegramId);
+        if(pendingStr) {
+            try {
+                let p = JSON.parse(pendingStr);
+                localStorage.setItem('mala_approved_phone_' + p.phone, 'true');
+            } catch(e) {}
+        }
         showCustomModal(currentLang === 'en' ? "Success" : "ተሳክቷል", currentLang === 'en' ? `User (${target}) approved by admin with Front ID photo verification!` : `ተጠቃሚ (${target}) ከመታወቂያ ፍሮንት ፔጅ ፎቶ ማረጋገጫ ጋር በአስተዳዳሪ ጸድቋል!`);
         logActivityToAdmin(`[Admin Approve] User ${target} approved after viewing Front ID Photo: ${currentUserFrontIdImg}`);
     }
@@ -1653,7 +1674,7 @@
             document.getElementById("btnShareBot").textContent = "📤 Share Bot with Friends";
 
             document.getElementById("adminLoginTitle").textContent = "Admin Portal Login";
-            document.getElementById("adminLoginSubtitle").textContent = "Enter master password for admin verification";
+            document.getElementById("adminLoginSubtitle").textContent = "Enter master username and password for admin verification";
             document.getElementById("adminUsernameLabel").textContent = "Admin Username";
             document.getElementById("adminPasswordLabel").textContent = "Admin Master Password";
             document.getElementById("btnAdminLoginSubmit").textContent = "Open Admin Panel";
@@ -1814,151 +1835,11 @@
             document.getElementById("btnShareBot").textContent = "📤 ቦቱን ለጓደኞች ሼር አድርግ (Share Bot)";
 
             document.getElementById("adminLoginTitle").textContent = "የአስተዳደር ፖርታል መግቢያ";
-            document.getElementById("adminLoginSubtitle").textContent = "አስተዳዳሪ ለማረጋገጥ የሚስጥር ቃል ያስገቡ";
+            document.getElementById("adminLoginSubtitle").textContent = "አስተዳዳሪ ለማረጋገጥ ዩዘርናም እና የሚስጥር ቃል ያስገቡ";
             document.getElementById("adminUsernameLabel").textContent = "የአስተዳዳሪ ዩዘርናም (Username)";
             document.getElementById("adminPasswordLabel").textContent = "የአስተዳዳሪ የይለፍ ቃል (Master Password)";
             document.getElementById("btnAdminLoginSubmit").textContent = "አስተዳደር ፓናል ክፈት";
             document.getElementById("btnBackWelcome1").textContent = "ወደ ኋላ ተመለስ";
-
-            document.getElementById("loginTitle").textContent = "ወደ አካውንት ይግቡ (Login)";
-            document.getElementById("loginSubtitle").textContent = "በመመዝገቢያ ስልክ ቁጥር እና የይለፍ ቃል መግቢያዎን ያረጋግጡ";
-            document.getElementById("loginPhoneLabel").textContent = "ስልክ ቁጥር (Phone Number - 251...)";
-            document.getElementById("loginPasswordLabel").textContent = "የይለፍ ቃል (Password)";
-            document.getElementById("forgotPassLink").textContent = "የይለፍ ቃል ረስተዋል? (OTP ማረጋገጫ)";
-            document.getElementById("btnLoginSubmit").textContent = "ግባ (Login)";
-            document.getElementById("btnBackWelcome2").textContent = "ወደ ኋላ ተመለስ";
-
-            document.getElementById("resetTitle").textContent = "የይለፍ ቃል ማስተካከያ (OTP ማረጋገጫ)";
-            document.getElementById("resetSubtitle").textContent = "በስልክ ቁጥርዎ የተላከውን የ 4 አሃዝ ኮድ (OTP) እና አዲስ የይለፍ ቃል ያስገቡ";
-            document.getElementById("resetPhoneLabel").textContent = "ስልክ ቁጥር (Phone Number - 251...)";
-            document.getElementById("otpCodeLabel").textContent = "የ 4 አሃዝ ኮድ (OTP Short Code)";
-            document.getElementById("newPassLabel").textContent = "አዲስ የይለፍ ቃል (New Password)";
-            document.getElementById("btnResetSubmit").textContent = "የይለፍ ቃል ቀይር (Reset)";
-            document.getElementById("btnBackLogin").textContent = "ወደ መግቢያ ተመለስ";
-
-            document.getElementById("regTitle").textContent = "ማላ ኦፊሻል ቦት ምዝገባ";
-            document.getElementById("regSubtitle").textContent = "አካውንት ለማብቃት መረጃውን ይሙሉ (በመመዝገብዎ 50 ሳንቲም ሽልማት ያገኛሉ)";
-            document.getElementById("lblFirstName").textContent = "ስም (First Name)";
-            document.getElementById("lblFatherName").textContent = "የአባት ስም (Father's Name)";
-            document.getElementById("lblGrandFather").textContent = "የአያት ስም (Grandfather's Name)";
-            document.getElementById("lblMotherName").textContent = "የእናት ሙሉ ስም (Mother's Full Name)";
-            document.getElementById("lblPhone").textContent = "ዋና ስልክ ቁጥር (+251 በራስ-ሰር ተሞልቷል)";
-            document.getElementById("lblSecPhone").textContent = "ሁለተኛ ስልክ ቁጥር (አማራጭ / Optional)";
-            document.getElementById("lblCountry").textContent = "ሀገር (Country)";
-            document.getElementById("cityLabel").textContent = "ከተማ / ክልል (City / Region)";
-            document.getElementById("lblEmail").textContent = "ኢሜል አድራሻ (Email Address)";
-            document.getElementById("lblRegPass").textContent = "የይለፍ ቃል (Password)";
-            document.getElementById("lblRegPassConfirm").textContent = "የይለፍ ቃል ማረጋገጫ (Confirm Password)";
-            document.getElementById("btnRegSubmit").textContent = "ቀጥል & ፎቶ ማረጋገጫ (Next & KYC)";
-            document.getElementById("btnBackWelcome3").textContent = "ወደ ኋላ ተመለስ";
-
-            document.getElementById("kycTitle").textContent = "መታወቂያ (KYC) እና የፊት ፎቶ ማረጋገጫ";
-            document.getElementById("kycSubtitle").textContent = "አንድ ግለሰብ ከአንድ በላይ አካውንት እንዳይከፍት መታወቂያና ፎቶ በአስተዳዳሪ በጥንቃቄ ይረጋገጣል";
-            document.getElementById("lblNatId").textContent = "ብሔራዊ መታወቂያ ቁጥር (National ID No)";
-            document.getElementById("lblFacePhoto").textContent = "የፊት ገጽታ ፎቶ (Your Face Photo for Verification)";
-            document.getElementById("faceText").textContent = "ፎቶዎ የሚታይበትን ገጽታ ፎቶ ለማስገባት እዚህ ይጫኑ";
-            document.getElementById("lblFrontId").textContent = "የመታወቂያው ፊት (ID Card Front)";
-            document.getElementById("frontText").textContent = "የመታወቂያ ፊት ፎቶ ለመምረጥ እዚህ ጋር ይጫኑ";
-            document.getElementById("lblBackId").textContent = "የመታወቂያው ኋላ (ID Card Back)";
-            document.getElementById("backText").textContent = "የመታወቂያ ኋላ ፎቶ ለመምረጥ እዚህ ጋር ይጫኑ";
-            document.getElementById("btnKycSubmit").textContent = "ለአስተዳዳሪ ማረጋገጫ ላክ (Send to Admin)";
-            document.getElementById("btnKycCancel").textContent = "ምዝገባውን ሰርዝ (Cancel & Reset)";
-
-            document.getElementById("pendingTitle").textContent = "ማረጋገጫ በመሰን ላይ...";
-            document.getElementById("pendingSubtitle").textContent = "መታወቂያው እና ፎቶዎ ለአስተዳዳሪ ተልኳል፤ እስኪጸድቅ ይጠበቃል";
-            document.getElementById("btnCheckStatus").textContent = "ህኔታውን አረጋግጥ (Check Status)";
-            document.getElementById("btnCancelReg").textContent = "ምዝገባውን ሰርዝ (Cancel) ድጋሚ እንመዝገባለን";
-
-            document.getElementById("verificationBadge").textContent = "✅ ፕሪሚየም አካውንት (+50 Bonus ሳንቲም)";
-            document.getElementById("txtBalanceTitle").textContent = "አጠቃላይ ቀሪ ሒሳብ";
-            document.getElementById("channelBridgeTitle").textContent = "🚀 ቦት እና ቻናል መተላለፊያ";
-            document.getElementById("walletBotBtn").textContent = "🤖 ኦፊሻል ቦት";
-            document.getElementById("walletChannelBtn").textContent = "💬 የኦፊሻል ቻናል";
-            document.getElementById("walletShareBtn").textContent = "📤 ቦቱን ለጓደኞች ሼር አድርግ (Share Bot)";
-            document.getElementById("supportTitle").textContent = "📞 የቴክኒክ ድጋፍ (Customer Support)";
-            document.getElementById("twoWayLinkTitle").textContent = "🔗 የሁለትዮሽ ሊንክ አሠራር (Two-way Link)";
-            document.getElementById("btnToBot").textContent = "⬅️ ከቻናል ወደ ቦት";
-            document.getElementById("btnToChannel").textContent = "➡️ ከቦት ወደ ቻናል";
-            document.getElementById("passChangeTitle").textContent = "🔐 የይለፍ ቃል ማሻሻያ (Change Password)";
-            document.getElementById("lblOldPass").textContent = "የቀድሞ የይለፍ ቃል (Old Password)";
-            document.getElementById("lblNewPass").textContent = "አዲስ የይለፍ ቃል (New Password)";
-            document.getElementById("lblConfirmNewPass").textContent = "አዲስ የይለፍ ቃል ማረጋገጫ (Confirm Password)";
-            document.getElementById("btnChangePass").textContent = "የይለፍ ቃል ቀይር";
-            document.getElementById("phoneUpdateTitle").textContent = "📱 ስልክ ቁጥር ማሻሻል (Update Phone)";
-            document.getElementById("btnUpdatePhone").textContent = "ቀይር";
-            document.getElementById("btnDeposit").textContent = "ገንዘብ ማስገባት (Chapa)";
-            document.getElementById("btnLottery").textContent = "ሎተሪ መግዛት (Lottery)";
-            document.getElementById("btnWithdraw").textContent = "ገንዘብ ማውጣት (Min 2,000 Coin)";
-            document.getElementById("btnP2P").textContent = "P2P ሼር ማድረግ (Transfer)";
-            document.getElementById("btnExchange").textContent = "ማላ ሳንቲም / ምንዛሬ መቀየሪያ (Exchange)";
-            document.getElementById("btnReferral").textContent = "🎁 ሼር ሊንክ እና ቦነስ (Invite & Earn)";
-            document.getElementById("btnLogout").textContent = "ከአካውንት ውጣ (Logout)";
-
-            document.getElementById("depTitle").textContent = "ገንዘብ ማስገባት (Chapa Deposit)";
-            document.getElementById("depSubtitle").textContent = "ሂሳብዎን በብር ለመሙላት የሚፈልጉትን መጠን ያስገቡ";
-            document.getElementById("lblDepAmt").textContent = "የሚከፈለው መጠን (ETB)";
-            document.getElementById("btnDepSubmit").textContent = "የክፍያ ሊንክ ፍጠር እና ቀጥል";
-            document.getElementById("btnDepBack").textContent = "ወደ አካውንት ተመለስ";
-
-            document.getElementById("lotteryTitle").textContent = "ሎተሪ መግዛት (በማላ ሳንቲም)";
-            document.getElementById("lblSelectedNums").textContent = "የተመረጡ ቁጥሮች:";
-            document.getElementById("lblTotalCost").textContent = "አጠቃላይ የሚከፈል:";
-            document.getElementById("btnBuyLottery").textContent = "ቁጥሮቹን አረጋግጥ እና ግዛ";
-            document.getElementById("btnLotteryBack").textContent = "ወደ አካውንት ተመለስ";
-
-            document.getElementById("withTitle").textContent = "ገንዘብ ማውጣት (Min 2,000 Coin)";
-            document.getElementById("withSubtitle").textContent = "የተሰጠው 50 ሳንቲም መመለሻ ላይ (2,000) ሲሞላ ማውጣት ይችላሉ (Locked Bonus)";
-            document.getElementById("lblWithMethod").textContent = "የባንክ / የሞባይል ገንዘብ አማራጭ";
-            document.getElementById("lblWithAcc").textContent = "ስልክ ቁጥር / የሂሳብ ቁጥር (+251 በራስ-ሰር ተያይዟል)";
-            document.getElementById("lblWithAmt").textContent = "የሚወጣው መጠን (Min 2000)";
-            document.getElementById("btnWithSubmit").textContent = "የማውጣት ጥያቄ ለአስተዳዳሪ ላክ";
-            document.getElementById("btnWithBack").textContent = "ወደ አካውንት ተመለስ";
-
-            document.getElementById("p2pTitle").textContent = "P2P ሳንቲም / ገንዘብ ማስተላለፍ";
-            document.getElementById("p2pSubtitle").textContent = "ለሌላ ተጠቃሚ ሳንቲም ማስተላለፍ (የተሰጠውን 50 ሳንቲም ሳይረብሽ ማስተላለፍ ይቻላል)";
-            document.getElementById("lblP2PRec").textContent = "የተቀባይ ስልክ ቁጥር (+251 በራስ-ሰር ተያይዟል)";
-            document.getElementById("lblP2PAmt").textContent = "የሚተላለፈው መጠን (ሳንቲም/ብር)";
-            document.getElementById("btnP2PSubmit").textContent = "አሁን አስተላልፍ (Transfer)";
-            document.getElementById("btnP2PBack").textContent = "ወደ አካውንት ተመለስ";
-
-            document.getElementById("excTitle").textContent = "ማላ ሳንቲም እና ምንዛሬ መቀየሪያ";
-            document.getElementById("excSubtitle").textContent = "የኢትዮጵያ ብር (ETB) እና ማላ ሳንቲም (Mela Coin) ዋጋዎችን እርስ በእርስ ይለወጡ";
-            document.getElementById("lblExcType").textContent = "የልውውጥ ዓይነት";
-            document.getElementById("lblExcAmt").textContent = "የሚለወጠው መጠን (Amount)";
-            document.getElementById("btnExcSubmit").textContent = "አሁን ቀይር (Exchange)";
-            document.getElementById("btnExcBack").textContent = "ወደ አካውንት ተመለስ";
-
-            document.getElementById("refTitle").textContent = "የጋበዙት ሰዎች እና ሳንቲም ማዕከል";
-            document.getElementById("refSubtitle").textContent = "ሊንኩን በመጠቀም ተጠቃሚዎች ሲመዘገቡ ቦነስ ሳንቲም ያግኙ";
-            document.getElementById("lblRefLink").textContent = "የእርስዎ ማጣቀሻ (Referral) ሊንክ";
-            document.getElementById("btnCopyRef").textContent = "📋 ሊንኩን ኮፒ አድርግ (Copy Link)";
-            document.getElementById("btnShareRef").textContent = "📤 ሊንኩን በቴሌግራም ሼር አድርግ (Share via Telegram)";
-            document.getElementById("lblRefTotalCount").textContent = "የጋበዟቸው ሰዎች ብዛት:";
-            document.getElementById("lblRefTotalBonus").textContent = "የተገኘ አጠቃላይ ቦነስ:";
-            document.getElementById("btnRefBack").textContent = "ወደ አካውንት ተመለስ";
-
-            document.getElementById("adminPanelTitle").textContent = "⚙️ የአስተዳዳሪ ማስተዳደሪያ ፖርታል";
-            document.getElementById("adminPanelSubtitle").textContent = "የአስተደር ስራዎችን ለመቆጣጠር ከታች ያሉትን አማራጮች ይጠቀሙ";
-            document.getElementById("adminMasterBalTitle").textContent = "👑 የማስተር ሒሳብ ቀሪ (Master Balance)";
-            document.getElementById("adminSetPassLabel").textContent = "⭐ አዲስ የይለፍ ቃል ማሻሻያ (Set Password)";
-            document.getElementById("btnAdminSetPass").textContent = "አስቀምጥ";
-            document.getElementById("adminSupportSetLabel").textContent = "📞 የቴክኒክ ድጋፍ ስልክ ቁጥር ወይም ሊንክ ማስተካከያ (Customer Support Link)";
-            document.getElementById("btnAdminSaveSupp").textContent = "አስቀምጥ";
-            document.getElementById("adminCommLabel").textContent = "💼 የኮሚሽን መጠን (Commission Rate)";
-            document.getElementById("btnAdminSaveComm").textContent = "አስተካክል";
-            document.getElementById("adminLotteryCtrlLabel").textContent = "🎯 የሎተሪ አስተዳደር እና መቆጣጠሪያ";
-            document.getElementById("btnAdminLotteryClose").textContent = "ሎተሪ ዝጋ";
-            document.getElementById("btnAdminLotteryOpen").textContent = "ሎተሪ ክፈት";
-            document.getElementById("btnAdminLotteryReset").textContent = "ሎተሪ 0 አድርግ";
-            document.getElementById("adminLogsLabel").textContent = "📊 የእንቅስቃሴ መዝገብ እና የተጠቃሚዎች መታወቂያ ፎቶዎች (Activity Logs & KYC)";
-            document.getElementById("btnAdminRefreshLogs").textContent = "መዝገብ አድስ";
-            document.getElementById("adminTargetUserLabel").textContent = "ተጠቃሚ ማረጋገጥ (Approve)፤ ማገድ ወይም የይለፍ ቃል ለመስጠት (Telegram ID / Phone)";
-            document.getElementById("btnAdminApprove").textContent = "✅ አጽድቅ (Approve with Front ID Photo)";
-            document.getElementById("btnAdminTempPass").textContent = "🔑 ጊዜያዊ የይለፍ ቃል ሰጥ";
-            document.getElementById("btnAdminBlock").textContent = "🚫 አግድ (Block)";
-            document.getElementById("btnAdminErase").textContent = "🗑️ ምዝገባ ሰርዝ";
-            document.getElementById("btnAdminResetPass").textContent = "አስተዳዳሪ የይለፍ ቃል ሪሴት";
-            document.getElementById("btnAdminLogout").textContent = "ውጣ (Logout Admin)";
         }
     }
 
