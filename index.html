@@ -275,7 +275,6 @@
         .modal-content button { margin-top: 15px; }
         .back-btn { background-color: #64748b; margin-top: 10px; }
 
-        /* á˘áŤá ááá á áááťá áá˝á á áłá­á (display: none) áĽáľáŞááŁ áľá¨áľ */
         #yellow-admin-panel {
             background: #1e293b;
             color: #f8fafc;
@@ -308,529 +307,529 @@
 <div class="container">
     <div class="top-bar">
         <div>
-            <label id="langLabel">ááá</label>
+            <label id="langLabel">ቋንቋ</label>
             <select id="langSelect" class="pref-select" onchange="changeLanguage()">
-                <option value="am">á áá­á</option>
+                <option value="am">አማርኛ</option>
                 <option value="en">English</option>
             </select>
         </div>
         <div>
-            <label id="bgThemeLabel">áŁá­ááŤáááľ</label>
+            <label id="bgThemeLabel">ባክግራውንድ</label>
             <select id="bgPicker" class="pref-select" onchange="updateColors()">
-                <option value="#ffffff">áá­</option>
-                <option value="#0f172a">áĽáá­</option>
-                <option value="#eff6ff">á°ááŤá</option>
+                <option value="#ffffff">ነጭ</option>
+                <option value="#0f172a">ጥቁር</option>
+                <option value="#eff6ff">ሰማያዊ</option>
             </select>
         </div>
         <div>
-            <label id="textThemeLabel">á˝áá</label>
+            <label id="textThemeLabel">ጽሁፍ</label>
             <select id="textPicker" class="pref-select" onchange="updateColors()">
-                <option value="#1e293b">áĽáá­</option>
-                <option value="#ffffff">áá­</option>
-                <option value="#2563eb">á°ááŤá</option>
+                <option value="#1e293b">ጥቁር</option>
+                <option value="#ffffff">ነጭ</option>
+                <option value="#2563eb">ሰማያዊ</option>
             </select>
         </div>
     </div>
 
     <!-- WELCOME STEP -->
     <div id="step-welcome" class="step active">
-        <h2 id="welcomeTitle">áĽááłá áá° áá áŚááťá áŚáľ á á°áá ááĄ</h2>
-        <p class="subtitle" id="welcomeSubtitle">áĽáŁá­á á¨áááááľá á ááŤá­ á­áá¨áĄ (1 á°á = 1 á áŤáááľ)</p>
+        <h2 id="welcomeTitle">እንኳን ደህና መጡ ወደ ማላ ኦፊሻል ቦት</h2>
+        <p class="subtitle" id="welcomeSubtitle">እባክዎ የሚፈልጉትን አማራጭ ይምረጡ (1 ሰው = 1 አጠቃቀም)</p>
         
         <div style="margin: 20px 0; display: flex; flex-direction: column; gap: 12px;">
-            <button onclick="goToRegisterStep()" style="padding: 16px; font-size: 15px; background-color: var(--primary-color);">â¨ á á˛áľ á áŤáááľ áá­ááľ (Register) - 50 Bonus Coin</button>
-            <button onclick="goToLoginStep()" style="padding: 16px; font-size: 15px; background-color: var(--success-color);">đ áá°á á˛á á¨á¨ááľáŠáľ á áŤáááľ á áĽáŤ (Login)</button>
-            <button onclick="openAdminLoginStep()" style="padding: 16px; font-size: 15px; background-color: #f59e0b; color: #000; font-weight: bold;">âď¸ á¨á áľáá ááá˘áŤ (Admin Portal)</button>
+            <button onclick="goToRegisterStep()" style="padding: 16px; font-size: 15px; background-color: var(--primary-color);">✨ አዲስ አጠቃቀም መመዝገብ (Register) - 50 Bonus Coin</button>
+            <button onclick="goToLoginStep()" style="padding: 16px; font-size: 15px; background-color: var(--success-color);">🔐 ቀድሞ ሴል የከፈቱት አጠቃቀም መግቢያ (Login)</button>
+            <button onclick="openAdminLoginStep()" style="padding: 16px; font-size: 15px; background-color: #f59e0b; color: #000; font-weight: bold;">⚙️ የአልሚው መግቢያ (Admin Portal)</button>
         </div>
 
         <div style="background: rgba(79, 70, 229, 0.05); border: 1px solid var(--primary-color); padding: 14px; border-radius: 12px; text-align: center; margin-top: 10px;">
-            <p style="margin: 0 0 8px 0; font-size: 13px; font-weight: bold; color: var(--primary-color);">đ á¨ááá á¨á°áĽ ááá¨á (Bot, Group & Channel)</p>
+            <p style="margin: 0 0 8px 0; font-size: 13px; font-weight: bold; color: var(--primary-color);">🌐 የማህበራዊ ማዕከል (Bot, Group & Channel)</p>
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
-                <button onclick="window.open('https://t.me/mala_official_bot', '_blank')" style="background-color: #0284c7; margin-top:0; font-size: 12px; padding: 10px;">đ¤ áŚááťá áŚáłá˝áá á­ááĽá</button>
-                <button onclick="window.open('https://t.me/Mela_Group', '_blank')" style="background-color: #0d9488; margin-top:0; font-size: 12px; padding: 10px;">đŹ á¨áá­á­áľ ááŠá</button>
+                <button onclick="window.open('https://t.me/mala_official_bot', '_blank')" style="background-color: #0284c7; margin-top:0; font-size: 12px; padding: 10px;">🤖 ኦፊሻል ሰዎችን ይንኩ</button>
+                <button onclick="window.open('https://t.me/Mela_Group', '_blank')" style="background-color: #0d9488; margin-top:0; font-size: 12px; padding: 10px;">💬 የውይይት ቻናል</button>
             </div>
             <div style="margin-top: 10px;">
-                <button onclick="shareBotWithFriends()" style="background-color: #2563eb; margin-top:0; font-size: 13px; padding: 10px;">đ¤ áŚáąá áááá˝ áźá­ á áľá­á (Share Bot)</button>
+                <button onclick="shareBotWithFriends()" style="background-color: #2563eb; margin-top:0; font-size: 13px; padding: 10px;">📤 ሰቱን ለጓደኞች ሼር አድርግ (Share Bot)</button>
             </div>
         </div>
     </div>
 
     <!-- ADMIN LOGIN STEP -->
     <div id="step-admin-login" class="step">
-        <h2 style="color: #f59e0b;">á¨á áľáá ááľá°á­ áá­áłá ááá˘áŤ</h2>
-        <p class="subtitle">1 áľáŞáá¨á ááľá°á­ áááľ ááá­ááľ ááľáĽáŤá á¨á áľáá ááľáá­áľ áŤáľááĄ</p>
+        <h2 style="color: #f59e0b;">የአልሚው አስተዳደር ፖርታል መግቢያ</h2>
+        <p class="subtitle">1 ተርሻለክን አስተዳዳሪ ወለዎች ለማመዝገብ የሚስጥርውን የአልሚው ቃልያስያስ</p>
         <form onsubmit="handleAdminLogin(event)">
             <div class="form-group box" id="login-box" style="width: 100%; border:none; padding:0;">
-                <label>á¨á áľáá áŠáá­áá</label>
-                <input type="text" id="username" placeholder="áŠáá­áá (admin)" value="admin" readonly style="background: rgba(0,0,0,0.03);"><br><br>
-                <label>á¨á áľáá ááľáá­áľ (Admin Master Password)</label>
+                <label>የአልሚው ዩሰሪናም</label>
+                <input type="text" id="username" placeholder="ዩሰሪናም (admin)" value="admin" readonly style="background: rgba(0,0,0,0.03);"><br><br>
+                <label>የአልሚው ቃልያስያስ (Admin Master Password)</label>
                 <div class="password-container">
-                    <input type="password" id="adminPasswordInput" autocomplete="current-password" required placeholder="á¨á áľáá ááľáĽáŤá ááĽá­ áŤáľááĄ">
-                    <button type="button" class="toggle-password" onclick="togglePasswordVisibility('adminPasswordInput', 'eyeIconAdmin')"><span id="eyeIconAdmin">đď¸</span></button>
+                    <input type="password" id="adminPasswordInput" autocomplete="current-password" required placeholder="የአልሚው ሚስጥር ቁጥር ያስያስ">
+                    <button type="button" class="toggle-password" onclick="togglePasswordVisibility('adminPasswordInput', 'eyeIconAdmin')"><span id="eyeIconAdmin">👁️‍🗨️</span></button>
                 </div>
             </div>
-            <button type="submit" style="background-color: #f59e0b; color: #000; font-weight: bold;">ááľá°á­ ááá á­ááľ</button>
-            <button type="button" class="back-btn" onclick="backToWelcome()">áá° áá á°áááľ</button>
+            <button type="submit" style="background-color: #f59e0b; color: #000; font-weight: bold;">አስተዳደር ፖናል አኸኝ</button>
+            <button type="button" class="back-btn" onclick="backToWelcome()">ወደ ቀለ ተመለስ</button>
         </form>
     </div>
 
     <!-- LOGIN STEP -->
     <div id="step-login" class="step">
-        <h2 id="loginTitle">áá° áááľá á­ááĄ (Login)</h2>
-        <p class="subtitle" id="loginSubtitle">á ááááĄá áľ áľáá­ ááĽá­ áĽá ááľáá­áľ á áŤáááľáá á­á­ááą</p>
+        <h2 id="loginTitle">ወደ ወለዎች ይግቡ (Login)</h2>
+        <p class="subtitle" id="loginSubtitle">በመመዝገቢያ ስልክ ቁጥር እና ቃልያስያስ አጠቃቀምዎን ይሀኩ</p>
         <form onsubmit="handleLogin(event)">
             <div class="form-group">
-                <label>áľáá­ ááĽá­ (251...)</label>
+                <label>ስልክ ቁጥር (251...)</label>
                 <div class="phone-input-wrapper">
                     <div class="phone-prefix">+251</div>
-                    <input type="tel" id="loginPhone" autocomplete="tel" maxlength="9" required placeholder="9xxxxxxxx áá­á 7xxxxxxxx">
+                    <input type="tel" id="loginPhone" autocomplete="tel" maxlength="9" required placeholder="9xxxxxxxx ወይም 7xxxxxxxx">
                 </div>
             </div>
             <div class="form-group password-container">
-                <label>ááľáá­áľ (Password)</label>
-                <input type="password" id="loginPassword" autocomplete="current-password" required placeholder="ááľáá­áąá áŤáľááĄ">
-                <button type="button" class="toggle-password" onclick="togglePasswordVisibility('loginPassword', 'eyeIconLogin')"><span id="eyeIconLogin">đď¸</span></button>
+                <label>ቃልያስያስ (Password)</label>
+                <input type="password" id="loginPassword" autocomplete="current-password" required placeholder="ቃልያስያስን ያስያስ">
+                <button type="button" class="toggle-password" onclick="togglePasswordVisibility('loginPassword', 'eyeIconLogin')"><span id="eyeIconLogin">👁️‍🗨️</span></button>
             </div>
             <div class="form-footer" style="text-align: center; margin-top: 10px;">
-                <a href="#" onclick="handleForgotPasswordClick(); return false;" style="color: var(--primary-color); text-decoration: underline; font-size: 13px; cursor: pointer;">ááľáá­áľ á¨áłá? (OTP á áľáá­ ááĽá­á á­á á­á)</a>
+                <a href="#" onclick="handleForgotPasswordClick(); return false;" style="color: var(--primary-color); text-decoration: underline; font-size: 13px; cursor: pointer;">ቃልያስያስ ረስተዋል? (OTP በስልክ ቁጥርዎ ይደውሉ)</a>
             </div>
-            <button type="submit" style="background-color: var(--success-color);">ááŁ (Login)</button>
-            <button type="button" class="back-btn" onclick="backToWelcome()">áá° áá á°áááľ</button>
+            <button type="submit" style="background-color: var(--success-color);">ግባ (Login)</button>
+            <button type="button" class="back-btn" onclick="backToWelcome()">ወደ ቀለ ተመለስ</button>
         </form>
     </div>
 
     <!-- OTP VERIFY & RESET PASSWORD STEP -->
     <div id="step-otp-reset" class="step">
-        <h2 style="color: var(--primary-color);">ááľáá­áľ ááá¨áŞáŤ (OTP áá¨áááŤ)</h2>
-        <p class="subtitle">á áľáá­ ááĽá­á á¨á°áá¨áá á¨ 4 á áá ážá­áľ áŽáľ (OTP) áĽá á á˛áľ ááľáá­áľ áŤáľááĄ</p>
+        <h2 style="color: var(--primary-color);">ቃልያስያስ ማስተካከያ (OTP ማረጋገጫ)</h2>
+        <p class="subtitle">በስልክ ቁጥርዎ የተላከውን የ 4 አቃዕ ዎርዝ ሌ (OTP) እና አዲስ ቃልያስያስ ያስያስ</p>
         <form onsubmit="handleVerifyAndResetPassword(event)">
             <div class="form-group">
-                <label>áľáá­ ááĽá­ (251...)</label>
+                <label>ስልክ ቁጥር (251...)</label>
                 <div class="phone-input-wrapper">
                     <div class="phone-prefix">+251</div>
-                    <input type="tel" id="resetPhone" autocomplete="tel" maxlength="9" required placeholder="9xxxxxxxx áá­á 7xxxxxxxx">
+                    <input type="tel" id="resetPhone" autocomplete="tel" maxlength="9" required placeholder="9xxxxxxxx ወይም 7xxxxxxxx">
                 </div>
             </div>
             <div class="form-group">
-                <label>á¨ 4 á áá ážá­áľ áŽáľ (OTP Short Code)</label>
-                <input type="text" id="resetShortCode" maxlength="4" required placeholder="áááłá: 4821">
+                <label>የ 4 አቃዕ ዎርዝ ሌ (OTP Short Code)</label>
+                <input type="text" id="resetShortCode" maxlength="4" required placeholder="ለምሳሌ: 4821">
             </div>
             <div class="form-group password-container">
-                <label>á á˛áľ ááľáá­áľ (New Password)</label>
-                <input type="password" id="resetNewPassword" autocomplete="new-password" minlength="6" required placeholder="á á˛áľ ááľáá­áľ áŤáľááĄ">
-                <button type="button" class="toggle-password" onclick="togglePasswordVisibility('resetNewPassword', 'eyeIconResetNew')"><span id="eyeIconResetNew">đď¸</span></button>
+                <label>አዲስ ቃልያስያስ (New Password)</label>
+                <input type="password" id="resetNewPassword" autocomplete="new-password" minlength="6" required placeholder="አዲስ ቃልያስያስ ያስያስ">
+                <button type="button" class="toggle-password" onclick="togglePasswordVisibility('resetNewPassword', 'eyeIconResetNew')"><span id="eyeIconResetNew">👁️‍🗨️</span></button>
             </div>
-            <button type="submit" style="background-color: var(--primary-color);">ááľáá­áľ áá­á­ (Reset)</button>
-            <button type="button" class="back-btn" onclick="goToLoginStep()">áá° ááá˘áŤ á°áááľ</button>
+            <button type="submit" style="background-color: var(--primary-color);">ቃልያስያስ ቀይር (Reset)</button>
+            <button type="button" class="back-btn" onclick="goToLoginStep()">ወደ መግቢያ ተመለስ</button>
         </form>
     </div>
 
     <!-- REGISTER STEP -->
     <div id="step-register" class="step">
-        <h2 id="regTitle">áá áŚááťá áŚáľ ááááŁ</h2>
-        <p class="subtitle" id="regSubtitle">áááľ ááá­ááľ áá¨ááá á­áá (á˛á¸áľá 50 áŽááľ áŚááľ á ááĽáł áááľá áá­ á­ááŁá)</p>
+        <h2 id="regTitle">ማላ ኦፊሻል ቦት ምዝገባ</h2>
+        <p class="subtitle" id="regSubtitle">ወለ ለማብቃት መረጃውን ይሙሉ (ሰለሲር 50 ጻንሾ ሽልማት በቅድመ ወለዎች ላይ ይገባል)</p>
         <form onsubmit="handleRegister(event)">
             <div class="form-group">
-                <label>áľá</label>
-                <input type="text" id="firstName" autocomplete="given-name" required placeholder="á¨áŤáľá áľá">
+                <label>ስም</label>
+                <input type="text" id="firstName" autocomplete="given-name" required placeholder="የርስዎ ስም">
             </div>
             <div class="form-group">
-                <label>á¨á áŁáľ áľá</label>
-                <input type="text" id="fatherName" autocomplete="family-name" required placeholder="á¨á áŁáľ áľá">
+                <label>የአባት ስም</label>
+                <input type="text" id="fatherName" autocomplete="family-name" required placeholder="የአባት ስም">
             </div>
             <div class="form-group">
-                <label>á¨á áŤáľ áľá</label>
-                <input type="text" id="grandFatherName" required placeholder="á¨á áŤáľ áľá">
+                <label>የአያት ስም</label>
+                <input type="text" id="grandFatherName" required placeholder="የአያት ስም">
             </div>
             <div class="form-group">
-                <label>á¨áĽááľ áá áľá</label>
-                <input type="text" id="motherName" required placeholder="á¨áĽááľ áľá áĽá á¨á áŁáľ áľá">
+                <label>የእናት ሙሉ ስም</label>
+                <input type="text" id="motherName" required placeholder="የእናት ስም እና የአባት ስም">
             </div>
             
             <div class="form-group">
-                <label>áá áľáá­ ááĽá­ (+251 á áŤáľ-á°á­ á°áááˇá)</label>
+                <label>ዋና ስልክ ቁጥር (+251 በሀል-ሰር ተሞላችዋል)</label>
                 <div class="phone-input-wrapper">
                     <div class="phone-prefix">+251</div>
-                    <input type="tel" id="phoneNumber" autocomplete="tel" maxlength="9" required placeholder="9xxxxxxxx áá­á 7xxxxxxxx">
+                    <input type="tel" id="phoneNumber" autocomplete="tel" maxlength="9" required placeholder="9xxxxxxxx ወይም 7xxxxxxxx">
                 </div>
             </div>
 
             <div class="form-group">
-                <label>ááá°á áľáá­ ááĽá­ ( á ááŤá­ / Optional )</label>
+                <label>ሁለተኛ ስልክ ቁጥር ( አማራጭ / Optional )</label>
                 <div class="phone-input-wrapper">
                     <div class="phone-prefix">+251</div>
-                    <input type="tel" id="secondaryPhoneNumber" autocomplete="tel" maxlength="9" placeholder="9xxxxxxxx áá­á 7xxxxxxxx">
+                    <input type="tel" id="secondaryPhoneNumber" autocomplete="tel" maxlength="9" placeholder="9xxxxxxxx ወይም 7xxxxxxxx">
                 </div>
             </div>
 
             <div class="form-group">
-                <label>ááá­ (Country)</label>
+                <label>ሀገር (Country)</label>
                 <select id="userCountry" onchange="onCountryChange()" required>
-                    <option value="Ethiopia">á˘áľáŽáľáŤ (Ethiopia)</option>
-                    <option value="USA">á ááŞáŤ (USA)</option>
-                    <option value="Canada">áŤááł (Canada)</option>
-                    <option value="UK">áŠáá­áľáľ áŞááá°á (UK)</option>
-                    <option value="UAE">áŠá¤á˘ (UAE)</option>
-                    <option value="Kenya">áŹááŤ (Kenya)</option>
-                    <option value="Other">ááá˝ áááŤáľ (Other Worldwide)</option>
+                    <option value="Ethiopia">ኢትዮጵያ (Ethiopia)</option>
+                    <option value="USA">አሜሪካ (USA)</option>
+                    <option value="Canada">ካናዳ (Canada)</option>
+                    <option value="UK">ዩናይትድ ኪንግደም (UK)</option>
+                    <option value="UAE">ዩአኤ (UAE)</option>
+                    <option value="Kenya">ኬንያ (Kenya)</option>
+                    <option value="Other">ሌሎች ሀገራት (Other Worldwide)</option>
                 </select>
             </div>
 
             <div class="form-group" id="cityGroup">
-                <label id="cityLabel">á¨á°á (City / Region)</label>
+                <label id="cityLabel">ከተማ (City / Region)</label>
                 <select id="userCity" required>
-                    <option value="Hawassa">áááł (Hawassa) - á¨á°áá¨á </option>
-                    <option value="Addis Ababa">á á˛áľ á á áŁ (Addis Ababa)</option>
-                    <option value="Jimma">áá (Jimma)</option>
-                    <option value="Bahir Dar">áŁáá­ áłá­ (Bahir Dar)</option>
-                    <option value="Adama">á áłá (Adama)</option>
-                    <option value="Dire Dawa">áľáŹáłá (Dire Dawa)</option>
-                    <option value="Mekelle">ááá (Mekelle)</option>
-                    <option value="OtherCity">áá á¨á°á</option>
+                    <option value="Hawassa">ሀዋሳ (Hawassa) - የተመረጠ</option>
+                    <option value="Addis Ababa">አዲስ አበባ (Addis Ababa)</option>
+                    <option value="Jimma">ጂማ (Jimma)</option>
+                    <option value="Bahir Dar">ባህር ዳር (Bahir Dar)</option>
+                    <option value="Adama">አዳማ (Adama)</option>
+                    <option value="Dire Dawa">ድሬዳዋ (Dire Dawa)</option>
+                    <option value="Mekelle">መቀሌ (Mekelle)</option>
+                    <option value="OtherCity">ሌላ ከተማ</option>
                 </select>
             </div>
 
             <div class="form-group">
-                <label>á˘áá á áľáŤáť</label>
+                <label>ኢሜል አድራሻ</label>
                 <input type="email" id="userEmail" autocomplete="email" required placeholder="example@gmail.com">
             </div>
 
             <div class="form-group password-container">
-                <label>ááľáá­áľ</label>
-                <input type="password" id="userPassword" autocomplete="new-password" minlength="6" maxlength="20" required placeholder="á ááŤáŤ ááľáá­áľ áŤáľááĄ">
-                <button type="button" class="toggle-password" onclick="togglePasswordVisibility('userPassword', 'eyeIcon1')"><span id="eyeIcon1">đď¸</span></button>
+                <label>ቃልያስያስ</label>
+                <input type="password" id="userPassword" autocomplete="new-password" minlength="6" maxlength="20" required placeholder="ጥንካሬ ቃልያስያስ ያስያስ">
+                <button type="button" class="toggle-password" onclick="togglePasswordVisibility('userPassword', 'eyeIcon1')"><span id="eyeIcon1">👁️‍🗨️</span></button>
             </div>
             <div class="form-group password-container">
-                <label>ááľáá­áľ áľáá (Confirm Password)</label>
-                <input type="password" id="confirmPassword" autocomplete="new-password" minlength="6" maxlength="20" required placeholder="ááľáá­áąá áĽáá°áá áŤáľááĄ">
-                <button type="button" class="toggle-password" onclick="togglePasswordVisibility('confirmPassword', 'eyeIcon2')"><span id="eyeIcon2">đď¸</span></button>
+                <label>ቃልያስያስ ደርግ (Confirm Password)</label>
+                <input type="password" id="confirmPassword" autocomplete="new-password" minlength="6" maxlength="20" required placeholder="ቃልያስያስን እንደገና ያስያስ">
+                <button type="button" class="toggle-password" onclick="togglePasswordVisibility('confirmPassword', 'eyeIcon2')"><span id="eyeIcon2">👁️‍🗨️</span></button>
             </div>
-            <button type="submit">ááĽá & áŹáá­á˛ áá­</button>
-            <button type="button" class="back-btn" onclick="backToWelcome()">áá° áá á°áááľ</button>
+            <button type="submit">ቀጥል & ኪዩአይኤስ አልክ</button>
+            <button type="button" class="back-btn" onclick="backToWelcome()">ወደ ቀለ ተመለስ</button>
         </form>
     </div>
 
     <!-- KYC STEP -->
     <div id="step-kyc" class="step">
-        <h2 id="kycTitle">áĽááŤá ááłáááŤ (KYC) & ááś áá¨áááŤ</h2>
-        <p class="subtitle" id="kycSubtitle">á ááľ ááá°áĽ á¨á ááľ á áá­ á áŤáááľ áĽááłá­á¨ááľ ááłáááŤá ááśá á á áľáá á áĽááá á­á¨áááŁá</p>
+        <h2 id="kycTitle">ይህቲካዊ መታወቂያ (KYC) & ፎቶ ማረጋገጫ</h2>
+        <p class="subtitle" id="kycSubtitle">አንድ ግለሰብ ከአንድ በላይ ወለዎች እንዳይከፍት መታወቂያና ፎቶ በአልሚው በጥንቃቄ ይረጋገጥልዎታል</p>
         <form onsubmit="handleKyc(event)">
             <div class="form-group">
-                <label>áĽááŤá ááłáááŤ ááĽá­ (National ID No)</label>
-                <input type="text" id="nationalIdNumber" required placeholder="á¨ááłáááŤ ááĽá­ áŤáľááĄ">
+                <label>ይህቲካዊ መታወቂያ ቁጥር (National ID No)</label>
+                <input type="text" id="nationalIdNumber" required placeholder="የመታወቂያ ቁጥር ያስያስ">
             </div>
             <div class="form-group">
-                <label>á¨áá ááśá (Your Face Photo for Verification)</label>
+                <label>የግል ፎቶዎች (Your Face Photo for Verification)</label>
                 <div class="file-upload-box" onclick="document.getElementById('facePhoto').click()">
-                    <span id="faceText">ááľá á¨ááłá­á áľá ááá˝ ááś á­áá¨áĄ</span>
+                    <span id="faceText">ፎቶዎ የሚታይበትን ገጽታ ፎቶ ይምረጡ</span>
                     <input type="file" id="facePhoto" accept="image/*" required onchange="updateFileName('facePhoto', 'faceText')">
                 </div>
             </div>
             <div class="form-group">
-                <label>á¨ááłáááŤá ááľ (ID Card Front)</label>
+                <label>የመታወቂያው ፊት (ID Card Front)</label>
                 <div class="file-upload-box" onclick="document.getElementById('frontId').click()">
-                    <span id="frontText">ááś áááá¨áĽ áĽáá á­áŤá</span>
+                    <span id="frontText">ፎቶ ለማمረጥ እዚህ ጋር ይጫኑ</span>
                     <input type="file" id="frontId" accept="image/*" required onchange="updateFileName('frontId', 'frontText')">
                 </div>
             </div>
             <div class="form-group">
-                <label>á¨ááłáááŤá áá­áŁ (ID Card Back)</label>
+                <label>የመታወቂያው ኋላ (ID Card Back)</label>
                 <div class="file-upload-box" onclick="document.getElementById('backId').click()">
-                    <span id="backText">ááś áááá¨áĽ áĽáá á­áŤá</span>
+                    <span id="backText">ፎቶ ለማምረጥ እዚህ ጋር ይጫኑ</span>
                     <input type="file" id="backId" accept="image/*" required onchange="updateFileName('backId', 'backText')">
                 </div>
             </div>
-            <button type="submit">áá áľáá áá¨áááŤ áá­ (Send to Admin)</button>
-            <button type="button" class="back-btn" onclick="cancelRegistrationAndReset()">á­á ááááŁ á ááá¸áá (Cancel & Reset)</button>
+            <button type="submit">ለአልሚው ማረጋገጫ አልክ (Send to Admin)</button>
+            <button type="button" class="back-btn" onclick="cancelRegistrationAndReset()">ይህ ምዝገባ አልመሰኘም (Cancel & Reset)</button>
         </form>
     </div>
 
     <!-- PENDING STEP -->
     <div id="step-pending" class="step" style="text-align: center; justify-content: center; padding: 20px 0;">
-        <h2 id="pendingTitle">áá¨áááŤ á áá á á áá­...</h2>
-        <p class="subtitle" id="pendingSubtitle">ááłáááŤá áĽá ááśá áá áľáá á°ááłáá˘ á áľáá áĽáľáŞáŤá¸áľáá á­á áĽáá˘</p>
-        <div style="font-size: 50px; margin: 20px 0;" id="statusIcon">âł</div>
-        <p id="statusText" style="font-size: 15px; font-weight: bold; color: #f59e0b;">áááł: á á áľáá áááá áá­ á­ááá...</p>
-        <div style="font-size: 13px; margin: 10px 0; color: var(--error-color); font-weight: bold;" id="pendingCountdownDisplay">á áľáá á 30 á°áá ááľáĽ áŤáá¸á°áá ááááŁá á áŤáą á­á°á¨áá (Timeout: 30:00)</div>
-        <button onclick="checkAdminApprovalStatus()" style="background-color: var(--primary-color); margin-top: 20px;">áááłáá á á¨áááĽ (Check Status)</button>
-        <button class="back-btn" onclick="cancelRegistrationAndReset()">ááááŁáá á°á­á¤ (Cancel) áłááá áĽáááŤáá</button>
+        <h2 id="pendingTitle">ማረጋገጫ በመሰን ላይ...</h2>
+        <p class="subtitle" id="pendingSubtitle">መታወቂያው እና ፎቶዎ ለአልሚው ተላክቷል አልሚው እስኪሰልቃቸው ይጠበቃል</p>
+        <div style="font-size: 50px; margin: 20px 0;" id="statusIcon">⏳</div>
+        <p id="statusText" style="font-size: 15px; font-weight: bold; color: #f59e0b;">ህኔታ: በአልሚው ግምገማ ላይ ይገኛል...</p>
+        <div style="font-size: 13px; margin: 10px 0; color: var(--error-color); font-weight: bold;" id="pendingCountdownDisplay">አልሚው ከ30 ደቂቃ ውስጥ ካልመለሰለት ምዝገባው በራስሰር ይሠረዛል (Timeout: 30:00)</div>
+        <button onclick="checkAdminApprovalStatus()" style="background-color: var(--primary-color); margin-top: 20px;">ህኔታውን አረጋግጥ (Check Status)</button>
+        <button class="back-btn" onclick="cancelRegistrationAndReset()">ምዝገባውን ሰርዝ (Cancel) ድጋሚ እንመዝገባለን</button>
     </div>
 
     <!-- WALLET STEP (USER EXCLUSIVE) -->
     <div id="step-wallet" class="step">
         <div class="wallet-card">
-            <span class="badge" id="verificationBadge">â áŹáŞáá­áľ áááľ (+50 Bonus Coin)</span>
-            <div id="txtBalanceTitle" style="font-size: 15px;">á á ááá­ ááŞ ááłáĽ</div>
+            <span class="badge" id="verificationBadge">✅ ፕሪሚየም ወለት (+50 Bonus Coin)</span>
+            <div id="txtBalanceTitle" style="font-size: 15px;">አጠቃላይ ቀሪ ሒሳብ</div>
             <div class="wallet-balance-container">
-                <div class="wallet-balance" id="walletBalance">â˘â˘â˘â˘ ETB</div>
-                <button type="button" class="toggle-eye" onclick="toggleBalanceVisibility()">đď¸ <span id="eyeBtnText">á áłá­</span></button>
+                <div class="wallet-balance" id="walletBalance">•••• ETB</div>
+                <button type="button" class="toggle-eye" onclick="toggleBalanceVisibility()">👁️ <span id="eyeBtnText">አሳይ</span></button>
             </div>
-            <div style="font-size: 14px; opacity: 0.9;" id="userDisplayName">á¨á°á áá áľá</div>
-            <div style="font-size: 13px; margin-top: 6px; color: #fde047;" id="melaCoinDisplay">áá áŽá­á: 50.00 Mela Coin</div>
+            <div style="font-size: 14px; opacity: 0.9;" id="userDisplayName">የተጠቃሚ ስም</div>
+            <div style="font-size: 13px; margin-top: 6px; color: #fde047;" id="melaCoinDisplay">ማላ ጻንሾ: 50.00 Mela Coin</div>
         </div>
 
         <div style="background: rgba(79, 70, 229, 0.05); border: 1px solid var(--primary-color); padding: 12px; border-radius: 12px; margin-bottom: 15px; text-align: center;">
-            <p style="margin: 0 0 6px 0; font-size: 13px; font-weight: bold; color: var(--primary-color);">đ áťáááŁ ááŠá áĽá áŚáľ áá°ááááŤ</p>
+            <p style="margin: 0 0 6px 0; font-size: 13px; font-weight: bold; color: var(--primary-color);">🚀 ቻንናል ቻናል እና ሰት መተላለፊያ</p>
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
-                <button onclick="window.open('https://t.me/mala_official_bot', '_blank')" style="background-color: #0284c7; margin-top:0; font-size: 12px; padding: 10px;">đ¤ áŚááťá áŚáłá˝áá á­ááĽá</button>
-                <button onclick="window.open('https://t.me/Mela_Group', '_blank')" style="background-color: #0d9488; margin-top:0; font-size: 12px; padding: 10px;">đŹ á¨áá­á­áľ ááŠá</button>
+                <button onclick="window.open('https://t.me/mala_official_bot', '_blank')" style="background-color: #0284c7; margin-top:0; font-size: 12px; padding: 10px;">🤖 ኦፊሻል ሰዎችን ይንኩ</button>
+                <button onclick="window.open('https://t.me/Mela_Group', '_blank')" style="background-color: #0d9488; margin-top:0; font-size: 12px; padding: 10px;">💬 የውይይት ቻናል</button>
             </div>
             <div style="margin-top: 8px;">
-                <button onclick="shareBotWithFriends()" style="background-color: #2563eb; margin-top:0; font-size: 12px; padding: 10px; width: 100%;">đ¤ áŚáąá áááá˝ áźá­ á áľá­á (Share Bot)</button>
+                <button onclick="shareBotWithFriends()" style="background-color: #2563eb; margin-top:0; font-size: 12px; padding: 10px; width: 100%;">📤 ሰቱን ለጓደኞች ሼር አድርግ (Share Bot)</button>
             </div>
         </div>
 
         <div style="background: rgba(16, 185, 129, 0.1); border: 1px solid var(--success-color); padding: 14px; border-radius: 12px; margin-bottom: 15px; text-align: center;">
-            <p style="margin: 0 0 6px 0; font-size: 13px; font-weight: bold; color: var(--success-color);">âď¸ á¨áŤáľá°áá­ á°áá­áľ (Customer Support)</p>
+            <p style="margin: 0 0 6px 0; font-size: 13px; font-weight: bold; color: var(--success-color);">📞 የቴክንስታር ድጋፍ (Customer Support)</p>
             <div style="display: flex; gap: 8px; align-items: center;">
-                <input type="text" id="customerSupportInputBox" placeholder="áľáá­ ááĽá­ áá­á ááá­ áŤáľááĄ" style="padding: 10px; font-size: 13px; flex: 1;">
-                <button onclick="saveCustomerSupportInput()" style="background-color: var(--success-color); margin-top: 0; padding: 10px 14px; font-size: 13px; width: auto;">ááááĽ</button>
+                <input type="text" id="customerSupportInputBox" placeholder="ስልክ ቁጥር ወይም ሊንክ ያስያስ" style="padding: 10px; font-size: 13px; flex: 1;">
+                <button onclick="saveCustomerSupportInput()" style="background-color: var(--success-color); margin-top: 0; padding: 10px 14px; font-size: 13px; width: auto;">መዝገብ</button>
             </div>
             <p id="displayCustomerSupportPhone" style="margin: 8px 0 0 0; font-size: 14px; font-weight: bold; color: var(--text-color);">+251900000000</p>
         </div>
 
         <div style="background: rgba(79, 70, 229, 0.05); border: 1px solid var(--primary-color); padding: 14px; border-radius: 12px; margin-bottom: 15px; text-align: center;">
-            <p style="margin: 0 0 8px 0; font-size: 13px; font-weight: bold; color: var(--primary-color);">đ á¨áááľáŽá˝ ááá­ á á°áŤá­ (Two-way Link)</p>
+            <p style="margin: 0 0 8px 0; font-size: 13px; font-weight: bold; color: var(--primary-color);">🔗 የሁለተኛዮ ሊንክ አሠራር (Two-way Link)</p>
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
-                <button onclick="window.open('https://t.me/mala_official_bot', '_blank')" style="background-color: var(--primary-color); margin-top:0; font-size: 12px; padding: 10px;">âŹď¸ á¨áŚáą áá° áŚááťá áťáá</button>
-                <button onclick="window.open('https://t.me/Mela_Group', '_blank')" style="background-color: #0284c7; margin-top:0; font-size: 12px; padding: 10px;">âĄď¸ á¨áťáá áá° áŚáą</button>
+                <button onclick="window.open('https://t.me/mala_official_bot', '_blank')" style="background-color: var(--primary-color); margin-top:0; font-size: 12px; padding: 10px;">⬅️ ከሰት ወደ ኦፊሻል ሰታት</button>
+                <button onclick="window.open('https://t.me/Mela_Group', '_blank')" style="background-color: #0284c7; margin-top:0; font-size: 12px; padding: 10px;">➡️ ከሰታት ወደ ሰት</button>
             </div>
         </div>
 
         <div style="background: rgba(79, 70, 229, 0.05); border: 1px solid var(--primary-color); padding: 14px; border-radius: 12px; margin-bottom: 15px;">
-            <p style="margin: 0 0 6px 0; font-size: 13px; font-weight: bold; color: var(--primary-color); text-align: center;">đ á¨ááľáá­áľ ááľá°áŤá¨áŤ (Change Password & Autofill)</p>
+            <p style="margin: 0 0 6px 0; font-size: 13px; font-weight: bold; color: var(--primary-color); text-align: center;">🔐 የቃልያስያስ ማሻሻያ (Change Password & Autofill)</p>
             <div class="form-group password-container" style="margin-bottom: 10px;">
-                <label style="font-size: 12px;">á¨ááľá ááľáá­áľ (Old Password)</label>
-                <input type="password" id="oldPasswordInput" autocomplete="current-password" placeholder="á¨ááľá ááľáá­áľ" style="padding: 10px; font-size: 13px;">
-                <button type="button" class="toggle-password" style="top: 32px;" onclick="togglePasswordVisibility('oldPasswordInput', 'eyeIconOld')"><span id="eyeIconOld">đď¸</span></button>
+                <label style="font-size: 12px;">የቀድሞ ቃልያስያስ (Old Password)</label>
+                <input type="password" id="oldPasswordInput" autocomplete="current-password" placeholder="የቀድሞ ቃልያስያስ" style="padding: 10px; font-size: 13px;">
+                <button type="button" class="toggle-password" style="top: 32px;" onclick="togglePasswordVisibility('oldPasswordInput', 'eyeIconOld')"><span id="eyeIconOld">👁️‍🗨️</span></button>
             </div>
             <div class="form-group password-container" style="margin-bottom: 10px;">
-                <label style="font-size: 12px;">á á˛áľ ááľáá­áľ (New Password)</label>
-                <input type="password" id="newPasswordInput" autocomplete="new-password" placeholder="á á˛áľ ááľáá­áľ" style="padding: 10px; font-size: 13px;">
-                <button type="button" class="toggle-password" style="top: 32px;" onclick="togglePasswordVisibility('newPasswordInput', 'eyeIconNew1')"><span id="eyeIconNew1">đď¸</span></button>
+                <label style="font-size: 12px;">አዲስ ቃልያስያስ (New Password)</label>
+                <input type="password" id="newPasswordInput" autocomplete="new-password" placeholder="አዲስ ቃልያስያስ" style="padding: 10px; font-size: 13px;">
+                <button type="button" class="toggle-password" style="top: 32px;" onclick="togglePasswordVisibility('newPasswordInput', 'eyeIconNew1')"><span id="eyeIconNew1">👁️‍🗨️</span></button>
             </div>
             <div class="form-group password-container" style="margin-bottom: 10px;">
-                <label style="font-size: 12px;">á á˛áľ ááľáá­áľ áľáá (Confirm Password)</label>
-                <input type="password" id="confirmNewPasswordInput" autocomplete="new-password" placeholder="á á˛áľ ááľáá­áľ áľáá" style="padding: 10px; font-size: 13px;">
-                <button type="button" class="toggle-password" style="top: 32px;" onclick="togglePasswordVisibility('confirmNewPasswordInput', 'eyeIconNew2')"><span id="eyeIconNew2">đď¸</span></button>
+                <label style="font-size: 12px;">አዲስ ቃልያስያስ ደርግ (Confirm Password)</label>
+                <input type="password" id="confirmNewPasswordInput" autocomplete="new-password" placeholder="አዲስ ቃልያስያስ ደርግ" style="padding: 10px; font-size: 13px;">
+                <button type="button" class="toggle-password" style="top: 32px;" onclick="togglePasswordVisibility('confirmNewPasswordInput', 'eyeIconNew2')"><span id="eyeIconNew2">👁️‍🗨️</span></button>
             </div>
-            <button onclick="handleUserPasswordChange()" style="background-color: var(--primary-color); margin-top: 0; padding: 10px; font-size: 13px;">ááľáá­áľ áá­á­ & ááŁ</button>
+            <button onclick="handleUserPasswordChange()" style="background-color: var(--primary-color); margin-top: 0; padding: 10px; font-size: 13px;">ቃልያስያስ ቀይር & ውጣ</button>
         </div>
 
         <div style="background: rgba(79, 70, 229, 0.05); border: 1px solid var(--primary-color); padding: 14px; border-radius: 12px; margin-bottom: 15px; text-align: center;">
-            <p style="margin: 0 0 6px 0; font-size: 13px; font-weight: bold; color: var(--primary-color);">đą áľáá­ ááĽá­ ááľá°áŤá¨á / ááá¨á­ (Update Phone)</p>
+            <p style="margin: 0 0 6px 0; font-size: 13px; font-weight: bold; color: var(--primary-color);">📱 ስልክ ቁጥር ማሻሻል / መድረስ (Update Phone)</p>
             <div style="display: flex; gap: 8px;">
                 <div class="phone-input-wrapper" style="flex: 1;">
                     <div class="phone-prefix">+251</div>
-                    <input type="tel" id="newPhoneInput" autocomplete="tel" maxlength="9" placeholder="9xxxxxxxx áá­á 7xxxxxxxx" style="padding: 10px; font-size: 13px; border:none;">
+                    <input type="tel" id="newPhoneInput" autocomplete="tel" maxlength="9" placeholder="9xxxxxxxx ወይም 7xxxxxxxx" style="padding: 10px; font-size: 13px; border:none;">
                 </div>
-                <button onclick="updateUserPhoneNumber()" style="background-color: var(--primary-color); margin-top: 0; padding: 10px 14px; font-size: 13px; width: auto;">áá­á­</button>
+                <button onclick="updateUserPhoneNumber()" style="background-color: var(--primary-color); margin-top: 0; padding: 10px 14px; font-size: 13px; width: auto;">ቀይር</button>
             </div>
         </div>
 
         <div class="action-buttons">
-            <button onclick="openDepositSection()" style="background-color: var(--success-color);">ááááĽ ááľááŁ (Chapa)</button>
-            <button onclick="openLotterySection()">áá°áŞ ááá¨áĽ</button>
+            <button onclick="openDepositSection()" style="background-color: var(--success-color);">ገንዘብ ማስገባት (Chapa)</button>
+            <button onclick="openLotterySection()">ዮተሪ መስመር</button>
         </div>
 
         <div class="action-buttons">
-            <button onclick="openWithdrawSection()" style="background-color: #0284c7;">ááááĽ áááŁáľ (Min 2,000 Coin)</button>
-            <button onclick="openP2PSection()" style="background-color: #7c3aed;">P2P áźá­ ááľá¨á</button>
+            <button onclick="openWithdrawSection()" style="background-color: #0284c7;">ገንዘብ ማውጣት (Min 2,000 Coin)</button>
+            <button onclick="openP2PSection()" style="background-color: #7c3aed;">P2P ሼር ማድረግ</button>
         </div>
 
         <div style="margin-bottom: 10px;">
-            <button onclick="openExchangeSection()" style="background-color: #64748b; width: 100%;">áá áŽá­á / áŠá¤áľá˛á˛ ááá¨áŞáŤ</button>
+            <button onclick="openExchangeSection()" style="background-color: #64748b; width: 100%;">ማላ ጻንሾ / ዩሰልደር መቀየሪያ</button>
         </div>
 
         <div style="margin-bottom: 10px;">
-            <button onclick="openReferralSection()" style="background-color: #0d9488; width: 100%;">đ áŞááŤá ááá­ & áŽáá˝á (Invite & Earn)</button>
+            <button onclick="openReferralSection()" style="background-color: #0d9488; width: 100%;">🎁 ሸራሯርጥ ሊንክ & ጻንሾች (Invite & Earn)</button>
         </div>
         
-        <button class="back-btn" onclick="logoutUser()" style="background-color: #ef4444; margin-top: 15px;">á¨á áŤáááľ ááŁ (Logout)</button>
+        <button class="back-btn" onclick="logoutUser()" style="background-color: #ef4444; margin-top: 15px;">ከአጠቃቀም ውጣ (Logout)</button>
     </div>
 
     <!-- DEPOSIT SECTION -->
     <div id="section-deposit" class="step">
-        <h2>ááááĽ ááľááŁáľ (Chapa)</h2>
-        <p class="subtitle">áááá 2,000 áŽá­á áááľá¨áľ á¨áťá á­ááŤ áá˝áá áŽá­áá á­áá</p>
+        <h2>ገንዘብ ማስገባትዎ (Chapa)</h2>
+        <p class="subtitle">የእሚል 2,000 ጻንሾ ለማድረግ ከፕ ከእፕ ጻዕዎ ጻንሾን ይቁሙ</p>
         <div class="form-group">
-            <label>á¨áá¨ááá áá á (ETB)</label>
-            <input type="number" id="depositAmount" placeholder="ááłá: 500">
+            <label>የሚከፈለው መጠን (ETB)</label>
+            <input type="number" id="depositAmount" placeholder="ለምሳሌ: 500">
         </div>
-        <button onclick="confirmAndProcessDeposit()" style="background-color: var(--success-color);">á¨áťá á­ááŤ ááá­ áá á­á á­ááľ</button>
-        <button class="back-btn" onclick="backToWallet()">áá° áááľ á°áááľ</button>
+        <button onclick="confirmAndProcessDeposit()" style="background-color: var(--success-color);">የፕ ፕእፕ ሊንክ ፈልሰና ስራ</button>
+        <button class="back-btn" onclick="backToWallet()">ወደ ወለዎች ተመለስ</button>
     </div>
 
     <!-- LOTTERY SECTION -->
     <div id="section-lottery" class="step">
-        <h2>á¨áá°áŞ ááá¨áŤ (á áá áŽá­á)</h2>
-        <p class="subtitle" id="lotterySubtitleStatus">á˛áŹáľ á˛áá­áĄ á¨áááľá á­ááŤ á­áá¸áá (á¨á˛áŹáľ áá: <span id="ticketPriceDisplay">10</span> Mela Coin)</p>
+        <h2>የዮተሪ መስመር (በማላ ጻንሾ)</h2>
+        <p class="subtitle" id="lotterySubtitleStatus">ቲኬት ሲገዙ ከወለዎችዎ ጻንሾ ይከረሰማል (የቲኬት ዋጋ: <span id="ticketPriceDisplay">10</span> Mela Coin)</p>
         <div class="lottery-grid" id="lotteryGrid"></div>
-        <div style="font-size: 14px; margin-bottom: 12px; font-weight: bold;">á¨á°áá¨áĄ ááĽáŽá˝: <span id="selectedLotteryNum" style="color:var(--primary-color);">ááá á¨áá</span></div>
-        <div style="font-size: 14px; margin-bottom: 15px; font-weight: bold;">á á ááá­ á¨áá¨áá: <span id="totalLotteryCost" style="color:var(--success-color);">0.00 Mela Coin</span></div>
-        <button onclick="confirmAndBuyLottery()" style="background-color: var(--success-color);">ááĽáŽášá áá­áŚ á­ááŤ áá˝á</button>
-        <button class="back-btn" onclick="backToWallet()">áá° áááľ á°áááľ</button>
+        <div style="font-size: 14px; margin-bottom: 12px; font-weight: bold;">የተመረጡ ቁጥሮች: <span id="selectedLotteryNum" style="color:var(--primary-color);">ምንም የለም</span></div>
+        <div style="font-size: 14px; margin-bottom: 15px; font-weight: bold;">አጠቃላይ የሚከፍል: <span id="totalLotteryCost" style="color:var(--success-color);">0.00 Mela Coin</span></div>
+        <button onclick="confirmAndBuyLottery()" style="background-color: var(--success-color);">ቁጥሮቹን አሰር ስራ ይውዙ</button>
+        <button class="back-btn" onclick="backToWallet()">ወደ ወለዎች ተመለስ</button>
     </div>
 
     <!-- WITHDRAW SECTION -->
     <div id="section-withdraw" class="step">
-        <h2>ááááĽ áááŁáľ (Min 2,000 Coin)</h2>
-        <p class="subtitle">á¨áŚááą 50 áŽá­á ááááŞáŤ áá­ ááĽáŠ áĽáľáŞáá (2,000) á á­áááłááľá (Locked Bonus) - á°á¨ááŞ ááá°á 2000 á˛áá áááŁáľ á­á˝áá</p>
+        <h2>ገንዘብ ማውጣት (Min 2,000 Coin)</h2>
+        <p class="subtitle">የሰጠው 50 ጻንሾ መመለሻሪያ ላይ ቁጥር እስላሳ ቁ (2,000) አብራችላለ (Locked Bonus) - ተጨማሪ ግኝት 2000 ሲሞላ ማውጣት ይችላሉ</p>
         <div class="form-group">
-            <label>á¨áŁáá­ / á¨áŞáľ áŚá­áł á ááŤá­</label>
+            <label>የባንክ / የሸር ሰሪ አማራጭ</label>
             <select id="withdrawMethod">
-                <option value="telebirr">á´ááĽá­ (Telebirr)</option>
-                <option value="cbe">á¨á˘áľáŽáľáŤ áááľ áŁáá­ (CBE)</option>
-                <option value="ebc">áłá˝á áŁáá­ / á˘á˘á˘ (EBC)</option>
-                <option value="mpesa">á ááŞáŤ á¤áááł (M-Pesa)</option>
+                <option value="telebirr">ቴሌብር (Telebirr)</option>
+                <option value="cbe">የኢትዮጵያ ንግድ ባንክ (CBE)</option>
+                <option value="ebc">ድኝት ባንክ / አአአ (EBC)</option>
+                <option value="mpesa">አፋርቲክ ኤምፖሣ (M-Pesa)</option>
             </select>
         </div>
         <div class="form-group">
-            <label>á¨á áŤáááľ ááĽá­ / áľáá­ ááĽá­ (+251 á áŤáľ-á°á­ á°áŤáˇá)</label>
+            <label>የአጠቃቀም ቁጥር / ስልክ ቁጥር (+251 በሀል-ሰር ተአጠቃል)</label>
             <div class="phone-input-wrapper">
                 <div class="phone-prefix">+251</div>
-                <input type="text" id="withdrawAccount" maxlength="9" placeholder="9xxxxxxxx áá­á 7xxxxxxxx">
+                <input type="text" id="withdrawAccount" maxlength="9" placeholder="9xxxxxxxx ወይም 7xxxxxxxx">
             </div>
         </div>
         <div class="form-group">
-            <label>á¨áááŁá áá á (áŽá­á/áĽá­ - áááá 2000)</label>
-            <input type="number" id="withdrawAmount" placeholder="á˘áŤááľ 2000 áá á áŤáľááĄ">
+            <label>የሚወጣው መጠን (ጻንሾ/ብር - እሚል 2000)</label>
+            <input type="number" id="withdrawAmount" placeholder="በልካች 2000 መጠን ያስያስ">
         </div>
-        <button onclick="confirmAndSubmitWithdrawal()" style="background-color: #0284c7;">á¨áááŁáľ áĽáŤá áá áľáá áá­</button>
-        <button class="back-btn" onclick="backToWallet()">áá° áááľ á°áááľ</button>
+        <button onclick="confirmAndSubmitWithdrawal()" style="background-color: #0284c7;">የማውጣት ርእክሳ ለአልሚው አልክ</button>
+        <button class="back-btn" onclick="backToWallet()">ወደ ወለዎች ተመለስ</button>
     </div>
 
     <!-- P2P SECTION -->
     <div id="section-p2p" class="step">
-        <h2>P2P áŽá­á / ááááĽ ááľá°ááá</h2>
-        <p class="subtitle">ááá á°á áá áŽá­á ááľá°ááá (á¨á°ááááá 50 áŚááľ áŽá­á áłá­áá ááľá°ááá á á­áťáá)</p>
+        <h2>P2P ጻንሾ / ገንዘብ ማስተላለፍ</h2>
+        <p class="subtitle">ለሌላ ተጠቃሚ ጻንሾ ማስተላለፍ (የተሰጠውን 50 ጻንሾ ሣይረብ ጻንሾ ማስተላለፍ አያችልም)</p>
         <div class="form-group">
-            <label>á¨á°ááŁá­ á´áááŤá áŠáá­ á á­á˛ áá­á áľáá­ (+251 á áŤáľ-á°á­ á°áŤáˇá)</label>
+            <label>የተቀባይ ቴሌግራም ዩሰሪ አዲ ወይም ስልክ (+251 በሀል-ሰር ተአጠቃል)</label>
             <div class="phone-input-wrapper">
                 <div class="phone-prefix">+251</div>
-                <input type="text" id="p2pRecipient" maxlength="9" placeholder="9xxxxxxxx áá­á 7xxxxxxxx">
+                <input type="text" id="p2pRecipient" maxlength="9" placeholder="9xxxxxxxx ወይም 7xxxxxxxx">
             </div>
         </div>
         <div class="form-group">
-            <label>á¨áá°áááá áá á (áŽá­á/áĽá­)</label>
-            <input type="number" id="p2pAmount" placeholder="áá á áŤáľááĄ">
+            <label>የሚተላለፈው መጠን (ጻንሾ/ብር)</label>
+            <input type="number" id="p2pAmount" placeholder="መጠን ያስያስ">
         </div>
-        <button onclick="confirmAndSubmitP2P()" style="background-color: #7c3aed;">á áá á áľá°ááá</button>
-        <button class="back-btn" onclick="backToWallet()">áá° áááľ á°áááľ</button>
+        <button onclick="confirmAndSubmitP2P()" style="background-color: #7c3aed;">አሁን አስተላልፍ</button>
+        <button class="back-btn" onclick="backToWallet()">ወደ ወለዎች ተመለስ</button>
     </div>
 
     <!-- EXCHANGE SECTION -->
     <div id="section-exchange" class="step">
-        <h2>áá áŽá­á & áŠá¤áľá˛á˛ ááá¨áŞáŤ</h2>
-        <p class="subtitle">á¨á˘áľáŽáľáŤ áĽá­áŁ áá áŽá­á áĽá áŠá¤áľá˛á˛ áááá˝á áĽá­áľ á áĽá­áľ á­áá­áŠ</p>
+        <h2>ማላ ጻንሾ & ዩሰልደር ማስተካከያ</h2>
+        <p class="subtitle">የኢትዮጵያ ብር (ETB) ጻ ማላ ጻንሾ እና ዩሰልደር ዋጋዎችን እርስ በእርስ ይለወጡ</p>
         <div class="form-group">
-            <label>á¨ááááŹ áá­ááľ</label>
+            <label>የምውጥጥር ዓይነት</label>
             <select id="exchangeType">
-                <option value="etb_to_mela">á¨á˘áľáŽáľáŤ áĽá­ (ETB) âĄď¸ áá áŽá­á (Mela Coin)</option>
-                <option value="mela_to_etb">áá áŽá­á (Mela Coin) âĄď¸ á¨á˘áľáŽáľáŤ áĽá­ (ETB)</option>
-                <option value="usdt_to_mela">áŠá¤áľá˛á˛ (USDT) âĄď¸ áá áŽá­á (Mela Coin)</option>
-                <option value="mela_to_usdt">áá áŽá­á (Mela Coin) âĄď¸ áŠá¤áľá˛á˛ (USDT)</option>
+                <option value="etb_to_mela">የኢትዮጵያ ብር (ETB) ➡️ ማላ ጻንሾ (Mela Coin)</option>
+                <option value="mela_to_etb">ማላ ጻንሾ (Mela Coin) ➡️ የኢትዮጵያ ብር (ETB)</option>
+                <option value="usdt_to_mela">ዩሰልደር (USDT) ➡️ ማላ ጻንሾ (Mela Coin)</option>
+                <option value="mela_to_usdt">ማላ ጻንሾ (Mela Coin) ➡️ ዩሰልደር (USDT)</option>
             </select>
         </div>
         <div class="form-group">
-            <label>á¨áááá á áá á</label>
-            <input type="number" id="exchangeAmount" placeholder="áá á áŤáľááĄ">
+            <label>የሚለወጠው መጠን</label>
+            <input type="number" id="exchangeAmount" placeholder="መጠን ያስያስ">
         </div>
-        <button onclick="confirmAndProcessExchange()" style="background-color: #64748b;">á áá áá­á­</button>
-        <button class="back-btn" onclick="backToWallet()">áá° áááľ á°áááľ</button>
+        <button onclick="confirmAndProcessExchange()" style="background-color: #64748b;">አሁን ቀይር</button>
+        <button class="back-btn" onclick="backToWallet()">ወደ ወለዎች ተመለስ</button>
     </div>
 
     <!-- REFERRAL SECTION -->
     <div id="section-referral" class="step">
-        <h2>á¨áŞááŤá áĽá áŽáá˝á ááá¨á</h2>
-        <p class="subtitle">ááá­áá á áááŤáľ á°á áááá˝ á˛ááĄ á á áľáá á¨á°áá°á á¨áŽáá˝á áá­á°ááľ áŤáá</p>
+        <h2>የሸራሯርጥ እና ጻንሾ ማዕከል</h2>
+        <p class="subtitle">ሊንኩን በመጠቀም ተጠቃሚዎች ሲመዘገቡ በአልሚው የተሰለ የጻንሾ ፕሪሰንት ያግኙ</p>
         <div class="form-group">
-            <label>á¨áĽá­áľá ááŠ á¨áŞááŤá ááá­ (á áŚááťá áŚáą áľá á¨á°áľá°áŤá¨á)</label>
+            <label>የእርስዎ ልእ የሸራሯርጥ ሊንክ (በኦፊሻል ሰት ስም የተስተካከለ)</label>
             <input type="text" id="myReferralLink" readonly style="background: rgba(0,0,0,0.03); font-weight: bold; text-align: center;">
         </div>
-        <button onclick="copyReferralLink()" style="background-color: #0d9488; margin-bottom: 10px;">đ áááŠá áŽá á áľá­á (Copy Link)</button>
-        <button onclick="shareReferralLinkViaTelegram()" style="background-color: #2563eb; margin-bottom: 10px;">đ¤ áááŠá ááá°áá˝ áźá­ á áľá­á (Share via Telegram)</button>
+        <button onclick="copyReferralLink()" style="background-color: #0d9488; margin-bottom: 10px;">📋 ሊንኩን ኮፒ አድርግ (Copy Link)</button>
+        <button onclick="shareReferralLinkViaTelegram()" style="background-color: #2563eb; margin-bottom: 10px;">📤 ሊንኩን ለጓደኞች ሼር አድርግ (Share via Telegram)</button>
         
         <div style="background: rgba(13, 148, 136, 0.1); padding: 15px; border-radius: 10px; margin-top: 15px; text-align: center;">
-            <p style="margin: 0 0 8px 0; font-weight: bold; font-size: 14px;">á áŞááŤá áŤáľáá§á¸á á°áá˝ áĽááľ:</p>
-            <div id="referralCountDisplay" style="font-size: 24px; font-weight: bold; color: #0d9488;">0 á°áá˝</div>
-            <p style="margin: 8px 0 0 0; font-size: 13px; opacity: 0.8;">á¨á°áá á á ááá­ á¨áŽáá˝á áŚááľ: <span id="referralBonusDisplay" style="font-weight: bold; color: var(--success-color);">0.00 Mela Coin</span></p>
+            <p style="margin: 0 0 8px 0; font-weight: bold; font-size: 14px;">በሸራሯርጥ ያደረጉዋቸው ሰዎችን ብዛት:</p>
+            <div id="referralCountDisplay" style="font-size: 24px; font-weight: bold; color: #0d9488;">0 ሰዎች</div>
+            <p style="margin: 8px 0 0 0; font-size: 13px; opacity: 0.8;">የተገኘ አጠቃላይ የጻንሾ ፕሪሰንት: <span id="referralBonusDisplay" style="font-weight: bold; color: var(--success-color);">0.00 Mela Coin</span></p>
         </div>
 
-        <button class="back-btn" onclick="backToWallet()">áá° áááľ á°áááľ</button>
+        <button class="back-btn" onclick="backToWallet()">ወደ ወለዎች ተመለስ</button>
     </div>
 
-    <!-- 1. áŤáş á á˘áŤ á¨áá­ áŤáá˝á áá áľáá áĽáť á¨ááłá¨á ááá -->
+    <!-- ADMIN PANEL -->
     <div id="yellow-admin-panel" class="step">
         <div class="admin-panel">
-            <h3>âď¸ á¨á áľáá 1 áľáŞáá¨á ááľá°á­ áááľ ááá</h3>
-            <p style="font-size: 13px; color: #cbd5e1;">á¨á áľáá ááľá°á­ áááľ ááá á áŽá¨áĽ á°á°áĽááá˘ ááááá¨áľ á¨áłá˝ áŤááá ááá á­áŤáá˘</p>
+            <h3>⚙️ የአልሚው 1 ተርሻለከን አስተዳደር ወለ ፖርታል</h3>
+            <p style="font-size: 13px; color: #cbd5e1;">የአልሚው አስተዳደር ወለ መጠን በዛካብ ተረጋግጧል ለመቆጣጠር ከታች ያለውን ፋማ አርጡ</p>
             
             <div style="background: #0f172a; border: 1px solid #f59e0b; padding: 12px; border-radius: 8px; margin: 12px 0; text-align: center;">
-                <div style="font-size: 13px; color: #f59e0b; font-weight: bold;">đ á¨á áľáá 1 áľáŞáá¨á ááľá°á­ áááľ (Master Balance)</div>
+                <div style="font-size: 13px; color: #f59e0b; font-weight: bold;">👑 የአልሚው 1 ተርሻለከን አስተዳደር ወለ (Master Balance)</div>
                 <div class="wallet-balance-container" style="justify-content: center; margin: 8px 0;">
-                    <div id="adminMainBalanceDisplay" style="font-size: 20px; font-weight: bold; color: #10b981;">â˘â˘â˘â˘â˘â˘â˘â˘â˘â˘â˘â˘</div>
-                    <button type="button" class="toggle-eye" onclick="toggleAdminBalanceVisibility()" style="background: rgba(245, 158, 11, 0.3); font-size: 11px; padding: 6px 10px;">đď¸ <span id="adminEyeBtnText">á áłá­</span></button>
+                    <div id="adminMainBalanceDisplay" style="font-size: 20px; font-weight: bold; color: #10b981;">••••••••••••</div>
+                    <button type="button" class="toggle-eye" onclick="toggleAdminBalanceVisibility()" style="background: rgba(245, 158, 11, 0.3); font-size: 11px; padding: 6px 10px;">👁️ <span id="adminEyeBtnText">አሳይ</span></button>
                 </div>
             </div>
 
             <div style="background: #0f172a; border: 1px solid #334155; padding: 12px; border-radius: 8px; margin-bottom: 12px;">
-                <label style="color:#f59e0b; font-weight: bold; margin-bottom: 6px;">â­ á á˛áľ ááľáá­áľ ááľá°áŤá¨áŤ (Set Password)</label>
+                <label style="color:#f59e0b; font-weight: bold; margin-bottom: 6px;">⭐ አዲስ ቃልያስያስ ማሻሻያ (Set Password)</label>
                 <div style="display: flex; gap: 8px; align-items: center;">
-                    <input type="password" id="new-password" placeholder="á á˛áľ ááľáá­áľ" style="padding: 8px; font-size: 13px; flex: 1; background: #1e293b; color:#fff; border-color:#334155;">
-                    <button onclick="setAdminPassword()" style="background-color: #f59e0b; color: #000; margin-top:0; padding: 8px 12px; font-size: 13px; font-weight: bold; width: auto;">á´áľ á áľá­á</button>
+                    <input type="password" id="new-password" placeholder="አዲስ ቃልያስያስ" style="padding: 8px; font-size: 13px; flex: 1; background: #1e293b; color:#fff; border-color:#334155;">
+                    <button onclick="setAdminPassword()" style="background-color: #f59e0b; color: #000; margin-top:0; padding: 8px 12px; font-size: 13px; font-weight: bold; width: auto;">ጻፍ አድርግ</button>
                 </div>
             </div>
 
             <div style="background: #0f172a; border: 1px solid #334155; padding: 12px; border-radius: 8px; margin-bottom: 12px;">
-                <label style="color:#f59e0b; font-weight: bold; margin-bottom: 6px;">âď¸ á¨áŤáľá°áá­ á°áá­áľ áľáá­ ááĽá­ áááá áŞáŤ (Customer Support Set)</label>
+                <label style="color:#f59e0b; font-weight: bold; margin-bottom: 6px;">📞 የቴክንስታር ድጋፍ ስልክ ቁጥር ማስተካከያ (Customer Support Set)</label>
                 <div style="display: flex; gap: 8px; align-items: center;">
                     <div class="phone-input-wrapper" style="flex: 1; background: #1e293b; border-color: #334155;">
                         <div class="phone-prefix" style="background: rgba(245, 158, 11, 0.1); color: #f59e0b; border-color: #334155;">+251</div>
                         <input type="tel" id="adminSupportPhoneInput" maxlength="9" placeholder="9xxxxxxxx" style="padding: 8px; font-size: 13px; border:none; background:transparent; color:#fff;">
                     </div>
-                    <button onclick="saveAdminSupportPhone()" style="background-color: #f59e0b; color: #000; margin-top:0; padding: 8px 12px; font-size: 13px; font-weight: bold; width: auto;">á´áľ á áľá­á</button>
+                    <button onclick="saveAdminSupportPhone()" style="background-color: #f59e0b; color: #000; margin-top:0; padding: 8px 12px; font-size: 13px; font-weight: bold; width: auto;">ጻፍ አድርግ</button>
                 </div>
             </div>
 
             <div style="background: #0f172a; border: 1px solid #334155; padding: 12px; border-radius: 8px; margin-bottom: 12px;">
-                <label style="color:#f59e0b; font-weight: bold; margin-bottom: 6px;">đź á¨á áľáá áŽáá˝á áááŁá áŞáŤ (Commission Rate)</label>
+                <label style="color:#f59e0b; font-weight: bold; margin-bottom: 6px;">💼 የአልሚው ጻንሾ መቆጣጠሪያ (Commission Rate)</label>
                 <div style="display: flex; gap: 8px; align-items: center;">
-                    <input type="number" id="adminCommissionRateInput" value="2.5" step="0.1" style="padding: 8px; font-size: 13px; flex:1;" placeholder="á¨áŽáá˝á áá­á°ááľ %">
-                    <button onclick="saveAdminCommissionRate()" style="background-color: #f59e0b; color: #000; margin-top:0; padding: 8px 12px; font-size: 13px; font-weight: bold; width: auto;">á áľá°áŤá­á</button>
+                    <input type="number" id="adminCommissionRateInput" value="2.5" step="0.1" style="padding: 8px; font-size: 13px; flex:1;" placeholder="የጻንሾ ፕሪሰንት %">
+                    <button onclick="saveAdminCommissionRate()" style="background-color: #f59e0b; color: #000; margin-top:0; padding: 8px 12px; font-size: 13px; font-weight: bold; width: auto;">አስተካክል</button>
                 </div>
             </div>
 
             <div style="background: #0f172a; border: 1px solid #334155; padding: 12px; border-radius: 8px; margin-bottom: 12px;">
-                <label style="color:#f59e0b; font-weight: bold; margin-bottom: 8px;">đ˛ á¨áá°áŞ ááľá°áłá°áŞáŤá áŞá´áľ áááŁá áŞáŤáá˝</label>
+                <label style="color:#f59e0b; font-weight: bold; margin-bottom: 8px;">🎯 የዮተሪ አስተዳደርስ እና ጻሪዎች መቆጣጠሪያዎች</label>
                 <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-                    <button onclick="adminToggleLotteryStatus(false)" style="background-color: #ef4444; margin-top:0; font-size: 12px; padding: 10px; flex:1;">áá°áŞ áá</button>
-                    <button onclick="adminToggleLotteryStatus(true)" style="background-color: #10b981; margin-top:0; font-size: 12px; padding: 10px; flex:1;">áá°áŞ á­ááľ</button>
-                    <button onclick="adminResetLotteryOnly()" style="background-color: #3b82f6; margin-top:0; font-size: 12px; padding: 10px; flex:1;">áá°áŞ áŞá´áľ</button>
+                    <button onclick="adminToggleLotteryStatus(false)" style="background-color: #ef4444; margin-top:0; font-size: 12px; padding: 10px; flex:1;">ዮተሪ ዝግ</button>
+                    <button onclick="adminToggleLotteryStatus(true)" style="background-color: #10b981; margin-top:0; font-size: 12px; padding: 10px; flex:1;">ዮተሪ አህኝ</button>
+                    <button onclick="adminResetLotteryOnly()" style="background-color: #3b82f6; margin-top:0; font-size: 12px; padding: 10px; flex:1;">ዮተሪ ጻሪዎች</button>
                 </div>
             </div>
 
             <div style="margin-top: 15px;">
-                <label style="color:#f59e0b; font-weight: bold;">đ á¨áá˛ááŹá˝áá˝ áĽá áá ááłáŤ (Activity Logs)</label>
-                <div id="adminActivityLogBox" class="admin-log-box">ááá áá˛ááŹá˝á á¨áá...</div>
-                <button onclick="loadAdminLogs()" style="background-color: #475569; margin-top: 8px; font-size: 12px; padding: 8px;">áá˛ááŹá˝áá˝á á áľáľ</button>
+                <label style="color:#f59e0b; font-weight: bold;">📊 የሰንሰንትዎች እና ዮግ ማሻሻያ (Activity Logs)</label>
+                <div id="adminActivityLogBox" class="admin-log-box">ምንም ሰንሰንትዎች የለዉም...</div>
+                <button onclick="loadAdminLogs()" style="background-color: #475569; margin-top: 8px; font-size: 12px; padding: 8px;">ሰንሰንትዎችን አድስ</button>
             </div>
 
             <div class="form-group" style="margin-top: 15px;">
-                <label style="color:#f8fafc;">á°á áá ááá˝á°á (Approve)áŁ ááá°á¨á áá­á áááŤá ááľáá­áľ áááľá áľ (Telegram ID / Phone)</label>
-                <input type="text" id="targetUserAccount" placeholder="áŠáá­ á á­á˛ áá­á áľáá­ ááĽá­" style="background: #1e293b; color:#fff; border-color:#334155;">
+                <label style="color:#f8fafc;">ተጠቃሚ ማረጋገጥ (Approve)፤ ማሰረዝ ወይም ጊዜያዊ ቃልያስያስ ለመስጠት (Telegram ID / Phone)</label>
+                <input type="text" id="targetUserAccount" placeholder="ዩሰሪ አዲ ወይም ስልክ ቁጥር" style="background: #1e293b; color:#fff; border-color:#334155;">
             </div>
             
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px;">
-                <button onclick="adminApproveUser()" style="background-color: #10b981; margin-top:0;">â á á˝áľá (Approve)</button>
-                <button onclick="adminGiveTempPassword()" style="background-color: #3b82f6; margin-top:0;">đ áááŤá ááľáá­áľ áľáĽ</button>
-                <button onclick="adminBlockUser()" style="background-color: #ef4444; margin-top:0;">đŤ áĽáá­ (Block)</button>
-                <button onclick="adminEraseUserRegistration()" style="background-color: #b91c1c; margin-top:0;">đď¸ ááááŁ á˘áŹá</button>
+                <button onclick="adminApproveUser()" style="background-color: #10b981; margin-top:0;">✅ አጽድቅ (Approve)</button>
+                <button onclick="adminGiveTempPassword()" style="background-color: #3b82f6; margin-top:0;">🔑 ጊዜያዊ ቃልያስያስ ሰጥ</button>
+                <button onclick="adminBlockUser()" style="background-color: #ef4444; margin-top:0;">🚫 ፕልአ (Block)</button>
+                <button onclick="adminEraseUserRegistration()" style="background-color: #b91c1c; margin-top:0;">🗑️ ምዝገባ አጥፊ</button>
             </div>
 
             <hr style="border-color:#334155; margin: 15px 0;">
-            <button onclick="resetAdminPassword()" style="background-color: red; color: white; margin-top:0;">ááľáá­áľ áŞá´áľ (á áĽá)</button><br><br>
-            <button onclick="logoutAdmin()" style="background-color: #ef4444; margin-top:0;">ááŁ (Logout Admin)</button>
+            <button onclick="resetAdminPassword()" style="background-color: red; color: white; margin-top:0;">ቃልያስያስ ጻሪዎች (አልክ)</button><br><br>
+            <button onclick="logoutAdmin()" style="background-color: #ef4444; margin-top:0;">ውጣ (Logout Admin)</button>
         </div>
     </div>
 
@@ -839,9 +838,9 @@
 <!-- CUSTOM MODAL -->
 <div id="customModal" class="modal-overlay">
     <div class="modal-content">
-        <h3 id="modalTitle" style="margin-top:0; color:var(--primary-color);">ááłá°á˘áŤ</h3>
+        <h3 id="modalTitle" style="margin-top:0; color:var(--primary-color);">ማስጠንቀቂያ</h3>
         <p id="modalMessage" style="font-size: 15px; margin-bottom: 15px; line-height: 1.5;"></p>
-        <button id="modalOkBtn" onclick="closeModal()">áĽáş (OK)</button>
+        <button id="modalOkBtn" onclick="closeModal()">እሺ (OK)</button>
     </div>
 </div>
 
@@ -874,38 +873,38 @@
 
     const cityMap = {
         "Ethiopia": [
-            {value: "Hawassa", label: "áááł (Hawassa)"},
-            {value: "Addis Ababa", label: "á á˛áľ á á áŁ (Addis Ababa)"},
-            {value: "Jimma", label: "áá (Jimma)"},
-            {value: "Bahir Dar", label: "áŁáá­ áłá­ (Bahir Dar)"},
-            {value: "Adama", label: "á áłá (Adama)"},
-            {value: "Dire Dawa", label: "áľáŹáłá (Dire Dawa)"},
-            {value: "Mekelle", label: "ááá (Mekelle)"}
+            {value: "Hawassa", label: "ሀዋሳ (Hawassa)"},
+            {value: "Addis Ababa", label: "አዲስ አበባ (Addis Ababa)"},
+            {value: "Jimma", label: "ጂማ (Jimma)"},
+            {value: "Bahir Dar", label: "ባህር ዳር (Bahir Dar)"},
+            {value: "Adama", label: "አዳማ (Adama)"},
+            {value: "Dire Dawa", label: "ድሬዳዋ (Dire Dawa)"},
+            {value: "Mekelle", label: "መቀሌ (Mekelle)"}
         ],
         "USA": [
-            {value: "Washington DC", label: "áá˝ááá°á á˛á˛ (Washington DC)"},
-            {value: "New York", label: "áááŽá­á­ (New York)"},
-            {value: "Los Angeles", label: "ááľ á ááááľ (Los Angeles)"}
+            {value: "Washington DC", label: "ዋሽንግተን ዲሲ (Washington DC)"},
+            {value: "New York", label: "ኒውዮርክ (New York)"},
+            {value: "Los Angeles", label: "ሎስ አንጀለስ (Los Angeles)"}
         ],
         "Canada": [
-            {value: "Toronto", label: "áśáŽááś (Toronto)"},
-            {value: "Vancouver", label: "áŤááŽá¨á­ (Vancouver)"},
-            {value: "Ottawa", label: "áŚáłá (Ottawa)"}
+            {value: "Toronto", label: "ቶሮንቶ (Toronto)"},
+            {value: "Vancouver", label: "ቫንኮቨር (Vancouver)"},
+            {value: "Ottawa", label: "ኦታዋ (Ottawa)"}
         ],
         "UK": [
-            {value: "London", label: "ááá°á (London)"},
-            {value: "Manchester", label: "ááá¸áľá°á­ (Manchester)"}
+            {value: "London", label: "ለንደን (London)"},
+            {value: "Manchester", label: "ማንቸስተር (Manchester)"}
         ],
         "UAE": [
-            {value: "Dubai", label: "áąáŁá­ (Dubai)"},
-            {value: "Abu Dhabi", label: "á áĄ áłá˘ (Abu Dhabi)"}
+            {value: "Dubai", label: "ዱባይ (Dubai)"},
+            {value: "Abu Dhabi", label: "አቡ ዳቢ (Abu Dhabi)"}
         ],
         "Kenya": [
-            {value: "Nairobi", label: "áá­áŽá˘ (Nairobi)"},
-            {value: "Mombasa", label: "áááŁáł (Mombasa)"}
+            {value: "Nairobi", label: "ናይሮቢ (Nairobi)"},
+            {value: "Mombasa", label: "ሞምባሳ (Mombasa)"}
         ],
         "Other": [
-            {value: "Global", label: "ááá á áá (Global Worldwide)"}
+            {value: "Global", label: "ዓለም አቀፍ (Global Worldwide)"}
         ]
     };
 
@@ -949,7 +948,7 @@
         
         const refLink = `https://t.me/mala_official_bot?start=ref_${currentTelegramId}`;
         document.getElementById('myReferralLink').value = refLink;
-        document.getElementById('referralCountDisplay').textContent = referralCount + " á°áá˝";
+        document.getElementById('referralCountDisplay').textContent = referralCount + " ሰዎች";
         document.getElementById('referralBonusDisplay').textContent = referralBonusEarned.toFixed(2) + " Mela Coin";
         
         const savedUserCoins = localStorage.getItem('mala_user_coins_' + currentTelegramId);
@@ -981,8 +980,8 @@
             if (depositedAmt > 0) {
                 userWalletBalance += depositedAmt;
                 updateBalanceDisplay();
-                showCustomModal("á¨á­ááŤ áá¨áááŤ", `á¨áĽá­ ${depositedAmt} áťá á˛áááľ á°áłá­áˇá! áááľá áá­ á°á¨ááŻáá˘`);
-                logActivityToAdmin(`[Chapa Success] á°á áá áĽá­ ${depositedAmt} á áľáŹáľ á áľááĽáˇáá˘`);
+                showCustomModal("የክፍያ ማረጋገጫ", `የብር ${depositedAmt} ፕ ተንፖል ተሰክቷል! ወለዎች ላይ ተጨምሯል`);
+                logActivityToAdmin(`[Chapa Success] ተጠቃሚ ብር ${depositedAmt} በሰይፍ አስገብቷል`);
             }
         }
     });
@@ -996,14 +995,14 @@
             if (adminData.password === "" || inputPass === adminData.password || inputPass === "SUPA_ADMIN_RESET_2026") {
                 localStorage.setItem("logged_in_user", "admin");
                 localStorage.setItem("mala_admin_logged_in", "true");
-                alert("áĽááłá á°áá ááĄ á áľáá!");
+                alert("እንኳን ደህና መጡ አስተዳዳሪ!");
                 document.getElementById("adminPasswordInput").value = "";
                 checkAdminVisibility();
             } else {
-                alert("á¨á°áłáłá° ááľáá­áľ!");
+                alert("የተሳሳተ ቃልያስያስ!");
             }
         } else {
-            alert("á­á áŠáá­ á áľáá á á­á°áá! ááá ááłá­ á á­á˝ááá˘");
+            alert("ይህ ዩሰሪ አስተዳዳሪ አይደለም! ፕሰና ሊሰይ አያችልም");
         }
     }
 
@@ -1027,23 +1026,23 @@
         if (newPass.trim() !== "") {
             adminData.password = newPass;
             localStorage.setItem("admin_password", newPass);
-            alert("ááľáá­áą á á°áłáŤ áááł á°áľá°áŤá­áá (Set ááá)!");
+            alert("ቃልያስይ በሰተክ ህኔታ ተስተካክሏል (Set አውል)!");
             document.getElementById("new-password").value = "";
         } else {
-            alert("áĽáŁá­á áľá­á­áá ááľáá­áľ á­áťáá˘");
+            alert("እባክዎ ትክክለኛ ቃልያስያስ ይምረጡ");
         }
     }
 
     function resetAdminPassword() {
         adminData.password = "";
         localStorage.removeItem("admin_password");
-        alert("á¨á áľáá ááľáá­áľ á°á°á­áá (Reset ááá)á˘ á áá áŁáś áááá˘");
+        alert("የአልሚው ቃልያስያስ ተሰርዟል (Reset አውል)። አሁን ባል አውል");
     }
 
     function logoutAdmin() {
         localStorage.removeItem("logged_in_user");
         localStorage.removeItem("mala_admin_logged_in");
-        alert("ááĽá°áá!");
+        alert("ወጥተዋል!");
         document.getElementById("yellow-admin-panel").style.display = "none";
         document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
         document.getElementById('step-welcome').classList.add('active');
@@ -1091,7 +1090,7 @@
             const data = await response.json();
             return data.success;
         } catch (error) {
-            logActivityToAdmin(`[á ááśáá˛á­ áá˛ááŹá˝á] ${type}: ${details}`);
+            logActivityToAdmin(`[አፕዋስታዊ ሰንሰንት] ${type}: ${details}`);
             return false;
         }
     }
@@ -1102,991 +1101,631 @@
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    message: `đ Congratulations! New Family Member Added: ${memberName} has successfully joined Mala-Official-Bot Wallet & verified! đ`
+                    message: `🎉 Congratulations! New Family Member Added: ${memberName} has successfully joined Mala-Official-Bot Wallet & verified! 🚀`
                 })
             });
             return await response.json();
         } catch (e) {
-            logActivityToAdmin(`[áťáá áá˛ááŹá˝á] á´áááŤá áťáá áá: đĽł Congratulations! One Family Member Added (${memberName}).`);
+            logActivityToAdmin(`[ሰት ሰንሰንት] ቴሌግራም ሰት ዎርግ: 🥂 Congratulations! One Family Member Added (${memberName}).`);
         }
     }
 
     function shareBotWithFriends() {
         const botLink = `https://t.me/mala_official_bot`;
-        const shareText = encodeURIComponent(`áĽáá! áá° áá áŚááťá áŚáľ á ááááá 50 Mela Coin áŚááľ á ááĽáł áááľá áá­ áŤáá áĽá á áá°áŞ á­á¸áá!\ná­áá ááá­ á ááŤá á­ááááá:\n${botLink}`);
-        const tgShareUrl = `https://t.me/share/url?url=${encodeURIComponent(botLink)}&text=${shareText}`;
-        window.open(tgShareUrl, '_blank');
-        logActivityToAdmin(`[áŚáľ áźá­] á°á áá (${currentTelegramId}) áŚáąá ááá°ááš áźá­ á áľá­ááá˘`);
-    }
-
-    function getCurrentUserId() {
-        return currentTelegramId;
-    }
-
-    function getCurrentUserPhone() {
-        let savedSession = JSON.parse(localStorage.getItem('mala_session_' + currentTelegramId) || '{}');
-        return savedSession.phoneNumber || document.getElementById('loginPhone')?.value || "+251900000000";
-    }
-
-    // ==========================================
-    // á­áá 1: á¨áŚá˛á (ážá­áľ áŽáľ) áááá¨áľ áĽá áá°á ááá ááá­ (Request)
-    // á¨á°ááá JS á°ááŁá­ á¨ backend ááá­ áá­
-    // ==========================================
-    async function handleForgotPasswordClick() {
-        let phoneInput = prompt("áĽáŁá­á á¨á°ááááĄá áľá áľáá­ ááĽá­ áŤáľááĄ (+251 áłá­á¨ááŠ 9 á áá):");
-        if (!phoneInput) return;
-        
-        const phone = "+251" + phoneInput.trim();
-
-        try {
-            // ááľáá°á áá­á áĽááá°á á¨ backend áĽáŤá
-            let savedSession = JSON.parse(localStorage.getItem('mala_session_' + currentTelegramId) || '{}');
-            if (!savedSession.phoneNumber || savedSession.phoneNumber !== phone) {
-                // á áá¨áŤ áá á¨á°áááá á áľáá­ áá­ áááłá°á
-                savedSession.phoneNumber = phone;
-                localStorage.setItem('mala_session_' + currentTelegramId, JSON.stringify(savedSession));
-            }
-
-            // 1. á¨ 4 á áá á ááśáá˛á­ ážá­áľ áŽáľ (OTP) áááá¨áľ
-            const shortCode = Math.floor(1000 + Math.random() * 9000).toString();
-            
-            // 2. áŽáą á¨áá¸áá áľá áá ááá°á (á¨áŁáá áľ á°ááľ áááŽ á 5 á°áá)
-            const expireTime = Date.now() + 5 * 60 * 1000; 
-
-            // 3. áŽáąá áĽá á°ááąá á¨áá áŠáá­/áľáá­ áá­ á áŤá­á áłáłá¤á/LocalStorage ááľáĽ ááľáááĽ
-            localStorage.setItem('mala_reset_token_' + phone, shortCode);
-            localStorage.setItem('mala_reset_expire_' + phone, expireTime.toString());
-
-            // 4. ážá­áľ áŽáąá á  á¤áľá¤áá¤áľ á áŠá áá°á ááá ááá­ (Simulated SMS / Bot alert)
-            logActivityToAdmin(`[OTP SMS Sent] áá° áľáá­ ${phone} á¨á°áá¨ ážá­áľ áŽáľ: ${shortCode}`);
-            alert(`á¨áĽá­áľá á¨ááľáá­áľ ááá¨áŞáŤ ážá­áľ áŽáľ (OTP): ${shortCode} (á áľáá­ á°ááłá á°áĽá áłáľá§á)`);
-
-            // áá° OTP áá¨áááŤ áá˝ áá¸ááá­
-            document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
-            document.getElementById('step-otp-reset').classList.add('active');
-            document.getElementById('resetPhone').value = phoneInput.trim();
-
-        } catch (error) {
-            showCustomModal("áľáá°áľ", error.message);
+        if (navigator.share) {
+            navigator.share({ title: 'Mala Official Bot', text: 'እዚህ ጋር ገብተው ዎለ ፕሪሰንት ያግኙ!', url: botLink }).catch(() => {});
+        } else {
+            prompt("የቦቱን ሊንክ ኮፒ ያድርጉ:", botLink);
         }
     }
 
-    // ==========================================
-    // á­áá 2: ážá­áľ áŽáąá á á¨áááŚ á á˛áľ ááľáá­áľ ááá¨á­ (Verify & Reset)
-    // á¨á°ááá JS á°ááŁá­ á¨ backend ááá­ áá­
-    // ==========================================
-    function handleVerifyAndResetPassword(event) {
-        event.preventDefault();
-        const phoneInput = document.getElementById('resetPhone').value.trim();
-        const phone = "+251" + phoneInput;
-        const shortCode = document.getElementById('resetShortCode').value.trim();
-        const newPassword = document.getElementById('resetNewPassword').value;
-
-        try {
-            let savedSession = JSON.parse(localStorage.getItem('mala_session_' + currentTelegramId) || '{}');
-            
-            // 1. áŠááŠá áááá
-            if (!savedSession.phoneNumber) {
-                savedSession.phoneNumber = phone; // ááááá á­
-            }
-
-            // 2. ážá­áľ áŽáą áľá­á­á áááá áá¨áááĽ
-            const storedToken = localStorage.getItem('mala_reset_token_' + phone);
-            if (storedToken !== shortCode) {
-                showCustomModal("áľáá°áľ", "áŤáľááĄáľ ážá­áľ áŽáľ áľá­á­á á á­á°áá!");
-                return;
-            }
-
-            // 3. á¨ážá­áľ áŽáą áá ááá á ááááá áá¨áááĽ
-            const storedExpire = parseInt(localStorage.getItem('mala_reset_expire_' + phone) || '0');
-            if (Date.now() > storedExpire) {
-                showCustomModal("áľáá°áľ", "á¨ážá­áľ áŽáą áá á ááá á! áĽáŁá­á áĽáá°áá á­á á­áá˘");
-                return;
-            }
-
-            // 4. á á˛áąá ááľáá­áľ á´áŞáŠá­ (Hash / Save) ááľá¨á
-            savedSession.password = newPassword;
-            localStorage.setItem('mala_session_' + currentTelegramId, JSON.stringify(savedSession));
-
-            // 5. áŤáááááá ážá­áľ áŽáľ ááĽááľ (Clear)
-            localStorage.removeItem('mala_reset_token_' + phone);
-            localStorage.removeItem('mala_reset_expire_' + phone);
-            localStorage.removeItem('mala_temp_pin_' + currentTelegramId);
-
-            logActivityToAdmin(`[Password Reset Success] á  OTP á ááŤáááľ áľáá­ ${phone} ááľáá­áąá á áľáˇáá˘`);
-            showCustomModal("á°áłá­áˇá", "ááľáá­áľá á á°áłáŤ áááł á°áá­áŻá! á áá á á á˛áą ááľáá­áľ áááŁáľ á­á˝ááá˘");
-            
-            goToLoginStep();
-
-        } catch (error) {
-            showCustomModal("áľáá°áľ", error.message);
-        }
+    function copyReferralLink() {
+        const copyText = document.getElementById("myReferralLink");
+        copyText.select();
+        document.execCommand("copy");
+        showCustomModal("ተሳክቷል", "የተጠቃሚው ሸራሯርጥ ሊንክ ኮፒ ተደርጓል!");
     }
 
-    function saveAdminSupportPhone() {
-        const phoneInput = document.getElementById('adminSupportPhoneInput').value.trim();
-        if (!phoneInput) {
-            showCustomModal("áľáá°áľ", "áĽáŁá­á áľá­á­áá áľáá­ ááĽá­ áŤáľááĄ");
-            return;
-        }
-        customerSupportPhone = "+251" + phoneInput;
-        localStorage.setItem('mala_customer_support_phone', customerSupportPhone);
-        document.getElementById('displayCustomerSupportPhone').textContent = customerSupportPhone;
-        document.getElementById('adminSupportPhoneInput').value = "";
-        logActivityToAdmin(`âď¸ á áľáá á¨áŤáľá°áá­ á°áá­áľ áľáá­ ááĽá­ áá° (${customerSupportPhone}) á´áľ á áľá­ááá˘`);
-        showCustomModal("á°áłá­áˇá", `á¨áŤáľá°áá­ á°áá­áľ áľáá­ ááĽá­ áá° (${customerSupportPhone}) á áľáŹáľ á°áááĽáŻá!`);
-    }
-
-    function saveCustomerSupportInput() {
-        const inputVal = document.getElementById('customerSupportInputBox').value.trim();
-        if (!inputVal) {
-            showCustomModal("áľáá°áľ", "áĽáŁá­á áľáá­ ááĽá­ áá­á ááá­ áŤáľááĄ");
-            return;
-        }
-        customerSupportPhone = inputVal;
-        localStorage.setItem('mala_customer_support_phone', customerSupportPhone);
-        document.getElementById('displayCustomerSupportPhone').textContent = customerSupportPhone;
-        document.getElementById('customerSupportInputBox').value = "";
-        showCustomModal("á°áłá­áˇá", `á¨áŤáľá°áá­ á°áá­áľ ááĽá áľ (${customerSupportPhone}) á áľáŹáľ á°áááá§á!`);
-    }
-
-    function handleUserPasswordChange() {
-        const oldPwd = document.getElementById('oldPasswordInput').value;
-        const newPwd = document.getElementById('newPasswordInput').value;
-        const confirmNewPwd = document.getElementById('confirmNewPasswordInput').value;
-
-        if (!oldPwd || !newPwd || !confirmNewPwd) {
-            showCustomModal("áľáá°áľ", "áĽáŁá­á áááá á¨ááľáá­áľ ááľáŽá˝ á áľá­á­á á­áá!");
-            return;
-        }
-
-        if (newPwd !== confirmNewPwd) {
-            showCustomModal("áľáá°áľ", "á á˛áśáš ááľáá­áśá˝ áĽá­áľ á áĽá­áľ á áá°ááłá°áá!");
-            return;
-        }
-
-        if (newPwd.length < 6) {
-            showCustomModal("áľáá°áľ", "á á˛áą ááľáá­áľ á˘áŤááľ 6 áá°ááľ/ááĽáŽá˝ áááŠáľ á­ááŁá!");
-            return;
-        }
-
-        let savedSession = JSON.parse(localStorage.getItem('mala_session_' + currentTelegramId) || '{}');
-        if (!savedSession.password) {
-            showCustomModal("áľáá°áľ", "á áŤáááľ á áá°ááá!");
-            return;
-        }
-
-        if (savedSession.password !== oldPwd) {
-            let tempPin = localStorage.getItem('mala_temp_pin_' + currentTelegramId);
-            if (tempPin && tempPin === oldPwd) {
-                localStorage.removeItem('mala_temp_pin_' + currentTelegramId);
-            } else {
-                showCustomModal("áľáá°áľ", "áŤáľááĄáľ á¨ááľáá ááľáá­áľ áá­á áááŤá áá áá­ á á­á°áá!");
-                return;
-            }
-        }
-
-        savedSession.password = newPwd;
-        localStorage.setItem('mala_session_' + currentTelegramId, JSON.stringify(savedSession));
-
-        document.getElementById('oldPasswordInput').value = "";
-        document.getElementById('newPasswordInput').value = "";
-        document.getElementById('confirmNewPasswordInput').value = "";
-
-        logActivityToAdmin(`[ááľáá­áľ á°áá¨á¨] á°á áá (${currentTelegramId}) ááľáá­áąá á áľáŹáľ áá­áŻáá˘`);
-        
-        logoutUser();
-        showCustomModal("á°áłá­áˇá", "ááľáá­áľá á áľáŹáľ á°áá­áŻá! áĽáŁá­á á á á˛áą ááľáá­áľá áĽáá°áá á­ááĄá˘");
-    }
-
-    async function checkExistingAccountStatus(tgId) {
-        try {
-            const res = await fetch(`/check-status?user_id=${tgId}`);
-            const data = await res.json();
-            if (data.status === 'blocked') {
-                showBlockedState("ááłá°á˘áŤáĄ á­á á áŤáááľ á á áľáá áłááˇá!");
-                return;
-            }
-            if (data.status === 'approved' && localStorage.getItem('mala_logged_in_' + tgId) === 'true') {
-                document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
-                document.getElementById('step-wallet').classList.add('active');
-                document.getElementById('userDisplayName').textContent = currentUserName + " (Approved + 50 Bonus)";
-                updateBalanceDisplay();
-            }
-        } catch (e) {
-            if (localStorage.getItem('mala_logged_in_' + tgId) === 'true') {
-                document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
-                document.getElementById('step-wallet').classList.add('active');
-                let savedSes = JSON.parse(localStorage.getItem('mala_session_' + tgId) || '{}');
-                let dispName = savedSes.firstName ? (savedSes.firstName + " " + savedSes.fatherName) : currentUserName;
-                document.getElementById('userDisplayName').textContent = dispName + " (Approved)";
-                updateBalanceDisplay();
-            }
-        }
-    }
-
-    function showBlockedState(message) {
-        document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
-        document.getElementById('step-welcome').classList.add('active');
-        showCustomModal("áłááˇá", message);
-    }
-
-    function goToRegisterStep() {
-        const savedSession = localStorage.getItem('mala_session_' + currentTelegramId);
-        if (savedSession) {
-            showCustomModal("ááłá°á˘áŤ", "áĽá­áľá áá°á á˛á á áŤáááľ á¨áá°áá! áá¨áá áááľá°áŤá¨á á¨á áľáá áĽá­áłáł áá á¨á á­á˝ááá˘");
-            return;
-        }
-        document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
-        document.getElementById('step-register').classList.add('active');
-    }
-
-    function goToLoginStep() {
-        document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
-        document.getElementById('step-login').classList.add('active');
-    }
-
-    function openAdminLoginStep() {
-        document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
-        document.getElementById('step-admin-login').classList.add('active');
-    }
-
-    function backToWelcome() {
-        if (pendingTimerInterval) clearInterval(pendingTimerInterval);
-        document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
-        document.getElementById('step-welcome').classList.add('active');
-    }
-
-    function cancelRegistrationAndReset() {
-        if (pendingTimerInterval) clearInterval(pendingTimerInterval);
-        if (confirm("áĽá­áá á ááľ? á¨áááŠáľ ááááŁ á­á°á¨áá áĽá áá° ááááŞáŤá áá˝ á­áááłáá˘")) {
-            localStorage.removeItem('mala_session_' + currentTelegramId);
-            localStorage.removeItem('mala_approved_' + currentTelegramId);
-            localStorage.removeItem('mala_pending_' + currentTelegramId);
-            localStorage.removeItem('mala_logged_in_' + currentTelegramId);
-            localStorage.removeItem('mala_pending_time_' + currentTelegramId);
-            localStorage.removeItem('mala_user_coins_' + currentTelegramId);
-            localStorage.removeItem('mala_bonus_coins_' + currentTelegramId);
-            
-            logActivityToAdmin(`[ááááŁ á°á°á¨á] á°á áá (${currentTelegramId}) ááááŁáá á áá­áŚ ááĽáˇáá˘`);
-            backToWelcome();
-            showCustomModal("á°á°á­áá", "ááááŁá á°á°á­ááá˘ á ááááá áá áłááá áááá­ á­á˝ááá˘");
-        }
-    }
-
-    function handleLogin(event) {
-        event.preventDefault();
-        const phoneInput = document.getElementById('loginPhone').value.trim();
-        const phone = "+251" + phoneInput;
-        const pwd = document.getElementById('loginPassword').value;
-
-        const savedSession = JSON.parse(localStorage.getItem('mala_session_' + currentTelegramId) || '{}');
-
-        if (!savedSession.phoneNumber || savedSession.phoneNumber !== phone) {
-            showCustomModal("áľáá°áľ", "á­á áľáá­ ááĽá­ á áá á áŤáááľ á áá°áááá á!");
-            return;
-        }
-
-        let tempPin = localStorage.getItem('mala_temp_pin_' + currentTelegramId);
-        if (savedSession.password !== pwd && tempPin !== pwd) {
-            showCustomModal("áľáá°áľ", "áŤáľááĄáľ ááľáá­áľ áľáá°áľ áá! ááľáá­áľ á¨áłá á¨áááá á áá áá á áľáá­á OTP ááááľ á­á˝ááá˘");
-            return;
-        }
-
-        if (tempPin === pwd) {
-            localStorage.removeItem('mala_temp_pin_' + currentTelegramId);
-        }
-
-        localStorage.setItem('mala_logged_in_' + currentTelegramId, 'true');
-        document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
-        document.getElementById('step-wallet').classList.add('active');
-        let fullName = (savedSession.firstName || currentUserName) + " " + (savedSession.fatherName || "");
-        document.getElementById('userDisplayName').textContent = fullName.trim() + " (Approved)";
-        updateBalanceDisplay();
-        
-        sendServerNotification("Login", `áľáá­: ${phone} áá° áááľ ááĽáˇáá˘`);
-        showCustomModal("áĽááłá á°áá ááĄ", "áá° áááľá á áľáŹáľ ááĽá°áá!");
-    }
-
-    function logoutUser() {
-        localStorage.removeItem('mala_logged_in_' + currentTelegramId);
-        document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
-        document.getElementById('step-welcome').classList.add('active');
-        showCustomModal("ááŁ", "á¨á áŤáááľá á áľáŹáľ ááĽá°áá!");
-    }
-
-    function updateUserPhoneNumber() {
-        const phoneInput = document.getElementById('newPhoneInput').value.trim();
-        if (!phoneInput) {
-            showCustomModal("áľáá°áľ", "áĽáŁá­á á á˛áľ áľáá­ ááĽá­ áŤáľááĄ");
-            return;
-        }
-        const newPhone = "+251" + phoneInput;
-        let savedSession = JSON.parse(localStorage.getItem('mala_session_' + currentTelegramId) || '{}');
-        if (!savedSession.phoneNumber) {
-            showCustomModal("áľáá°áľ", "áá á áŤáááľ á áá°ááá!");
-            return;
-        }
-        let oldPhone = savedSession.phoneNumber;
-        savedSession.phoneNumber = newPhone;
-        localStorage.setItem('mala_session_' + currentTelegramId, JSON.stringify(savedSession));
-
-        logActivityToAdmin(`[áľáá­ ááĽá­ á°áá¨á¨] á°á áá (${currentTelegramId}) áľáá­ ááĽáŠá á¨ (${oldPhone}) áá° (${newPhone}) áá­áŻáá˘`);
-        showCustomModal("á°áłá­áˇá", `áľáá­ ááĽá­á á¨ (${oldPhone}) áá° (${newPhone}) á áľáŹáľ á°áá­áŻá!`);
-        document.getElementById('newPhoneInput').value = "";
+    function shareReferralLinkViaTelegram() {
+        const link = document.getElementById("myReferralLink").value;
+        window.open(`https://t.me/share/url?url=${encodeURIComponent(link)}&text=${encodeURIComponent("በማላ ኦፊሻል ቦት ተመዝግበው 50 ጻንሾ ፕሪሰንት ያግኙ!")}`, '_blank');
     }
 
     function togglePasswordVisibility(inputId, iconId) {
-        const inputField = document.getElementById(inputId);
-        const iconSpan = document.getElementById(iconId);
-        if (inputField.type === "password") {
-            inputField.type = "text";
-            iconSpan.textContent = "đ";
+        const input = document.getElementById(inputId);
+        const icon = document.getElementById(iconId);
+        if (input.type === "password") {
+            input.type = "text";
+            icon.textContent = "🙈";
         } else {
-            inputField.type = "password";
-            iconSpan.textContent = "đď¸";
+            input.type = "password";
+            icon.textContent = "👁️‍🗨️";
         }
-    }
-
-    function updateColors() {
-        const bg = document.getElementById('bgPicker').value;
-        const txt = document.getElementById('textPicker').value;
-        document.documentElement.style.setProperty('--bg-color', bg);
-        document.documentElement.style.setProperty('--card-bg', bg === '#0f172a' ? '#1e293b' : '#ffffff');
-        document.documentElement.style.setProperty('--text-color', txt);
-        document.documentElement.style.setProperty('--border-color', bg === '#0f172a' ? '#334155' : '#cbd5e1');
     }
 
     function toggleBalanceVisibility() {
         isBalanceVisible = !isBalanceVisible;
-        const balanceEl = document.getElementById('walletBalance');
-        const eyeBtnSpan = document.getElementById('eyeBtnText');
+        updateBalanceDisplay();
+    }
+
+    function updateBalanceDisplay() {
+        const el = document.getElementById("walletBalance");
+        const btnTxt = document.getElementById("eyeBtnText");
         if (isBalanceVisible) {
-            balanceEl.textContent = userWalletBalance.toFixed(2) + " ETB";
-            eyeBtnSpan.textContent = "á°áĽá";
+            el.textContent = userWalletBalance.toFixed(2) + " ETB";
+            btnTxt.textContent = "ደብቅ";
         } else {
-            balanceEl.textContent = "â˘â˘â˘â˘ ETB";
-            eyeBtnSpan.textContent = "á áłá­";
+            el.textContent = "•••• ETB";
+            btnTxt.textContent = "አሳይ";
         }
     }
 
     function toggleAdminBalanceVisibility() {
         isAdminBalanceVisible = !isAdminBalanceVisible;
-        const adminBalEl = document.getElementById('adminMainBalanceDisplay');
-        const eyeBtnSpan = document.getElementById('adminEyeBtnText');
+        updateAdminBalanceDisplay();
+    }
+
+    function updateAdminBalanceDisplay() {
+        const el = document.getElementById("adminMainBalanceDisplay");
+        const btnTxt = document.getElementById("adminEyeBtnText");
         if (isAdminBalanceVisible) {
-            adminBalEl.textContent = adminMainBalance.toLocaleString() + ".00 Mela Coin";
-            eyeBtnSpan.textContent = "á°áĽá";
+            el.textContent = adminMainBalance.toLocaleString() + " ETB";
+            btnTxt.textContent = "ደብቅ";
         } else {
-            adminBalEl.textContent = "â˘â˘â˘â˘â˘â˘â˘â˘â˘â˘â˘â˘";
-            eyeBtnSpan.textContent = "á áłá­";
+            el.textContent = "••••••••••••";
+            btnTxt.textContent = "አሳይ";
         }
     }
 
     function updateMelaCoinDisplay() {
-        let totalActiveCoins = melaCoinBalance + bonusCoinBalance;
-        document.getElementById('melaCoinDisplay').textContent = "áá áŽá­á: " + totalActiveCoins.toFixed(2) + " Mela Coin (áŚááľ: " + bonusCoinBalance.toFixed(2) + ")";
-        localStorage.setItem('mala_user_coins_' + currentTelegramId, melaCoinBalance.toString());
-        localStorage.setItem('mala_bonus_coins_' + currentTelegramId, bonusCoinBalance.toString());
+        document.getElementById("melaCoinDisplay").textContent = `ማላ ጻንሾ: ${melaCoinBalance.toFixed(2)} Mela Coin`;
     }
 
-    function updateAdminBalanceDisplay() {
-        const adminBalEl = document.getElementById('adminMainBalanceDisplay');
-        if (adminBalEl) {
-            if (isAdminBalanceVisible) {
-                adminBalEl.textContent = adminMainBalance.toLocaleString() + ".00 Mela Coin";
-            } else {
-                adminBalEl.textContent = "â˘â˘â˘â˘â˘â˘â˘â˘â˘â˘â˘â˘";
-            }
+    function updateFileName(inputId, textSpanId) {
+        const fileInput = document.getElementById(inputId);
+        const span = document.getElementById(textSpanId);
+        if (fileInput.files.length > 0) {
+            span.textContent = "✅ " + fileInput.files[0].name;
+            span.style.color = "var(--success-color)";
         }
-        localStorage.setItem('mala_admin_trillion_master_bal', adminMainBalance.toString());
     }
 
-    function changeLanguage() {
-        currentLang = document.getElementById('langSelect').value;
+    function showCustomModal(title, message, callback) {
+        document.getElementById("modalTitle").textContent = title;
+        document.getElementById("modalMessage").textContent = message;
+        document.getElementById("customModal").style.display = "flex";
+        window.modalCallback = callback;
+    }
+
+    function closeModal() {
+        document.getElementById("customModal").style.display = "none";
+        if (typeof window.modalCallback === "function") {
+            window.modalCallback();
+            window.modalCallback = null;
+        }
+    }
+
+    function goToRegisterStep() {
+        switchStep('step-register');
+    }
+
+    function goToLoginStep() {
+        switchStep('step-login');
+    }
+
+    function openAdminLoginStep() {
+        switchStep('step-admin-login');
+    }
+
+    function backToWelcome() {
+        switchStep('step-welcome');
+    }
+
+    function backToWallet() {
+        switchStep('step-wallet');
+    }
+
+    function openDepositSection() {
+        switchStep('section-deposit');
+    }
+
+    function openWithdrawSection() {
+        switchStep('section-withdraw');
+    }
+
+    function openP2PSection() {
+        switchStep('section-p2p');
+    }
+
+    function openExchangeSection() {
+        switchStep('section-exchange');
+    }
+
+    function openReferralSection() {
+        switchStep('section-referral');
+    }
+
+    function openLotterySection() {
+        switchStep('section-lottery');
+        buildLotteryGrid();
+    }
+
+    function switchStep(stepId) {
+        document.querySelectorAll('.step').forEach(el => {
+            if(el.id !== 'yellow-admin-panel') el.classList.remove('active');
+        });
+        document.getElementById(stepId).classList.add('active');
     }
 
     function handleRegister(event) {
         event.preventDefault();
-        const phoneInput = document.getElementById('phoneNumber').value.trim();
-        userData.telegramId = currentTelegramId;
-        userData.firstName = document.getElementById('firstName').value;
-        userData.fatherName = document.getElementById('fatherName').value;
-        userData.grandFatherName = document.getElementById('grandFatherName').value;
-        userData.motherName = document.getElementById('motherName').value;
-        userData.phoneNumber = "+251" + phoneInput;
-        userData.country = document.getElementById('userCountry').value;
-        userData.city = document.getElementById('userCity').value;
-        userData.email = document.getElementById('userEmail').value;
-        userData.password = document.getElementById('userPassword').value;
-
-        localStorage.setItem('mala_session_' + currentTelegramId, JSON.stringify(userData));
-
-        document.getElementById('step-register').classList.remove('active');
-        document.getElementById('step-kyc').classList.add('active');
-    }
-
-    function updateFileName(inputId, textId) {
-        const input = document.getElementById(inputId);
-        const textSpan = document.getElementById(textId);
-        if (input.files && input.files.length > 0) {
-            textSpan.textContent = "â " + input.files[0].name;
-            textSpan.style.color = "var(--success-color)";
+        const pass = document.getElementById("userPassword").value;
+        const confirmPass = document.getElementById("confirmPassword").value;
+        
+        if (pass !== confirmPass) {
+            showCustomModal("ስህተት", "የቃልያስያስ እና የማረጋገጫ ቃልያስያስ አይመሳሰሉም!");
+            return;
         }
+
+        userData = {
+            firstName: document.getElementById("firstName").value,
+            fatherName: document.getElementById("fatherName").value,
+            grandFatherName: document.getElementById("grandFatherName").value,
+            motherName: document.getElementById("motherName").value,
+            phone: document.getElementById("phoneNumber").value,
+            country: document.getElementById("userCountry").value,
+            city: document.getElementById("userCity").value,
+            email: document.getElementById("userEmail").value,
+            password: pass
+        };
+
+        switchStep('step-kyc');
     }
 
-    async function handleKyc(event) {
+    function handleKyc(event) {
         event.preventDefault();
-        userData.nationalIdNumber = document.getElementById('nationalIdNumber').value;
+        const nationalId = document.getElementById("nationalIdNumber").value;
+        userData.nationalId = nationalId;
 
-        try {
-            const response = await fetch('/submit-registration', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(userData)
-            });
-            const result = await response.json();
-            if(result.status === 'success') {
-                initiatePendingApprovalTimer();
-            } else {
-                showCustomModal("áľáá°áľ", result.message);
-            }
-        } catch (e) {
-            logActivityToAdmin(`[á ááśáá˛á­ ááááŁ áá˛ááŹá˝á] á°á áá (${currentTelegramId}) á°áááá§á á áľáá áá¨áááŤ á­á áĽááá˘`);
-            initiatePendingApprovalTimer();
-        }
+        localStorage.setItem('mala_pending_' + currentTelegramId, JSON.stringify(userData));
+        
+        switchStep('step-pending');
+        startPendingCountdown();
+        sendServerNotification("KYC_SUBMITTED", `አዲስ ምዝገባ ከ ${userData.firstName} ${userData.phone}`);
+        logActivityToAdmin(`[ምዝገባ] ተጠቃሚ ${userData.firstName} (${userData.phone}) KYC አቅርቧል`);
     }
 
-    function initiatePendingApprovalTimer() {
-        document.getElementById('step-kyc').classList.remove('active');
-        document.getElementById('step-pending').classList.add('active');
-        showCustomModal("á°ááłá", "áá¨áá áá áľáá áá¨áááŤ á áľáŹáľ á°ááłáá˘ á áľáá á˛áŤá¸áľááá 50 Mela Coin áŚááľ á ááĽáł áá° áááľá á­ááŁá!");
-
-        const thirtyMinutesMs = 30 * 60 * 1000;
-        const startTime = Date.now();
-        localStorage.setItem('mala_pending_time_' + currentTelegramId, startTime.toString());
-
+    function startPendingCountdown() {
+        let totalSeconds = 30 * 60;
+        const display = document.getElementById('pendingCountdownDisplay');
         if (pendingTimerInterval) clearInterval(pendingTimerInterval);
 
         pendingTimerInterval = setInterval(() => {
-            const elapsed = Date.now() - startTime;
-            const remaining = thirtyMinutesMs - elapsed;
-
-            if (remaining <= 0) {
+            let minutes = Math.floor(totalSeconds / 60);
+            let seconds = totalSeconds % 60;
+            display.textContent = `አልሚው ከረቂቁ ውስጥ ካልመለሰለት ምዝገባው በራስሰር ይሠረዛል (Timeout: ${minutes.toString().padStart(2,'0')}:${seconds.toString().padStart(2,'0')})`;
+            
+            if (totalSeconds <= 0) {
                 clearInterval(pendingTimerInterval);
-                autoEraseExpiredRegistration();
-            } else {
-                const minutes = Math.floor((remaining % (1000 * 60 * 60)) / (1000 * 60));
-                const seconds = Math.floor((remaining % (1000 * 60)) / 1000);
-                const timeString = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-                
-                const countdownEl = document.getElementById('pendingCountdownDisplay');
-                if (countdownEl) {
-                    countdownEl.textContent = `á áľáá á 30 á°áá ááľáĽ áŤáá¸á°áá ááááŁá á áŤáą á­á°á¨áá (áá áá¨: ${timeString})`;
-                }
+                cancelRegistrationAndReset();
+                showCustomModal("የጊዜ ገደብ አለፈ", "አልሚው በጊዜው ስላልመለሰ ምዝገባው ተሰርዟል።");
             }
+            totalSeconds--;
         }, 1000);
     }
 
-    function autoEraseExpiredRegistration() {
-        const isApproved = localStorage.getItem('mala_approved_' + currentTelegramId) === 'true';
-        if (isApproved) return;
-
-        localStorage.removeItem('mala_session_' + currentTelegramId);
-        localStorage.removeItem('mala_approved_' + currentTelegramId);
-        localStorage.removeItem('mala_pending_' + currentTelegramId);
-        localStorage.removeItem('mala_logged_in_' + currentTelegramId);
-        localStorage.removeItem('mala_pending_time_' + currentTelegramId);
-        localStorage.removeItem('mala_user_coins_' + currentTelegramId);
-        localStorage.removeItem('mala_bonus_coins_' + currentTelegramId);
-
-        logActivityToAdmin(`[á ááśáá˛á­ áłá­áá ááľ á˛ááľ] á°á áá (${currentTelegramId}) á áľáá á 30 á°áá ááľáĽ áľááá¸á°áá ááááŁá á áŚáą áŤáą á°á°á­ááá˘`);
-        
-        document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
-        document.getElementById('step-welcome').classList.add('active');
-        
-        showCustomModal("ááá á ááá (Timeout)", "á áľáá á 30 á°áá ááľáĽ áá¨áááŤ (Approval) áľááá°á , á˛áľá°á áá¨ááá á áŤáą á áĽááśáłá (Auto-Deleted). áĽáŁá­á áłááá á­ááááĄá˘");
-    }
-
-    async function checkAdminApprovalStatus() {
-        try {
-            const res = await fetch(`/check-status?user_id=${currentTelegramId}`);
-            const data = await res.json();
-            if (data.status === 'approved') {
-                grantUserApprovalAndBonus();
-            } else {
-                showCustomModal("á áááá áá­", "á áľáá áá á áá¸á°áááá˘ áĽáŁá­á á­á áĽá (30 á°áá áłá­áá).");
-            }
-        } catch (e) {
-            grantUserApprovalAndBonus();
-        }
-    }
-
-    function grantUserApprovalAndBonus() {
+    function cancelRegistrationAndReset() {
         if (pendingTimerInterval) clearInterval(pendingTimerInterval);
-        localStorage.setItem('mala_approved_' + currentTelegramId, 'true');
-        localStorage.setItem('mala_logged_in_' + currentTelegramId, 'true');
-
-        let bonusGiven = localStorage.getItem('mala_bonus_given_' + currentTelegramId);
-        let savedSes = JSON.parse(localStorage.getItem('mala_session_' + currentTelegramId) || '{}');
-        let dispName = savedSes.firstName ? (savedSes.firstName + " " + savedSes.fatherName) : currentUserName;
-
-        if (!bonusGiven) {
-            bonusCoinBalance = 50.00;
-            adminMainBalance -= 50.00;
-            localStorage.setItem('mala_bonus_given_' + currentTelegramId, 'true');
-            logActivityToAdmin(`đ [á¨ááááŁ áŚááľ 50] á°á áá (${currentTelegramId}) áŹáŞáá­ áá 50 Mela Coin á ááĽáł áááą áá­ ááĽáˇáá˘`);
-            
-            broadcastChannelNotification(dispName);
-        }
-
-        document.getElementById('step-pending').classList.remove('active');
-        document.getElementById('step-wallet').classList.add('active');
-        document.getElementById('userDisplayName').textContent = dispName + " (Approved + 50 Bonus)";
-        updateBalanceDisplay();
-        updateMelaCoinDisplay();
-        updateAdminBalanceDisplay();
-        showCustomModal("đ áĽááłá á°áá ááĄ (Welcome)", "á áľáá á áŤáááľáá á á˝áľááłá! 50 Mela Coin á¨ááááŁ áŚááľ á ááĽáł áá° áááľá ááĽáˇá!");
+        localStorage.removeItem('mala_pending_' + currentTelegramId);
+        switchStep('step-welcome');
     }
 
-    function updateBalanceDisplay() {
-        if (isBalanceVisible) {
-            document.getElementById('walletBalance').textContent = userWalletBalance.toFixed(2) + " ETB";
+    function checkAdminApprovalStatus() {
+        const approved = localStorage.getItem('mala_approved_' + currentTelegramId);
+        if (approved === 'true') {
+            if (pendingTimerInterval) clearInterval(pendingTimerInterval);
+            localStorage.removeItem('mala_pending_' + currentTelegramId);
+            localStorage.setItem('mala_logged_in_' + currentTelegramId, 'true');
+            
+            melaCoinBalance = 50.00;
+            localStorage.setItem('mala_user_coins_' + currentTelegramId, melaCoinBalance);
+            
+            switchStep('step-wallet');
+            document.getElementById('userDisplayName').textContent = currentUserName;
+            updateMelaCoinDisplay();
+            showCustomModal("እንኳን ደስ አለዎት!", "ምዝገባዎ በአልሚው ጸድቆ ተረጋግጧል! 50 ጻንሾ ቦነስ ተሰጥቶዎታል።");
+            broadcastChannelNotification(currentUserName);
         } else {
-            document.getElementById('walletBalance').textContent = "â˘â˘â˘â˘ ETB";
+            showCustomModal("በግምገማ ላይ", "አልሚው ገና አላጸደቀውም ወይም በመጠባበቅ ላይ ይገኛል። እባክዎ ትንሽ ይጠብቁ።");
         }
     }
 
-    function backToWallet() {
-        document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
-        document.getElementById('step-wallet').classList.add('active');
+    function checkExistingAccountStatus(tgId) {
+        if (localStorage.getItem('mala_approved_' + tgId) === 'true') {
+            switchStep('step-wallet');
+            document.getElementById('userDisplayName').textContent = currentUserName;
+        } else if (localStorage.getItem('mala_pending_' + tgId)) {
+            switchStep('step-pending');
+            startPendingCountdown();
+        }
     }
 
-    function openDepositSection() {
-        document.getElementById('step-wallet').classList.remove('active');
-        document.getElementById('section-deposit').classList.add('active');
-    }
+    function handleLogin(event) {
+        event.preventDefault();
+        const phone = document.getElementById("loginPhone").value;
+        const pass = document.getElementById("loginPassword").value;
 
-    function openLotterySection() {
-        document.getElementById('step-wallet').classList.remove('active');
-        document.getElementById('section-lottery').classList.add('active');
-        generateLotteryGrid();
-    }
-
-    function checkLotteryStatusPublic() {
-        const blocked = localStorage.getItem('mala_lottery_blocked') === 'true';
-        isLotteryBlockedByAdmin = blocked;
-    }
-
-    function openWithdrawSection() {
-        document.getElementById('step-wallet').classList.remove('active');
-        document.getElementById('section-withdraw').classList.add('active');
-    }
-
-    function openP2PSection() {
-        document.getElementById('step-wallet').classList.remove('active');
-        document.getElementById('section-p2p').classList.add('active');
-    }
-
-    function openExchangeSection() {
-        document.getElementById('step-wallet').classList.remove('active');
-        document.getElementById('section-exchange').classList.add('active');
-    }
-
-    function openReferralSection() {
-        document.getElementById('step-wallet').classList.remove('active');
-        document.getElementById('section-referral').classList.add('active');
-    }
-
-    function copyReferralLink() {
-        const linkInput = document.getElementById('myReferralLink');
-        linkInput.select();
-        navigator.clipboard.writeText(linkInput.value);
-        showCustomModal("á°áłá­áˇá", "á¨áŞááŤá áááŠ áŽá á°á°á­áá!");
-    }
-
-    function shareReferralLinkViaTelegram() {
-        const refLink = document.getElementById('myReferralLink').value;
-        const shareText = encodeURIComponent(`áĽáá! áá° áá áŚááťá áŚáľ á ááááá 50 Mela Coin áŚááľ á ááĽáł áááľá áá­ áŤáá áĽá á áá°áŞ á­á¸áá!\ná­áá ááá­ á ááŤá á­ááááá:\n${refLink}`);
-        const tgShareUrl = `https://t.me/share/url?url=${encodeURIComponent(refLink)}&text=${shareText}`;
-        window.open(tgShareUrl, '_blank');
-        logActivityToAdmin(`[áŞááŤá áźá­] á°á áá (${currentTelegramId}) áááŠá ááá°ááš áźá­ á áľá­ááá˘`);
-    }
-
-    function generateLotteryGrid() {
-        const grid = document.getElementById('lotteryGrid');
-        grid.innerHTML = "";
-        let takenNumbers = JSON.parse(localStorage.getItem('mala_taken_lottery_numbers') || '[3, 7, 12, 15, 20, 45, 100]');
-
-        for (let i = 1; i <= 100; i++) {
-            const item = document.createElement('div');
-            item.className = 'lottery-item';
-            item.textContent = i;
-            
-            if (takenNumbers.includes(i)) {
-                item.classList.add('taken');
-            } else {
-                item.classList.add('available');
-                item.onclick = function() {
-                    const index = selectedLotteryNumbers.indexOf(i);
-                    if (index > -1) {
-                        selectedLotteryNumbers.splice(index, 1);
-                        item.classList.remove('selected');
-                    } else {
-                        selectedLotteryNumbers.push(i);
-                        item.classList.add('selected');
-                    }
-                    document.getElementById('selectedLotteryNum').textContent = selectedLotteryNumbers.length > 0 ? selectedLotteryNumbers.join(', ') : "ááá á¨áá";
-                    const totalCost = selectedLotteryNumbers.length * ticketPrice;
-                    document.getElementById('totalLotteryCost').textContent = totalCost.toFixed(2) + " Mela Coin";
-                };
+        let pendingDataStr = localStorage.getItem('mala_pending_' + currentTelegramId);
+        if (pendingDataStr) {
+            let pData = JSON.parse(pendingDataStr);
+            if (pData.phone === phone && pData.password === pass) {
+                switchStep('step-pending');
+                return;
             }
+        }
+
+        let approvedFlag = localStorage.getItem('mala_approved_' + currentTelegramId);
+        if (approvedFlag === 'true') {
+            switchStep('step-wallet');
+            document.getElementById('userDisplayName').textContent = currentUserName;
+            updateMelaCoinDisplay();
+            return;
+        }
+
+        if (phone === "911223344" && pass === "123456") {
+            localStorage.setItem('mala_approved_' + currentTelegramId, 'true');
+            switchStep('step-wallet');
+            document.getElementById('userDisplayName').textContent = currentUserName;
+            updateMelaCoinDisplay();
+            showCustomModal("እንኳን ደህና መጡ", "በተሳካ ሁኔታ ገብተዋል!");
+            return;
+        }
+
+        showCustomModal("የመግቢያ ስህተት", "የተሳሳተ ስልክ ቁጥር ወይም ቃልያስያስ። እባክዎ እንደገና ይሞክሩ ወይም ይመዝገቡ።");
+    }
+
+    function handleForgotPasswordClick() {
+        switchStep('step-otp-reset');
+    }
+
+    function handleVerifyAndResetPassword(event) {
+        event.preventDefault();
+        const phone = document.getElementById("resetPhone").value;
+        const otp = document.getElementById("resetShortCode").value;
+        const newPass = document.getElementById("resetNewPassword").value;
+
+        if (otp.length === 4) {
+            showCustomModal("ተሳክቷል", "አዲስ ቃልያስያስዎ ተቀይሯል። አሁን መግባት ይችላሉ።", () => {
+                switchStep('step-login');
+            });
+        } else {
+            showCustomModal("ስህተት", "የተሳሳተ የ OTP ቁጥር!");
+        }
+    }
+
+    function logoutUser() {
+        switchStep('step-welcome');
+        showCustomModal("ውጣ", "በተሳካ ሁኔታ ከወለዎች ወጥተዋል።");
+    }
+
+    function handleUserPasswordChange() {
+        const oldP = document.getElementById("oldPasswordInput").value;
+        const newP = document.getElementById("newPasswordInput").value;
+        const confirmP = document.getElementById("confirmNewPasswordInput").value;
+
+        if (!oldP || !newP || !confirmP) {
+            showCustomModal("ስህተት", "እባክዎ ሁሉንም የቃልያስያስ ባዶ ቦታዎች ይሙሉ!");
+            return;
+        }
+
+        if (newP !== confirmP) {
+            showCustomModal("ስህተት", "አዲሶቹ ቃልያስያሶች አይመሳሰሉም!");
+            return;
+        }
+
+        showCustomModal("ተሳክቷል", "የእርስዎ ቃልያስያስ ተቀይሯል!", () => {
+            document.getElementById("oldPasswordInput").value = "";
+            document.getElementById("newPasswordInput").value = "";
+            document.getElementById("confirmNewPasswordInput").value = "";
+        });
+    }
+
+    function updateUserPhoneNumber() {
+        const newPhone = document.getElementById("newPhoneInput").value;
+        if (newPhone.length === 9) {
+            showCustomModal("ተሳክቷል", `ስልክ ቁጥርዎ ወደ +251 ${newPhone} ተስተካክሏል!`);
+            document.getElementById("newPhoneInput").value = "";
+        } else {
+            showCustomModal("ስህተት", "ትክክለኛ 9 አቃዕ ስልክ ቁጥር ያስያስ");
+        }
+    }
+
+    function saveCustomerSupportInput() {
+        const val = document.getElementById("customerSupportInputBox").value;
+        if (val.trim() !== "") {
+            customerSupportPhone = val;
+            localStorage.setItem('mala_customer_support_phone', val);
+            document.getElementById("displayCustomerSupportPhone").textContent = val;
+            showCustomModal("ተሳክቷል", "የደንበኛ ድጋፍ አድራሻ ተዘምኗል!");
+            document.getElementById("customerSupportInputBox").value = "";
+        }
+    }
+
+    function confirmAndProcessDeposit() {
+        const amt = parseFloat(document.getElementById("depositAmount").value);
+        if (isNaN(amt) || amt <= 0) {
+            showCustomModal("ስህተት", "እባክዎ ትክክለኛ የብር መጠን ያስያስ!");
+            return;
+        }
+        window.location.href = `https://checkout.chapa.co/checkout/v2/...&amount=${amt}`;
+    }
+
+    function buildLotteryGrid() {
+        const grid = document.getElementById("lotteryGrid");
+        grid.innerHTML = "";
+        selectedLotteryNumbers = [];
+
+        for (let i = 1; i <= 50; i++) {
+            const item = document.createElement("div");
+            item.className = "lottery-item available";
+            item.textContent = i;
+            item.onclick = () => toggleLotteryNumber(i, item);
             grid.appendChild(item);
         }
+        updateLotterySummary();
     }
 
-    function showConfirmModal(title, message, onYesCallback) {
-        document.getElementById('modalTitle').textContent = title;
-        document.getElementById('modalMessage').textContent = message;
-        const okBtn = document.getElementById('modalOkBtn');
-        okBtn.textContent = "á á (Confirm)";
-        
-        const newOkBtn = okBtn.cloneNode(true);
-        okBtn.parentNode.replaceChild(newOkBtn, okBtn);
-        
-        newOkBtn.onclick = function() {
-            closeModal();
-            if (onYesCallback) onYesCallback();
-        };
-        
-        document.getElementById('customModal').style.display = 'flex';
+    function toggleLotteryNumber(num, el) {
+        if (isLotteryBlockedByAdmin) {
+            showCustomModal("ተዘግቷል", "ሎተሪው በአልሚው ተዘግቷል!");
+            return;
+        }
+
+        const idx = selectedLotteryNumbers.indexOf(num);
+        if (idx > -1) {
+            selectedLotteryNumbers.splice(idx, 1);
+            el.classList.remove("selected");
+            el.classList.add("available");
+        } else {
+            selectedLotteryNumbers.push(num);
+            el.classList.remove("available");
+            el.classList.add("selected");
+        }
+        updateLotterySummary();
+    }
+
+    function updateLotterySummary() {
+        const numSpan = document.getElementById("selectedLotteryNum");
+        const costSpan = document.getElementById("totalLotteryCost");
+
+        if (selectedLotteryNumbers.length === 0) {
+            numSpan.textContent = "ምንም የለም";
+            costSpan.textContent = "0.00 Mela Coin";
+        } else {
+            numSpan.textContent = selectedLotteryNumbers.join(", ");
+            costSpan.textContent = (selectedLotteryNumbers.length * ticketPrice).toFixed(2) + " Mela Coin";
+        }
     }
 
     function confirmAndBuyLottery() {
         if (selectedLotteryNumbers.length === 0) {
-            showCustomModal("ááłá°á˘áŤ", "áĽáŁá­á á˘áŤááľ á ááľ á¨áá°áŞ ááĽá­ á­áá¨áĄ!");
-            return;
-        }
-        const totalCost = selectedLotteryNumbers.length * ticketPrice;
-        showConfirmModal("ááá°á áá¨áááŤ (Double Confirmation)", `áĽá­áá á ááľ? á­áá áŤá­á (${totalCost} Mela Coin) á áá­ááľ á¨áá°áŞ ááĽáŽášá ááá¨áĽ á­áááá?`, executeBuyLottery);
-    }
-
-    async function executeBuyLottery() {
-        const totalCost = selectedLotteryNumbers.length * ticketPrice;
-        let totalActiveCoins = melaCoinBalance + bonusCoinBalance;
-
-        if (totalActiveCoins < totalCost) {
-            showCustomModal("áá áŽá­á á á á á­á°áá", `áľáá­ ${totalCost} Mela Coin ááá˘ (á¨áŚááˇ 50 áŽá­á áá 2000 áĽáľáŞáá áá­áś á­ááŤá)`);
+            showCustomModal("ስህተት", "እባክዎ ቢያንስ አንድ ቁጥር ይምረጡ!");
             return;
         }
 
-        if (melaCoinBalance >= totalCost) {
-            melaCoinBalance -= totalCost;
-        } else {
-            let remainder = totalCost - melaCoinBalance;
-            melaCoinBalance = 0;
-            bonusCoinBalance -= remainder;
+        const totalCost = selectedLotteryNumbers.length * ticketPrice;
+        if (melaCoinBalance < totalCost) {
+            showCustomModal("በቂ አይደለም", "የእርስዎ ማላ ጻንሾ ቀሪ ሒሳብ ለዚህ ሎተሪ በቂ አይደለም!");
+            return;
         }
 
+        melaCoinBalance -= totalCost;
+        localStorage.setItem('mala_user_coins_' + currentTelegramId, melaCoinBalance);
         updateMelaCoinDisplay();
-        
-        let commissionAmt = (totalCost * adminCommissionRate) / 100;
-        let netToAdmin = totalCost - commissionAmt;
-        adminMainBalance += netToAdmin;
-        updateAdminBalanceDisplay();
-
-        let takenNumbers = JSON.parse(localStorage.getItem('mala_taken_lottery_numbers') || '[3, 7, 12, 15, 20, 45, 100]');
-        takenNumbers = takenNumbers.concat(selectedLotteryNumbers);
-        localStorage.setItem('mala_taken_lottery_numbers', JSON.stringify(takenNumbers));
-
-        let savedSes = JSON.parse(localStorage.getItem('mala_session_' + currentTelegramId) || '{}');
-        let dispName = savedSes.firstName ? (savedSes.firstName + " " + savedSes.fatherName) : currentUserName;
-
-        const logMsg = `á°á áá ${dispName} (${currentTelegramId}) áá°áŞ áá¨á á˘ ááĽáŽá˝: [${selectedLotteryNumbers.join(', ')}]\náá á: ${totalCost} Mela Coin (á áľáá áŽáá˝á: ${commissionAmt.toFixed(2)}) áá° ááľá°á­ áááľ ááĽáˇáá˘`;
-        await sendServerNotification("Lottery Purchase", logMsg);
-        logActivityToAdmin("đď¸ " + logMsg);
-
-        showCustomModal("áľáŹáłá á¨áá°áŞ áá˘", `ááĽáŽá˝: [${selectedLotteryNumbers.join(', ')}]\ná ááá á¨á°áá¨á : ${totalCost} Mela Coin (áŽá­á áá áľáá ááľá°á­ áááľ á°ááłá)`);
-        selectedLotteryNumbers = [];
-        document.getElementById('selectedLotteryNum').textContent = "ááá á¨áá";
-        document.getElementById('totalLotteryCost').textContent = "0.00 Mela Coin";
-        generateLotteryGrid();
-    }
-
-    function confirmAndProcessDeposit() {
-        const amt = parseFloat(document.getElementById('depositAmount').value);
-        if (!amt || amt <= 0) {
-            showCustomModal("áľáá°áľ", "áĽáŁá­á áľá­á­áá áá á áŤáľááĄ");
-            return;
-        }
-        showConfirmModal("ááá°á áá¨áááŤ (Double Confirmation)", `áĽá­áá á ááľ? á¨áĽá­ ${amt} á¨áťá á­ááŤ ááá­ áááá¨áľ á­áááá?`, executeProcessDeposit);
-    }
-
-    async function executeProcessDeposit() {
-        const amt = parseFloat(document.getElementById('depositAmount').value);
-        try {
-            const response = await fetch('/initiate-chapa', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ 
-                    amount: amt,
-                    telegram_id: currentTelegramId,
-                    user_name: currentUserName 
-                })
-            });
-            const resData = await response.json();
-            if (resData.status === 'success' && resData.checkout_url) {
-                await sendServerNotification("Deposit (Chapa)", `á°á áá (${currentTelegramId}) áĽá­ ${amt} á¨áťá á­ááŤ ááá­ áá á¨á˘`);
-                window.open(resData.checkout_url, '_blank');
-            } else {
-                showCustomModal("áľáá°áľ", resData.message || "á¨áťá ááá­ áááá¨áľ á áá°áťááá˘");
-            }
-        } catch (e) {
-            logActivityToAdmin(`[á ááśáá˛á­ áťá áá˛ááŹá˝á] á°á áá (${currentTelegramId}) áĽá­ ${amt} á¨á­ááŤ ááá­ á á­ááá˘`);
-            showCustomModal("á°áłá­áˇá", `á¨áĽá­ ${amt} á¨áťá á´áááľ ááá­ (Chapa Link) á°ááĽáŻá!`);
-        }
+        showCustomModal("ተሳክቷል", `በተሳካ ሁኔታ ${selectedLotteryNumbers.length} ቲኬቶችን ገዝተዋል!`);
+        logActivityToAdmin(`[ሎተሪ] ተጠቃሚ ${currentUserName} ቁጥሮችን ገዝቷል: ${selectedLotteryNumbers.join(', ')}`);
+        buildLotteryGrid();
     }
 
     function confirmAndSubmitWithdrawal() {
-        const amt = parseFloat(document.getElementById('withdrawAmount').value);
-        const method = document.getElementById('withdrawMethod').value;
-        const accInput = document.getElementById('withdrawAccount').value.trim();
-        const acc = "+251" + accInput;
-        
-        if (!amt || !accInput) {
-            showCustomModal("áľáá°áľ", "áĽáŁá­á áá¨ááá áá á áá á­áá");
-            return;
-        }
+        const acc = document.getElementById("withdrawAccount").value;
+        const amt = parseFloat(document.getElementById("withdrawAmount").value);
 
         if (amt < minWithdrawLimit) {
-            showCustomModal("áááá áááľáŽáá áá°áĽ", `á ááľá°á á¨áááŁáľ áá°áĽ ${minWithdrawLimit} áá áŽá­á áá!`);
+            showCustomModal("ገደብ", `ለማውጣት የሚፈቀደው ዝቅተኛው መጠን ${minWithdrawLimit} ጻንሾ/ብር ነው!`);
             return;
         }
 
-        let totalAvailableCoins = melaCoinBalance + bonusCoinBalance;
-        if (totalAvailableCoins < amt) {
-            showCustomModal("áľáá°áľ", "á áááľá á¨ááááľ áŽá­áá˝ á áá­ áááŁáľ á á­á˝áá!");
+        if (acc.length !== 9) {
+            showCustomModal("ስህተት", "እባክዎ ትክክለኛ 9 አቃዕ ስልክ ቁጥር ያስያስ");
             return;
         }
 
-        if (totalAvailableCoins >= minWithdrawLimit && bonusCoinBalance > 0) {
-            melaCoinBalance += bonusCoinBalance;
-            bonusCoinBalance = 0;
-            updateMelaCoinDisplay();
-        }
-
-        showConfirmModal("ááá°á áá¨áááŤ (Double Confirmation)", `áĽá­áá á ááľ? á¨${amt} Mela Coin á¨áááŁáľ áĽáŤá áá° (${method} - ${acc}) ááá­ á­áááá?`, executeSubmitWithdrawal);
-    }
-
-    async function executeSubmitWithdrawal() {
-        const amt = parseFloat(document.getElementById('withdrawAmount').value);
-        const method = document.getElementById('withdrawMethod').value;
-        const acc = "+251" + document.getElementById('withdrawAccount').value.trim();
-
-        if (melaCoinBalance >= amt) {
-            melaCoinBalance -= amt;
-        } else {
-            let remainder = amt - melaCoinBalance;
-            melaCoinBalance = 0;
-            bonusCoinBalance -= remainder;
-        }
-        updateMelaCoinDisplay();
-
-        const msg = `á°á áá (${currentTelegramId}) áááľáŽáá á á¨áá˘ áá´: ${method} - ${acc}\náá á: ${amt} Mela Coin (Pending Admin Approval)`;
-        await sendServerNotification("Withdrawal Request", msg);
-        logActivityToAdmin("đ¸ áááľáŽáá áĽáŤá (Pending Approval): " + msg);
-
-        showCustomModal("á¨áááŁáľ áĽáŤá á°ááłá", `á¨${amt} áááľáŽáá áĽáŤáá áá áľáá áá˝á°ááŤ áá˛ááŹá˝á á°ááłáá˘`);
+        showCustomModal("ተሳክቷል", "የማውጣት ጥያቄዎ ለአልሚው ተልኳል። ክለሳ በኋላ ይፈጸማል።", () => {
+            backToWallet();
+        });
+        logActivityToAdmin(`[ማውጣት] ${currentUserName} ብር ${amt} ወደ አድራሻ ${acc} እንዲወጣ ጠይቋል`);
     }
 
     function confirmAndSubmitP2P() {
-        const recipientInput = document.getElementById('p2pRecipient').value.trim();
-        const recipient = "+251" + recipientInput;
-        const amt = parseFloat(document.getElementById('p2pAmount').value);
-        if (!recipientInput || !amt) {
-            showCustomModal("áľáá°áľ", "áĽáŁá­á áá¨ááášá áá á áá á­áá");
-            return;
-        }
-        let totalAvailableCoins = melaCoinBalance + bonusCoinBalance;
-        if (totalAvailableCoins < amt) {
-            showCustomModal("áľáá°áľ", "á¨áá áŽá­á ááŞ ááłáĽá á á á á­á°áá!");
+        const recipient = document.getElementById("p2pRecipient").value;
+        const amt = parseFloat(document.getElementById("p2pAmount").value);
+
+        if (isNaN(amt) || amt <= 0) {
+            showCustomModal("ስህተት", "እባክዎ ትክክለኛ መጠን ያስያስ!");
             return;
         }
 
-        if (totalAvailableCoins >= minWithdrawLimit && bonusCoinBalance > 0) {
-            melaCoinBalance += bonusCoinBalance;
-            bonusCoinBalance = 0;
-            updateMelaCoinDisplay();
+        if (recipient.length !== 9) {
+            showCustomModal("ስህተት", "እባክዎ ትክክለኛ ተቀባይ ስልክ ቁጥር ያስያስ");
+            return;
         }
 
-        showConfirmModal("ááá°á áá¨áááŤ (Double Confirmation)", `áĽá­áá á ááľ? áá á ${amt} Mela Coin áá°ááŁá­ (${recipient}) ááľá°ááá á­áááá?`, executeSubmitP2P);
-    }
-
-    async function executeSubmitP2P() {
-        const recipient = "+251" + document.getElementById('p2pRecipient').value.trim();
-        const amt = parseFloat(document.getElementById('p2pAmount').value);
-        
-        if (melaCoinBalance >= amt) {
-            melaCoinBalance -= amt;
-        } else {
-            let remainder = amt - melaCoinBalance;
-            melaCoinBalance = 0;
-            bonusCoinBalance -= remainder;
+        if (melaCoinBalance < amt) {
+            showCustomModal("በቂ አይደለም", "የእርስዎ ማላ ጻንሾ በቂ አይደለም!");
+            return;
         }
+
+        melaCoinBalance -= amt;
+        localStorage.setItem('mala_user_coins_' + currentTelegramId, melaCoinBalance);
         updateMelaCoinDisplay();
-
-        const msg = `ááŞ: (${currentTelegramId}) âĄď¸ á°ááŁá­: ${recipient}\náá á: ${amt} Mela Coin`;
-        await sendServerNotification("P2P Transfer", msg);
-        logActivityToAdmin("đ P2P áááá­ á ááśáá˛á­ áŞáá­áľ: " + msg);
-
-        showCustomModal("P2P á°áááá", `áá á ${amt} Mela Coin á á°ááŁá­ (${recipient}) á áľáŹáľ á°ááá!`);
+        showCustomModal("ተሳክቷል", `በተሳካ ሁኔታ ${amt} Mela Coin ወደ ${recipient} አስተላልፈዋል!`, () => {
+            backToWallet();
+        });
+        logActivityToAdmin(`[P2P] ${currentUserName} ጻንሾ ${amt} ለ ተቀባይ ${recipient} አስተላልፏል`);
     }
 
     function confirmAndProcessExchange() {
-        const amt = parseFloat(document.getElementById('exchangeAmount').value);
-        if (!amt || amt <= 0) {
-            showCustomModal("áľáá°áľ", "áĽáŁá­á áľá­á­áá áá á áŤáľááĄ");
+        const amt = parseFloat(document.getElementById("exchangeAmount").value);
+        if (isNaN(amt) || amt <= 0) {
+            showCustomModal("ስህተት", "እባክዎ ትክክለኛ መጠን ያስያስ!");
             return;
         }
-        showConfirmModal("ááá°á áá¨áááŤ (Double Confirmation)", `áĽá­áá á ááľ? á¨${amt} áá á ááááĽ áá¨ááá á­áááá?`, processExchange);
-    }
 
-    function processExchange() {
-        const type = document.getElementById('exchangeType').value;
-        const amt = parseFloat(document.getElementById('exchangeAmount').value);
-        
-        if (type.startsWith('etb_') || type.startsWith('usdt_to_mela')) {
-            if (userWalletBalance < amt) {
-                showCustomModal("áľáá°áľ", "á á á¨áĽá­ ááŞ ááłáĽ á¨áááľá!");
-                return;
-            }
-            userWalletBalance -= amt;
-            melaCoinBalance += (amt * 0.1);
-        } else {
-            let totalAvailableCoins = melaCoinBalance + bonusCoinBalance;
-            if (totalAvailableCoins < amt) {
-                showCustomModal("áľáá°áľ", "á á áá áŽá­á á¨áááľá!");
-                return;
-            }
-            if (melaCoinBalance >= amt) {
-                melaCoinBalance -= amt;
-            } else {
-                let remainder = amt - melaCoinBalance;
-                melaCoinBalance = 0;
-                bonusCoinBalance -= remainder;
-            }
-            userWalletBalance += (amt * 10);
-        }
-        updateBalanceDisplay();
-        updateMelaCoinDisplay();
-        logActivityToAdmin(`[Exchange] á°á áá (${currentTelegramId}) á¨ááááŹ ááááĽ á á¨ááááá˘`);
-        showCustomModal("á¨ááááŹ ááá¨á", "á¨ááááĽá áĽáŤá á áľáŹáľ á°áá˝áá!");
-    }
-
-    function logActivityToAdmin(message) {
-        let logs = JSON.parse(localStorage.getItem('mala_admin_logs') || '[]');
-        const timeStr = new Date().toLocaleTimeString();
-        logs.unshift(`[${timeStr}] ${message}`);
-        if (logs.length > 50) logs.pop();
-        localStorage.setItem('mala_admin_logs', JSON.stringify(logs));
-    }
-
-    function loadAdminLogs() {
-        const logBox = document.getElementById('adminActivityLogBox');
-        let logs = JSON.parse(localStorage.getItem('mala_admin_logs') || '[]');
-        if (logs.length === 0) {
-            logBox.innerHTML = "ááá áá˛ááŹá˝á á¨áá...";
-            return;
-        }
-        logBox.innerHTML = logs.join('<hr style="border-color:#334155; margin:6px 0;">');
-    }
-
-    function saveAdminCommissionRate() {
-        const val = parseFloat(document.getElementById('adminCommissionRateInput').value);
-        if (isNaN(val) || val < 0) {
-            showCustomModal("áľáá°áľ", "áĽáŁá­á áľá­á­áá á¨áŽáá˝á áá­á°ááľ áŤáľááĄ");
-            return;
-        }
-        adminCommissionRate = val;
-        localStorage.setItem('mala_admin_commission', val.toString());
-        logActivityToAdmin(`âď¸ á áľáá á¨áŽáá˝á áá áá áá° ${val}% á áľá°áŤá­ááá˘`);
-        showCustomModal("á°áłá­áˇá", `á¨á áľáá áŽáá˝á áá á áá° ${val}% á°áľá°áŤá­áá!`);
-    }
-
-    function adminToggleLotteryStatus(isRelease) {
-        if (isRelease) {
-            localStorage.removeItem('mala_lottery_blocked');
-            logActivityToAdmin("âď¸ á áľáá áá°áŞáá á¨ááˇáá˘");
-            showCustomModal("á áľáá", "áá°áŞ á°á¨ááˇá!");
-        } else {
-            localStorage.setItem('mala_lottery_blocked', 'true');
-            logActivityToAdmin("âď¸ á áľáá áá°áŞáá áááˇáá˘/á ááˇáá˘");
-            showCustomModal("á áľáá", "áá°áŞ áłááˇá!");
-        }
-    }
-
-    function adminResetLotteryOnly() {
-        localStorage.removeItem('mala_taken_lottery_numbers');
-        selectedLotteryNumbers = [];
-        generateLotteryGrid();
-        logActivityToAdmin("âď¸ á áľáá á¨áá°áŞ á°áá á¨áĽ áŞá´áľ á áľá­ááá˘");
-        showCustomModal("á áľáá", "á¨áá°áŞá áá°áľ áŞá´áľ á°á°á­áá!");
-    }
-
-    function adminEraseUserRegistration() {
-        const target = document.getElementById('targetUserAccount').value.trim();
-        if (!target) return;
-        localStorage.removeItem('mala_session_' + target);
-        localStorage.removeItem('mala_user_coins_' + target);
-        localStorage.removeItem('mala_bonus_coins_' + target);
-        logActivityToAdmin(`âď¸ á áľáá á¨á°á áá ááááŁ á°á­áá: ${target}`);
-        showCustomModal("á áľáá", `á°á áá (${target}) á¨á˛áľá°á á°á°á­áá!`);
-    }
-
-    function adminBlockUser() {
-        const target = document.getElementById('targetUserAccount').value.trim();
-        if (!target) return;
-        localStorage.setItem('mala_blocked_' + target, 'true');
-        logActivityToAdmin(`âď¸ á áľáá á°á áá áĽáá­ á áľá­áá: ${target}`);
-        showCustomModal("á áľáá", `á°á áá (${target}) áłááˇá!`);
+        showCustomModal("ተሳክቷል", `ልውውጡ በተሳካ ሁኔታ ተፈጽሟል!`, () => {
+            backToWallet();
+        });
+        logActivityToAdmin(`[ልውውጥ] ${currentUserName} መጠን ${amt} ልውውጥ አድርጓል`);
     }
 
     function adminApproveUser() {
-        const target = document.getElementById('targetUserAccount').value.trim() || currentTelegramId;
-        grantUserApprovalAndBonus();
-        logActivityToAdmin(`âď¸ á áľáá á°á áá á á˝áľáá / á ááŠá­ á áľá­áá: ${target}`);
-        showCustomModal("á áľáá", `á°á áá (${target}) á¸áľáá (Approved)! 50 áŽá­á áŚááľ á°á°áĽáˇáá˘`);
+        const target = document.getElementById("targetUserAccount").value.trim();
+        if (!target) {
+            showCustomModal("ስህተት", "እባክዎ የተጠቃሚውን ቴሌግራም አዲ ወይም ስልክ ያስያስ!");
+            return;
+        }
+        localStorage.setItem('mala_approved_' + currentTelegramId, 'true');
+        showCustomModal("ተሳክቷል", `ተጠቃሚ (${target}) በአልሚው ጸድቋል!`);
+        logActivityToAdmin(`[Admin Approve] ተጠቃሚ ${target} በአልሚው ጸድቋል`);
     }
 
     function adminGiveTempPassword() {
-        const target = document.getElementById('targetUserAccount').value.trim();
+        const target = document.getElementById("targetUserAccount").value.trim();
         if (!target) {
-            showCustomModal("áľáá°áľ", "áĽáŁá­á á¨á°á áááá áŠáá­ á á­á˛ áá­á áľáá­ ááĽá­ áŤáľááĄ");
+            showCustomModal("ስህተት", "እባክዎ የተጠቃሚውን መለያ ያስያስ!");
             return;
         }
-        let temporaryPin = Math.floor(1000 + Math.random() * 9000);
-        localStorage.setItem('mala_temp_pin_' + target, temporaryPin.toString());
-        logActivityToAdmin(`[Temp Pin Saved] ááŠáá­ ID ${target} áááŤá áá á°ááá§á: ${temporaryPin}`);
-        showCustomModal("áááŤá áá", `áá°á ááá (ID: ${target}) áááŤá áá ${temporaryPin} á°ááááˇá!`);
+        showCustomModal("ተሳክቷል", `ጊዜያዊ ቃልያስያስ (123456) ለተጠቃሚው (${target}) ተሰጥቷል!`);
+        logActivityToAdmin(`[Admin Temp Pass] ለተጠቃሚ ${target} ጊዜያዊ ቃልያስያስ ተሰጥቷል`);
     }
 
-    function showCustomModal(title, message) {
-        document.getElementById('modalTitle').textContent = title;
-        document.getElementById('modalMessage').textContent = message;
-        const okBtn = document.getElementById('modalOkBtn');
-        okBtn.textContent = "áĽáş (OK)";
-        
-        const newOkBtn = okBtn.cloneNode(true);
-        okBtn.parentNode.replaceChild(newOkBtn, okBtn);
-        newOkBtn.onclick = closeModal;
-        
-        document.getElementById('customModal').style.display = 'flex';
+    function adminBlockUser() {
+        const target = document.getElementById("targetUserAccount").value.trim();
+        if (!target) {
+            showCustomModal("ስህተት", "እባክዎ የተጠቃሚውን መለያ ያስያስ!");
+            return;
+        }
+        localStorage.removeItem('mala_approved_' + currentTelegramId);
+        showCustomModal("ተሳክቷል", `ተጠቃሚው (${target}) ታግዷል!`);
+        logActivityToAdmin(`[Admin Block] ተጠቃሚ ${target} ታግዷል`);
     }
 
-    function closeModal() {
-        document.getElementById('customModal').style.display = 'none';
+    function adminEraseUserRegistration() {
+        const target = document.getElementById("targetUserAccount").value.trim();
+        if (!target) {
+            showCustomModal("ስህተት", "እባክዎ የተጠቃሚውን መለያ ያስያስ!");
+            return;
+        }
+        localStorage.removeItem('mala_approved_' + currentTelegramId);
+        localStorage.removeItem('mala_pending_' + currentTelegramId);
+        showCustomModal("ተሳክቷል", `የተጠቃሚው (${target}) ምዝገባ ሙሉ በሙሉ ተሰርዟል!`);
+        logActivityToAdmin(`[Admin Erase] የሰዎች ምዝገባ ${target} ተሰርዟል`);
+    }
+
+    function saveAdminSupportPhone() {
+        const ph = document.getElementById("adminSupportPhoneInput").value.trim();
+        if (ph.length === 9) {
+            customerSupportPhone = "+251" + ph;
+            localStorage.setItem('mala_customer_support_phone', customerSupportPhone);
+            document.getElementById("displayCustomerSupportPhone").textContent = customerSupportPhone;
+            showCustomModal("ተሳክቷል", "የድጋፍ ስልክ ቁጥር በአልሚው ተዘምኗል!");
+            document.getElementById("adminSupportPhoneInput").value = "";
+        } else {
+            showCustomModal("ስህተት", "እባክዎ 9 አቃዕ ስልክ ቁጥር ያስያስ");
+        }
+    }
+
+    function saveAdminCommissionRate() {
+        const rate = parseFloat(document.getElementById("adminCommissionRateInput").value);
+        if (!isNaN(rate)) {
+            adminCommissionRate = rate;
+            localStorage.setItem('mala_admin_commission', rate);
+            showCustomModal("ተሳክቷል", `የአልሚው ጻንሾ መጠን ወደ ${rate}% ተስተካክሏል!`);
+            logActivityToAdmin(`[Admin Comm] ኮሚሽን ተስተካክሏል: ${rate}%`);
+        }
+    }
+
+    function adminToggleLotteryStatus(status) {
+        isLotteryBlockedByAdmin = !status;
+        const msg = isLotteryBlockedByAdmin ? "ሎተሪው በአልሚው ተዘግቷል!" : "ሎተሪው ተከፍቷል!";
+        showCustomModal("የዮተሪ ሁኔታ", msg);
+        logActivityToAdmin(`[Admin Lottery] ሎተሪ ሁኔታ: ${msg}`);
+    }
+
+    function adminResetLotteryOnly() {
+        selectedLotteryNumbers = [];
+        showCustomModal("ተሳክቷል", "የዮተሪ ጻሪዎች ተሰርዘዋል/ተስተካክለዋል!");
+        logActivityToAdmin(`[Admin Lottery Reset] ሎተሪ ዳግም ተጀምሯል`);
+    }
+
+    function checkLotteryStatusPublic() {
+        if (isLotteryBlockedByAdmin) {
+            document.getElementById("lotterySubtitleStatus").textContent = "ዮተሪው በአልሚው ተዘግቷል!";
+        }
+    }
+
+    function logActivityToAdmin(text) {
+        let logs = JSON.parse(localStorage.getItem('mala_admin_activity_logs') || '[]');
+        logs.unshift({ time: new Date().toLocaleTimeString(), text: text });
+        if (logs.length > 50) logs.pop();
+        localStorage.setItem('mala_admin_activity_logs', JSON.stringify(logs));
+        loadAdminLogs();
+    }
+
+    function loadAdminLogs() {
+        let logs = JSON.parse(localStorage.getItem('mala_admin_activity_logs') || '[]');
+        const box = document.getElementById("adminActivityLogBox");
+        if (logs.length === 0) {
+            box.textContent = "ምንም ሰንሰንትዎች የለዉም...";
+            return;
+        }
+        box.innerHTML = logs.map(l => `<div>[${l.time}] ${l.text}</div>`).join('');
+    }
+
+    function changeLanguage() {
+        currentLang = document.getElementById("langSelect").value;
+        if (currentLang === 'en') {
+            document.getElementById("welcomeTitle").textContent = "Welcome to Mala Official Bot Wallet";
+            document.getElementById("welcomeSubtitle").textContent = "Please select your option (1 Person = 1 Account)";
+            document.getElementById("loginTitle").textContent = "Wallet Login";
+            document.getElementById("loginSubtitle").textContent = "Enter your phone and password";
+            document.getElementById("regTitle").textContent = "Mala Official Bot Registration";
+            document.getElementById("regSubtitle").textContent = "Fill details for wallet (50 Bonus Coin on registration)";
+            document.getElementById("kycTitle").textContent = "KYC & Face Verification";
+            document.getElementById("kycSubtitle").textContent = "Verification will be checked by admin";
+            document.getElementById("pendingTitle").textContent = "Verification Pending...";
+            document.getElementById("pendingSubtitle").textContent = "Your details are sent to admin for review";
+        } else {
+            document.getElementById("welcomeTitle").textContent = "እንኳን ደህና መጡ ወደ ማላ ኦፊሻል ቦት";
+            document.getElementById("welcomeSubtitle").textContent = "እባክዎ የሚፈልጉትን አማራጭ ይምረጡ (1 ሰው = 1 አጠቃቀም)";
+            document.getElementById("loginTitle").textContent = "ወደ ወለዎች ይግቡ (Login)";
+            document.getElementById("loginSubtitle").textContent = "በመመዝገቢያ ስልክ ቁጥር እና ቃልያስያስ አጠቃቀምዎን ይሀኩ";
+            document.getElementById("regTitle").textContent = "ማላ ኦፊሻል ቦት ምዝገባ";
+            document.getElementById("regSubtitle").textContent = "ወለ ለማብቃት መረጃውን ይሙሉ (ሰለሲር 50 ጻንሾ ሽልማት በቅድመ ወለዎች ላይ ይገባል)";
+            document.getElementById("kycTitle").textContent = "ይህቲካዊ መታወቂያ (KYC) & ፎቶ ማረጋገጫ";
+            document.getElementById("kycSubtitle").textContent = "አንድ ግለሰብ ከአንድ በላይ ወለዎች እንዳይከፍት መታወቂያና ፎቶ በአልሚው በጥንቃቄ ይረጋገጥልዎታል";
+            document.getElementById("pendingTitle").textContent = "ማረጋገጫ በመሰን ላይ...";
+            document.getElementById("pendingSubtitle").textContent = "መታወቂያው እና ፎቶዎ ለአልሚው ተላክቷል አልሚው እስኪሰልቃቸው ይጠበቃል";
+        }
+    }
+
+    function updateColors() {
+        const bg = document.getElementById("bgPicker").value;
+        const txt = document.getElementById("textPicker").value;
+        document.documentElement.style.setProperty('--bg-color', bg);
+        document.documentElement.style.setProperty('--card-bg', bg);
+        document.documentElement.style.setProperty('--text-color', txt);
     }
 </script>
-
 </body>
 </html>
