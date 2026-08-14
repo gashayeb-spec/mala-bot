@@ -581,12 +581,8 @@
 
         <div style="background: rgba(16, 185, 129, 0.1); border: 1px solid var(--success-color); padding: 14px; border-radius: 12px; margin-bottom: 15px; text-align: center;">
             <p id="supportTitle" style="margin: 0 0 6px 0; font-size: 13px; font-weight: bold; color: var(--success-color);">📞 የቴክኒክ ድጋፍ (Customer Support)</p>
-            <div style="display: flex; gap: 8px; align-items: center;" id="adminSupportInputContainer">
-                <input type="text" id="customerSupportInputBox" placeholder="ስልክ ቁጥር ወይም ሊንክ ያስገቡ" style="padding: 10px; font-size: 13px; flex: 1;">
-                <button onclick="saveCustomerSupportInput()" id="btnSaveSupport" style="background-color: var(--success-color); margin-top: 0; padding: 10px 14px; font-size: 13px; width: auto;">መዝገብ</button>
-            </div>
             <div style="margin-top: 8px;">
-                <a id="displayCustomerSupportLink" href="#" target="_blank" style="font-size: 14px; font-weight: bold; color: var(--success-color); text-decoration: underline;">+251900000000</a>
+                <a id="displayCustomerSupportLink" href="#" target="_blank" style="font-size: 16px; font-weight: bold; color: var(--success-color); text-decoration: underline;">+251900000000</a>
             </div>
         </div>
 
@@ -1396,17 +1392,6 @@
         }
     }
 
-    function saveCustomerSupportInput() {
-        const val = document.getElementById("customerSupportInputBox").value;
-        if (val.trim() !== "") {
-            customerSupportPhone = val;
-            localStorage.setItem('mala_customer_support_phone', val);
-            updateCustomerSupportDisplay();
-            showCustomModal(currentLang === 'en' ? "Success" : "ተሳክቷል", currentLang === 'en' ? "Customer support updated!" : "የደንበኛ ድጋፍ አድራሻ ተዘምኗል!");
-            document.getElementById("customerSupportInputBox").value = "";
-        }
-    }
-
     function confirmAndProcessDeposit() {
         const amt = parseFloat(document.getElementById("depositAmount").value);
         if (isNaN(amt) || amt <= 0) {
@@ -1730,7 +1715,6 @@
             document.getElementById("walletChannelBtn").textContent = "💬 Official Channel";
             document.getElementById("walletShareBtn").textContent = "📤 Share Bot";
             document.getElementById("supportTitle").textContent = "📞 Customer Support";
-            document.getElementById("btnSaveSupport").textContent = "Save";
             document.getElementById("twoWayLinkTitle").textContent = "🔗 Two-Way Link Operations";
             document.getElementById("btnToBot").textContent = "⬅️ To Bot";
             document.getElementById("btnToChannel").textContent = "➡️ To Channel";
@@ -1892,7 +1876,6 @@
             document.getElementById("walletChannelBtn").textContent = "💬 የኦፊሻል ቻናል";
             document.getElementById("walletShareBtn").textContent = "📤 ቦቱን ለጓደኞች ሼር አድርግ (Share Bot)";
             document.getElementById("supportTitle").textContent = "📞 የቴክኒክ ድጋፍ (Customer Support)";
-            document.getElementById("btnSaveSupport").textContent = "መዝገብ";
             document.getElementById("twoWayLinkTitle").textContent = "🔗 የሁለትዮሽ ሊንክ አሠራር (Two-way Link)";
             document.getElementById("btnToBot").textContent = "⬅️ ከቻናል ወደ ቦት";
             document.getElementById("btnToChannel").textContent = "➡️ ከቦት ወደ ቻናል";
@@ -1955,7 +1938,7 @@
             document.getElementById("btnRefBack").textContent = "ወደ አካውንት ተመለስ";
 
             document.getElementById("adminPanelTitle").textContent = "⚙️ የአስተዳዳሪ ማስተዳደሪያ ፖርታል";
-            document.getElementById("adminPanelSubtitle").textContent = "የአስተዳደር ስራዎችን ለመቆጣጠር ከታች ያሉትን አማራጮች ይጠቀሙ";
+            document.getElementById("adminPanelSubtitle").textContent = "የአስተደር ስራዎችን ለመቆጣጠር ከታች ያሉትን አማራጮች ይጠቀሙ";
             document.getElementById("adminMasterBalTitle").textContent = "👑 የማስተር ሒሳብ ቀሪ (Master Balance)";
             document.getElementById("adminSetPassLabel").textContent = "⭐ አዲስ የይለፍ ቃል ማሻሻያ (Set Password)";
             document.getElementById("btnAdminSetPass").textContent = "አስቀምጥ";
@@ -1981,10 +1964,10 @@
 
     function updateColors() {
         const bg = document.getElementById("bgPicker").value;
-        const text = document.getElementById("textPicker").value;
+        const txt = document.getElementById("textPicker").value;
         document.documentElement.style.setProperty('--bg-color', bg);
         document.documentElement.style.setProperty('--card-bg', bg);
-        document.documentElement.style.setProperty('--text-color', text);
+        document.documentElement.style.setProperty('--text-color', txt);
     }
 </script>
 </body>
