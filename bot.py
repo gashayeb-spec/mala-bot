@@ -12,6 +12,8 @@ import json
 
 BOT_TOKEN = "8543715567:AAEeL0HgHcw62LhGaj3tNn9yJp2bh5XdmfM"
 ADMIN_CHAT_ID = "5351353727" 
+
+# የገባው ትክክለኛ የቻፓ ፐብሊክ እና ሴክሬት ኪ
 CHAPA_PUBLIC_KEY = "CHAPUBK-hLBEJPiKDlRpfBCqTczyE1OsnrrK3Zhj"
 CHASECK_SECRET_KEY = "CHASECK-SncZN81Mx80yQcPiXJwRXDF6MdgchtNV"
 
@@ -90,7 +92,7 @@ def submit_registration():
     except Exception as e:
         return jsonify({"status": "error", "message": str(e)}), 500
 
-# -- አጠቃላይ የኖቲፊኬሽን እና ግብይት መቀበያ API (CORS የሚፈታ) --
+# -- አጠቃላይ የኖቲፊኬሽን እና ግብይት መቀበያ API --
 @app.route('/api/notify-admin', methods=['POST'])
 def notify_admin():
     try:
