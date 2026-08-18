@@ -1,124 +1,83 @@
 import os
-import json
-import logging
-from flask import Flask, request, jsonify, render_template
-from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup, WebAppInfo
-from telegram.ext import Application, CommandHandler, ContextTypes
+import requests
+from flask import Flask, request, jsonify
+from flask_cors import CORS
 
-# Logging setup
-logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
-logger = logging.getLogger(__name__)
+app = Flask(__name__)
+CORS(app)
 
-# Config Variables (እነዚህን በራስዎ Credentials ይተኩ)
-BOT_TOKEN = os.environ.get("BOT_TOKEN", "YOUR_TELEGRAM_BOT_TOKEN_HERE")
-WEBAPP_URL = os.environ.get("WEBAPP_URL", "https://your-domain-or-ngrok-url.com")
-ADMIN_CHAT_ID = os.environ.get("ADMIN_CHAT_ID", "YOUR_ADMIN_TELEGRAM_ID")
+# ሚስጥራዊ ቁልፎች (እዚህ አገልጋይ ላይ ብቻ ይመደባሉ)
+CHAPA_SECRET_KEY = "CHASECK-SncZN81Mx80yQcPiXJwRXDF6MdgchtNV"
+BOT_TOKEN = "8932085001:AAFSuqyjALyhumCO-Y6RwfHlwz1HJaugevU"
+ADMIN_CHAT_ID = "5351353727"
 
-# Flask App Initialisation
-app = Flask(__name__, template_folder=".", static_folder=".")
-
-# ---------------------------------------------------------
-# Telegram Bot Handlers
-# ---------------------------------------------------------
-
-async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-    """/start ሲባል የሚላክ ሰላምታ እና Mini App መክፈቻ ቁልፍ"""
-    user = update.effective_user
-    first_name = user.first_name if user else "ተጠቃሚ"
-
-    # Telegram Mini App መክፈቻ WebAppInfo ቁልፍ
-    keyboard = [
-        [
-            InlineKeyboardButton(
-                "🚀 Mela Bot Mini App ክፈት", 
-                web_app=WebAppInfo(url=WEBAPP_URL)
-            )
-        ],
-        [
-            InlineKeyboardButton("💬 Official Channel", url="https://t.me/your_channel_username"),
-            InlineKeyboardButton("📞 Customer Support", url="https://t.me/your_support_username")
-        ]
-    ]
-    reply_markup = InlineKeyboardMarkup(keyboard)
-
-    welcome_text = (
-        f"ሰላም {first_name}! 👋\n\n"
-        "እንኳን ወደ **Mela Official Bot** በደህና መጡ!\n\n"
-        "የእርስዎን አካውንት ለመጠቀም፣ ዲፖዚት ለማድረግ፣ ሎተሪ ለመግዛት እና P2P ለመላክ "
-        "ከታች ያለውን **'Mela Bot Mini App ክፈት'** የሚለውን ቁልፍ ይጫኑ።"
-    )
-
-    await update.message.reply_text(welcome_text, reply_markup=reply_markup, parse_mode="Markdown")
-
-# ---------------------------------------------------------
-# Flask Web Server Routes (serves index.html & API)
-# ---------------------------------------------------------
-
-@app.route('/')
-def index():
-    """የ index.html ፋይልን ለ Mini App ያቀርባል"""
-    return render_template('index.html')
-
-@app.route('/submit-registration', methods=['POST'])
-def submit_registration():
-    """ተጠቃሚ ሲመዘገብ መረጃውን ለአድሚን በቴሌግራም ማሳወቂያ ይልካል"""
-    data = request.json or {}
-    user_id = data.get('telegramId', 'N/A')
-    first_name = data.get('firstName', 'N/A')
-    father_name = data.get('fatherName', 'N/A')
-    phone = data.get('phone', 'N/A')
-
-    logger.info(f"New Registration: {first_name} {father_name} (ID: {user_id}, Phone: {phone})")
-
-    # እዚህ ቦታ ላይ ለአድሚኑ በቴሌግራም ማሳወቅ ወይም Database ውስጥ ማስቀመጥ ይቻላል
-    return jsonify({"status": "success", "message": "KYC submitted successfully"}), 200
-
-@app.route('/check-status', methods=['GET'])
-def check_status():
-    """የተጠቃሚውን የ KYC አፕሩቫል ሁኔታ ይፈትሻል"""
-    user_id = request.args.get('user_id')
-    # በምሳሌነት አፕሩቭ እንደተደረገ መመለስ (ወደፊት ከ Database ጋር ማያያዝ ይቻላል)
-    return jsonify({"status": "approved", "user_id": user_id}), 200
-
-@app.route('/initiate-chapa', methods=['POST'])
-def initiate_chapa():
-    """ለ Chapa Payment ክፍያ ማስጀመርያ Endpoint"""
-    data = request.json or {}
-    amount = data.get('amount', 0)
-    email = data.get('email', 'user@mela.com')
-    
-    # የ Chapa Integration Logic እዚህ ላይ ይገባል
-    # ምሳሌ Checkout URL:
-    checkout_url = f"https://checkout.chapa.co/pay/sample-tx-{amount}"
-    
-    return jsonify({
-        "status": "success",
-        "checkout_url": checkout_url
-    }), 200
-
+# 1. ለአስተዳዳሪው በቴሌግራም የማረጋገጫ መልእክት መላኪያ Endpoint
 @app.route('/api/notify-admin', methods=['POST'])
 def notify_admin():
-    """የተጠቃሚ እንቅስቃሴዎችን ለአድሚን መዝገብ ማስተላለፊያ"""
-    data = request.json or {}
-    details = data.get('details', '')
-    user_name = data.get('userName', '')
+    data = request.json
+    msg = (
+        f"🔔 *አዲስ የኪስ ቦርሳ (Wallet) ምዝገባ ጥያቄ!*\n\n"
+        f"👤 *ስም:* {data.get('firstName')} {data.get('fatherName')}\n"
+        f"📞 *ስልክ:* {data.get('phone')}\n"
+        f"🆔 *መታወቂያ ቁጥር:* {data.get('nationalId')}\n"
+        f"✉️ *ኢሜል:* {data.get('email')}\n"
+        f"🔹 *Telegram ID:* `{data.get('telegramId')}`\n\n"
+        f"እባክዎን ወደ Admin Panel በመግባት አካውንቱን ያጽድቁ!"
+    )
     
-    logger.info(f"[ADMIN NOTIFICATION] {user_name}: {details}")
-    return jsonify({"status": "logged"}), 200
-
-# ---------------------------------------------------------
-# Main Execution
-# ---------------------------------------------------------
-
-def main():
-    # Telegram Bot Application
-    bot_app = Application.builder().token(BOT_TOKEN).build()
-    bot_app.add_handler(CommandHandler("start", start))
-
-    print("🤖 Mela Telegram Bot & Flask Server Starting...")
+    url = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
+    payload = {
+        "chat_id": ADMIN_CHAT_ID,
+        "text": msg,
+        "parse_mode": "Markdown"
+    }
     
-    # ማስታወሻ: በምርት (Production) ላይ Flask በ Gunicorn/Uvicorn ይራናል
-    app.run(host="0.0.0.0", port=5000, debug=True)
+    try:
+        res = requests.post(url, json=payload)
+        return jsonify({"success": True, "data": res.json()}), 200
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)}), 500
+
+# 2. የ Chapa Deposit ክፍያ መጀመርያ Endpoint
+@app.route('/api/chapa/initialize', methods=['POST'])
+def initialize_chapa():
+    data = request.json
+    amount = data.get('amount')
+    email = data.get('email', 'user@melabot.com')
+    first_name = data.get('firstName', 'User')
+    phone = data.get('phone', '')
+    
+    import uuid
+    tx_ref = f"mela-tx-{uuid.uuid4().hex[:8]}"
+
+    headers = {
+        "Authorization": f"Bearer {CHAPA_SECRET_KEY}",
+        "Content-Type": "application/json"
+    }
+    
+    payload = {
+        "amount": str(amount),
+        "currency": "ETB",
+        "email": email,
+        "first_name": first_name,
+        "phone_number": phone,
+        "tx_ref": tx_ref,
+        "callback_url": "https://yourdomain.com/api/chapa/callback",
+        "customization": {
+            "title": "Mela Wallet Deposit",
+            "description": "ሒሳብ መሙያ (Deposit)"
+        }
+    }
+
+    try:
+        response = requests.post("https://api.chapa.co/v1/transaction/initialize", json=payload, headers=headers)
+        res_data = response.json()
+        if res_data.get("status") == "success":
+            return jsonify({"status": "success", "checkout_url": res_data["data"]["checkout_url"]}), 200
+        else:
+            return jsonify({"status": "failed", "message": res_data.get("message")}), 400
+    except Exception as e:
+        return jsonify({"status": "error", "message": str(e)}), 500
 
 if __name__ == '__main__':
-    main()
+    app.run(host='0.0.0.0', port=5000, debug=True)
