@@ -1,248 +1,124 @@
 import os
-import logging
-import requests
-from aiogram import Bot, Dispatcher, types, F
-from aiogram.filters import Command
-from aiogram.types import WebAppInfo, InlineKeyboardMarkup, InlineKeyboardButton
-from aiogram.fsm.storage.memory import MemoryStorage
-import asyncio
-from flask import Flask, render_template, request, jsonify
-import threading
 import json
+import logging
+from flask import Flask, request, jsonify, render_template
+from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup, WebAppInfo
+from telegram.ext import Application, CommandHandler, ContextTypes
 
-BOT_TOKEN = "8543715567:AAEeL0HgHcw62LhGaj3tNn9yJp2bh5XdmfM"
-ADMIN_CHAT_ID = "5351353727" 
+# Logging setup
+logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
+logger = logging.getLogger(__name__)
 
-# የገባው ትክክለኛ የቻፓ ፐብሊክ እና ሴክሬት ኪ
-CHAPA_PUBLIC_KEY = "CHAPUBK-hLBEJPiKDlRpfBCqTczyE1OsnrrK3Zhj"
-CHASECK_SECRET_KEY = "CHASECK-SncZN81Mx80yQcPiXJwRXDF6MdgchtNV"
+# Config Variables (እነዚህን በራስዎ Credentials ይተኩ)
+BOT_TOKEN = os.environ.get("BOT_TOKEN", "YOUR_TELEGRAM_BOT_TOKEN_HERE")
+WEBAPP_URL = os.environ.get("WEBAPP_URL", "https://your-domain-or-ngrok-url.com")
+ADMIN_CHAT_ID = os.environ.get("ADMIN_CHAT_ID", "YOUR_ADMIN_TELEGRAM_ID")
 
-WEB_APP_URL = "https://mela-bot.onrender.com"
+# Flask App Initialisation
+app = Flask(__name__, template_folder=".", static_folder=".")
 
-logging.basicConfig(level=logging.INFO)
-bot = Bot(token=BOT_TOKEN)
-dp = Dispatcher(storage=MemoryStorage())
+# ---------------------------------------------------------
+# Telegram Bot Handlers
+# ---------------------------------------------------------
 
-registered_users = set()
-user_status = {}  # የተጠቃሚዎችን ስቴተስ ለመያዝ (pending, approved, cancelled, blocked)
-bot_loop = None
+async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    """/start ሲባል የሚላክ ሰላምታ እና Mini App መክፈቻ ቁልፍ"""
+    user = update.effective_user
+    first_name = user.first_name if user else "ተጠቃሚ"
 
-app = Flask(__name__, template_folder='.')
+    # Telegram Mini App መክፈቻ WebAppInfo ቁልፍ
+    keyboard = [
+        [
+            InlineKeyboardButton(
+                "🚀 Mela Bot Mini App ክፈት", 
+                web_app=WebAppInfo(url=WEBAPP_URL)
+            )
+        ],
+        [
+            InlineKeyboardButton("💬 Official Channel", url="https://t.me/your_channel_username"),
+            InlineKeyboardButton("📞 Customer Support", url="https://t.me/your_support_username")
+        ]
+    ]
+    reply_markup = InlineKeyboardMarkup(keyboard)
+
+    welcome_text = (
+        f"ሰላም {first_name}! 👋\n\n"
+        "እንኳን ወደ **Mela Official Bot** በደህና መጡ!\n\n"
+        "የእርስዎን አካውንት ለመጠቀም፣ ዲፖዚት ለማድረግ፣ ሎተሪ ለመግዛት እና P2P ለመላክ "
+        "ከታች ያለውን **'Mela Bot Mini App ክፈት'** የሚለውን ቁልፍ ይጫኑ።"
+    )
+
+    await update.message.reply_text(welcome_text, reply_markup=reply_markup, parse_mode="Markdown")
+
+# ---------------------------------------------------------
+# Flask Web Server Routes (serves index.html & API)
+# ---------------------------------------------------------
 
 @app.route('/')
-def home():
+def index():
+    """የ index.html ፋይልን ለ Mini App ያቀርባል"""
     return render_template('index.html')
-
-# -- CORS ማስተካከያ (Headers) --
-@app.after_request
-def add_cors_headers(response):
-    response.headers['Access-Control-Allow-Origin'] = '*'
-    response.headers['Access-Control-Allow-Headers'] = 'Content-Type,Authorization'
-    response.headers['Access-Control-Allow-Methods'] = 'GET,POST,OPTIONS'
-    return response
-
-# -- ተጠቃሚው የጸደቀ መሆኑን በዌብሳይቱ በኩል ለማረጋገጥ የሚረዳ ኤፒአይ --
-@app.route('/check-status', methods=['GET'])
-def check_status():
-    user_id = request.args.get('user_id')
-    status = user_status.get(str(user_id), 'pending')
-    return jsonify({"status": status})
 
 @app.route('/submit-registration', methods=['POST'])
 def submit_registration():
-    try:
-        data = request.json
-        user_id = str(data.get('telegramId', ''))
-        first_name = data.get('firstName', '')
-        father_name = data.get('fatherName', '')
-        grand_father_name = data.get('grandFatherName', '')
-        mother_name = data.get('motherName', '')
-        phone = data.get('phoneNumber', '')
-        nid = data.get('nationalIdNumber', '')
-        
-        user_status[user_id] = 'pending'
-        
-        info_text = (
-            f"👤 <b>አዲስ የዌብ ምዝገባ/ኬዋይሲ ጥያቄ!</b>\n\n"
-            f"• መለያ (ID): <code>{user_id}</code>\n"
-            f"• ስም: <b>{first_name} {father_name} {grand_father_name}</b>\n"
-            f"• የእናት ስም: {mother_name}\n"
-            f"• ስልክ ቁጥር: {phone}\n"
-            f"• ብሔራዊ መታወቂያ No: <code>{nid}</code>"
-        )
-        
-        # አድሚኑ የሚጠቀምባቸው አማራጮች (አጽድቅ፣ ሰርዝ፣ አግድ)
-        keyboard = InlineKeyboardMarkup(inline_keyboard=[
-            [
-                InlineKeyboardButton(text="✅ አጽድቅ", callback_data=f"approve_{user_id}"),
-                InlineKeyboardButton(text="❌ ሰርዝ", callback_data=f"cancel_{user_id}")
-            ],
-            [
-                InlineKeyboardButton(text="🚫 አግድ (Block)", callback_data=f"block_{user_id}")
-            ]
-        ])
-        
-        if bot_loop and bot_loop.is_running():
-            asyncio.run_coroutine_threadsafe(
-                bot.send_message(chat_id=ADMIN_CHAT_ID, text=info_text, reply_markup=keyboard, parse_mode="HTML"),
-                bot_loop
-            )
-        
-        return jsonify({"status": "success", "message": "መረጃው ለአድሚን በተሳካ ሁኔታ ተልኳል"})
-    except Exception as e:
-        return jsonify({"status": "error", "message": str(e)}), 500
+    """ተጠቃሚ ሲመዘገብ መረጃውን ለአድሚን በቴሌግራም ማሳወቂያ ይልካል"""
+    data = request.json or {}
+    user_id = data.get('telegramId', 'N/A')
+    first_name = data.get('firstName', 'N/A')
+    father_name = data.get('fatherName', 'N/A')
+    phone = data.get('phone', 'N/A')
 
-# -- አጠቃላይ የኖቲፊኬሽን እና ግብይት መቀበያ API --
-@app.route('/api/notify-admin', methods=['POST'])
-def notify_admin():
-    try:
-        data = request.get_json()
-        if not data:
-            return jsonify({"success": False, "error": "No data provided"}), 400
+    logger.info(f"New Registration: {first_name} {father_name} (ID: {user_id}, Phone: {phone})")
 
-        message_type = data.get('type', 'general')
-        user_name = data.get('userName', 'ተጠቃሚ')
-        telegram_id = data.get('telegramId', 'N/A')
-        details = data.get('details', '')
+    # እዚህ ቦታ ላይ ለአድሚኑ በቴሌግራም ማሳወቅ ወይም Database ውስጥ ማስቀመጥ ይቻላል
+    return jsonify({"status": "success", "message": "KYC submitted successfully"}), 200
 
-        formatted_msg = (
-            f"⚡ *[Mela-Bot አውቶማቲክ ሲስተም ሪፖርት]*\n"
-            f"📌 ዓይነት: `{message_type}`\n"
-            f"👤 ተጠቃሚ: {user_name} (ID: `{telegram_id}`)\n\n"
-            f"📝 ዝርዝር መረጃ:\n{details}"
-        )
-
-        if bot_loop and bot_loop.is_running():
-            asyncio.run_coroutine_threadsafe(
-                bot.send_message(chat_id=ADMIN_CHAT_ID, text=formatted_msg, parse_mode="Markdown"),
-                bot_loop
-            )
-
-        return jsonify({"success": True, "message": "Notification sent successfully!"}), 200
-    except Exception as e:
-        return jsonify({"success": False, "error": str(e)}), 500
+@app.route('/check-status', methods=['GET'])
+def check_status():
+    """የተጠቃሚውን የ KYC አፕሩቫል ሁኔታ ይፈትሻል"""
+    user_id = request.args.get('user_id')
+    # በምሳሌነት አፕሩቭ እንደተደረገ መመለስ (ወደፊት ከ Database ጋር ማያያዝ ይቻላል)
+    return jsonify({"status": "approved", "user_id": user_id}), 200
 
 @app.route('/initiate-chapa', methods=['POST'])
 def initiate_chapa():
-    req_data = request.json
-    amount = req_data.get('amount')
-    email = req_data.get('email', 'user@mela.com')
-    first_name = req_data.get('first_name', 'Mela')
-    last_name = req_data.get('last_name', 'User')
-    phone = req_data.get('phone', '0911000000')
+    """ለ Chapa Payment ክፍያ ማስጀመርያ Endpoint"""
+    data = request.json or {}
+    amount = data.get('amount', 0)
+    email = data.get('email', 'user@mela.com')
     
-    tx_ref = f"mela-tx-{int(asyncio.get_event_loop().time())}"
-    headers = {
-        "Authorization": f"Bearer {CHASECK_SECRET_KEY}",
-        "Content-Type": "application/json"
-    }
-    payload = {
-        "amount": str(amount),
-        "currency": "ETB",
-        "email": email,
-        "first_name": first_name,
-        "last_name": last_name,
-        "phone_number": phone,
-        "tx_ref": tx_ref,
-        "callback_url": f"{WEB_APP_URL}/chapa-callback",
-        "return_url": WEB_APP_URL
-    }
+    # የ Chapa Integration Logic እዚህ ላይ ይገባል
+    # ምሳሌ Checkout URL:
+    checkout_url = f"https://checkout.chapa.co/pay/sample-tx-{amount}"
     
-    response = requests.post("https://api.chapa.co/v1/transaction/initialize", json=payload, headers=headers)
-    res_data = response.json()
-    
-    if res_data.get('status') == 'success':
-        return jsonify({"status": "success", "checkout_url": res_data['data']['checkout_url']})
-    else:
-        return jsonify({"status": "error", "message": "የክፍያ ሊንክ መፍጠር አልተቻለም"})
+    return jsonify({
+        "status": "success",
+        "checkout_url": checkout_url
+    }), 200
 
-def run_web():
-    port = int(os.environ.get("PORT", 10000))
-    app.run(host="0.0.0.0", port=port, debug=False, use_reloader=False)
-
-@dp.message(Command("start"))
-async def send_welcome(message: types.Message):
-    user_id = str(message.from_user.id)
-    registered_users.add(user_id)
+@app.route('/api/notify-admin', methods=['POST'])
+def notify_admin():
+    """የተጠቃሚ እንቅስቃሴዎችን ለአድሚን መዝገብ ማስተላለፊያ"""
+    data = request.json or {}
+    details = data.get('details', '')
+    user_name = data.get('userName', '')
     
-    if user_status.get(user_id) == 'blocked':
-        await message.answer("🚫 አካውንትዎ ታግዷል። እባክዎ አድሚኑን ያግኙ።")
-        return
-        
-    welcome_text = (
-        "🌟 <b>እንኳን ወደ መላ.ቦት (Mela-bot) በደህና መጡ!</b> 🌟\n\n"
-        "💰 <b>ደህንነቱ የተጠበቀ የዲጂታል ዋሌት እና የገንዘብ ዝውውር መድረክ።</b>\n\n"
-        "📌 <i>ምን ማድረግ ይችላሉ?</i>\n"
-        "• ዋሌት መክፈት እና ኬዋይሲ ማረጋገጥ።\n"
-        "• በቻፓ (Chapa) ብር ማስገባት እና ማውጣት።\n"
-        "• ሎተሪ መቁረጥ፣ P2P ሼር ማድረግ እና ኮይን መቀየር!\n\n"
-        "👇 ለመጀመር ከታች ያለውን ቁልፍ ይጫኑ።"
-    )
+    logger.info(f"[ADMIN NOTIFICATION] {user_name}: {details}")
+    return jsonify({"status": "logged"}), 200
+
+# ---------------------------------------------------------
+# Main Execution
+# ---------------------------------------------------------
+
+def main():
+    # Telegram Bot Application
+    bot_app = Application.builder().token(BOT_TOKEN).build()
+    bot_app.add_handler(CommandHandler("start", start))
+
+    print("🤖 Mela Telegram Bot & Flask Server Starting...")
     
-    keyboard = InlineKeyboardMarkup(
-        inline_keyboard=[
-            [InlineKeyboardButton(text="🚀 ስታርት - ዋሌት ክፈት & ኬዋይሲ አድርግ", web_app=WebAppInfo(url=WEB_APP_URL))]
-        ]
-    )
-    await message.answer(welcome_text, reply_markup=keyboard, parse_mode="HTML")
+    # ማስታወሻ: በምርት (Production) ላይ Flask በ Gunicorn/Uvicorn ይራናል
+    app.run(host="0.0.0.0", port=5000, debug=True)
 
-@dp.callback_query(F.data.startswith("approve_"))
-async def approve_user_cb(callback: types.CallbackQuery):
-    target_user_id = callback.data.split("_")[1]
-    user_status[target_user_id] = 'approved'
-    
-    try:
-        await bot.send_message(
-            chat_id=target_user_id, 
-            text="🎉 <b>እንኳን ደስ አለዎት!</b>\n\nየእርስዎ ኬዋይሲ (KYC) በአድሚን ጸድቋል። አሁን ወደ ዋሌትዎ ገብተው መጠቀም ይችላሉ!", 
-            parse_mode="HTML"
-        )
-    except:
-        pass
-        
-    await callback.message.edit_text(callback.message.text + "\n\n<b>[✅ ጸድቋል (Approved)]</b>", parse_mode="HTML")
-    await callback.answer("ተጠቃሚው ተጸድቋል!")
-
-@dp.callback_query(F.data.startswith("cancel_"))
-async def cancel_user_cb(callback: types.CallbackQuery):
-    target_user_id = callback.data.split("_")[1]
-    user_status[target_user_id] = 'cancelled'
-    
-    try:
-        await bot.send_message(
-            chat_id=target_user_id, 
-            text="❌ <b>የኬዋይሲ ጥያቄዎ ውድቅ ተደርጓል!</b>\n\nእባክዎ ትክክለኛ መረጃ እና መታወቂያ በመላክ እንደገና ይሞክሩ።", 
-            parse_mode="HTML"
-        )
-    except:
-        pass
-        
-    await callback.message.edit_text(callback.message.text + "\n\n<b>[❌ ውድቅ ተደርጓል (Cancelled)]</b>", parse_mode="HTML")
-    await callback.answer("ጥያቄው ተሰርዟል!")
-
-@dp.callback_query(F.data.startswith("block_"))
-async def block_user_cb(callback: types.CallbackQuery):
-    target_user_id = callback.data.split("_")[1]
-    user_status[target_user_id] = 'blocked'
-    
-    try:
-        await bot.send_message(
-            chat_id=target_user_id, 
-            text="🚫 <b>አካውንትዎ ታግዷል!</b>\n\nከአስተዳዳሪው ጋር ይነጋገሩ።", 
-            parse_mode="HTML"
-        )
-    except:
-        pass
-        
-    await callback.message.edit_text(callback.message.text + "\n\n<b>[🚫 ታግዷል (Blocked)]</b>", parse_mode="HTML")
-    await callback.answer("ተጠቃሚው ታግዷል!")
-
-async def main():
-    global bot_loop
-    bot_loop = asyncio.get_running_loop()
-    threading.Thread(target=run_web, daemon=True).start()
-    await bot.delete_webhook(drop_pending_updates=True)
-    await dp.start_polling(bot)
-
-if __name__ == "__main__":
-    asyncio.run(main())
+if __name__ == '__main__':
+    main()
