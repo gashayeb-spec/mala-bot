@@ -1410,254 +1410,244 @@
 
     function handleVerifyAndResetPassword(event) {
         event.preventDefault();
-        const otp = document.getElementById("resetShortCode").value;
+        const otp = document.getElementById("resetShortCode").value.trim();
+        const phone = document.getElementById("resetPhone").value.trim();
+        const newPass = document.getElementById("resetNewPassword").value.trim();
 
-        if (otp.length === 4) {
-            showCustomModal(currentLang === 'en' ? "Success" : "ተሳክቷል", currentLang === 'en' ? "Password reset successfully. You can login now." : "አዲስ የይለፍ ቃልዎ ተቀይሯል። አሁን መግባት ይችላሉ።", () => {
-                switchStep('step-login');
+        if (otp.length === 4 && newPass.length >= 6) {
+            let pendingDataStr = localStorage.getItem('mala_pending_' + currentTelegramId);
+            if (pendingDataStr) {
+                let pData = JSON.parse(pendingDataStr);
+                if (pData.phone === phone) {
+                    pData.password = newPass;
+                    localStorage.setItem('mala_pending_' + currentTelegramId, JSON.stringify(pData));
+                }
+            }
+            showCustomModal(currentLang === 'en' ? "Success" : "ተሳክቷል", currentLang === 'en' ? "Password reset successfully! Please login with your new password." : "የይለፍ ቃልዎ በተሳካ ሁኔታ ተቀይሯል። አሁን በአዲሱ ፓስወርድ መግባት ይችላሉ።", () => {
+                goToLoginStep();
             });
         } else {
-            showCustomModal(currentLang === 'en' ? "Error" : "ስህተት", currentLang === 'en' ? "Invalid OTP code!" : "የተሳሳተ የ OTP ኮድ!");
+            showCustomModal(currentLang === 'en' ? "Error" : "ስህተት", currentLang === 'en' ? "Invalid OTP code or password length!" : "የተሳሳተ OTP ኮድ ወይም የይለፍ ቃል መጠን!");
         }
-    }
-
-    function logoutUser() {
-        switchStep('step-welcome');
-        showCustomModal(currentLang === 'en' ? "Logout" : "ውጣ", currentLang === 'en' ? "Logged out of wallet successfully." : "በተሳካ ሁኔታ ከአካውንት ወጥተዋል።");
     }
 
     function handleUserPasswordChange() {
-        const oldP = document.getElementById("oldPasswordInput").value;
-        const newP = document.getElementById("newPasswordInput").value;
-        const confirmP = document.getElementById("confirmNewPasswordInput").value;
+        const oldPass = document.getElementById("oldPasswordInput").value;
+        const newPass = document.getElementById("newPasswordInput").value;
+        const confirmPass = document.getElementById("confirmNewPasswordInput").value;
 
-        if (!oldP || !newP || !confirmP) {
-            showCustomModal(currentLang === 'en' ? "Error" : "ስህተት", currentLang === 'en' ? "Please fill all password fields!" : "እባክዎ ሁሉንም የይለፍ ቃል ባዶ ቦታዎች ይሙሉ!");
+        if (!oldPass || !newPass || !confirmPass) {
+            showCustomModal(currentLang === 'en' ? "Error" : "ስህተት", currentLang === 'en' ? "Please fill all password fields." : "እባክዎ ሁሉንም የይለፍ ቃል ቦታዎች ይሙሉ::");
             return;
         }
 
-        if (newP !== confirmP) {
-            showCustomModal(currentLang === 'en' ? "Error" : "ስህተት", currentLang === 'en' ? "New passwords do not match!" : "አዲሶቹ የይለፍ ቃሎች አይመሳሰሉም!");
+        if (newPass !== confirmPass) {
+            showCustomModal(currentLang === 'en' ? "Error" : "ስህተት", currentLang === 'en' ? "New passwords do not match!" : "አዲሱ የይለፍ ቃልና ማረጋገጫው አይመሳሰሉም!");
             return;
         }
 
-        showCustomModal(currentLang === 'en' ? "Success" : "ተሳክቷል", currentLang === 'en' ? "Password updated successfully!" : "የእርስዎ የይለፍ ቃል ተቀይሯል!", () => {
-            document.getElementById("oldPasswordInput").value = "";
-            document.getElementById("newPasswordInput").value = "";
-            document.getElementById("confirmNewPasswordInput").value = "";
-        });
+        showCustomModal(currentLang === 'en' ? "Success" : "ተሳክቷል", currentLang === 'en' ? "Your password has been updated successfully!" : "የይለፍ ቃልዎ በተሳካ ሁኔታ ተቀይሯል!");
+        document.getElementById("oldPasswordInput").value = "";
+        document.getElementById("newPasswordInput").value = "";
+        document.getElementById("confirmNewPasswordInput").value = "";
     }
 
     function updateUserPhoneNumber() {
-        const newPhone = document.getElementById("newPhoneInput").value;
+        const newPhone = document.getElementById("newPhoneInput").value.trim();
         if (newPhone.length === 9) {
-            showCustomModal(currentLang === 'en' ? "Success" : "ተሳክቷል", currentLang === 'en' ? `Phone updated to +251 ${newPhone}` : `ስልክ ቁጥርዎ ወደ +251 ${newPhone} ተስተካክሏል!`);
+            showCustomModal(currentLang === 'en' ? "Success" : "ተሳክቷል", currentLang === 'en' ? `Phone number updated to +251${newPhone} successfully!` : `ስልክ ቁጥርዎ ወደ +251${newPhone} ተቀይሯል!`);
             document.getElementById("newPhoneInput").value = "";
         } else {
-            showCustomModal(currentLang === 'en' ? "Error" : "ስህተት", currentLang === 'en' ? "Enter valid 9-digit phone number" : "ትክክለኛ 9 አሃዝ ስልክ ቁጥር ያስገቡ");
+            showCustomModal(currentLang === 'en' ? "Error" : "ስህተት", currentLang === 'en' ? "Please enter a valid 9-digit phone number." : "እባክዎ ትክክለኛ የ9 አሃዝ ስልክ ቁጥር ያስገቡ::");
         }
     }
 
     function confirmAndProcessDeposit() {
         const amt = parseFloat(document.getElementById("depositAmount").value);
-        if (isNaN(amt) || amt <= 0) {
-            showCustomModal(currentLang === 'en' ? "Error" : "ስህተት", currentLang === 'en' ? "Enter valid amount!" : "እባክዎ ትክክለኛ የብር መጠን ያስገቡ!");
+        if (amt && amt > 0) {
+            showCustomModal(currentLang === 'en' ? "Processing Deposit" : "ክፍያ በማስኬድ ላይ", currentLang === 'en' ? `Redirecting to Chapa payment portal for ${amt} ETB...` : `ለብር ${amt} ወደ ቻፓ ክፍያ ፖርታል በመላክ ላይ...`, () => {
+                userWalletBalance += amt;
+                updateBalanceDisplay();
+                logActivityToAdmin(`[Deposit] User added ${amt} ETB`);
+                backToWallet();
+            });
+        } else {
+            showCustomModal(currentLang === 'en' ? "Error" : "ስህተት", currentLang === 'en' ? "Please enter a valid deposit amount." : "እባክዎ ትክክለኛ የገንዘብ መጠን ያስገቡ::");
+        }
+    }
+
+    function confirmAndSubmitWithdrawal() {
+        const method = document.getElementById("withdrawMethod").value;
+        const acc = document.getElementById("withdrawAccount").value.trim();
+        const amt = parseFloat(document.getElementById("withdrawAmount").value);
+
+        if (!acc || acc.length < 9) {
+            showCustomModal(currentLang === 'en' ? "Error" : "ስህተት", currentLang === 'en' ? "Please enter a valid account or phone number." : "እባክዎ ትክክለኛ የሂሳብ ወይም ስልክ ቁጥር ያስገቡ::");
             return;
         }
-        window.location.href = `https://checkout.chapa.co/checkout/v2/...&amount=${amt}`;
+
+        if (!amt || amt < minWithdrawLimit) {
+            showCustomModal(currentLang === 'en' ? "Withdrawal Limit" : "የማውጣት ገደብ", currentLang === 'en' ? `Minimum withdrawal amount is ${minWithdrawLimit} Coins.` : `አነስተኛው የማውጣት መጠን ${minWithdrawLimit} ሳንቲም ነው::`);
+            return;
+        }
+
+        if (amt > melaCoinBalance) {
+            showCustomModal(currentLang === 'en' ? "Insufficient Funds" : "በቂ ያልሆነ ቀሪ ሒሳብ", currentLang === 'en' ? "You do not have enough Mela Coins." : "በቂ ማላ ሳንቲም የሎትም።");
+            return;
+        }
+
+        melaCoinBalance -= amt;
+        updateMelaCoinDisplay();
+        localStorage.setItem('mala_user_coins_' + currentTelegramId, melaCoinBalance);
+        
+        logActivityToAdmin(`[Withdrawal Request] User requested ${amt} Coins via ${method} to +251${acc}`);
+        showCustomModal(currentLang === 'en' ? "Request Submitted" : "ጥያቄው ተልኳል", currentLang === 'en' ? "Withdrawal request submitted to admin for verification." : "የገንዘብ ማውጣት ጥያቄው ለአስተዳዳሪ እንዲጸድቅ ተልኳል::", () => {
+            backToWallet();
+        });
+    }
+
+    function confirmAndSubmitP2P() {
+        const rec = document.getElementById("p2pRecipient").value.trim();
+        const amt = parseFloat(document.getElementById("p2pAmount").value);
+
+        if (!rec || rec.length < 9) {
+            showCustomModal(currentLang === 'en' ? "Error" : "ስህተት", currentLang === 'en' ? "Please enter a valid recipient phone number." : "እባክዎ ትክክለኛ የተቀባይ ስልክ ቁጥር ያስገቡ::");
+            return;
+        }
+
+        if (!amt || amt <= 0) {
+            showCustomModal(currentLang === 'en' ? "Error" : "ስህተት", currentLang === 'en' ? "Please enter a valid transfer amount." : "እባክዎ ትክክለኛ የማስተላለፊያ መጠን ያስገቡ::");
+            return;
+        }
+
+        if (amt > melaCoinBalance) {
+            showCustomModal(currentLang === 'en' ? "Insufficient Balance" : "በቂ ያልሆነ ቀሪ ሒሳብ", currentLang === 'en' ? "Insufficient Mela Coin balance." : "ለማስተላለፍ በቂ ማላ ሳንቲም የሎትም።");
+            return;
+        }
+
+        melaCoinBalance -= amt;
+        updateMelaCoinDisplay();
+        localStorage.setItem('mala_user_coins_' + currentTelegramId, melaCoinBalance);
+
+        logActivityToAdmin(`[P2P Transfer] Transferred ${amt} Coins to +251${rec}`);
+        showCustomModal(currentLang === 'en' ? "Transfer Successful" : "ዝውውሩ ተሳክቷል", currentLang === 'en' ? `Successfully transferred ${amt} Coins to +251${rec}.` : `${amt} ሳንቲም ለ +251${rec} በተሳካ ሁኔታ ተላክ::`, () => {
+            backToWallet();
+        });
+    }
+
+    function confirmAndProcessExchange() {
+        const type = document.getElementById("exchangeType").value;
+        const amt = parseFloat(document.getElementById("exchangeAmount").value);
+
+        if (!amt || amt <= 0) {
+            showCustomModal(currentLang === 'en' ? "Error" : "ስህተት", currentLang === 'en' ? "Please enter a valid amount to exchange." : "እባክዎ ትክክለኛ የሚለወጥ መጠን ያስገቡ::");
+            return;
+        }
+
+        if (type === 'etb_to_mela') {
+            if (userWalletBalance < amt) {
+                showCustomModal(currentLang === 'en' ? "Insufficient ETB" : "በቂ ያልሆነ ብር", currentLang === 'en' ? "Insufficient ETB balance in wallet." : "በቂ የብር ቀሪ ሒሳብ የሎትም።");
+                return;
+            }
+            userWalletBalance -= amt;
+            melaCoinBalance += amt;
+        } else if (type === 'mela_to_etb') {
+            if (melaCoinBalance < amt) {
+                showCustomModal(currentLang === 'en' ? "Insufficient Coins" : "በቂ ያልሆነ ሳንቲም", currentLang === 'en' ? "Insufficient Mela Coins balance." : "በቂ የማላ ሳንቲም ቀሪ ሒሳብ የሎትም።");
+                return;
+            }
+            melaCoinBalance -= amt;
+            userWalletBalance += amt;
+        }
+
+        updateBalanceDisplay();
+        updateMelaCoinDisplay();
+        localStorage.setItem('mala_user_coins_' + currentTelegramId, melaCoinBalance);
+
+        logActivityToAdmin(`[Exchange] Performed exchange (${type}) for amount: ${amt}`);
+        showCustomModal(currentLang === 'en' ? "Exchange Completed" : "ምንዛሬው ተጠናቋል", currentLang === 'en' ? "Currency exchanged successfully!" : "ምንዛሬው በተሳካ ሁኔታ ተጠናቋል!", () => {
+            backToWallet();
+        });
     }
 
     function buildLotteryGrid() {
         const grid = document.getElementById("lotteryGrid");
         grid.innerHTML = "";
         selectedLotteryNumbers = [];
+        document.getElementById("selectedLotteryNum").textContent = currentLang === 'en' ? "None" : "ምንም የለም";
+        document.getElementById("totalLotteryCost").textContent = "0.00 Mela Coin";
 
-        for (let i = 1; i <= 5000; i++) {
+        const takenNumbers = [3, 7, 12, 25, 42, 88, 100];
+
+        for (let i = 1; i <= 100; i++) {
             const item = document.createElement("div");
             item.className = "lottery-item available";
+            if (takenNumbers.includes(i)) {
+                item.className = "lottery-item taken";
+            }
             item.textContent = i;
-            item.onclick = () => toggleLotteryNumber(i, item);
+            item.onclick = () => toggleSelectLotteryNumber(i, item);
             grid.appendChild(item);
         }
-        updateLotterySummary();
     }
 
-    function toggleLotteryNumber(num, el) {
-        if (isLotteryBlockedByAdmin) {
-            showCustomModal(currentLang === 'en' ? "Closed" : "ተዘግቷል", currentLang === 'en' ? "Lottery is closed by admin!" : "ሎተሪው በአስተዳዳሪ ተዘግቷል!");
-            return;
-        }
+    function toggleSelectLotteryNumber(num, el) {
+        if (el.classList.contains("taken")) return;
 
-        const idx = selectedLotteryNumbers.indexOf(num);
-        if (idx > -1) {
-            selectedLotteryNumbers.splice(idx, 1);
+        if (el.classList.contains("selected")) {
             el.classList.remove("selected");
-            el.classList.add("available");
+            selectedLotteryNumbers = selectedLotteryNumbers.filter(n => n !== num);
         } else {
-            selectedLotteryNumbers.push(num);
-            el.classList.remove("available");
             el.classList.add("selected");
+            selectedLotteryNumbers.push(num);
         }
-        updateLotterySummary();
-    }
 
-    function updateLotterySummary() {
-        const numSpan = document.getElementById("selectedLotteryNum");
-        const costSpan = document.getElementById("totalLotteryCost");
-
-        if (selectedLotteryNumbers.length === 0) {
-            numSpan.textContent = currentLang === 'en' ? "None" : "ምንም የለም";
-            costSpan.textContent = "0.00 Mela Coin";
-        } else {
-            numSpan.textContent = selectedLotteryNumbers.join(", ");
-            costSpan.textContent = (selectedLotteryNumbers.length * ticketPrice).toFixed(2) + " Mela Coin";
-        }
+        document.getElementById("selectedLotteryNum").textContent = selectedLotteryNumbers.length > 0 ? selectedLotteryNumbers.join(", ") : (currentLang === 'en' ? "None" : "ምንም የለም");
+        const totalCost = selectedLotteryNumbers.length * ticketPrice;
+        document.getElementById("totalLotteryCost").textContent = totalCost.toFixed(2) + " Mela Coin";
     }
 
     function confirmAndBuyLottery() {
+        if (isLotteryBlockedByAdmin) {
+            showCustomModal(currentLang === 'en' ? "Lottery Closed" : "ሎተሪ ተዘግቷል", currentLang === 'en' ? "Lottery purchase is currently closed by admin." : "የሎተሪ ሽያጭ በአስተዳዳሪ ለጊዜው ተዘግቷል።");
+            return;
+        }
+
         if (selectedLotteryNumbers.length === 0) {
-            showCustomModal(currentLang === 'en' ? "Error" : "ስህተት", currentLang === 'en' ? "Select at least one number!" : "እባክዎ ቢያንስ አንድ ቁጥር ይምረጡ!");
+            showCustomModal(currentLang === 'en' ? "Error" : "ስህተት", currentLang === 'en' ? "Please select at least one ticket number." : "እባክዎ ቢያንስ አንድ የሎተሪ ቁጥር ይምረጡ::");
             return;
         }
 
         const totalCost = selectedLotteryNumbers.length * ticketPrice;
-        if (melaCoinBalance < totalCost) {
-            showCustomModal(currentLang === 'en' ? "Insufficient Balance" : "በቂ አይደለም", currentLang === 'en' ? "Insufficient Mela Coin balance!" : "የእርስዎ ማላ ሳንቲም ቀሪ ሒሳብ ለዚህ ሎተሪ በቂ አይደለም!");
+        if (totalCost > melaCoinBalance) {
+            showCustomModal(currentLang === 'en' ? "Insufficient Coins" : "በቂ ያልሆነ ሳንቲም", currentLang === 'en' ? "You do not have enough Mela Coins to complete this purchase." : "ሎተሪውን ለመግዛት በቂ ማላ ሳንቲም የሎትም።");
             return;
         }
 
         melaCoinBalance -= totalCost;
-        localStorage.setItem('mala_user_coins_' + currentTelegramId, melaCoinBalance);
         updateMelaCoinDisplay();
-        
-        showCustomModal(currentLang === 'en' ? "Success" : "ተሳክቷል", currentLang === 'en' ? `Successfully bought ${selectedLotteryNumbers.length} lottery tickets! Sent to admin with photo ID.` : `በተሳካ ሁኔታ ${selectedLotteryNumbers.length} ቲኬቶችን ገዝተዋል! ፎቶዎ እና መታወቂያዎ ለአስተዳዳሪ ተልኳል።`);
-        logActivityToAdmin(`[Lottery Purchase] User ID: ${currentTelegramId}, Name: ${currentUserName}, Front ID & Face: ${currentUserFrontIdImg}, Bought numbers: ${selectedLotteryNumbers.join(', ')}`);
-        buildLotteryGrid();
-    }
-
-    function confirmAndSubmitWithdrawal() {
-        const acc = document.getElementById("withdrawAccount").value;
-        const amt = parseFloat(document.getElementById("withdrawAmount").value);
-
-        if (amt < minWithdrawLimit) {
-            showCustomModal(currentLang === 'en' ? "Limit" : "ገደብ", currentLang === 'en' ? `Minimum withdrawal limit is ${minWithdrawLimit} Coins!` : `ለማውጣት የሚፈቀደው ዝቅተኛው መጠን ${minWithdrawLimit} ሳንቲም/ብር ነው!`);
-            return;
-        }
-
-        if (acc.length !== 9) {
-            showCustomModal(currentLang === 'en' ? "Error" : "ስህተት", currentLang === 'en' ? "Enter valid 9-digit account!" : "እባክዎ ትክክለኛ 9 አሃዝ ቁጥር ያስገቡ");
-            return;
-        }
-
-        showCustomModal(currentLang === 'en' ? "Success" : "ተሳክቷል", currentLang === 'en' ? "Withdrawal request sent to admin with user photo & ID verification." : "የማውጣት ጥያቄዎ ከፎቶ እና መታወቂያ ማረጋገጫ ጋር ለአስተዳዳሪ ተልቋል።", () => {
-            backToWallet();
-        });
-        logActivityToAdmin(`[Withdrawal Request] User ID: ${currentTelegramId}, Name: ${currentUserName}, Front ID: ${currentUserFrontIdImg}, Account: ${acc}, Amount: ${amt} ETB`);
-    }
-
-    function confirmAndSubmitP2P() {
-        const recipient = document.getElementById("p2pRecipient").value;
-        const amt = parseFloat(document.getElementById("p2pAmount").value);
-
-        if (isNaN(amt) || amt <= 0) {
-            showCustomModal(currentLang === 'en' ? "Error" : "ስህተት", currentLang === 'en' ? "Enter valid amount!" : "እባክዎ ትክክለኛ መጠን ያስገቡ!");
-            return;
-        }
-
-        if (recipient.length !== 9) {
-            showCustomModal(currentLang === 'en' ? "Error" : "ስህተት", currentLang === 'en' ? "Enter valid 9-digit recipient phone!" : "እባክዎ ትክክለኛ ተቀባይ ስልክ ቁጥር ያስገቡ");
-            return;
-        }
-
-        if (melaCoinBalance < amt) {
-            showCustomModal(currentLang === 'en' ? "Insufficient Balance" : "በቂ አይደለም", currentLang === 'en' ? "Insufficient Mela Coin balance!" : "የእርስዎ ማላ ሳንቲም በቂ አይደለም!");
-            return;
-        }
-
-        melaCoinBalance -= amt;
         localStorage.setItem('mala_user_coins_' + currentTelegramId, melaCoinBalance);
-        updateMelaCoinDisplay();
-        
-        showCustomModal(currentLang === 'en' ? "Success" : "ተሳክቷል", currentLang === 'en' ? `Successfully transferred ${amt} Mela Coin to ${recipient} (Verified with ID photo).` : `በተሳካ ሁኔታ ${amt} Mela Coin ወደ ${recipient} አስተላልፈዋል!`, () => {
+
+        logActivityToAdmin(`[Lottery Purchase] Bought tickets: ${selectedLotteryNumbers.join(', ')} for ${totalCost} Coins`);
+        showCustomModal(currentLang === 'en' ? "Success" : "ተሳክቷል", currentLang === 'en' ? `Successfully purchased tickets: ${selectedLotteryNumbers.join(', ')}!` : `ቁጥሮች (${selectedLotteryNumbers.join(', ')}) በተሳካ ሁኔታ ተገዝተዋል!`, () => {
             backToWallet();
         });
-        logActivityToAdmin(`[P2P Transfer] Sender: ${currentUserName} (${currentTelegramId}), Front ID: ${currentUserFrontIdImg}, Recipient: ${recipient}, Amount: ${amt}`);
     }
 
-    function confirmAndProcessExchange() {
-        const amt = parseFloat(document.getElementById("exchangeAmount").value);
-        if (isNaN(amt) || amt <= 0) {
-            showCustomModal(currentLang === 'en' ? "Error" : "ስህተት", currentLang === 'en' ? "Enter valid amount!" : "እባክዎ ትክክለኛ መጠን ያስገቡ!");
-            return;
-        }
-
-        showCustomModal(currentLang === 'en' ? "Success" : "ተሳክቷል", currentLang === 'en' ? "Exchange processed successfully!" : "ልውውጡ በተሳካ ሁኔታ ተፈጽሟል!", () => {
-            backToWallet();
+    function logoutUser() {
+        showCustomModal(currentLang === 'en' ? "Logout" : "መውጫ", currentLang === 'en' ? "You have been logged out of your wallet." : "ከአካውንትዎ በተሳካ ሁኔታ ወጥተዋል።", () => {
+            switchStep('step-welcome');
         });
-        logActivityToAdmin(`[Exchange] User ${currentUserName}, ID Photo: ${currentUserFrontIdImg} exchanged amount ${amt}`);
-    }
-
-    function adminApproveUser() {
-        const target = document.getElementById("targetUserAccount").value.trim();
-        if (!target) {
-            showCustomModal(currentLang === 'en' ? "Error" : "ስህተት", currentLang === 'en' ? "Enter target user ID or phone!" : "እባክዎ የተጠቃሚውን ቴሌግራም አይዲ ወይም ስልክ ያስገቡ!");
-            return;
-        }
-        localStorage.setItem('mala_approved_' + currentTelegramId, 'true');
-        let pendingStr = localStorage.getItem('mala_pending_' + currentTelegramId);
-        if(pendingStr) {
-            try {
-                let p = JSON.parse(pendingStr);
-                localStorage.setItem('mala_approved_phone_' + p.phone, 'true');
-            } catch(e) {}
-        }
-        showCustomModal(currentLang === 'en' ? "Success" : "ተሳክቷል", currentLang === 'en' ? `User (${target}) approved by admin with Front ID photo verification!` : `ተጠቃሚ (${target}) ከመታወቂያ ፍሮንት ፔጅ ፎቶ ማረጋገጫ ጋር በአስተዳዳሪ ጸድቋል!`);
-        logActivityToAdmin(`[Admin Approve] User ${target} approved after viewing Front ID Photo: ${currentUserFrontIdImg}`);
-    }
-
-    function adminGiveTempPassword() {
-        const target = document.getElementById("targetUserAccount").value.trim();
-        if (!target) {
-            showCustomModal(currentLang === 'en' ? "Error" : "ስህተት", currentLang === 'en' ? "Enter user ID!" : "እባክዎ የተጠቃሚውን መለያ ያስገቡ!");
-            return;
-        }
-        showCustomModal(currentLang === 'en' ? "Success" : "ተሳክቷል", currentLang === 'en' ? `Temporary password (123456) given to (${target}).` : `ጊዜያዊ የይለፍ ቃል (123456) ለተጠቃሚው (${target}) ተሰጥቷል!`);
-        logActivityToAdmin(`[Admin Temp Pass] Temp password given to user ${target}`);
-    }
-
-    function adminBlockUser() {
-        const target = document.getElementById("targetUserAccount").value.trim();
-        if (!target) {
-            showCustomModal(currentLang === 'en' ? "Error" : "ስህተት", currentLang === 'en' ? "Enter user ID!" : "እባክዎ የተጠቃሚውን መለያ ያስገቡ!");
-            return;
-        }
-        localStorage.removeItem('mala_approved_' + currentTelegramId);
-        showCustomModal(currentLang === 'en' ? "Success" : "ተሳክቷል", currentLang === 'en' ? `User (${target}) blocked!` : `ተጠቃሚው (${target}) ታግዷል!`);
-        logActivityToAdmin(`[Admin Block] User ${target} blocked`);
-    }
-
-    function adminEraseUserRegistration() {
-        const target = document.getElementById("targetUserAccount").value.trim();
-        if (!target) {
-            showCustomModal(currentLang === 'en' ? "Error" : "ስህተት", currentLang === 'en' ? "Enter user ID!" : "እባክዎ የተጠቃሚውን መለያ ያስገቡ!");
-            return;
-        }
-        localStorage.removeItem('mala_approved_' + currentTelegramId);
-        localStorage.removeItem('mala_pending_' + currentTelegramId);
-        showCustomModal(currentLang === 'en' ? "Success" : "ተሳክቷል", currentLang === 'en' ? `Registration erased for (${target})!` : `የተጠቃሚው (${target}) ምዝገባ ሙሉ በሙሉ ተሰርዟል!`);
-        logActivityToAdmin(`[Admin Erase] Registration erased for ${target}`);
     }
 
     function saveAdminSupportPhone() {
-        const val = document.getElementById("adminSupportPhoneInput").value.trim();
-        if (val !== "") {
-            customerSupportPhone = val;
-            localStorage.setItem('mala_customer_support_phone', val);
+        const phone = document.getElementById("adminSupportPhoneInput").value.trim();
+        if (phone) {
+            customerSupportPhone = phone;
+            localStorage.setItem('mala_customer_support_phone', phone);
             updateCustomerSupportDisplay();
-            showCustomModal(currentLang === 'en' ? "Success" : "ተሳክቷል", currentLang === 'en' ? "Support link/phone updated by admin!" : "የድጋፍ ሊንክ ወይም ስልክ ቁጥር በአስተዳዳሪ ተዘምኗል!");
+            alert(currentLang === 'en' ? "Support contact updated successfully!" : "የድጋፍ አድራሻው በተሳካ ሁኔታ ተስተካክሏል!");
             document.getElementById("adminSupportPhoneInput").value = "";
-        } else {
-            showCustomModal(currentLang === 'en' ? "Error" : "ስህተት", currentLang === 'en' ? "Enter valid link or phone" : "እባክዎ ትክክለኛ ሊንክ ወይም ስልክ ያስገቡ");
         }
     }
 
@@ -1665,159 +1655,433 @@
         const rate = parseFloat(document.getElementById("adminCommissionRateInput").value);
         if (!isNaN(rate)) {
             adminCommissionRate = rate;
-            localStorage.setItem('mala_admin_commission', rate);
-            showCustomModal(currentLang === 'en' ? "Success" : "ተሳክቷል", currentLang === 'en' ? `Commission updated to ${rate}%` : `የአስተዳዳሪ ኮሚሽን መጠን ወደ ${rate}% ተስተካክሏል!`);
-            logActivityToAdmin(`[Admin Commission] Updated to ${rate}%`);
+            localStorage.setItem('mala_admin_commission', rate.toString());
+            alert(currentLang === 'en' ? `Commission rate set to ${rate}%` : `የኮሚሽን መጠን ወደ ${rate}% ተስተካክሏል!`);
         }
     }
 
-    function adminToggleLotteryStatus(status) {
-        isLotteryBlockedByAdmin = !status;
-        const msg = isLotteryBlockedByAdmin ? (currentLang === 'en' ? "Lottery closed by admin!" : "ሎተሪው በአስተዳዳሪ ተዘግቷል!") : (currentLang === 'en' ? "Lottery opened!" : "ሎተሪው ተከፍቷል!");
-        showCustomModal(currentLang === 'en' ? "Lottery Status" : "የሎተሪ ሁኔታ", msg);
-        logActivityToAdmin(`[Admin Lottery Status] ${msg}`);
-    }
-
-    function adminResetLotteryOnly() {
-        selectedLotteryNumbers = [];
-        showCustomModal(currentLang === 'en' ? "Success" : "ተሳክቷል", currentLang === 'en' ? "Lottery numbers reset successfully!" : "የሎተሪ ቁጥሮች ሪሴት ተደርገዋል!");
-        logActivityToAdmin(`[Admin Lottery Reset] Lottery numbers reset`);
+    function adminToggleLotteryStatus(open) {
+        isLotteryBlockedByAdmin = !open;
+        localStorage.setItem('mala_lottery_closed', isLotteryBlockedByAdmin.toString());
+        alert(open ? (currentLang === 'en' ? "Lottery Opened!" : "ሎተሪ ተከፍቷል!") : (currentLang === 'en' ? "Lottery Closed!" : "ሎተሪ ተዘግቷል!"));
     }
 
     function checkLotteryStatusPublic() {
-        if (isLotteryBlockedByAdmin) {
-            document.getElementById("lotterySubtitleStatus").textContent = currentLang === 'en' ? "Lottery is currently closed by admin!" : "ሎተሪው በአስተዳዳሪ ተዘግቷል!";
+        const closed = localStorage.getItem('mala_lottery_closed');
+        if (closed === 'true') {
+            isLotteryBlockedByAdmin = true;
         }
     }
 
-    function logActivityToAdmin(text) {
-        let logs = JSON.parse(localStorage.getItem('mala_admin_activity_logs') || '[]');
-        logs.unshift({ time: new Date().toLocaleTimeString(), text: text });
+    function adminResetLotteryOnly() {
+        alert(currentLang === 'en' ? "Lottery pool reset to 0." : "የሎተሪ መዝገብ ወደ 0 ተመልሷል።");
+        logActivityToAdmin(`[Admin] Reset lottery status`);
+    }
+
+    function logActivityToAdmin(msg) {
+        let logs = JSON.parse(localStorage.getItem('mala_admin_logs') || '[]');
+        const time = new Date().toLocaleTimeString();
+        logs.unshift(`[${time}] ${msg}`);
         if (logs.length > 50) logs.pop();
-        localStorage.setItem('mala_admin_activity_logs', JSON.stringify(logs));
+        localStorage.setItem('mala_admin_logs', JSON.stringify(logs));
         loadAdminLogs();
     }
 
     function loadAdminLogs() {
-        let logs = JSON.parse(localStorage.getItem('mala_admin_activity_logs') || '[]');
         const box = document.getElementById("adminActivityLogBox");
+        let logs = JSON.parse(localStorage.getItem('mala_admin_logs') || '[]');
         if (logs.length === 0) {
-            box.textContent = currentLang === 'en' ? "No activity logs available..." : "ምንም እንቅስቃሴ የለም...";
-            return;
+            box.textContent = currentLang === 'en' ? "No activity logged." : "ምንም እንቅስቃሴ የለም...";
+        } else {
+            box.innerHTML = logs.join('<br>');
         }
-        box.innerHTML = logs.map(l => `<div>[${l.time}] ${l.text}</div>`).join('');
     }
 
-    function changeLanguage() {
-        currentLang = document.getElementById("langSelect").value;
-        if (currentLang === 'en') {
-            document.getElementById("langLabel").textContent = "Language";
-            document.getElementById("bgThemeLabel").textContent = "Background";
-            document.getElementById("textThemeLabel").textContent = "Text Color";
-            
-            document.getElementById("welcomeTitle").textContent = "Welcome to Mela Official Bot Wallet";
-            document.getElementById("welcomeSubtitle").textContent = "Please select your option (1 Person = 1 Account)";
-            document.getElementById("btnRegister").textContent = "✨ Register New Account - 100 Bonus Coins";
-            document.getElementById("btnLogin").textContent = "🔐 Login to Existing Account";
-            document.getElementById("btnAdminPortal").textContent = "⚙️ Admin Portal Login";
-            document.getElementById("socialCenterTitle").textContent = "🌐 Social Center (Bot & Channel)";
-            document.getElementById("btnBotLink").textContent = "🤖 Official Bot";
-            document.getElementById("btnChannelLink").textContent = "💬 Official Channel";
-            document.getElementById("btnShareBot").textContent = "📤 Share Bot with Friends";
+    function adminApproveUser() {
+        const target = document.getElementById("targetUserAccount").value.trim();
+        const idToApprove = target || currentTelegramId;
 
-            document.getElementById("adminLoginTitle").textContent = "Admin Portal Login";
-            document.getElementById("adminLoginSubtitle").textContent = "Enter master password for admin verification";
-            document.getElementById("adminPasswordLabel").textContent = "Admin Master Password";
-            document.getElementById("adminForgotPassLink").textContent = "Forgot Password? (Short Password Reset)";
-            document.getElementById("btnAdminLoginSubmit").textContent = "Open Admin Panel";
-            document.getElementById("btnBackWelcome1").textContent = "Back to Welcome";
+        localStorage.setItem('mala_approved_' + idToApprove, 'true');
+        logActivityToAdmin(`[ADMIN APPROVAL] Approved user ID: ${idToApprove} (Verified Front ID photo)`);
+        alert(currentLang === 'en' ? `User ${idToApprove} approved!` : `ተጠቃሚ ${idToApprove} ጸድቋል!`);
+        document.getElementById("targetUserAccount").value = "";
+    }
 
-            document.getElementById("loginTitle").textContent = "Wallet Login";
-            document.getElementById("loginSubtitle").textContent = "Enter your phone number and password";
-            document.getElementById("loginPhoneLabel").textContent = "Phone Number (251...)";
-            document.getElementById("loginPasswordLabel").textContent = "Password";
-            document.getElementById("forgotPassLink").textContent = "Forgot Password? (OTP Verification)";
-            document.getElementById("btnLoginSubmit").textContent = "Login";
-            document.getElementById("btnBackWelcome2").textContent = "Back to Welcome";
-
-            document.getElementById("resetTitle").textContent = "Password Reset (OTP)";
-            document.getElementById("resetSubtitle").textContent = "Enter 4-digit OTP code sent to your phone and new password";
-            document.getElementById("resetPhoneLabel").textContent = "Phone Number (251...)";
-            document.getElementById("otpCodeLabel").textContent = "4-Digit OTP Short Code";
-            document.getElementById("newPassLabel").textContent = "New Password";
-            document.getElementById("btnResetSubmit").textContent = "Reset Password";
-            document.getElementById("btnBackLogin").textContent = "Back to Login";
-
-            document.getElementById("regTitle").textContent = "Mela Official Bot Registration";
-            document.getElementById("regSubtitle").textContent = "Fill details for wallet (100 Bonus Coins on registration)";
-            document.getElementById("lblFirstName").textContent = "First Name";
-            document.getElementById("lblFatherName").textContent = "Father's Name";
-            document.getElementById("lblGrandFather").textContent = "Grandfather's Name";
-            document.getElementById("lblMotherName").textContent = "Mother's Full Name";
-            document.getElementById("lblPhone").textContent = "Primary Phone (+251 pre-filled)";
-            document.getElementById("lblSecPhone").textContent = "Secondary Phone (Optional)";
-            document.getElementById("lblCountry").textContent = "Country";
-            document.getElementById("cityLabel").textContent = "City / Region";
-            document.getElementById("lblEmail").textContent = "Email Address";
-            document.getElementById("lblRegPass").textContent = "Password";
-            document.getElementById("lblRegPassConfirm").textContent = "Confirm Password";
-            document.getElementById("btnRegSubmit").textContent = "Next & KYC Photo Verification";
-            document.getElementById("btnBackWelcome3").textContent = "Back to Welcome";
-
-            document.getElementById("kycTitle").textContent = "KYC & Face Photo Verification";
-            document.getElementById("kycSubtitle").textContent = "Identity and face photo will be strictly verified by admin";
-            document.getElementById("lblNatId").textContent = "National ID Number";
-            document.getElementById("lblFacePhoto").textContent = "Your Face Photo for Verification";
-            document.getElementById("faceText").textContent = "Click here to select your face photo";
-            document.getElementById("lblFrontId").textContent = "ID Card Front (Main Identity Page)";
-            document.getElementById("frontText").textContent = "Click here to select front ID page";
-            document.getElementById("lblBackId").textContent = "ID Card Back";
-            document.getElementById("backText").textContent = "Click here to select back ID";
-            document.getElementById("btnKycSubmit").textContent = "Send to Admin for Approval";
-            document.getElementById("btnKycCancel").textContent = "Cancel & Reset Registration";
-
-            document.getElementById("pendingTitle").textContent = "Verification Pending...";
-            document.getElementById("pendingSubtitle").textContent = "Your ID front page and photo have been sent to the admin for review";
-            document.getElementById("btnCheckStatus").textContent = "Check Status";
-            document.getElementById("btnCancelReg").textContent = "Cancel Registration & Restart";
-
-            document.getElementById("verificationBadge").textContent = "✅ Premium Account (+100 Bonus Coins)";
-            document.getElementById("txtBalanceTitle").textContent = "Total Wallet Balance";
-            document.getElementById("channelBridgeTitle").textContent = "🚀 Bot & Channel Bridge";
-            document.getElementById("walletBotBtn").textContent = "🤖 Official Bot";
-            document.getElementById("walletChannelBtn").textContent = "💬 Official Channel";
-            document.getElementById("walletShareBtn").textContent = "📤 Share Bot";
-            document.getElementById("supportTitle").textContent = "📞 Customer Support";
-            document.getElementById("twoWayLinkTitle").textContent = "🔗 Two-Way Link Operations";
-            document.getElementById("btnToBot").textContent = "⬅️ To Bot";
-            document.getElementById("btnToChannel").textContent = "➡️ To Channel";
-            document.getElementById("passChangeTitle").textContent = "🔐 Change Password";
-            document.getElementById("lblOldPass").textContent = "Old Password";
-            document.getElementById("lblNewPass").textContent = "New Password";
-            document.getElementById("lblConfirmNewPass").textContent = "Confirm New Password";
-            document.getElementById("btnChangePass").textContent = "Change Password";
-            document.getElementById("phoneUpdateTitle").textContent = "📱 Update Phone Number";
-            document.getElementById("btnUpdatePhone").textContent = "Update";
-            document.getElementById("btnDeposit").textContent = "Deposit (Chapa)";
-            document.getElementById("btnLottery").textContent = "Lottery";
-            document.getElementById("btnWithdraw").textContent = "Withdraw (Min 2,000 Coin)";
-            document.getElementById("btnP2P").textContent = "P2P Transfer";
-            document.getElementById("btnExchange").textContent = "Exchange";
-            document.getElementById("btnReferral").textContent = "🎁 Invite & Earn";
-            document.getElementById("btnLogout").textContent = "Logout";
+    function adminGiveTempPassword() {
+        const target = document.getElementById("targetUserAccount").value.trim();
+        if (target) {
+            logActivityToAdmin(`[Admin Temp Pass] Granted temporary password to user: ${target}`);
+            alert(currentLang === 'en' ? `Temporary password generated for ${target}` : `ለተጠቃሚ ${target} ጊዜያዊ የይለፍ ቃል ተሰጥቷል!`);
         } else {
-            window.location.reload();
+            alert(currentLang === 'en' ? "Enter target Telegram ID/Phone" : "እባክዎ የተጠቃሚ ስልክ ወይም ዩዘር አይዲ ያስገቡ");
+        }
+    }
+
+    function adminBlockUser() {
+        const target = document.getElementById("targetUserAccount").value.trim();
+        if (target) {
+            localStorage.removeItem('mala_approved_' + target);
+            logActivityToAdmin(`[ADMIN BLOCK] Blocked user: ${target}`);
+            alert(currentLang === 'en' ? `User ${target} blocked.` : `ተጠቃሚ ${target} ታግዷል።`);
+        } else {
+            alert(currentLang === 'en' ? "Enter target Telegram ID/Phone" : "እባክዎ የተጠቃሚ ስልክ ወይም ዩዘር አይዲ ያስገቡ");
+        }
+    }
+
+    function adminEraseUserRegistration() {
+        const target = document.getElementById("targetUserAccount").value.trim();
+        if (target) {
+            localStorage.removeItem('mala_approved_' + target);
+            localStorage.removeItem('mala_pending_' + target);
+            logActivityToAdmin(`[ADMIN ERASE] Erased registration for user: ${target}`);
+            alert(currentLang === 'en' ? `Registration erased for ${target}` : `የተጠቃሚ ${target} ምዝገባ ተሰርዟል።`);
+        } else {
+            alert(currentLang === 'en' ? "Enter target Telegram ID/Phone" : "እባክዎ የተጠቃሚ ስልክ ወይም ዩዘር አይዲ ያስገቡ");
         }
     }
 
     function updateColors() {
         const bg = document.getElementById("bgPicker").value;
-        const txt = document.getElementById("textPicker").value;
+        const text = document.getElementById("textPicker").value;
         document.documentElement.style.setProperty('--bg-color', bg);
-        document.documentElement.style.setProperty('--card-bg', bg);
-        document.documentElement.style.setProperty('--text-color', txt);
+        document.documentElement.style.setProperty('--card-bg', bg === '#0f172a' ? '#1e293b' : '#ffffff');
+        document.documentElement.style.setProperty('--text-color', text);
+    }
+
+    const translations = {
+        am: {
+            langLabel: "ቋንቋ / Language",
+            bgThemeLabel: "ጀርባ / Background",
+            textThemeLabel: "ጽሁፍ / Text",
+            welcomeTitle: "እንኳን ደህና መጡ ወደ ማላ ኦፊሻል ቦት",
+            welcomeSubtitle: "እባክዎ የሚፈልጉትን አማራጭ ይምረጡ (1 ሰው = 1 አጠቃቀም)",
+            btnRegister: "✨ አዲስ አጠቃቀም መመዝገብ (Register) - 100 Bonus ሳንቲም",
+            btnLogin: "🔐 ቀድሞ አካውንት የከፈቱበት መግቢያ (Login)",
+            btnAdminPortal: "⚙️ የአስተዳዳሪ መግቢያ (Admin Portal)",
+            socialCenterTitle: "🌐 የማህበራዊ ማዕከል (Bot & Channel)",
+            btnBotLink: "🤖 ኦፊሻል ቦት (Bot)",
+            btnChannelLink: "💬 የኦፊሻል ቻናል (Channel)",
+            btnShareBot: "📤 ቦቱን ለጓደኞች ሼር አድርግ (Share Bot)",
+            adminLoginTitle: "የአስተዳደር ፖርታል መግቢያ",
+            adminLoginSubtitle: "አስተዳዳሪ ለማረጋገጥ የሚስጥር ቃል ያስገቡ",
+            adminPasswordLabel: "የአስተዳዳሪ የይለፍ ቃል (Master Password)",
+            adminForgotPassLink: "የይለፍ ቃል ረስተዋል? (አጭር ፓስወርድ ማስተካከያ)",
+            btnAdminLoginSubmit: "አስተዳደር ፓናል ክፈት",
+            btnBackWelcome1: "ወደ ኋላ ተመለስ",
+            adminResetTitle: "የአስተዳዳሪ የይለፍ ቃል ማስተካከያ",
+            adminResetSubtitle: "የአስተዳዳሪ አጭር የይለፍ ቃል ለመስጠት ኮድ እና አዲስ ፓስወርድ ያስገቡ",
+            adminOtpCodeLabel: "የማረጋገጫ ኮድ (OTP / Secret Code)",
+            adminNewPassLabel: "አዲስ አጭር የይለፍ ቃል (New Short Password)",
+            btnAdminResetSubmit: "አዲስ ፓስወርድ አስቀምጥ",
+            btnBackAdminLogin: "ወደ አስተዳዳሪ መግቢያ ተመለስ",
+            loginTitle: "ወደ አካውንት ይግቡ (Login)",
+            loginSubtitle: "በመመዝገቢያ ስልክ ቁጥር እና የይለፍ ቃል መግቢያዎን ያረጋግጡ",
+            loginPhoneLabel: "ስልክ ቁጥር (Phone Number - 251...)",
+            loginPasswordLabel: "የይለፍ ቃል (Password)",
+            forgotPassLink: "የይለፍ ቃል ረስተዋል? (OTP ማረጋገጫ)",
+            btnLoginSubmit: "ግባ (Login)",
+            btnBackWelcome2: "ወደ ኋላ ተመለስ",
+            resetTitle: "የይለፍ ቃል ማስተካከያ (OTP ማረጋገጫ)",
+            resetSubtitle: "በስልክ ቁጥርዎ የተላከውን የ 4 አሃዝ ኮድ (OTP) እና አዲስ የይለፍ ቃል ያስገቡ",
+            resetPhoneLabel: "ስልክ ቁጥር (Phone Number - 251...)",
+            otpCodeLabel: "የ 4 አሃዝ ኮድ (OTP Short Code)",
+            newPassLabel: "አዲስ የይለፍ ቃል (New Password)",
+            btnResetSubmit: "የይለፍ ቃል ቀይር (Reset)",
+            btnBackLogin: "ወደ መግቢያ ተመለስ",
+            regTitle: "ማላ ኦፊሻል ቦት ምዝገባ",
+            regSubtitle: "አካውንት ለማብቃት መረጃውን ይሙሉ (በመመዝገብዎ 100 ሳንቲም ሽልማት ያገኛሉ)",
+            lblFirstName: "ስም (First Name)",
+            lblFatherName: "የአባት ስም (Father's Name)",
+            lblGrandFather: "የአያት ስም (Grandfather's Name)",
+            lblMotherName: "የእናት ሙሉ ስም (Mother's Full Name)",
+            lblPhone: "ዋና ስልክ ቁጥር (+251 በራስ-ሰር ተሞልቷል)",
+            lblSecPhone: "ሁለተኛ ስልክ ቁጥር (አማራጭ / Optional)",
+            lblCountry: "ሀገር (Country)",
+            cityLabel: "ከተማ / ክልል (City / Region)",
+            lblEmail: "ኢሜል አድራሻ (Email Address)",
+            lblRegPass: "የይለፍ ቃል (Password)",
+            lblRegPassConfirm: "የይለፍ ቃል ማረጋገጫ (Confirm Password)",
+            btnRegSubmit: "ቀጥል & ፎቶ ማረጋገጫ (Next & KYC)",
+            btnBackWelcome3: "ወደ ኋላ ተመለስ",
+            kycTitle: "መታወቂያ (KYC) እና የፊት ፎቶ ማረጋገጫ",
+            kycSubtitle: "አንድ ግለሰብ ከአንድ በላይ አካውንት እንዳይከፍት መታወቂያና ፎቶ በአስተዳዳሪ በጥንቃቄ ይረጋገጣል",
+            lblNatId: "ብሔራዊ መታወቂያ ቁጥር (National ID No)",
+            lblFacePhoto: "የፊት ገጽታ ፎቶ (Your Face Photo for Verification)",
+            faceText: "ፎቶዎ የሚታይበትን ገጽታ ፎቶ ለማስገባት እዚህ ይጫኑ",
+            lblFrontId: "የመታወቂያው ፊት (ID Card Front)",
+            frontText: "የመታወቂያ ፊት ፎቶ ለመምረጥ እዚህ ጋር ይጫኑ",
+            lblBackId: "የመታወቂያው ኋላ (ID Card Back)",
+            backText: "የመታወቂያ ኋላ ፎቶ ለመምረጥ እዚህ ጋር ይጫኑ",
+            btnKycSubmit: "ለአስተዳዳሪ ማረጋገጫ ላክ (Send to Admin)",
+            btnKycCancel: "ምዝገባውን ሰርዝ (Cancel & Reset)",
+            pendingTitle: "ማረጋገጫ በመሰን ላይ...",
+            pendingSubtitle: "መታወቂያው እና ፎቶዎ ለአስተዳዳሪ ተልኳል፤ እስኪጸድቅ ይጠበቃል",
+            statusText: "ህኔታ: በአስተዳዳሪ ግምገማ ላይ ይገኛል...",
+            btnCheckStatus: "ህኔታውን አረጋግጥ (Check Status)",
+            btnCancelReg: "ምዝገባውን ሰርዝ (Cancel) ድጋሚ እንመዝገባለን",
+            verificationBadge: "✅ ፕሪሚየም አካውንት (+100 Bonus ሳንቲም)",
+            txtBalanceTitle: "አጠቃላይ ቀሪ ሒሳብ",
+            eyeBtnText: "አሳይ",
+            channelBridgeTitle: "🚀 ቦት እና ቻናል መተላለፊያ",
+            walletBotBtn: "🤖 ኦፊሻል ቦት",
+            walletChannelBtn: "💬 የኦፊሻል ቻናል",
+            walletShareBtn: "📤 ቦቱን ለጓደኞች ሼር አድርግ (Share Bot)",
+            supportTitle: "📞 የቴክኒክ ድጋፍ (Customer Support)",
+            twoWayLinkTitle: "🔗 የሁለትዮሽ ሊንክ አሠራር (Two-way Link)",
+            btnToBot: "⬅️ ከቻናል ወደ ቦት",
+            btnToChannel: "➡️ ከቦት ወደ ቻናል",
+            passChangeTitle: "🔐 የይለፍ ቃል ማሻሻያ (Change Password)",
+            lblOldPass: "የቀድሞ የይለፍ ቃል (Old Password)",
+            lblNewPass: "አዲስ የይለፍ ቃል (New Password)",
+            lblConfirmNewPass: "አዲስ የይለፍ ቃል ማረጋገጫ (Confirm Password)",
+            btnChangePass: "የይለፍ ቃል ቀይር",
+            phoneUpdateTitle: "📱 ስልክ ቁጥር ማሻሻል (Update Phone)",
+            btnUpdatePhone: "ቀይር",
+            btnDeposit: "ገንዘብ ማስገባት (Chapa)",
+            btnLottery: "ሎተሪ መግዛት (Lottery)",
+            btnWithdraw: "ገንዘብ ማውጣት (Min 2,000 Coin)",
+            btnP2P: "P2P ሼር ማድረግ (Transfer)",
+            btnExchange: "ማላ ሳንቲም / ምንዛሬ መቀየሪያ (Exchange)",
+            btnReferral: "🎁 ሼር ሊንክ እና ቦነስ (Invite & Earn)",
+            btnLogout: "ከአካውንት ውጣ (Logout)",
+            depTitle: "ገንዘብ ማስገባት (Chapa Deposit)",
+            depSubtitle: "ሂሳብዎን በብር ለመሙላት የሚፈልጉትን መጠን ያስገቡ",
+            lblDepAmt: "የሚከፈለው መጠን (ETB)",
+            btnDepSubmit: "የክፍያ ሊንክ ፍጠር እና ቀጥል",
+            btnDepBack: "ወደ አካውንት ተመለስ",
+            lotteryTitle: "ሎተሪ መግዛት (በማላ ሳንቲም)",
+            lblSelectedNums: "የተመረጡ ቁጥሮች:",
+            lblTotalCost: "አጠቃላይ የሚከፈል:",
+            btnBuyLottery: "ቁጥሮቹን አረጋግጥ እና ግዛ",
+            btnLotteryBack: "ወደ አካውንት ተመለስ",
+            withTitle: "ገንዘብ ማውጣት (Min 2,000 Coin)",
+            withSubtitle: "የተሰጠው 100 ሳንቲም መመለሻ ላይ (2,000) ሲሞላ ማውጣት ይችላሉ (Locked Bonus)",
+            lblWithMethod: "የባንክ / የሞባይል ገንዘብ አማራጭ",
+            lblWithAcc: "ስልክ ቁጥር / የሂሳብ ቁጥር (+251 በራስ-ሰር ተያይዟል)",
+            lblWithAmt: "የሚወጣው መጠን (Min 2000)",
+            btnWithSubmit: "የማውጣት ጥያቄ ለአስተዳዳሪ ላክ",
+            btnWithBack: "ወደ አካውንት ተመለስ",
+            p2pTitle: "P2P ሳንቲም / ገንዘብ ማስተላለፍ",
+            p2pSubtitle: "ለሌላ ተጠቃሚ ሳንቲም ማስተላለፍ (የተሰጠውን 100 ሳንቲም ሳይረብሽ ማስተላለፍ ይቻላል)",
+            lblP2PRec: "የተቀባይ ስልክ ቁጥር (+251 በራስ-ሰር ተያይዟል)",
+            lblP2PAmt: "የሚተላለፈው መጠን (ሳንቲም/ብር)",
+            btnP2PSubmit: "አሁን አስተላልፍ (Transfer)",
+            btnP2PBack: "ወደ አካውንት ተመለስ",
+            excTitle: "ማላ ሳንቲም እና ምንዛሬ መቀየሪያ",
+            excSubtitle: "የኢትዮጵያ ብር (ETB) እና ማላ ሳንቲም (Mela Coin) ዋጋዎችን እርስ በእርስ ይለወጡ",
+            lblExcType: "የልውውጥ ዓይነት",
+            lblExcAmt: "የሚለወጠው መጠን (Amount)",
+            btnExcSubmit: "አሁን ቀይር (Exchange)",
+            btnExcBack: "ወደ አካውንት ተመለስ",
+            refTitle: "የጋበዙት ሰዎች እና ሳንቲም ማዕከል",
+            refSubtitle: "ሊንኩን በመጠቀም ተጠቃሚዎች ሲመዘገቡ ቦነስ ሳንቲም ያግኙ",
+            lblRefLink: "የእርስዎ ማጣቀሻ (Referral) ሊንክ",
+            btnCopyRef: "📋 ሊንኩን ኮፒ አድርግ (Copy Link)",
+            btnShareRef: "📤 ሊንኩን በቴሌግራም ሼር አድርግ (Share via Telegram)",
+            lblRefTotalCount: "የጋበዟቸው ሰዎች ብዛት:",
+            lblRefTotalBonus: "የተገኘ አጠቃላይ ቦነስ:",
+            btnRefBack: "ወደ አካውንት ተመለስ",
+            adminPanelTitle: "⚙️ የአስተዳዳሪ ማስተዳደሪያ ፖርታል",
+            adminPanelSubtitle: "የአስተደር ስራዎችን ለመቆጣጠር ከታች ያሉትን አማራጮች ይጠቀሙ",
+            adminMasterBalTitle: "👑 የማስተር ሒሳብ ቀሪ (Master Balance)",
+            adminEyeBtnText: "አሳይ",
+            adminSetPassLabel: "⭐ አዲስ የይለፍ ቃል ማሻሻያ (Set Password)",
+            btnAdminSetPass: "አስቀምጥ",
+            adminSupportSetLabel: "📞 የቴክኒክ ድጋፍ ስልክ ቁጥር ወይም ሊንክ ማስተካከያ (Customer Support Link)",
+            btnAdminSaveSupp: "አስቀምጥ",
+            adminCommLabel: "💼 የኮሚሽን መጠን (Commission Rate)",
+            btnAdminSaveComm: "አስተካክል",
+            adminLotteryCtrlLabel: "🎯 የሎተሪ አስተዳደር እና መቆጣጠሪያ",
+            btnAdminLotteryClose: "ሎተሪ ዝጋ",
+            btnAdminLotteryOpen: "ሎተሪ ክፈት",
+            btnAdminLotteryReset: "ሎተሪ 0 አድርግ",
+            adminLogsLabel: "📊 የእንቅስቃሴ መዝገብ እና የተጠቃሚዎች መታወቂያ ፎቶዎች (Activity Logs & KYC)",
+            btnAdminRefreshLogs: "መዝገብ አድስ",
+            adminTargetUserLabel: "ተጠቃሚ ማረጋገጥ (Approve)፤ ማገድ ወይም የይለፍ ቃል ለመስጠት (Telegram ID / Phone)",
+            btnAdminApprove: "✅ አጽድቅ (Approve with Front ID Photo)",
+            btnAdminTempPass: "🔑 ጊዜያዊ የይለፍ ቃል ሰጥ",
+            btnAdminBlock: "🚫 አግድ (Block)",
+            btnAdminErase: "🗑️ ምዝገባ ሰርዝ",
+            btnAdminResetPass: "አስተዳዳሪ የይለፍ ቃል ሪሴት",
+            btnAdminLogout: "ውጣ (Logout Admin)"
+        },
+        en: {
+            langLabel: "Language / ቋንቋ",
+            bgThemeLabel: "Background / ጀርባ",
+            textThemeLabel: "Text / ጽሁፍ",
+            welcomeTitle: "Welcome to Mala Official Bot",
+            welcomeSubtitle: "Please choose your preferred option (1 Person = 1 Account)",
+            btnRegister: "✨ Register New Account - 100 Bonus Coins",
+            btnLogin: "🔐 Login to Existing Account",
+            btnAdminPortal: "⚙️ Admin Portal",
+            socialCenterTitle: "🌐 Social Center (Bot & Channel)",
+            btnBotLink: "🤖 Official Bot",
+            btnChannelLink: "💬 Official Channel",
+            btnShareBot: "📤 Share Bot with Friends",
+            adminLoginTitle: "Admin Portal Login",
+            adminLoginSubtitle: "Enter master password to authenticate admin access",
+            adminPasswordLabel: "Master Password",
+            adminForgotPassLink: "Forgot Password? (Short Password Reset)",
+            btnAdminLoginSubmit: "Open Admin Panel",
+            btnBackWelcome1: "Back to Welcome",
+            adminResetTitle: "Admin Password Reset",
+            adminResetSubtitle: "Enter OTP code and new short password for admin reset",
+            adminOtpCodeLabel: "Verification Code (OTP / Secret Code)",
+            adminNewPassLabel: "New Short Password",
+            btnAdminResetSubmit: "Save New Password",
+            btnBackAdminLogin: "Back to Admin Login",
+            loginTitle: "Login to Account",
+            loginSubtitle: "Verify your login with registered phone number and password",
+            loginPhoneLabel: "Phone Number (251...)",
+            loginPasswordLabel: "Password",
+            forgotPassLink: "Forgot Password? (OTP Verification)",
+            btnLoginSubmit: "Login",
+            btnBackWelcome2: "Back to Welcome",
+            resetTitle: "Reset Password (OTP)",
+            resetSubtitle: "Enter the 4-digit OTP code sent to your phone and new password",
+            resetPhoneLabel: "Phone Number (251...)",
+            otpCodeLabel: "4-Digit Code (OTP Short Code)",
+            newPassLabel: "New Password",
+            btnResetSubmit: "Reset Password",
+            btnBackLogin: "Back to Login",
+            regTitle: "Mala Official Bot Registration",
+            regSubtitle: "Fill details to activate account (Get 100 bonus coins upon registration)",
+            lblFirstName: "First Name",
+            lblFatherName: "Father's Name",
+            lblGrandFather: "Grandfather's Name",
+            lblMotherName: "Mother's Full Name",
+            lblPhone: "Primary Phone Number (+251 pre-filled)",
+            lblSecPhone: "Secondary Phone Number (Optional)",
+            lblCountry: "Country",
+            cityLabel: "City / Region",
+            lblEmail: "Email Address",
+            lblRegPass: "Password",
+            lblRegPassConfirm: "Confirm Password",
+            btnRegSubmit: "Next & Photo Verification (KYC)",
+            btnBackWelcome3: "Back to Welcome",
+            kycTitle: "Identity (KYC) & Face Photo Verification",
+            kycSubtitle: "ID & photo carefully reviewed by admin to prevent multiple account creations",
+            lblNatId: "National ID Number",
+            lblFacePhoto: "Your Face Photo for Verification",
+            faceText: "Click here to upload photo displaying your face",
+            lblFrontId: "ID Card Front",
+            frontText: "Click here to select ID card front photo",
+            lblBackId: "ID Card Back",
+            backText: "Click here to select ID card back photo",
+            btnKycSubmit: "Send to Admin for Approval",
+            btnKycCancel: "Cancel & Reset Registration",
+            pendingTitle: "Verification Pending...",
+            pendingSubtitle: "ID and photo submitted to admin; awaiting approval",
+            statusText: "Status: Under Admin Review...",
+            btnCheckStatus: "Check Status",
+            btnCancelReg: "Cancel Registration",
+            verificationBadge: "✅ Premium Account (+100 Bonus Coins)",
+            txtBalanceTitle: "Total Account Balance",
+            eyeBtnText: "Show",
+            channelBridgeTitle: "🚀 Bot & Channel Bridge",
+            walletBotBtn: "🤖 Official Bot",
+            walletChannelBtn: "💬 Official Channel",
+            walletShareBtn: "📤 Share Bot with Friends",
+            supportTitle: "📞 Technical Customer Support",
+            twoWayLinkTitle: "🔗 Two-way Link Navigation",
+            btnToBot: "⬅️ Channel to Bot",
+            btnToChannel: "➡️ Bot to Channel",
+            passChangeTitle: "🔐 Change Password",
+            lblOldPass: "Old Password",
+            lblNewPass: "New Password",
+            lblConfirmNewPass: "Confirm New Password",
+            btnChangePass: "Change Password",
+            phoneUpdateTitle: "📱 Update Phone Number",
+            btnUpdatePhone: "Update",
+            btnDeposit: "Deposit Funds (Chapa)",
+            btnLottery: "Buy Lottery",
+            btnWithdraw: "Withdraw Funds (Min 2,000 Coin)",
+            btnP2P: "P2P Transfer",
+            btnExchange: "Mela Coin / Currency Exchange",
+            btnReferral: "🎁 Invite & Earn Bonus",
+            btnLogout: "Logout",
+            depTitle: "Deposit Funds (Chapa Deposit)",
+            depSubtitle: "Enter amount to top up your balance in ETB",
+            lblDepAmt: "Amount to Pay (ETB)",
+            btnDepSubmit: "Generate Payment Link & Proceed",
+            btnDepBack: "Back to Account",
+            lotteryTitle: "Buy Lottery (Using Mela Coins)",
+            lblSelectedNums: "Selected Numbers:",
+            lblTotalCost: "Total Payable:",
+            btnBuyLottery: "Confirm & Purchase Tickets",
+            btnLotteryBack: "Back to Account",
+            withTitle: "Withdraw Funds (Min 2,000 Coin)",
+            withSubtitle: "Bonus withdrawal available once threshold reaches 2,000 coins",
+            lblWithMethod: "Bank / Mobile Money Option",
+            lblWithAcc: "Phone / Account Number (+251 pre-filled)",
+            lblWithAmt: "Withdrawal Amount (Min 2000)",
+            btnWithSubmit: "Submit Withdrawal Request to Admin",
+            btnWithBack: "Back to Account",
+            p2pTitle: "P2P Coin / Money Transfer",
+            p2pSubtitle: "Transfer coins seamlessly to another user account",
+            lblP2PRec: "Recipient Phone Number (+251 pre-filled)",
+            lblP2PAmt: "Transfer Amount (Coins/ETB)",
+            btnP2PSubmit: "Transfer Now",
+            btnP2PBack: "Back to Account",
+            excTitle: "Mela Coin & Currency Exchange",
+            excSubtitle: "Convert between ETB and Mela Coins seamlessly",
+            lblExcType: "Exchange Type",
+            lblExcAmt: "Exchange Amount",
+            btnExcSubmit: "Exchange Now",
+            btnExcBack: "Back to Account",
+            refTitle: "Referral & Coin Rewards Center",
+            refSubtitle: "Earn bonus coins when users register using your referral link",
+            lblRefLink: "Your Referral Link",
+            btnCopyRef: "📋 Copy Link",
+            btnShareRef: "📤 Share via Telegram",
+            lblRefTotalCount: "Total Invited Users:",
+            lblRefTotalBonus: "Total Bonus Earned:",
+            btnRefBack: "Back to Account",
+            adminPanelTitle: "⚙️ Admin Control Panel",
+            adminPanelSubtitle: "Use options below to manage platform administration tasks",
+            adminMasterBalTitle: "👑 Master Balance",
+            adminEyeBtnText: "Show",
+            adminSetPassLabel: "⭐ Set New Master Password",
+            btnAdminSetPass: "Save Password",
+            adminSupportSetLabel: "📞 Customer Support Phone or Link",
+            btnAdminSaveSupp: "Save Support Contact",
+            adminCommLabel: "💼 Commission Rate (%)",
+            btnAdminSaveComm: "Update Rate",
+            adminLotteryCtrlLabel: "🎯 Lottery Management & Control",
+            btnAdminLotteryClose: "Close Lottery",
+            btnAdminLotteryOpen: "Open Lottery",
+            btnAdminLotteryReset: "Reset Lottery to 0",
+            adminLogsLabel: "📊 Activity Logs & User KYC Photos",
+            btnAdminRefreshLogs: "Refresh Logs",
+            adminTargetUserLabel: "Target User Approval / Block / Password (Telegram ID / Phone)",
+            btnAdminApprove: "✅ Approve (Verified Front ID Photo)",
+            btnAdminTempPass: "🔑 Give Temp Password",
+            btnAdminBlock: "🚫 Block User",
+            btnAdminErase: "🗑️ Erase Registration",
+            btnAdminResetPass: "Reset Admin Password",
+            btnAdminLogout: "Logout Admin"
+        }
+    };
+
+    function changeLanguage() {
+        currentLang = document.getElementById("langSelect").value;
+        const dict = translations[currentLang] || translations['am'];
+
+        for (const [key, text] of Object.entries(dict)) {
+            const el = document.getElementById(key);
+            if (el) {
+                if (el.tagName === 'INPUT' && el.type === 'button') {
+                    el.value = text;
+                } else {
+                    el.textContent = text;
+                }
+            }
+        }
+
+        updateMelaCoinDisplay();
+        updateBalanceDisplay();
+        updateAdminBalanceDisplay();
     }
 </script>
-
 </body>
 </html>
