@@ -9,7 +9,7 @@ app.secret_key = "mella_wallet_super_secret_session_key_2026"
 
 TELEGRAM_BOT_TOKEN = "8932085001:AAFSuqyjALyhumCO-Y6RwfHlwz1HJaugevU"
 CHAPA_PUBLIC_KEY = "CHAPUBK-hLBEJPiKDlRpfBCqTczyE1OsnrrK3Zhj"
-CHAPA_SECRET_KEY = "CHASECK-SncZN81Mx80yQcPiXJwRXDF6MdgchtNV"
+CHASECK_KEY = "CHASECK-SncZN81Mx80yQcPiXJwRXDF6MdgchtNV"
 
 ADMIN_TELEGRAM_ID = "5351353727"
 
@@ -43,6 +43,32 @@ def send_telegram_message(chat_id, text):
     except Exception as e:
         print(f"Telegram Notification Error: {e}")
 
+# ለአድሚኑ በበተኖች (Inline Buttons) ማሳወቂያ የሚልክ ፋንክሽን
+def send_telegram_admin_notification(chat_id, text, user_id):
+    url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage"
+    reply_markup = {
+        "inline_keyboard": [
+            [
+                {"text": "✅ Approve", "callback_data": f"approve_{user_id}"},
+                {"text": "❌ Cancel", "callback_data": f"cancel_{user_id}"},
+                {"text": "🚫 Block", "callback_data": f"block_{user_id}"}
+            ],
+            [
+                {"text": "🌐 ወደ Admin Panel ሂድ", "url": "https://mella-bot.onrender.com/admin"}
+            ]
+        ]
+    }
+    payload = {
+        "chat_id": chat_id,
+        "text": text,
+        "parse_mode": "HTML",
+        "reply_markup": reply_markup
+    }
+    try:
+        requests.post(url, json=payload, timeout=5)
+    except Exception as e:
+        print(f"Telegram Notification Error: {e}")
+
 # =========================================================
 # ROUTES - USER & SYSTEM
 # =========================================================
@@ -53,8 +79,11 @@ def home():
         return redirect(url_for('login'))
     
     user_id = session['user_id']
+    if str(user_id) == str(ADMIN_TELEGRAM_ID):
+        return redirect(url_for('admin_panel'))
+        
     user = users_db.get(user_id)
-    if not user and user_id != ADMIN_TELEGRAM_ID:
+    if not user:
         return redirect(url_for('login'))
         
     return render_template('index.html', user=user, rates=EXCHANGE_RATES)
@@ -65,13 +94,14 @@ def login():
         phone = request.form.get('phone')
         password = request.form.get('password')
         
-        # ለአድሚን መግቢያ
         if phone == "admin" and password == "admin123":
             session['user_id'] = ADMIN_TELEGRAM_ID
             return redirect(url_for('admin_panel'))
 
         for uid, u in users_db.items():
             if u['phone'] == phone and u['password'] == password:
+                if u.get('status') == "Blocked":
+                    return render_template('login.html', error="አካውንትዎ ታግዷል! እባክዎን አድሚኑን ያነጋግሩ።")
                 session['user_id'] = uid
                 return redirect(url_for('home'))
                 
@@ -88,6 +118,9 @@ def register():
         password = request.form.get('password')
         telegram_id = request.form.get('telegram_id')
 
+        if not (full_name and phone and national_id and password and telegram_id):
+            return jsonify({"status": "error", "message": "እባክዎን ሁሉንም መስኮች ይሙሉ!"}), 400
+
         clean_phone = phone.replace(" ", "").replace("-", "")
         if len(clean_phone) == 10 and (clean_phone.startswith("09") or clean_phone.startswith("07")):
             formatted_phone = "+251" + clean_phone[1:]
@@ -101,7 +134,7 @@ def register():
             ADMIN_ACCOUNT["mella_coins"] -= WELCOME_BONUS
 
         wallet_num = generate_wallet_number()
-        user_key = telegram_id or str(random.randint(100000, 999999))
+        user_key = str(telegram_id).strip()
         
         new_user = {
             "user_id": user_key,
@@ -118,25 +151,64 @@ def register():
 
         users_db[user_key] = new_user
 
-        # በቴሌግራም ለአድሚን የሚላክ ማሳወቂያ
+        # ለአድሚን በቴሌግራም የሚላክ ማሳወቂያ በInline Buttons
         admin_msg = (
-            f"<b>🚨 አዲስ የዋሌት ምዝገባ!</b>\n\n"
-            f"<b>ስም:</b> {full_name}\n"
-            f"<b>ስልክ:</b> {formatted_phone}\n"
-            f"<b>National ID:</b> {national_id}\n"
-            f"<b>የዋሌት ቁጥር:</b> {wallet_num}\n"
-            f"<b>የተሰጠ ነጻ ቦነስ:</b> 100 Coins\n\n"
-            f"👇 ማረጋገጫ ለመስጠት አድሚን ፓናል ይግቡ፦\n"
-            f"https://mella-bot.onrender.com/admin"
+            f"<b>🚨 አዲስ የዋሌት ምዝገባ ጥያቄ!</b>\n\n"
+            f"<b>👤 ስም:</b> {full_name}\n"
+            f"<b>📞 ስልክ:</b> {formatted_phone}\n"
+            f"<b>🪪 National ID:</b> {national_id}\n"
+            f"<b>🆔 Telegram ID:</b> <code>{telegram_id}</code>\n"
+            f"<b>💳 የዋሌት ቁጥር:</b> <code>{wallet_num}</code>\n"
+            f"<b>🎁 ቦነስ:</b> 100 Coins\n\n"
+            f"👇 <b>እባክዎን ከታች እርምጃ ይውሰዱ፦</b>"
         )
-        send_telegram_message(ADMIN_TELEGRAM_ID, admin_msg)
+        send_telegram_admin_notification(ADMIN_TELEGRAM_ID, admin_msg, user_key)
 
-        return jsonify({"status": "success", "message": "ምዝገባው ተሳክቷል!"})
+        return jsonify({"status": "success", "message": "ምዝገባው ተሳክቷል! የአድሚን ማረጋገጫ በመጠበቅ ላይ ይገኛል።"})
 
     return render_template('register.html')
 
 # =========================================================
-# ADMIN ROUTE (አንድ ጊዜ ብቻ የተጻፈው ትክክለኛው ክፍል)
+# TELEGRAM WEBHOOK (በተኖቹን ሲጫኑ ምላሽ የሚሰጥበት)
+# =========================================================
+@app.route('/telegram_webhook', methods=['POST'])
+def telegram_webhook():
+    data = request.get_json()
+    
+    if data and "callback_query" in data:
+        callback = data["callback_query"]
+        callback_id = callback["id"]
+        action_data = callback["data"]
+        
+        try:
+            action, user_id = action_data.split("_")
+            user = users_db.get(user_id)
+
+            if user:
+                if action == "approve":
+                    user['status'] = "Approved"
+                    response_text = f"✅ {user['full_name']} ጸድቋል!"
+                    send_telegram_message(user_id, "🎉 **እንኳን ደስ አለዎት!** የ Mella Wallet አካውንትዎ በትክክል ጽድቋል::")
+                elif action == "cancel":
+                    user['status'] = "Cancelled"
+                    response_text = f"❌ {user['full_name']} ተሰርዟል!"
+                    send_telegram_message(user_id, "⚠️ የ Mella Wallet ምዝገባ ጥያቄዎ ውድቅ ተደርጓል።")
+                elif action == "block":
+                    user['status'] = "Blocked"
+                    response_text = f"🚫 {user['full_name']} ታግዷል!"
+                    send_telegram_message(user_id, "🚫 አካውንትዎ በአድሚኑ ታግዷል።")
+            else:
+                response_text = "⚠️ ተጠቃሚው በዳታቤዝ ውስጥ አልተገኘም!"
+
+            answer_url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/answerCallbackQuery"
+            requests.post(answer_url, json={"callback_query_id": callback_id, "text": response_text, "show_alert": True})
+        except Exception as e:
+            print(f"Webhook Callback Error: {e}")
+
+    return jsonify({"status": "success"}), 200
+
+# =========================================================
+# ADMIN ROUTE
 # =========================================================
 @app.route('/admin')
 def admin_panel():
