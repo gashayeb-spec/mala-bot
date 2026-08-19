@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="am">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>መላ ሳኮ | Mela SACCO</title>
+    <style>
+        :root {
+            --primary-color: #0d5c3a;
+            --secondary-color: #e6a100;
+            --dark-color: #1f2937;
+            --light-bg: #f3f4f6;
+            --white: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            line-height: 1.6;
+            color: var(--dark-color);
+            background-color: var(--light-bg);
+        }
+
+        /* Header & Navigation */
+        header {
+            background-color: var(--primary-color);
+            color: var(--white);
+            padding: 1rem 5%;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--secondary-color);
+        }
+
+        .nav-container {
+            display: flex;
+            align-items: center;
+        }
+
+        nav a {
+            color: var(--white);
+            text-decoration: none;
+            margin-left: 20px;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: var(--secondary-color);
+        }
+
+        .lang-btn {
+            background-color: var(--secondary-color);
+            color: var(--dark-color);
+            border: none;
+            padding: 6px 15px;
+            margin-left: 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(13, 92, 58, 0.85), rgba(13, 92, 58, 0.85)), url('https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=1200&q=80');
+            background-size: cover;
+            background-position: center;
+            color: var(--white);
+            text-align: center;
+            padding: 80px 20px;
+        }
+
+        .hero h1 {
+            font-size: 2.2rem;
+            margin-bottom: 15px;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--secondary-color);
+            color: var(--dark-color);
+            padding: 12px 30px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            border: none;
+        }
+
+        /* Sections General */
+        section {
+            padding: 50px 8%;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .section-title h2 {
+            font-size: 1.8rem;
+            color: var(--primary-color);
+        }
+
+        /* Interactive Forms Section (Registration & Payment) */
+        .app-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .card-box {
+            background: var(--white);
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            border-top: 4px solid var(--primary-color);
+        }
+
+        .card-box h3 {
+            margin-bottom: 20px;
+            color: var(--primary-color);
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .submit-btn {
+            background-color: var(--primary-color);
+            color: var(--white);
+            border: none;
+            padding: 12px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 1rem;
+            font-weight: bold;
+        }
+
+        .submit-btn:hover {
+            background-color: #094229;
+        }
+
+        /* Services Grid */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+        }
+
+        .service-card {
+            background: var(--white);
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            border-top: 3px solid var(--secondary-color);
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--dark-color);
+            color: var(--white);
+            text-align: center;
+            padding: 20px;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <div class="logo">መላ ሳኮ SACCO</div>
+        <div class="nav-container">
+            <nav>
+                <a href="#home" id="nav-home">መነሻ</a>
+                <a href="#portal" id="nav-portal">አባልነት/ቁጠባ</a>
+                <a href="#services" id="nav-services">አገልግሎቶች</a>
+            </nav>
+            <button class="lang-btn" id="lang-toggle" onclick="toggleLanguage()">EN</button>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <h1 id="hero-title">ለብሩህ የፋይናንስ አቅምዎ አስተማማኝ አጋር!</h1>
+        <p id="hero-desc">መላ ሳኮ የብድርና ቁጠባ ህብረት ስራ ማህበር - በChapa ክፍያዎን በደህና ይፈፅሙ።</p>
+        <br>
+        <a href="#portal" class="btn" id="hero-btn">አሁኑኑ ይቆጥቡ</a>
+    </section>
+
+    <!-- Interactive Portal Section -->
+    <section id="portal">
+        <div class="section-title">
+            <h2 id="portal-title">የአባላት አገልግሎት መስጫ</h2>
+        </div>
+        <div class="app-container">
+            
+            <!-- 1. Registration Form -->
+            <div class="card-box">
+                <h3 id="reg-form-title">አዲስ አባል መመዝገቢያ</h3>
+                <form id="registerForm" onsubmit="handleRegister(event)">
+                    <div class="form-group">
+                        <label id="lbl-name">ሙሉ ስም</label>
+                        <input type="text" id="regName" required placeholder="ለምሳሌ፡ አበበ ከበደ">
+                    </div>
+                    <div class="form-group">
+                        <label id="lbl-phone">ስልክ ቁጥር</label>
+                        <input type="tel" id="regPhone" required placeholder="0911000000">
+                    </div>
+                    <button type="submit" class="submit-btn" id="btn-reg">ተመዝገብ</button>
+                </form>
+            </div>
+
+            <!-- 2. Chapa Payment Form -->
+            <div class="card-box">
+                <h3 id="pay-form-title">የወርሃዊ ቁጠባ ክፍያ (Chapa)</h3>
+                <form id="paymentForm" onsubmit="handlePayment(event)">
+                    <div class="form-group">
+                        <label id="lbl-userid">የአባልነት ID (User ID)</label>
+                        <input type="number" id="payUserId" required placeholder="ምሳሌ: 1">
+                    </div>
+                    <div class="form-group">
+                        <label id="lbl-amount">የቁጠባ መጠን (ETB)</label>
+                        <input type="number" id="payAmount" required placeholder="ለምሳሌ፡ 500">
+                    </div>
+                    <button type="submit" class="submit-btn" style="background-color: var(--secondary-color); color: #000;" id="btn-pay">በChapa ይክፈሉ</button>
+                </form>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services">
+        <div class="section-title">
+            <h2 id="services-title">አገልግሎቶቻችን</h2>
+        </div>
+        <div class="services-grid">
+            <div class="service-card">
+                <h3 id="srv1-title">መደበኛ ቁጠባ</h3>
+                <p id="srv1-desc">በየወሩ የሚደረግ የተረጋገጠ ቁጠባ።</p>
+            </div>
+            <div class="service-card">
+                <h3 id="srv2-title">የንግድ ብድር</h3>
+                <p id="srv2-desc">ለአነስተኛና መካከለኛ ንግዶች።</p>
+            </div>
+            <div class="service-card">
+                <h3 id="srv3-title">የአደጋ ጊዜ ብድር</h3>
+                <p id="srv3-desc">በአስቸኳይ ጊዜ የሚደርስ ብድር።</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p id="footer-text">&copy; 2026 መላ ሳኮ የብድርና ቁጠባ ህብረት ስራ ማህበር። መብቱ በህግ የተጠበቀ ነው።</p>
+    </footer>
+
+    <!-- JavaScript Backend Integration & Translation -->
+    <script>
+        // API Base URL (በሰርቨርዎ አድራሻ ይተካል)
+        const API_URL = window.location.origin;
+
+        // 1. User Registration Handler
+        async function handleRegister(event) {
+            event.preventDefault();
+            const fullName = document.getElementById('regName').value;
+            const phone = document.getElementById('regPhone').value;
+
+            try {
+                const res = await fetch(`${API_URL}/api/register`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ full_name: fullName, phone: phone })
+                });
+                const data = await res.json();
+                
+                if(res.ok) {
+                    alert(`${data.message}\nየእርስዎ User ID: ${data.user_id}`);
+                    document.getElementById('registerForm').reset();
+                } else {
+                    alert(`ስህተት: ${data.message}`);
+                }
+            } catch (err) {
+                alert('ከሰርቨሩ ጋር ማገናኘት አልተቻለም!');
+            }
+        }
+
+        // 2. Chapa Payment Handler
+        async function handlePayment(event) {
+            event.preventDefault();
+            const userId = document.getElementById('payUserId').value;
+            const amount = document.getElementById('payAmount').value;
+
+            try {
+                const res = await fetch(`${API_URL}/api/pay`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ user_id: userId, amount: amount })
+                });
+                const data = await res.json();
+
+                if(data.status === 'success') {
+                    // ወደ Chapa Payment Checkout Page መውሰጃ
+                    window.location.href = data.checkout_url;
+                } else {
+                    alert(`የክፍያ ስህተት: ${data.message}`);
+                }
+            } catch (err) {
+                alert('የክፍያ ጥያቄውን ማስተላለፍ አልተቻለም!');
+            }
+        }
+
+        // 3. Language Translation Logic
+        let currentLang = 'am';
+        const translations = {
+            am: {
+                btnText: "EN",
+                navHome: "መነሻ", navPortal: "አባልነት/ቁጠባ", navServices: "አገልግሎቶች",
+                heroTitle: "ለብሩህ የፋይናንስ አቅምዎ አስተማማኝ አጋር!",
+                heroDesc: "መላ ሳኮ የብድርና ቁጠባ ህብረት ስራ ማህበር - በChapa ክፍያዎን በደህና ይፈፅሙ።",
+                heroBtn: "አሁኑኑ ይቆጥቡ",
+                portalTitle: "የአባላት አገልግሎት መስጫ",
+                regTitle: "አዲስ አባል መመዝገቢያ",
+                payTitle: "የወርሃዊ ቁጠባ ክፍያ (Chapa)",
+                lblName: "ሙሉ ስም", lblPhone: "ስልክ ቁጥር", btnReg: "ተመዝገብ",
+                lblUserId: "የአባልነት ID (User ID)", lblAmount: "የቁጠባ መጠን (ETB)", btnPay: "በChapa ይክፈሉ"
+            },
+            en: {
+                btnText: "አማርኛ",
+                navHome: "Home", navPortal: "Membership/Savings", navServices: "Services",
+                heroTitle: "Your Trusted Partner for Financial Growth!",
+                heroDesc: "Mela SACCO - Pay your savings securely via Chapa.",
+                heroBtn: "Save Now",
+                portalTitle: "Member Services Portal",
+                regTitle: "New Member Registration",
+                payTitle: "Monthly Savings Payment (Chapa)",
+                lblName: "Full Name", lblPhone: "Phone Number", btnReg: "Register",
+                lblUserId: "User ID", lblAmount: "Savings Amount (ETB)", btnPay: "Pay via Chapa"
+            }
+        };
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'am' ? 'en' : 'am';
+            const lang = translations[currentLang];
+
+            document.getElementById('lang-toggle').innerText = lang.btnText;
+            document.getElementById('nav-home').innerText = lang.navHome;
+            document.getElementById('nav-portal').innerText = lang.navPortal;
+            document.getElementById('nav-services').innerText = lang.navServices;
+            document.getElementById('hero-title').innerText = lang.heroTitle;
+            document.getElementById('hero-desc').innerText = lang.heroDesc;
+            document.getElementById('hero-btn').innerText = lang.heroBtn;
+            document.getElementById('portal-title').innerText = lang.portalTitle;
+            document.getElementById('reg-form-title').innerText = lang.regTitle;
+            document.getElementById('pay-form-title').innerText = lang.payTitle;
+            document.getElementById('lbl-name').innerText = lang.lblName;
+            document.getElementById('lbl-phone').innerText = lang.lblPhone;
+            document.getElementById('btn-reg').innerText = lang.btnReg;
+            document.getElementById('lbl-userid').innerText = lang.lblUserId;
+            document.getElementById('lbl-amount').innerText = lang.lblAmount;
+            document.getElementById('btn-pay').innerText = lang.btnPay;
+        }
+    </script>
+</body>
+</html>
