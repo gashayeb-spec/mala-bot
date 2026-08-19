@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="am">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mella Wallet - Register</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { background-color: #f4f6f9; font-family: sans-serif; }
+        .register-card { max-width: 480px; width: 100%; border-radius: 15px; border: none; }
+    </style>
+</head>
+<body class="d-flex align-items-center justify-content-center my-5">
+    <div class="card register-card p-4 shadow">
+        <h3 class="text-center fw-bold text-primary mb-1">💳 Mella Wallet</h3>
+        <p class="text-center text-muted small mb-4">አዲስ ዋሌት ይክፈቱና 100 የመላ ኮይን ነፃ ቦነስ ይውሰዱ!</p>
+
+        <form id="regForm">
+            <div class="mb-3">
+                <label class="form-label">ሙሉ ስም</label>
+                <input type="text" id="full_name" class="form-control" placeholder="ለምሳሌ: አበበ ከበደ" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">የስልክ ቁጥር (ኢትዮጵያ)</label>
+                <input type="text" id="phone" class="form-control" placeholder="09... ወይም 07... (10 ዲጂት)" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">የብሔራዊ መታወቂያ ቁጥር (National ID / KYC)</label>
+                <input type="text" id="national_id" class="form-control" placeholder="FIN-XXXXXX" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">የቴሌግራም User/Chat ID (ለማሳወቂያ)</label>
+                <input type="text" id="telegram_id" class="form-control" placeholder="ምሳሌ: 5351353727">
+            </div>
+            <div class="mb-3">
+                <label class="form-label">ምስጢር ቁጥር (Password)</label>
+                <input type="password" id="password" class="form-control" placeholder="******" required>
+            </div>
+            
+            <button type="button" onclick="submitRegister()" class="btn btn-success w-100 fw-bold py-2">ተመዝገብ (Register)</button>
+        </form>
+
+        <div id="alertBox" class="mt-3"></div>
+
+        <div class="text-center mt-3">
+            <small class="text-muted">አካውንት አለዎት? <a href="/login" class="text-decoration-none fw-bold">እዚህ ይግቡ</a></small>
+        </div>
+    </div>
+
+<script>
+async function submitRegister() {
+    const alertBox = document.getElementById('alertBox');
+    alertBox.innerHTML = '<div class="alert alert-info">እየተመዘገበ ነው...</div>';
+
+    const payload = {
+        full_name: document.getElementById('full_name').value,
+        phone: document.getElementById('phone').value,
+        national_id: document.getElementById('national_id').value,
+        telegram_id: document.getElementById('telegram_id').value,
+        password: document.getElementById('password').value
+    };
+
+    try {
+        const res = await fetch('/register', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+            body: new URLSearchParams(payload)
+        });
+        const data = await res.json();
+
+        if (res.ok) {
+            alertBox.innerHTML = `<div class="alert alert-success">${data.message}</div>`;
+            setTimeout(() => { window.location.href = '/login'; }, 2000);
+        } else {
+            alertBox.innerHTML = `<div class="alert alert-danger">${data.message || 'ስህተት ተፈጥሯል'}</div>`;
+        }
+    } catch (e) {
+        alertBox.innerHTML = `<div class="alert alert-danger">የኔትወርክ ስህተት ተፈጥሯል!</div>`;
+    }
+}
+</script>
+</body>
+</html>
