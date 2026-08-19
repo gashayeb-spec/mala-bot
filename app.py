@@ -69,6 +69,15 @@ def send_telegram_admin_notification(chat_id, text, user_id):
     except Exception as e:
         print(f"Telegram Notification Error: {e}")
 
+# Webhook አውቶማቲክ የሚያስር ፋንክሽን
+def set_telegram_webhook():
+    webhook_url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/setWebhook?url=https://mella-bot.onrender.com/telegram_webhook"
+    try:
+        res = requests.get(webhook_url, timeout=5)
+        print(f"Webhook Setting Response: {res.json()}")
+    except Exception as e:
+        print(f"Webhook Setting Error: {e}")
+
 # =========================================================
 # ROUTES - USER & SYSTEM
 # =========================================================
@@ -215,5 +224,8 @@ def admin_panel():
     return render_template('admin.html', users=users_db, admin=ADMIN_ACCOUNT, tickets=lottery_tickets)
 
 if __name__ == '__main__':
+    # ሰርቨሩ ሲነሳ በራሱ ቴሌግራም Webhook እንዲያስር ጥሪ ማድረግ
+    set_telegram_webhook()
+    
     port = int(os.environ.get("PORT", 5000))
     app.run(host='0.0.0.0', port=port, debug=False)
