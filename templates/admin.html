@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="am">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mella Wallet - Admin Panel</title>
+    <style>
+        body { font-family: sans-serif; background: #f4f7f6; padding: 20px; }
+        .card { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
+        th { background-color: #007bff; color: white; }
+        .btn { background: #28a745; color: white; padding: 6px 12px; border: none; border-radius: 4px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h2>💳 Mella Wallet - Admin Dashboard</h2>
+    
+    <div class="card">
+        <h3>💰 System Admin Coin Balance</h3>
+        <p><b>Mella Coins:</b> {{ admin.mella_coins }}</p>
+    </div>
+
+    <div class="card">
+        <h3>👥 የተመዘገቡ ተጠቃሚዎች</h3>
+        <table>
+            <tr>
+                <th>ስም</th>
+                <th>ስልክ ቁጥር</th>
+                <th>National ID</th>
+                <th>Wallet ID</th>
+                <th>Coins</th>
+                <th>ሁኔታ (Status)</th>
+            </tr>
+            {% for uid, user in users.items() %}
+            <tr>
+                <td>{{ user.full_name }}</td>
+                <td>{{ user.phone }}</td>
+                <td>{{ user.national_id }}</td>
+                <td>{{ user.wallet_number }}</td>
+                <td>{{ user.mella_coins }}</td>
+                <td><span style="color: green; font-weight: bold;">{{ user.status }}</span></td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="6" style="text-align: center;">እስካሁን የተመዘገበ ተጠቃሚ የለም።</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</body>
+</html>
