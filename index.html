@@ -3,267 +3,139 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mela Bot Mini App</title>
+    <title>Mella Wallet - መላ ዋሌት</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        :root {
-            --bg-color: #0f172a;
-            --card-bg: #1e293b;
-            --text-color: #ffffff;
-            --accent-color: #3b82f6;
-            --success-color: #22c55e;
-            --danger-color: #ef4444;
-        }
-
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            margin: 0; padding: 16px; box-sizing: border-box;
-        }
-
-        .step { display: none; }
-        .step.active { display: block; }
-
-        .card {
-            background-color: var(--card-bg);
-            border-radius: 12px;
-            padding: 20px; margin-bottom: 16px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-        }
-
-        input, select, button {
-            width: 100%; padding: 12px; margin: 8px 0;
-            border-radius: 8px; border: 1px solid #334155;
-            background-color: #0f172a; color: white; box-sizing: border-box;
-        }
-
-        button { background-color: var(--accent-color); border: none; font-weight: bold; cursor: pointer; }
-        button.btn-success { background-color: var(--success-color); }
-        button.btn-danger { background-color: var(--danger-color); }
-
-        .user-card {
-            background: #0f172a; border: 1px solid #334155;
-            border-radius: 8px; padding: 12px; margin-bottom: 10px;
-        }
+        body { background-color: #f4f6f9; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        .card-custom { border-radius: 15px; border: none; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        .coin-badge { background: linear-gradient(45deg, #ff9900, #ff5500); color: white; padding: 5px 15px; border-radius: 20px; }
     </style>
 </head>
 <body>
-
-    <!-- STEP: WELCOME -->
-    <div id="step-welcome" class="step active">
-        <div class="card">
-            <h2>እንኳን ደህና መጡ ወደ ማላ ኦፊሻል ቦት</h2>
-            <p>እባክዎ የሚፈልጉትን አማራጭ ይምረጡ</p>
-            <button onclick="switchStep('step-register')">✨ አዲስ አጠቃቀም መመዝገብ (Register)</button>
-            <button onclick="switchStep('step-login')">🔐 ቀድሞ አካውንት የከፈቱበት መግቢያ (Login)</button>
-            <button class="btn-danger" onclick="switchStep('step-admin-login')">⚙️ የአስተዳዳሪ መግቢያ (Admin Portal)</button>
+<div class="container py-4">
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>💳 Mella Digital Wallet</h2>
+        <div>
+            <span class="fw-bold me-2">{{ user.full_name }}</span>
+            <span class="badge bg-primary">{{ user.wallet_number }}</span>
         </div>
     </div>
 
-    <!-- STEP: REGISTER -->
-    <div id="step-register" class="step">
-        <div class="card">
-            <h2>ምዝገባ</h2>
-            <form onsubmit="handleRegister(event)">
-                <label>ስም</label><input type="text" id="firstName" required>
-                <label>የአባት ስም</label><input type="text" id="fatherName" required>
-                <label>ስልክ ቁጥር</label><input type="tel" id="phoneNumber" placeholder="09xxxxxxxx" required>
-                <label>ኢሜል</label><input type="email" id="userEmail" placeholder="user@gmail.com">
-                <label>የይለፍ ቃል</label><input type="password" id="userPassword" required>
-                <button type="submit" class="btn-success">ቀጥል & ፎቶ ማረጋገጫ (KYC)</button>
-                <button type="button" onclick="switchStep('step-welcome')">ወደ ኋላ</button>
-            </form>
+    <!-- Balances Cards -->
+    <div class="row g-3 mb-4">
+        <div class="col-md-4">
+            <div class="card card-custom p-3 bg-white">
+                <small class="text-muted">የኢትዮጵያ ብር ባላንስ</small>
+                <h3 class="text-success mt-1">{{ "%.2f"|format(user.etb_balance) }} ETB</h3>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card card-custom p-3 bg-white">
+                <small class="text-muted">የዶላር ባላንስ (USD)</small>
+                <h3 class="text-primary mt-1">${{ "%.2f"|format(user.usd_balance) }}</h3>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card card-custom p-3 bg-white">
+                <small class="text-muted">የመላ ኮይን (Mella Coins)</small>
+                <h3 class="mt-1" style="color: #ff6600;">🪙 {{ user.mella_coins }} Coins</h3>
+            </div>
         </div>
     </div>
 
-    <!-- STEP: KYC -->
-    <div id="step-kyc" class="step">
-        <div class="card">
-            <h2>መታወቂያ (KYC) ማረጋገጫ</h2>
-            <form onsubmit="handleKyc(event)">
-                <label>ብሔራዊ መታወቂያ ቁጥር</label>
-                <input type="text" id="nationalIdNumber" required>
-                <button type="submit" class="btn-success">ለአስተዳዳሪ ማረጋገጫ ላክ (Send Request)</button>
-            </form>
+    <!-- Actions Section -->
+    <div class="row g-4">
+        <!-- Chapa Deposit -->
+        <div class="col-md-6">
+            <div class="card card-custom p-4 bg-white">
+                <h4>🏦 በChapa ገንዘብ ገቢ ያድርጉ</h4>
+                <p class="text-muted small">ከባንክዎ ወይም በቴሌብር ቀጥታ ወደ ዋሌትዎ ብር ገቢ ያድርጉ</p>
+                <div class="input-group mb-3">
+                    <input type="number" id="depositAmount" class="form-control" placeholder="የገንዘብ መጠን በETB">
+                    <button class="btn btn-success" onclick="depositChapa()">ገቢ አድርግ (Deposit)</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Exchange to Coin -->
+        <div class="col-md-6">
+            <div class="card card-custom p-4 bg-white">
+                <h4>🔄 ብርን ወደ Mella Coin ይለውጡ</h4>
+                <p class="text-muted small">1 ETB = 10 Mella Coins</p>
+                <div class="row g-2">
+                    <div class="col-6">
+                        <input type="number" id="exchangeAmount" class="form-control" placeholder="የገንዘብ መጠን">
+                    </div>
+                    <div class="col-6">
+                        <button class="btn btn-warning w-100 text-white" onclick="exchangeCoins()">ወደ ኮይን ቀይር</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Lottery Section -->
+        <div class="col-12">
+            <div class="card card-custom p-4 bg-dark text-white">
+                <h4>🎟️ የሎተሪ ውድድር (በMella Coin ይቁረጡ)</h4>
+                <p>1 የሎተሪ እድል = 50 Mella Coins | የሎተሪው አሸናፊ በአድሚኑ ይፋ ይደረጋል!</p>
+                <div class="d-flex align-items-center gap-3">
+                    <input type="number" id="ticketCount" class="form-control w-25" value="1" min="1">
+                    <button class="btn btn-danger btn-lg" onclick="buyLottery()">ሎተሪ ቁረጥ (Buy Ticket)</button>
+                </div>
+                <div id="lotteryResult" class="mt-3"></div>
+            </div>
         </div>
     </div>
+</div>
 
-    <!-- STEP: PENDING -->
-    <div id="step-pending" class="step">
-        <div class="card" style="text-align: center;">
-            <h2>ማረጋገጫ በመሰራት ላይ...</h2>
-            <p>መረጃዎ ለአስተዳዳሪው በቴሌግራም ተልኳል፤ እስኪጸድቅ ይጠበቃል</p>
-            <button class="btn-success" onclick="checkAdminApprovalStatus()">ሁኔታውን አረጋግጥ (Check Status)</button>
-        </div>
-    </div>
+<script>
+async function depositChapa() {
+    const amount = document.getElementById('depositAmount').value;
+    const res = await fetch('/deposit/chapa', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ amount: amount })
+    });
+    const data = await res.json();
+    if(data.checkout_url) {
+        window.location.href = data.checkout_url;
+    } else {
+        alert(data.message || 'ስህተት ተፈጥሯል');
+    }
+}
 
-    <!-- STEP: LOGIN -->
-    <div id="step-login" class="step">
-        <div class="card">
-            <h2>መግቢያ (Login)</h2>
-            <form onsubmit="handleLogin(event)">
-                <label>ስልክ ቁጥር</label><input type="tel" id="loginPhone" required>
-                <label>የይለፍ ቃል</label><input type="password" id="loginPassword" required>
-                <button type="submit" class="btn-success">ግባ</button>
-                <button type="button" onclick="switchStep('step-welcome')">ወደ ኋላ</button>
-            </form>
-        </div>
-    </div>
+async function exchangeCoins() {
+    const amount = document.getElementById('exchangeAmount').value;
+    const res = await fetch('/exchange/coin', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ from_currency: 'ETB', amount: amount })
+    });
+    const data = await res.json();
+    if(data.status === 'success') {
+        alert('በውጤታማነት ወደ ኮይን ተቀይሯል!');
+        location.reload();
+    } else {
+        alert(data.error);
+    }
+}
 
-    <!-- STEP: WALLET -->
-    <div id="step-wallet" class="step">
-        <div class="card">
-            <h2 id="userDisplayName">ተጠቃሚ</h2>
-            <p>አጠቃላይ ቀሪ ሒሳብ</p>
-            <h1 id="walletBalance">0.00 ETB</h1>
-        </div>
-        <div class="card">
-            <h3>💳 ሒሳብ በ Chapa ይሙሉ (Deposit)</h3>
-            <input type="number" id="depositAmount" placeholder="የብር መጠን (ወይም ETB)">
-            <button class="btn-success" onclick="initiateChapaDeposit()">በ Chapa ክፈል (Telebirr/Bank)</button>
-            <button class="btn-danger" onclick="switchStep('step-welcome')" style="margin-top:20px;">ውጣ (Logout)</button>
-        </div>
-    </div>
-
-    <!-- STEP: ADMIN LOGIN & PANEL -->
-    <div id="step-admin-login" class="step">
-        <div class="card">
-            <h2>የአስተዳዳሪ መግቢያ</h2>
-            <input type="password" id="adminPass" placeholder="የይለፍ ቃል">
-            <button class="btn-success" onclick="loginAdmin()">ክፈት</button>
-        </div>
-    </div>
-
-    <div id="step-admin-panel" class="step">
-        <div class="card">
-            <h2>⚙️ የአስተዳዳሪ ማስተዳደሪያ</h2>
-            <h3>📋 ማረጋገጫ የሚጠብቁ (Pending)</h3>
-            <div id="pendingContainer"></div>
-            <button class="btn-danger" onclick="switchStep('step-welcome')">ውጣ</button>
-        </div>
-    </div>
-
-    <script>
-        const CHAPA_PUBLIC_KEY = "CHAPUBK-hLBEJPiKDlRpfBCqTczyE1OsnrrK3Zhj";
-        const BACKEND_URL = "http://localhost:5000"; // የ Python Backend አድራሻህ
-
-        let userData = {};
-
-        function switchStep(id) {
-            document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
-        }
-
-        function handleRegister(e) {
-            e.preventDefault();
-            userData = {
-                firstName: document.getElementById('firstName').value,
-                fatherName: document.getElementById('fatherName').value,
-                phone: document.getElementById('phoneNumber').value,
-                email: document.getElementById('userEmail').value,
-                password: document.getElementById('userPassword').value,
-                telegramId: "5351353727"
-            };
-            switchStep('step-kyc');
-        }
-
-        function handleKyc(e) {
-            e.preventDefault();
-            userData.nationalId = document.getElementById('nationalIdNumber').value;
-            userData.status = 'pending';
-
-            localStorage.setItem('mala_user_' + userData.phone, JSON.stringify(userData));
-            let pendingList = JSON.parse(localStorage.getItem('mala_pending') || '[]');
-            pendingList.push(userData);
-            localStorage.setItem('mala_pending', JSON.stringify(pendingList));
-
-            // Backend ላይ ለአድሚን ቴሌግራም እንዲልክ ጥያቄ መላክ
-            fetch(`${BACKEND_URL}/api/notify-admin`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(userData)
-            }).catch(err => console.log(err));
-
-            switchStep('step-pending');
-        }
-
-        function initiateChapaDeposit() {
-            const amount = document.getElementById('depositAmount').value;
-            if (!amount || amount <= 0) { alert("እባክዎ ትክክለኛ የብር መጠን ያስገቡ"); return; }
-
-            fetch(`${BACKEND_URL}/api/chapa/initialize`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    amount: amount,
-                    email: userData.email || 'user@melabot.com',
-                    firstName: userData.firstName || 'User',
-                    phone: userData.phone
-                })
-            })
-            .then(res => res.json())
-            .then(data => {
-                if (data.status === 'success') {
-                    window.location.href = data.checkout_url; // ወደ Chapa መክፈያ ገፅ ይወስደዋል
-                } else {
-                    alert("የክፍያ ጥያቄው አልተሳካም: " + data.message);
-                }
-            });
-        }
-
-        function checkAdminApprovalStatus() {
-            const saved = localStorage.getItem('mala_user_' + userData.phone);
-            if (saved && JSON.parse(saved).status === 'approved') {
-                document.getElementById('userDisplayName').textContent = userData.firstName;
-                switchStep('step-wallet');
-            } else {
-                alert("አሁንም በአስተዳዳሪ አልጸደቀም!");
-            }
-        }
-
-        function loginAdmin() {
-            if (document.getElementById('adminPass').value === "1234") {
-                switchStep('step-admin-panel');
-                renderPending();
-            }
-        }
-
-        function renderPending() {
-            const list = JSON.parse(localStorage.getItem('mala_pending') || '[]');
-            const container = document.getElementById('pendingContainer');
-            container.innerHTML = list.length ? "" : "ምንም የለም";
-            list.forEach(u => {
-                container.innerHTML += `
-                    <div class="user-card">
-                        <p>${u.firstName} (${u.phone})</p>
-                        <button class="btn-success" onclick="approve('${u.phone}')">Approve</button>
-                    </div>`;
-            });
-        }
-
-        function approve(phone) {
-            let u = JSON.parse(localStorage.getItem('mala_user_' + phone));
-            u.status = 'approved';
-            localStorage.setItem('mala_user_' + phone, JSON.stringify(u));
-            let list = JSON.parse(localStorage.getItem('mala_pending') || '[]');
-            localStorage.setItem('mala_pending', JSON.stringify(list.filter(x => x.phone !== phone)));
-            renderPending();
-        }
-
-        function handleLogin(e) {
-            e.preventDefault();
-            const phone = document.getElementById('loginPhone').value;
-            const pass = document.getElementById('loginPassword').value;
-            const u = JSON.parse(localStorage.getItem('mala_user_' + phone) || '{}');
-
-            if (u.password === pass && u.status === 'approved') {
-                userData = u;
-                document.getElementById('userDisplayName').textContent = u.firstName;
-                switchStep('step-wallet');
-            } else {
-                alert("መግባት አልተቻለም (አካውንቱ ያልጸደቀ ወይም የተሳሳተ መረጃ)!");
-            }
-        }
-    </script>
+async function buyLottery() {
+    const tickets = document.getElementById('ticketCount').value;
+    const res = await fetch('/lottery/buy', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ tickets: tickets })
+    });
+    const data = await res.json();
+    if(data.status === 'success') {
+        document.getElementById('lotteryResult').innerHTML = 
+            `<div class="alert alert-success">የተቆረጡ የሎተሪ ቁጥሮችዎ: ${data.tickets.join(', ')}</div>`;
+    } else {
+        alert(data.error);
+    }
+}
+</script>
 </body>
 </html>
