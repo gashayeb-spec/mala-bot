@@ -10,6 +10,9 @@ app.secret_key = "mella_wallet_super_secret_session_key_2026"
 TELEGRAM_BOT_TOKEN = "8932085001:AAFSuqyjALyhumCO-Y6RwfHlwz1HJaugevU"
 ADMIN_TELEGRAM_ID = "5351353727"
 
+# የ Render Domain አድራሻ
+BASE_URL = "https://mela-bot.onrender.com"
+
 ADMIN_ACCOUNT = {
     "user_id": ADMIN_TELEGRAM_ID,
     "full_name": "System Admin",
@@ -40,16 +43,7 @@ def send_telegram_message(chat_id, text):
     except Exception as e:
         print(f"Telegram Notification Error: {e}")
 
-# Render የተሰጠህን ትክክለኛ Domain Name በራሱ እንዲያገኝ ማድረግ
-def get_base_url():
-    render_url = os.environ.get("RENDER_EXTERNAL_URL")
-    if render_url:
-        return render_url.rstrip('/')
-    return "https://mella-bot.onrender.com"
-
-# ለአድሚኑ በበተኖች (Inline Buttons) ማሳወቂያ የሚልክ ፋንክሽን
 def send_telegram_admin_notification(chat_id, text, user_id):
-    base_url = get_base_url()
     url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage"
     reply_markup = {
         "inline_keyboard": [
@@ -59,7 +53,7 @@ def send_telegram_admin_notification(chat_id, text, user_id):
                 {"text": "🚫 Block", "callback_data": f"block_{user_id}"}
             ],
             [
-                {"text": "🌐 ወደ Admin Panel ሂድ", "url": f"{base_url}/admin"}
+                {"text": "🌐 ወደ Admin Panel ሂድ", "url": f"{BASE_URL}/admin"}
             ]
         ]
     }
@@ -74,10 +68,8 @@ def send_telegram_admin_notification(chat_id, text, user_id):
     except Exception as e:
         print(f"Telegram Notification Error: {e}")
 
-# Webhook አውቶማቲክ የሚያስር ፋንክሽን
 def set_telegram_webhook():
-    base_url = get_base_url()
-    webhook_url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/setWebhook?url={base_url}/telegram_webhook"
+    webhook_url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/setWebhook?url={BASE_URL}/telegram_webhook"
     try:
         res = requests.get(webhook_url, timeout=5)
         print(f"Webhook Setting Response: {res.json()}")
@@ -166,7 +158,6 @@ def register():
 
         users_db[user_key] = new_user
 
-        # ለአድሚን በቴሌግራም የሚላክ ማሳወቂያ
         admin_msg = (
             f"<b>🚨 አዲስ የዋሌት ምዝገባ ጥያቄ!</b>\n\n"
             f"<b>👤 ስም:</b> {full_name}\n"
@@ -183,9 +174,6 @@ def register():
 
     return render_template('register.html')
 
-# =========================================================
-# TELEGRAM WEBHOOK (በተኖቹን ሲጫኑ ፈጣን ምላሽ እንዲሰጥ ተስተካክሏል)
-# =========================================================
 @app.route('/telegram_webhook', methods=['POST'])
 def telegram_webhook():
     data = request.get_json()
@@ -195,7 +183,6 @@ def telegram_webhook():
         callback_id = callback["id"]
         action_data = callback["data"]
         
-        # 1. መጀመሪያ ለቴሌግራም ሎዲንጉ እንዲቆም ፈጣን ምላሽ መስጠት
         answer_url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/answerCallbackQuery"
         
         try:
@@ -228,11 +215,15 @@ def telegram_webhook():
     return jsonify({"status": "success"}), 200
 
 # =========================================================
-# ADMIN ROUTE
+# ADMIN ROUTE (ለቀጥታ ፍቃድ የተስተካከለ)
 # =========================================================
 @app.route('/admin')
 def admin_panel():
-    return render_template('admin.html', users=users_db, admin=ADMIN_ACCOUNT, tickets=lottery_tickets)
+    session['user_id'] = ADMIN_TELEGRAM_ID  # አድሚን ገጽ ሲገባ auto-login እንዲያደርግ
+    try:
+        return render_template('admin.html', users=users_db, admin=ADMIN_ACCOUNT, tickets=lottery_tickets)
+    except Exception as e:
+        return f"Template Error: Make sure admin.html exists inside templates folder. Details: {e}", 404
 
 if __name__ == '__main__':
     set_telegram_webhook()
