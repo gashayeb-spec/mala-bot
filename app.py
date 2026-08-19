@@ -8,9 +8,6 @@ app = Flask(__name__)
 app.secret_key = "mella_wallet_super_secret_session_key_2026"
 
 TELEGRAM_BOT_TOKEN = "8932085001:AAFSuqyjALyhumCO-Y6RwfHlwz1HJaugevU"
-CHAPA_PUBLIC_KEY = "CHAPUBK-hLBEJPiKDlRpfBCqTczyE1OsnrrK3Zhj"
-CHASECK_KEY = "CHASECK-SncZN81Mx80yQcPiXJwRXDF6MdgchtNV"
-
 ADMIN_TELEGRAM_ID = "5351353727"
 
 ADMIN_ACCOUNT = {
@@ -43,8 +40,16 @@ def send_telegram_message(chat_id, text):
     except Exception as e:
         print(f"Telegram Notification Error: {e}")
 
+# Render የተሰጠህን ትክክለኛ Domain Name በራሱ እንዲያገኝ ማድረግ
+def get_base_url():
+    render_url = os.environ.get("RENDER_EXTERNAL_URL")
+    if render_url:
+        return render_url.rstrip('/')
+    return "https://mella-bot.onrender.com"
+
 # ለአድሚኑ በበተኖች (Inline Buttons) ማሳወቂያ የሚልክ ፋንክሽን
 def send_telegram_admin_notification(chat_id, text, user_id):
+    base_url = get_base_url()
     url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage"
     reply_markup = {
         "inline_keyboard": [
@@ -54,7 +59,7 @@ def send_telegram_admin_notification(chat_id, text, user_id):
                 {"text": "🚫 Block", "callback_data": f"block_{user_id}"}
             ],
             [
-                {"text": "🌐 ወደ Admin Panel ሂድ", "url": "https://mella-bot.onrender.com/admin"}
+                {"text": "🌐 ወደ Admin Panel ሂድ", "url": f"{base_url}/admin"}
             ]
         ]
     }
@@ -71,7 +76,8 @@ def send_telegram_admin_notification(chat_id, text, user_id):
 
 # Webhook አውቶማቲክ የሚያስር ፋንክሽን
 def set_telegram_webhook():
-    webhook_url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/setWebhook?url=https://mella-bot.onrender.com/telegram_webhook"
+    base_url = get_base_url()
+    webhook_url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/setWebhook?url={base_url}/telegram_webhook"
     try:
         res = requests.get(webhook_url, timeout=5)
         print(f"Webhook Setting Response: {res.json()}")
@@ -160,7 +166,7 @@ def register():
 
         users_db[user_key] = new_user
 
-        # ለአድሚን በቴሌግራም የሚላክ ማሳወቂያ በInline Buttons
+        # ለአድሚን በቴሌግራም የሚላክ ማሳወቂያ
         admin_msg = (
             f"<b>🚨 አዲስ የዋሌት ምዝገባ ጥያቄ!</b>\n\n"
             f"<b>👤 ስም:</b> {full_name}\n"
@@ -178,7 +184,7 @@ def register():
     return render_template('register.html')
 
 # =========================================================
-# TELEGRAM WEBHOOK (በተኖቹን ሲጫኑ ምላሽ የሚሰጥበት)
+# TELEGRAM WEBHOOK (በተኖቹን ሲጫኑ ፈጣን ምላሽ እንዲሰጥ ተስተካክሏል)
 # =========================================================
 @app.route('/telegram_webhook', methods=['POST'])
 def telegram_webhook():
@@ -189,6 +195,9 @@ def telegram_webhook():
         callback_id = callback["id"]
         action_data = callback["data"]
         
+        # 1. መጀመሪያ ለቴሌግራም ሎዲንጉ እንዲቆም ፈጣን ምላሽ መስጠት
+        answer_url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/answerCallbackQuery"
+        
         try:
             action, user_id = action_data.split("_")
             user = users_db.get(user_id)
@@ -197,22 +206,24 @@ def telegram_webhook():
                 if action == "approve":
                     user['status'] = "Approved"
                     response_text = f"✅ {user['full_name']} ጸድቋል!"
+                    requests.post(answer_url, json={"callback_query_id": callback_id, "text": response_text, "show_alert": True})
                     send_telegram_message(user_id, "🎉 **እንኳን ደስ አለዎት!** የ Mella Wallet አካውንትዎ በትክክል ጽድቋል::")
                 elif action == "cancel":
                     user['status'] = "Cancelled"
                     response_text = f"❌ {user['full_name']} ተሰርዟል!"
+                    requests.post(answer_url, json={"callback_query_id": callback_id, "text": response_text, "show_alert": True})
                     send_telegram_message(user_id, "⚠️ የ Mella Wallet ምዝገባ ጥያቄዎ ውድቅ ተደርጓል።")
                 elif action == "block":
                     user['status'] = "Blocked"
                     response_text = f"🚫 {user['full_name']} ታግዷል!"
+                    requests.post(answer_url, json={"callback_query_id": callback_id, "text": response_text, "show_alert": True})
                     send_telegram_message(user_id, "🚫 አካውንትዎ በአድሚኑ ታግዷል።")
             else:
-                response_text = "⚠️ ተጠቃሚው በዳታቤዝ ውስጥ አልተገኘም!"
+                requests.post(answer_url, json={"callback_query_id": callback_id, "text": "⚠️ ተጠቃሚው አልተገኘም!", "show_alert": True})
 
-            answer_url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/answerCallbackQuery"
-            requests.post(answer_url, json={"callback_query_id": callback_id, "text": response_text, "show_alert": True})
         except Exception as e:
             print(f"Webhook Callback Error: {e}")
+            requests.post(answer_url, json={"callback_query_id": callback_id, "text": "ስህተት ተፈጥሯል!"})
 
     return jsonify({"status": "success"}), 200
 
@@ -224,8 +235,6 @@ def admin_panel():
     return render_template('admin.html', users=users_db, admin=ADMIN_ACCOUNT, tickets=lottery_tickets)
 
 if __name__ == '__main__':
-    # ሰርቨሩ ሲነሳ በራሱ ቴሌግራም Webhook እንዲያስር ጥሪ ማድረግ
     set_telegram_webhook()
-    
     port = int(os.environ.get("PORT", 5000))
     app.run(host='0.0.0.0', port=port, debug=False)
