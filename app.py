@@ -59,6 +59,12 @@ def send_telegram_message(chat_id, text):
 # =========================================================
 # ROUTES - USERS
 # =========================================================
+# =========================================================
+# ADMIN ROUTE (የአድሚን ገጽ)
+# =========================================================
+@app.route('/admin')
+def admin_panel():
+    return render_template('admin.html', users=users_db, admin=ADMIN_ACCOUNT, tickets=lottery_tickets)
 @app.route('/')
 def home():
     if 'user_id' not in session:
